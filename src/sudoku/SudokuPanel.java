@@ -20,6 +20,7 @@ package sudoku;
 
 import generator.SudokuGenerator;
 import generator.SudokuGeneratorFactory;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -49,15 +50,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.Stack;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOImage;
@@ -73,6 +66,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+
 import org.w3c.dom.Node;
 import solver.SudokuSolver;
 import solver.SudokuSolverFactory;
@@ -80,14 +74,14 @@ import solver.SudokuStepFinder;
 
 /**
  * A specialized JPanel for displaying and manipulating Sudokus.<br>
- *
+ * <p>
  * Mouse click detection:<br><br>
- *
+ * <p>
  * AWT seems to have problems with mouse click detection: if the mouse moves a
  * tiny little bit between PRESSED and RELEASED, no CLICKED event is produced.
  * This means, that when playing HoDoKu with the mouse fast, the program often
  * seems to ignore the mouse.<br><br>
- *
+ * <p>
  * The solution is simple: Catch the PRESSED and RELEASED events and decide for
  * yourself, if a CLICKED has happened. For HoDoKu a CLICKED event is generated,
  * if PRESSED and RELEASED occured on the same candidate.
@@ -103,8 +97,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * combinations for number
      */
     private static final int[] KEY_CODES = new int[]{
-        KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
-        KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9
+            KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
+            KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9
     };
     private static final int DELTA = 5; // Abstand zwischen den Quadraten in Pixel
     private static final int DELTA_RAND = 5; // Abstand zu den Rändern
@@ -266,18 +260,18 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         initComponents();
 
         makeItems = new JMenuItem[]{
-            make1MenuItem, make2MenuItem, make3MenuItem, make4MenuItem, make5MenuItem,
-            make6MenuItem, make7MenuItem, make8MenuItem, make9MenuItem
+                make1MenuItem, make2MenuItem, make3MenuItem, make4MenuItem, make5MenuItem,
+                make6MenuItem, make7MenuItem, make8MenuItem, make9MenuItem
         };
         excludeItems = new JMenuItem[]{
-            exclude1MenuItem, exclude2MenuItem, exclude3MenuItem,
-            exclude4MenuItem, exclude5MenuItem, exclude6MenuItem,
-            exclude7MenuItem, exclude8MenuItem, exclude9MenuItem
+                exclude1MenuItem, exclude2MenuItem, exclude3MenuItem,
+                exclude4MenuItem, exclude5MenuItem, exclude6MenuItem,
+                exclude7MenuItem, exclude8MenuItem, exclude9MenuItem
         };
         toggleColorItems = new JMenuItem[]{
-            color1aMenuItem, color1bMenuItem, color2aMenuItem, color2bMenuItem,
-            color3aMenuItem, color3bMenuItem, color4aMenuItem, color4bMenuItem,
-            color5aMenuItem, color5bMenuItem
+                color1aMenuItem, color1bMenuItem, color2aMenuItem, color2bMenuItem,
+                color3aMenuItem, color3bMenuItem, color4aMenuItem, color4bMenuItem,
+                color5aMenuItem, color5bMenuItem
         };
         setColorIconsInPopupMenu();
         updateCellZoomPanel();
@@ -596,9 +590,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
+
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 formMouseReleased(evt);
             }
+
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
@@ -607,6 +603,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
+
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 formKeyReleased(evt);
             }
@@ -615,12 +612,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1078,7 +1075,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         repaint();
     }
 
-//    public void loadFromFile(Sudoku sudoku, Sudoku solvedSudoku) {
+    //    public void loadFromFile(Sudoku sudoku, Sudoku solvedSudoku) {
 //        this.sudoku = sudoku;
 //        this.solvedSudoku = solvedSudoku;
 //        redoStack.clear();
@@ -1844,8 +1841,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * is empty).<br>
      *
      * @param candidate
-     * @return
-     * <code>true</code>, if at least one cell was changed
+     * @return <code>true</code>, if at least one cell was changed
      */
     private boolean toggleCandidateInAktCells(int candidate) {
         boolean changed = false;
@@ -2035,6 +2031,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 //    private void drawPage(int totalWidth, int totalHeight, boolean isPrint) {
 //        drawPage(totalWidth, totalHeight, isPrint, true, false, 1.0);
 //    }
+
     /**
      * Draws the sudoku in its current state on the graphics context denoted by
      * {@link #g2} (code>g2</code> has to be set before calling this method).
@@ -2042,21 +2039,21 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * <code>Component</code> (basic redraw), a
      * <code>BufferedImage</code> (save Sudoku as image) or to a print
      * canvas.<br><br>
-     *
+     * <p>
      * Sudokus are always drawn as quads, even if
      * <code>totalWidth</code> and
      * <code>totalHeight</code> are not the same. The quadrat is then center
      * within the available space.
      *
-     * @param totalWidth The width of the sudoku in pixel
+     * @param totalWidth  The width of the sudoku in pixel
      * @param totalHeight The height of the sudoku in pixel
-     * @param isPrint The sudoku is drawn on a print canvas: always draw at the
-     * uper left corner and dont draw a cursor
-     * @param withBorder A white border of at least {@link #DELTA_RAND} pixels
-     * is drawn around the sudoku.
-     * @param allBlack Replace all colors with black. Should only be used, if
-     * filters, steps or coloring are not used.
-     * @param scale Necessary for high resolution printing
+     * @param isPrint     The sudoku is drawn on a print canvas: always draw at the
+     *                    uper left corner and dont draw a cursor
+     * @param withBorder  A white border of at least {@link #DELTA_RAND} pixels
+     *                    is drawn around the sudoku.
+     * @param allBlack    Replace all colors with black. Should only be used, if
+     *                    filters, steps or coloring are not used.
+     * @param scale       Necessary for high resolution printing
      */
     private void drawPage(int totalWidth, int totalHeight, boolean isPrint, boolean withBorder, boolean allBlack, double scale) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -2648,7 +2645,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }
 
     private void drawArrow(Graphics2D g2, int index1, int index2, int cellSize,
-            double ddy, List<Point2D.Double> points1) {
+                           double ddy, List<Point2D.Double> points1) {
         // calculate the start and end points for the arrow
         Point2D.Double p1 = (Point2D.Double) (points1.get(index1).clone());
         Point2D.Double p2 = (Point2D.Double) (points1.get(index2).clone());
@@ -2889,9 +2886,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * metrics and candidate factors are ignored: the valid candidate region is
      * simple the corresponding ninth of the cell.<br><br>
      *
-     * @param p The point of a mouse click
+     * @param p    The point of a mouse click
      * @param line The line, in which p lies (may be -1 for "invalid")
-     * @param col The column, in which p lies (may be -1 for "invalid")
+     * @param col  The column, in which p lies (may be -1 for "invalid")
      * @return The number of a candidate, if a click could be confirmed, or else
      * -1
      */
@@ -2990,6 +2987,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         g2.drawLine(x + 1 * cellSize, y, x + 1 * cellSize, y + 3 * cellSize);
         g2.drawLine(x + 2 * cellSize, y, x + 2 * cellSize, y + 3 * cellSize);
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu cellPopupMenu;
     private javax.swing.JMenuItem color1aMenuItem;
@@ -3378,8 +3376,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * in die Metadaten der Datei geschrieben, was alles etwas kompliziert
      * macht.
      *
-     * @param bi Zu zeichnendes Bild
-     * @param dpi Auflösung in dots per inch
+     * @param bi       Zu zeichnendes Bild
+     * @param dpi      Auflösung in dots per inch
      * @param fileName Pfad und Name der neuen Bilddatei
      */
     private void writePNG(BufferedImage bi, int dpi, File file) {
@@ -4039,7 +4037,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * toolbar. For every candidate, that is still present as candidate and thus
      * can be filtered, the appropriate array element is
      * <code>true</code>.<br><br>
-     *
+     * <p>
      * Care has to be taken with prerequisites: <ul> <li>If "Show all
      * candidates" is disabled, filtering is not possible</li> <li>...</li>
      * </ul>
