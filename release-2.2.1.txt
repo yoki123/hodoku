@@ -32,7 +32,7 @@ Version 2.2.1 (2019-11-07) Fork by PseudoFish
 Features added:
 
   - #Added an "Import Line" option in File.
-  - #Added an "Emport Line" option in File.
+  - #Added an "Export Line" option in File.
   - #File drag-and-drop to load a puzzle. Currently only supports files of this format:
 		067102000000000007100030000000360050000050892500008003046200000000000200051093004 or
 		.671.2...........71...3.......36..5.....5.8925....8..3.462...........2...51.93..4
