@@ -525,8 +525,6 @@ public class ExtendedPrintProgressDialog extends javax.swing.JDialog implements 
                 }
                 if (layout == 4) {
                     verticalGap = (int) ((pageFormat.getHeight() - pageFormat.getImageableHeight()) * scale);
-                    // less vertical gap
-                    verticalGap /= 2;
                     borderHeight = (borderHeight - verticalGap) / 2;
                 }
             }
@@ -664,7 +662,7 @@ public class ExtendedPrintProgressDialog extends javax.swing.JDialog implements 
                 break;
         }
         Sudoku2 sudoku = sudokus[index];
-        panel.setSudoku(sudoku.getSudoku(ClipboardMode.LIBRARY), true);
+        panel.setSudoku(sudoku, true);
         panel.setShowCandidates(candidates[index]);
         panel.printSudoku(g2, startX, startY, imagePrintSize, allBlack, scale);
         if (printRating && sudoku != null && sudoku.getLevel() != null) {

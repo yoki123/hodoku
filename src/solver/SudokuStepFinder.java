@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with HoDoKu. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package solver;
 
 import java.util.ArrayList;
@@ -43,7 +44,6 @@ import sudoku.SudokuSetBase;
  * @author hobiwan
  */
 public class SudokuStepFinder {
-
     /** The specialized solver for Singles, Intersections and Subsets. */
     private SimpleSolver simpleSolver;
     /** The specialized solver for all kinds of Fish. */
@@ -91,6 +91,7 @@ public class SudokuStepFinder {
     private boolean initialized = false;
     /** If set to <code>true</code>, the StepFinder contains only one {@link SimpleSolver} instance. */
     private boolean simpleOnly = false;
+
     // Data that is used by more than one specialized solver
     /** One set with all positions left for each candidate. */
     private SudokuSet[] candidates = new SudokuSet[10];
@@ -116,10 +117,6 @@ public class SudokuStepFinder {
     private boolean templatesDirty = true;
     /** Dirty flag for templates (with refinements). */
     private boolean templatesListDirty = true;
-    /** Cache for group nodes. */
-    private List<GroupNode> groupNodes = null;
-    /** Step number for which {@link #groupNodes} was computed. */
-    private int groupNodesStepNumber = -1;
     /** Cache for ALS entries (only ALS with more than one cell). */
     private List<Als> alsesOnlyLargerThanOne = null;
     /** Step number for which {@link #alsesOnlyLargerThanOne} was computed. */
@@ -144,6 +141,7 @@ public class SudokuStepFinder {
     private boolean lastRcOnlyForward = true;
     /** Collect RCs for forward search only */
     private boolean rcOnlyForward = true;
+
     // temporary varibles for calculating ALS and RC
     /** Temporary set for recursion: all cells of each try */
     private SudokuSet indexSet = new SudokuSet();
@@ -157,6 +155,7 @@ public class SudokuStepFinder {
     private int anzAls;
     /** statistics: number of ALS found more than once */
     private int doubleAls;
+
     /** All candidates common to two ALS. */
     private short possibleRestrictedCommonsSet = 0;
     /** Holds all buddies of all candidate cells for one RC (including the candidate cells themselves). */
@@ -171,6 +170,9 @@ public class SudokuStepFinder {
     private int rcAnzCalls;
     /** statistics: number of RCs found */
     private int anzRcs;
+
+
+
 
     /**
      * Creates an instance of the class.
@@ -187,7 +189,7 @@ public class SudokuStepFinder {
         this.simpleOnly = simpleOnly;
         initialized = false;
     }
-
+    
     private void initialize() {
         if (initialized) {
             return;
@@ -222,17 +224,17 @@ public class SudokuStepFinder {
             incompleteSolver = new IncompleteSolver(this);
             giveUpSolver = new GiveUpSolver(this);
             solvers = new AbstractSolver[]{
-                simpleSolver, fishSolver, singleDigitPatternSolver, uniquenessSolver,
-                wingSolver, coloringSolver, chainSolver, alsSolver, miscellaneousSolver,
-                tablingSolver, templateSolver, bruteForceSolver,
-                incompleteSolver, giveUpSolver
+                        simpleSolver, fishSolver, singleDigitPatternSolver, uniquenessSolver,
+                        wingSolver, coloringSolver, chainSolver, alsSolver, miscellaneousSolver,
+                        tablingSolver, templateSolver, bruteForceSolver,
+                        incompleteSolver, giveUpSolver
             };
         } else {
-            solvers = new AbstractSolver[]{simpleSolver};
+            solvers = new AbstractSolver[]{ simpleSolver };
         }
         initialized = true;
     }
-
+    
     /**
      * Calls the {@link AbstractSolver#cleanUp() } method for every
      * specialized solver. This method is called from an extra
@@ -335,6 +337,7 @@ public class SudokuStepFinder {
     /******************************************************************************************************************/
     /* EXPOSE PUBLIC APIs                                                                                             */
     /******************************************************************************************************************/
+
     /**
      * Finds all Full Houses for a given sudoku.
      * @param newSudoku
@@ -625,7 +628,7 @@ public class SudokuStepFinder {
      * @param doChain 
      * @return
      */
-    public List<SolutionStep> getAllAlsSteps(Sudoku2 newSudoku, boolean doXz, boolean doXy, boolean doChain) {
+    public List<SolutionStep> getAllAlses(Sudoku2 newSudoku, boolean doXz, boolean doXy, boolean doChain) {
         initialize();
         Sudoku2 oldSudoku = getSudoku();
         setSudoku(newSudoku);
@@ -735,9 +738,11 @@ public class SudokuStepFinder {
     /******************************************************************************************************************/
     /* END EXPOSE PUBLIC APIs                                                                                         */
     /******************************************************************************************************************/
+
     /******************************************************************************************************************/
     /* SETS                                                                                                           */
     /******************************************************************************************************************/
+
     /**
      * Returns the {@link #candidates}. Recalculates them if they are dirty.
      * @return
@@ -845,9 +850,11 @@ public class SudokuStepFinder {
     /******************************************************************************************************************/
     /* END SETS                                                                                                       */
     /******************************************************************************************************************/
+
     /******************************************************************************************************************/
     /* TEMPLATES                                                                                                      */
     /******************************************************************************************************************/
+
     /**
      * Returns delCandTemplates.
      * @param initLists
@@ -986,34 +993,14 @@ public class SudokuStepFinder {
     public int getStepNumber() {
         return stepNumber;
     }
-
     /******************************************************************************************************************/
     /* END TEMPLATES                                                                                                  */
     /******************************************************************************************************************/
-    /******************************************************************************************************************/
-    /* GROUP NODE CACHE                                                                                               */
-    /******************************************************************************************************************/
-    /**
-     * Gets all group nodes from {@link #sudoku}.
-     * The list is cached in {@link #gourpNodes} and only recomputed if necessary.
-     * @return
-     */
-    public List<GroupNode> getGroupNodes() {
-        if (groupNodesStepNumber == stepNumber) {
-            return groupNodes;
-        } else {
-            groupNodes = GroupNode.getGroupNodes(this);
-            groupNodesStepNumber = stepNumber;
-            return groupNodes;
-        }
-    }
 
-    /******************************************************************************************************************/
-    /* END GROUP NODE CACHE                                                                                           */
-    /******************************************************************************************************************/
     /******************************************************************************************************************/
     /* ALS AND RC CACHE                                                                                               */
     /******************************************************************************************************************/
+
     /**
      * Convenience method for {@link #getAlses(boolean) }.
      * @return
@@ -1107,7 +1094,7 @@ public class SudokuStepFinder {
                 continue;
             }
             indexSet.add(houseIndex);
-            candSets[anzahl] = (short) (candSets[anzahl - 1] | sudoku.getCell(houseIndex));
+            candSets[anzahl] = (short)(candSets[anzahl - 1] | sudoku.getCell(houseIndex));
 
             // if the number of candidates is excatly one larger than the number
             // of cells, an ALS was found
@@ -1137,11 +1124,11 @@ public class SudokuStepFinder {
      * @return
      */
     public String getAlsStatistics() {
-        return "Statistic for getAls(): number of calls: " + anzAlsCalls + ", total time: "
-                + (alsNanos / 1000) + "us, average: " + (alsNanos / anzAlsCalls / 1000) + "us\r\n"
-                + "    anz: " + anzAls + "/" + (anzAls / anzAlsCalls)
-                + ", double: " + doubleAls + "/" + (doubleAls / anzAlsCalls)
-                + " res: " + (anzAls - doubleAls) + "/" + ((anzAls - doubleAls) / anzAlsCalls);
+        return "Statistic for getAls(): number of calls: " + anzAlsCalls + ", total time: " +
+                (alsNanos / 1000) + "us, average: " + (alsNanos / anzAlsCalls / 1000) + "us\r\n" +
+                "    anz: " + anzAls + "/" + (anzAls / anzAlsCalls) +
+                ", double: " + doubleAls + "/" + (doubleAls / anzAlsCalls) +
+                " res: " + (anzAls - doubleAls) + "/" + ((anzAls - doubleAls) / anzAlsCalls);
     }
 
     /**
@@ -1153,12 +1140,12 @@ public class SudokuStepFinder {
      * @return
      */
     public List<RestrictedCommon> getRestrictedCommons(List<Als> alses, boolean allowOverlap) {
-        if (lastRcStepNumber != stepNumber || lastRcAllowOverlap != allowOverlap
-                || lastRcAlsList != alses || lastRcOnlyForward != rcOnlyForward) {
+        if (lastRcStepNumber != stepNumber || lastRcAllowOverlap != allowOverlap ||
+                lastRcAlsList != alses || lastRcOnlyForward != rcOnlyForward) {
             // recompute
             if (startIndices == null || startIndices.length < alses.size()) {
-                startIndices = new int[(int) (alses.size() * 1.5)];
-                endIndices = new int[(int) (alses.size() * 1.5)];
+                startIndices = new int[(int)(alses.size() * 1.5)];
+                endIndices = new int[(int)(alses.size() * 1.5)];
             }
             restrictedCommons = doGetRestrictedCommons(alses, allowOverlap);
             // store caching flags
@@ -1185,7 +1172,7 @@ public class SudokuStepFinder {
     public int[] getEndIndices() {
         return endIndices;
     }
-
+    
     /**
      * Setter for {@link #rcOnlyForward}.
      * @param rof
@@ -1193,7 +1180,7 @@ public class SudokuStepFinder {
     public void setRcOnlyForward(boolean rof) {
         rcOnlyForward = rof;
     }
-
+    
     /**
      * Getter for {@link #rcOnlyForward}.
      * @return
@@ -1304,14 +1291,15 @@ public class SudokuStepFinder {
      * @return
      */
     public String getRCStatistics() {
-        return "Statistic for getRestrictedCommons(): number of calls: " + rcAnzCalls + ", total time: "
-                + (rcNanos / 1000) + "us, average: " + (rcNanos / rcAnzCalls / 1000) + "us\r\n"
-                + "    anz: " + anzRcs + "/" + (anzRcs / rcAnzCalls);
+        return "Statistic for getRestrictedCommons(): number of calls: " + rcAnzCalls + ", total time: " +
+                (rcNanos / 1000) + "us, average: " + (rcNanos / rcAnzCalls / 1000) + "us\r\n" +
+                "    anz: " + anzRcs + "/" + (anzRcs / rcAnzCalls);
     }
 
     /******************************************************************************************************************/
     /* END ALS AND RC CACHE                                                                                           */
     /******************************************************************************************************************/
+
     public void printStatistics() {
 //        double per = ((double)templateNanos) / templateAnz;
 //        per /= 1000.0;

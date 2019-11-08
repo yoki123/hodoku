@@ -18,7 +18,6 @@
  */
 package sudoku;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,9 +57,6 @@ import solver.TablingSolver;
  *       0 ... normal node
  *       1 ... group node
  *       2 ... ALS node
- *       3 ... AHS node (not yet implemented)
- *       4 ... AUR node (not yet implemented)
- *       5 ... Chain node
  *  7: reserved
  * </pre>
  * This format is used in chains and in {@link TableEntry table entries} (see {@link TablingSolver}).<br><br>
@@ -73,9 +69,7 @@ import solver.TablingSolver;
  *
  * @author hobiwan
  */
-public class Chain implements Cloneable, Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Chain implements Cloneable {
     /** Mask for isolating candidate and indices (used for comparisons). */
     private static final int EQUALS_MASK = 0x3fffffef;
     /** Mask for isolating the candidate. */
@@ -116,32 +110,20 @@ public class Chain implements Cloneable, Serializable {
     private static final int MODE_DEL_MASK = 0xc3ffffff;
     /** Number of bits for the node type field */
     private static final int MODE_OFFSET = 26;
-    /** Node consists of a single cells thats not an ALS. */
+    /** Node contains of a single cells thats not an ALS. */
     private static final int NORMAL_NODE_MASK = 0x0;
     /** Node is a group node. */
     private static final int GROUP_NODE_MASK = 0x4000000;
-    /** Node is an ALS. */
+    /** Node is an ALS (AUR, AHS...). */
     private static final int ALS_NODE_MASK = 0x8000000;
-    /** Node is an AHS. */
-    private static final int AHS_NODE_MASK = 0xC000000;
-    /** Node is an AUR. */
-    private static final int AUR_NODE_MASK = 0x10000000;
-    /** Node is a Chain. */
-    private static final int CHAIN_NODE_MASK = 0x14000000;
     /** Flag for normal nodes. */
     public static final int NORMAL_NODE = 0;
     /** Flag for group nodes. */
     public static final int GROUP_NODE = 1;
-    /** Flag for ALS nodes. */
+    /** Flag for complex nodes. */
     public static final int ALS_NODE = 2;
-    /** Flag for AHS nodes. */
-    public static final int AHS_NODE = 3;
-    /** Flag for AUR nodes. */
-    public static final int AUR_NODE = 4;
-    /** Flag for chain nodes. */
-    public static final int CHAIN_NODE = 5;
     /** Names for node types (for {@link #toString() }). */
-    public static final String[] TYPE_NAMES = new String[]{"NORMAL_NODE", "GROUP_NODE", "ALS_NODE", "AHS_NODE", "AUR_NODE", "CHAIN_NODE"};
+    public static final String[] TYPE_NAMES = new String[]{"NORMAL_NODE", "GROUP_NODE", "ALS_NODE"};
     /** The index of the first entry belonging to the chain. */
     private int start;
     /** The index of the last entry belonging to the chain. */
@@ -368,15 +350,6 @@ public class Chain implements Cloneable, Serializable {
                 case ALS_NODE:
                     entry |= ALS_NODE_MASK;
                     break;
-                case AHS_NODE:
-                    entry |= AHS_NODE_MASK;
-                    break;
-                case AUR_NODE:
-                    entry |= AUR_NODE_MASK;
-                    break;
-                case CHAIN_NODE:
-                    entry |= CHAIN_NODE_MASK;
-                    break;
             }
         }
 
@@ -512,18 +485,10 @@ public class Chain implements Cloneable, Serializable {
      * @return
      */
     public static int replaceSAlsIndex(int entry, int newAlsIndex) {
-        boolean isMin = false;
-        if (entry < 0) {
-            isMin = true;
-            entry = -entry;
-        }
         entry &= ~ALS_INDEX_MASK;
         newAlsIndex <<= ALS_INDEX_OFFSET;
         newAlsIndex &= ALS_INDEX_MASK;
         entry |= newAlsIndex;
-        if (isMin) {
-            entry = -entry;
-        }
         return entry;
     }
 
@@ -667,7 +632,7 @@ public class Chain implements Cloneable, Serializable {
             set.set(als.buddiesPerCandidat[candidate]);
         } else {
             set.clear();
-            Logger.getLogger(Chain.class.getName()).log(Level.SEVERE, "getSNodeBuddies() gesamt: invalid node type ({0})",
+            Logger.getLogger(Chain.class.getName()).log(Level.SEVERE, "getSNodeBuddies() gesamt: invalid node type ({0})", 
                     getSNodeType(entry));
         }
     }
@@ -675,6 +640,7 @@ public class Chain implements Cloneable, Serializable {
 //    public static boolean equalsIndexCandidate(int entry1, int entry2) {
 //        return (entry1 & EQUALS_MASK) == (entry2 & EQUALS_MASK);
 //    }
+
     /**
      * Returns a string representation for the node contained in <code>entry</code>. Mostely used
      * for testing.
@@ -690,18 +656,13 @@ public class Chain implements Cloneable, Serializable {
             sign = "-";
         }
         if (getSNodeType(entry) == ALS_NODE) {
-            return sign + TYPE_NAMES[getSNodeType(entry)] + "/"
-                    + getSAlsIndex(entry) + "/"
-                    + SolutionStep.getCellPrint(getSCellIndex(entry))
-                    + "/" + isSStrong(entry) + "/" + getSCandidate(entry);
-        } else if (getSNodeType(entry) == GROUP_NODE) {
-            return sign + TYPE_NAMES[getSNodeType(entry)] + "/"
-                    + SolutionStep.getCompactCellPrint(getSCellIndex(entry), getSCellIndex2(entry), getSCellIndex3(entry)) + "/"
-                    + isSStrong(entry) + "/" + getSCandidate(entry);
+            return sign + TYPE_NAMES[getSNodeType(entry)] + "/" +
+                    getSAlsIndex(entry) + "/" +
+                    getSCellIndex(entry) + "/" + isSStrong(entry) + "/" + getSCandidate(entry);
         } else {
-            return sign + TYPE_NAMES[getSNodeType(entry)] + "/"
-                    + SolutionStep.getCellPrint(getSCellIndex(entry)) + "/"
-                    + isSStrong(entry) + "/" + getSCandidate(entry);
+            return sign + TYPE_NAMES[getSNodeType(entry)] + "/" +
+                    getSCellIndex3(entry) + "/" + getSCellIndex2(entry) + "/" +
+                    getSCellIndex(entry) + "/" + isSStrong(entry) + "/" + getSCandidate(entry);
         }
     }
 

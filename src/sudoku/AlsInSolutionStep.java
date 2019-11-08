@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with HoDoKu. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package sudoku;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import solver.Als;
@@ -27,28 +27,26 @@ import solver.Als;
  *
  * @author hobiwan
  */
-public class AlsInSolutionStep implements Cloneable, Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class AlsInSolutionStep implements Cloneable {
     private List<Integer> indices = new ArrayList<Integer>();
     private List<Integer> candidates = new ArrayList<Integer>();
     private int chainPenalty = -1;
-
+    
     public AlsInSolutionStep() {
     }
-
+    
     public void addIndex(int index) {
         indices.add(index);
     }
-
+    
     public void addCandidate(int cand) {
         candidates.add(cand);
     }
-
+    
     @Override
     @SuppressWarnings("unchecked")
     public Object clone()
-            throws CloneNotSupportedException {
+    throws CloneNotSupportedException {
         AlsInSolutionStep newAls = (AlsInSolutionStep) super.clone();
         newAls.indices = (List<Integer>) ((ArrayList<Integer>) indices).clone();
         newAls.candidates = (List<Integer>) ((ArrayList<Integer>) candidates).clone();
@@ -58,15 +56,15 @@ public class AlsInSolutionStep implements Cloneable, Serializable {
     public List<Integer> getIndices() {
         return indices;
     }
-
+    
     public void setIndices(List<Integer> indices) {
         this.indices = indices;
     }
-
+    
     public List<Integer> getCandidates() {
         return candidates;
     }
-
+    
     public void setCandidates(List<Integer> candidates) {
         this.candidates = candidates;
     }

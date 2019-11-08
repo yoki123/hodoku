@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with HoDoKu. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package solver;
 
 import java.util.SortedMap;
@@ -30,9 +31,9 @@ import sudoku.SudokuSet;
  * The format of an entry is described in class {@link Chain}.<br><br>
  *
  * An instance of <code>TableEntry</code> holds all possible outcomes for
- * one single premise. The premise itself is the first element in the <code>TableEntry</code>.
+ * one single premise. The premise itself is not part of the <code>TableEntry</code>.
  * The {@link TablingSolver} holds two arrays of <code>TableEntries</code>. The index of
- * the entry decides cell and candidate (<code>cell * 10 + candidate</code>), one
+ * the entry decides cell and candidate (<code>cell * 100 + candidate</code>), one
  * table is for "candidate is deleted from cell" and one is for "cell is set to that number".<br><br>
  *
  * A <code>TableEntry</code> consists mainly of two synchronized arrays: {@link #entries} contains
@@ -84,16 +85,16 @@ import sudoku.SudokuSet;
  * @author hobiwan
  */
 public class TableEntry {
-
-    /** Debug flag */
-    private static final boolean DEBUG = true;
+    /** Used by {@link #makeSRetIndex(int, int, int, int, int)}; access must be synchronized! */
+//    private static long[] rIndices = new long[5];
     /** Entry has been expanded from another table. */
-    private static final long EXPANDED = 0x2000000000000000L;
+    private static final long EXPANDED =       0x2000000000000000L;
     /** Bitmap indicating that the entry comes from {@link TablingSolver#onTable}. */
-    private static final long ON_TABLE = 0x4000000000000000L;
+    private static final long ON_TABLE =       0x4000000000000000L;
     /** Bitmap indicating that the entry comes from {@link TablingSolver#extendedTable}. */
     private static final long EXTENDED_TABLE = 0x8000000000000000L;
 //    private static final long RAW_ENTRY      = 0x1fffffffffffffffL;
+
     /** Index into {@link #entries} and {@link #retIndices}. */
     int index = 0;
     /** The actual table, holding all resulting links. Synchronized with {@link #retIndices}. */
@@ -106,7 +107,7 @@ public class TableEntry {
     SudokuSet[] offSets = new SudokuSet[10];
     /** Reverse lookup cache: hold the index in {@link #entries} for every entry. Used when constructing the chain from the result
      * and when expanding tables. */
-    SortedMap<Integer, Integer> indices = new TreeMap<Integer, Integer>();
+    SortedMap<Integer,Integer> indices = new TreeMap<Integer,Integer>();
 
     /** Creates a new instance. */
     TableEntry() {
@@ -196,27 +197,10 @@ public class TableEntry {
         addEntry(cellIndex1, Chain.getSLowerAlsIndex(alsIndex), Chain.getSHigherAlsIndex(alsIndex),
                 nodeType, cand, set, 0, 0, 0, 0, 0, penalty);
     }
-
+    
     /**
-     * Adds an ALS node with a possible penalty and up to five ret indices.
-     * @param cellIndex1
-     * @param alsIndex
-     * @param nodeType
-     * @param cand
-     * @param set
-     * @param ri1
-     * @param ri2
-     * @param ri3
-     * @param ri4
-     * @param ri5
-     * @param penalty
+     * Einträge werden nur hinzugefügt, wenn sie nicht schon existieren
      */
-    void addEntry(int cellIndex1, int alsIndex, int nodeType, int cand, boolean set, int ri1,
-            int ri2, int ri3, int ri4, int ri5, int penalty) {
-        addEntry(cellIndex1, Chain.getSLowerAlsIndex(alsIndex), Chain.getSHigherAlsIndex(alsIndex),
-                nodeType, cand, set, ri1, ri2, ri3, ri4, ri5, penalty);
-    }
-
     /**
      * Adds entries to the table.
      * @param cellIndex1 The index of the cell for {@link Chain#NORMAL_NODE}; the index of the first
@@ -243,19 +227,13 @@ public class TableEntry {
             int ri2, int ri3, int ri4, int ri5, int penalty) {
         if (index >= entries.length) {
             // already full, some possible outcomes will be missed...
-            if (DEBUG) {
-                System.out.println("WARNING: addEntry(): TableEntry is already full (" + cellIndex1 + ", " + cellIndex2 + ", "
-                        + cellIndex3 + ", " + nodeType + ", " + cand + ", " + set + ", " + ri1 + ", " + ri2 + ", "
-                        + ri3 + ", " + ri4 + ", " + ri5 + ", " + penalty);
-            }
-//            Logger.getLogger(getClass().getName()).log(Level.WARNING, "addEntry(): TableEntry is already full!");
+            Logger.getLogger(getClass().getName()).log(Level.WARNING, "addEntry(): TableEntry is already full!");
             return;
         }
         // check only for single cells -> group nodes, ALS etc. can not be start or end point
         // of a chain (in this implementation)
-        /*K*///What about shorter paths?
         if (nodeType == Chain.NORMAL_NODE) {
-            if ((set && onSets[cand].contains(cellIndex1)) || (!set && offSets[cand].contains(cellIndex1))) {
+            if ((set && onSets[cand].contains(cellIndex1)) || (! set && offSets[cand].contains(cellIndex1))) {
                 // already there
                 return;
             }
@@ -282,18 +260,12 @@ public class TableEntry {
                 offSets[cand].add(cellIndex1);
             }
         }
-
+        
         // 20090213: Adjust chain penalty for ALS
         int distance = getDistance(index);
         distance += penalty;
         setDistance(index, distance);
-
-        if (DEBUG) {
-            if (nodeType == Chain.GROUP_NODE && this.toString().equals("solver.TableEntry@c5384d")) {
-                System.out.println("GN added to table " + this + " (" + index + "/" + Chain.toString(entry) + ")");
-            }
-        }
-
+        
         indices.put(entry, index);
         index++;
     }
@@ -305,21 +277,6 @@ public class TableEntry {
      */
     int getEntry(int index) {
         return entries[index];
-    }
-
-    /**
-     * Checks, if the entry is in the table.
-     * 
-     * @param entry
-     * @return <code>true</code>: table contains <code>entry</code>, else <code>false</code>.
-     */
-    boolean containsEntry(int entry) {
-        Integer ret = indices.get(entry);
-        if (ret == null) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     /**
@@ -337,14 +294,12 @@ public class TableEntry {
         ///*K*/ returns null???
         Integer ret = indices.get(Chain.makeSEntry(cellIndex, cand, set));
         if (ret == null) {
-            if (DEBUG) {
-                System.out.println("TableEntry.getEntryIndex() - entry not found: " + cellIndex + ", " + cand + ", " + set);
-            }
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "entry not found: {0}, {1}, {2}", new Object[]{cellIndex, cand, set});
+            //Logger.getLogger(getClass().getName()).log(Level.SEVERE, "entry not found: " + cellIndex + ", " + cand + ", " + set);
             return 0;
         } else {
             return ret.intValue();
         }
+//        return indices.get(Chain.makeSEntry(cellIndex, cand, set));
     }
 
     /**
@@ -356,12 +311,7 @@ public class TableEntry {
     int getEntryIndex(int entry) {
         Integer tmp = indices.get(entry);
         if (tmp == null) {
-            if (DEBUG) {
-                System.out.println("TableEntry.getEntryIndex() - tmp == null: " + Chain.toString(entry) + " (" + entry + ") (" + Chain.getSCellIndex(entry) + "/" + Chain.getSCellIndex2(entry) + "/" + Chain.getSCellIndex3(entry) + ")");
-                TablingSolver.printTable("tmp == null", this, null);
-            }
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "tmp == null: {0}", entry);
-            return 0;
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "tmp == null: {0}", entry);
         }
         return indices.get(entry);
     }
@@ -400,7 +350,7 @@ public class TableEntry {
     public int getCandidate(int index) {
         return Chain.getSCandidate(entries[index]);
     }
-
+    
     /**
      * Constructs the data for {@link #retIndices}: Every entry contains up to
      * 5 reverse indices (indices of entries on which the entry depends). For every
@@ -455,12 +405,28 @@ public class TableEntry {
             index1 = tmp;
         }
         // construct the entry
-        return (index5 << 42) + (index4 << 32) + (index3 << 22)
-                + (index2 << 12) + index1;
+        return (index5 << 42) + (index4 << 32) + (index3 << 22) +
+                (index2 << 12) + index1;
+//        rIndices[0] = index1;
+//        rIndices[1] = index2;
+//        rIndices[2] = index3;
+//        rIndices[3] = index4;
+//        rIndices[4] = index5;
+//        for (int i = rIndices.length - 1; i > 0; i--) {
+//            for (int j = 0; j < i; j++) {
+//                if (rIndices[j] < rIndices[j + 1]) {
+//                    long tmp = rIndices[j + 1];
+//                    rIndices[j + 1] = rIndices[j];
+//                    rIndices[j] = tmp;
+//                }
+//            }
+//        }
+//        return (rIndices[4] << 42) + (rIndices[3] << 32) + (rIndices[2] << 22) +
+//                (rIndices[1] << 12) + rIndices[0];
     }
-
+    
     /**
-     * Calculates the number of reverse indices contained in <code>retIndex</code>.
+     * Calculates the number of reverse indices contained in <code>retindex</code>.
      * The first reverse index is always set, even if it is 0.
      * @param retIndex
      * @return
@@ -486,7 +452,7 @@ public class TableEntry {
     public int getRetIndexAnz(int index) {
         return getSRetIndexAnz(retIndices[index]);
     }
-
+    
     /**
      * Gets the reverse index <code>which</code> from entry
      * <code>retIndex</code>.
@@ -496,9 +462,9 @@ public class TableEntry {
      */
     public static int getSRetIndex(long retIndex, int which) {
         if (which == 0) {
-            return (int) (retIndex & 0xfff);
+            return (int)(retIndex & 0xfff);
         } else {
-            int ret = (int) ((retIndex >> (which * 10 + 2)) & 0x3ff);
+            int ret = (int)((retIndex >> (which * 10 + 2)) & 0x3ff);
             if (which == 5) {
                 // distance has only 9 bit!
                 ret &= 0x1ff;
@@ -538,7 +504,7 @@ public class TableEntry {
     public int getDistance(int index) {
         return getSRetIndex(retIndices[index], 5) & 0x1ff;
     }
-
+    
     /**
      * Prüft, ob der Eintrag aus einer anderen Tabelle stammt. Wenn ja,
      * ist getRetIndex( index, 0) der Index der Tabelle und ON_TABLE bestimmt,
@@ -564,7 +530,7 @@ public class TableEntry {
     public void setExpanded(int index) {
         retIndices[index] |= EXPANDED;
     }
-
+    
     /**
      * Checks if the source of the expanded entry <code>entries[index]</code>
      * was {@link TablingSolver#onTable} or {@link TablingSolver#offTable}.
@@ -583,7 +549,7 @@ public class TableEntry {
     public void setOnTable(int index) {
         retIndices[index] |= ON_TABLE;
     }
-
+    
     /**
      * Checks if the source of <code>entries[index]</code> was
      * {@link TablingSolver#extendedTable}.
@@ -610,7 +576,7 @@ public class TableEntry {
     public void setExtendedTable() {
         retIndices[index - 1] |= EXTENDED_TABLE;
     }
-
+    
     /**
      * Retrieves the node type of the entry <code>entries[index]</code>.
      * @param index
@@ -619,4 +585,5 @@ public class TableEntry {
     public int getNodeType(int index) {
         return Chain.getSNodeType(entries[index]);
     }
+    
 }

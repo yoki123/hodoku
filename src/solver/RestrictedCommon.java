@@ -18,7 +18,6 @@
  */
 package solver;
 
-import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,9 +34,8 @@ import java.util.logging.Logger;
  * 
  * @author hobiwan
  */
-public class RestrictedCommon implements Comparable<RestrictedCommon>, Cloneable, Serializable {
+public class RestrictedCommon implements Comparable<RestrictedCommon>, Cloneable {
 
-    private static final long serialVersionUID = 1L;
     /** Index of first ALS (index into a <code>List&lt;{@link Als}&gt;</code> stored elsewhere) */
     private int als1;
     /** Index of the second ALS (index into a <code>List&lt;{@link Als}&gt;</code> stored elsewhere) */
@@ -321,4 +319,5 @@ public class RestrictedCommon implements Comparable<RestrictedCommon>, Cloneable
     public void setActualRC(int actualRC) {
         this.actualRC = actualRC;
     }
+
 }

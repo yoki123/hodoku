@@ -18,12 +18,6 @@
  */
 package solver;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,8 +25,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import sudoku.Candidate;
 import sudoku.Chain;
 import sudoku.Options;
@@ -213,20 +205,12 @@ public class AlsSolver extends AbstractSolver {
         if (doChain) {
             steps.clear();
             getAlsXYChainInt();
-            // TODO remove!
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("c:\\temp\\alschains.dat")));
-                out.writeObject(steps);
-                out.close();
-            } catch (Exception ex) {
-                Logger.getLogger(AlsSolver.class.getName()).log(Level.SEVERE, null, ex);
-            }
             Collections.sort(steps, alsComparator);
             resultSteps.addAll(steps);
         }
         if (TIMING) {
             millis1 = System.nanoTime() - millis1;
-//            System.out.println("getAllAlsSteps() total: " + (millis1 / 1000000.0) + "ms");
+//            System.out.println("getAllAlses() total: " + (millis1 / 1000000.0) + "ms");
         }
         steps = oldSteps;
         return resultSteps;
@@ -706,7 +690,7 @@ public class AlsSolver extends AbstractSolver {
         }
         recDepth--;
     }
-
+    
     /**
      * For debugging only: show the current state of {@link #chain}.
      * 
@@ -1317,68 +1301,13 @@ public class AlsSolver extends AbstractSolver {
         long millis = System.nanoTime();
         int itAnz = 1;
         List<SolutionStep> steps = null;
-        try {
-            ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream("c:\\temp\\alschains.dat")));
-            steps = (List<SolutionStep>) in.readObject();
-            in.close();
-        } catch (Exception ex) {
-            Logger.getLogger(AlsSolver.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        AlsComparator comp = new AlsComparator();
-        System.out.println("Anz ALS:" + steps.size());
-        // all combinations of three steps
-        long count = 0;
-        for (int i = 0; i < steps.size(); i++) {
-            for (int j = 1; j < steps.size(); j++) {
-                for (int k = 2; k < steps.size(); k++) {
-                    SolutionStep s1 = steps.get(i);
-                    SolutionStep s2 = steps.get(j);
-                    SolutionStep s3 = steps.get(k);
-                    // sort them
-                    if (comp.compare(s1, s2) >= 0) {
-                        SolutionStep t = s1;
-                        s1 = s2;
-                        s2 = t;
-                    }
-                    if (comp.compare(s2, s3) >= 0) {
-                        SolutionStep t = s2;
-                        s2 = s3;
-                        s3 = t;
-                    }
-                    if (comp.compare(s1, s2) >= 0) {
-                        SolutionStep t = s1;
-                        s1 = s2;
-                        s2 = t;
-                    }
-                    //now check
-                    int r1 = comp.compare(s1, s2);
-                    int r2 = comp.compare(s2, s3);
-                    int r3 = comp.compare(s1, s3);
-                    if (r1 > 0 || r2 > 0 || r3 > 0) {
-                        System.out.println("Problem:" + i + "/" + j + "/" + k);
-                        System.out.println("s1:" + s1);
-                        System.out.println("s2:" + s2);
-                        System.out.println("s3:" + s3);
-                        System.out.println("r1:" + r1);
-                        System.out.println("r2:" + r2);
-                        System.out.println("r3:" + r3);
-                        return;
-                    }
-                    count++;
-                    if (count % 100000000 == 0) {
-                        System.out.println("running (" + (count / 1000000) + "M)...");
-                    }
-                }
-            }
-        }
-        System.out.println("Done!");
         for (int i = 0; i < itAnz; i++) {
-//            steps = solver.getStepFinder().getAllAlsSteps(sudoku, false, false, true);
+            steps = solver.getStepFinder().getAllAlses(sudoku, false, false, true);
 //            as.getAlsXZ(true);
 //            as.getAlsXYWing();
 //            as.getAlsXYChain();
 //            as.getAlsDeathBlossom();
-//            as.steps = as.getAllAlsSteps(sudoku);
+//            as.steps = as.getAllAlses(sudoku);
         }
         millis = (System.nanoTime() - millis) / itAnz;
         System.out.println("Find all ALS-XX: " + (millis / 1000000.0) + "ms");
@@ -1404,9 +1333,7 @@ public class AlsSolver extends AbstractSolver {
  * @author hobiwan
  */
 class AlsComparator implements Comparator<SolutionStep> {
-    // TODO debug
-
-    public static final boolean DEBUG = false;
+    private static final boolean debug = false;
 
     /**
      * Sort order:<br>
@@ -1420,7 +1347,7 @@ class AlsComparator implements Comparator<SolutionStep> {
      */
     @Override
     public int compare(SolutionStep o1, SolutionStep o2) {
-        if (DEBUG) {
+        if (debug) {
             System.out.println("Comparing:");
             System.out.println("   " + o1);
             System.out.println("   " + o2);
@@ -1429,7 +1356,7 @@ class AlsComparator implements Comparator<SolutionStep> {
 
         // zuerst nach Anzahl zu löschende Kandidaten (absteigend!)
         int result = o2.getCandidatesToDelete().size() - o1.getCandidatesToDelete().size();
-        if (DEBUG) {
+        if (debug) {
             System.out.println("      1: " + result);
         }
         if (result != 0) {
@@ -1439,29 +1366,29 @@ class AlsComparator implements Comparator<SolutionStep> {
             // nicht äquivalent: nach Indexsumme der zu löschenden Kandidaten
             sum1 = o1.getIndexSumme(o1.getCandidatesToDelete());
             sum2 = o2.getIndexSumme(o2.getCandidatesToDelete());
-            if (DEBUG) {
-                System.out.println("      2: " + (sum1 - sum2) + " (" + sum1 + "/" + sum2 + ")");
-            }
+        if (debug) {
+            System.out.println("      2: " + (sum1 - sum2) + " (" + sum1 + "/" + sum2 + ")");
+        }
             return (sum1 - sum2);
         }
 
         // Nach Anzahl ALS
         result = o1.getAlses().size() - o2.getAlses().size();
-        if (DEBUG) {
+        if (debug) {
             System.out.println("      3: " + result);
         }
         if (result != 0) {
             return result;        // Nach Anzahl Kandidaten in allen ALS
         }
         result = o1.getAlsesIndexCount() - o2.getAlsesIndexCount();
-        if (DEBUG) {
+        if (debug) {
             System.out.println("      4: " + result);
         }
         if (result != 0) {
             return result;        // zuletzt nach Typ
         }
 //        return o1.getType().ordinal() - o2.getType().ordinal();
-        if (DEBUG) {
+                if (debug) {
             System.out.println("      5: " + (o1.getType().compare(o2.getType())));
         }
 

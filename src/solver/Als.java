@@ -22,48 +22,26 @@ import sudoku.SolutionStep;
 import sudoku.Sudoku2;
 import sudoku.SudokuSet;
 
+
 /**
- * An ALS is a number cells, that together contain one candidate more than the
- * number of cells. A single cell with only two candidates left is by this
- * definition a calid ALS.<br><br>
- * 
- * The search for ALSes is done by {@link SudokuStepFinder#getAlses()} which
- * can restrict the search to exclude single cells.
- * 
+ *
  * @author hobiwan
  */
 public class Als {
 
-    /** 
-     * All indices that belong to the ALS 
-     */
+    /** All indices that belong to the ALS */
     public SudokuSet indices;
-    /** 
-     * All numbers that are contained in the ALS (only the numbers, not the actual candidates!) 
-     */
+    /** All numbers that are contained in the ALS (only the numbers, not the actual candidates!) */
     public short candidates;
-    /** 
-     * For every number contained in the ALS all cells containing that number as candidate 
-     */
+    /** For every number contained in the ALS all cells containing that number as candidate */
     public SudokuSet[] indicesPerCandidat = new SudokuSet[10];
-    /** 
-     * For every number contained in the ALS all cells outside the ALS that are 
-     * buddies to all ALS cells holding that candidate 
-     */
+    /** For every number contained in the ALS all cells outside the als that are buddies to all ALS cells holding that candidate */
     public SudokuSet[] buddiesPerCandidat = new SudokuSet[10];
-    /** 
-     * Like {@link #buddiesPerCandidat} but including the ALS cells holding 
-     * that candidate (for RC search). 
-     */
+    /** Like {@link #buddiesPerCandidat} but including the ALS cells holding that candidate (for RC search). */
     public SudokuSet[] buddiesAlsPerCandidat = new SudokuSet[10];
-    /** 
-     * All cells outside the als, that contain at least one candidate, 
-     * that is a buddy to the ALS 
-     */
+    /** All cells outside the als, that contain at least one candidate, that is a buddy to the ALS */
     public SudokuSet buddies;
-    /** 
-     * The penalty for the ALS (used when calculating chain length) 
-     */
+    /** The penalty for the ALS (used when calculating chain length) */
     public int chainPenalty = -1;
 
     /**
@@ -142,7 +120,7 @@ public class Als {
         if (o == null) {
             return false;
         }
-        if (!(o instanceof Als)) {
+        if (! (o instanceof Als)) {
             return false;
         }
         Als a = (Als) o;
@@ -160,13 +138,10 @@ public class Als {
         return hash;
     }
 
-    /**
-     * Human readable for for the ALS.
-     * @return 
-     */
     @Override
     public String toString() {
         //return "ALS: " + candidates.toString() + " - " + indices.toString();
         return "ALS: " + SolutionStep.getAls(this);
     }
+
 }
