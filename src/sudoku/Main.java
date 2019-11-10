@@ -90,11 +90,9 @@ public class Main {
         thread.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         try {
-            //20120112: Pressing <ctrl><c> makes readLine() return null
+            // 20120112: Pressing <ctrl><c> makes readLine() return null
             // which leads to a NullPointerException
-//            while (in.readLine().compareTo("q") != 0) {
-//                ;
-//            }
+			// while (in.readLine().compareTo("q") != 0) {}
             String line = null;
             while ((line = in.readLine()) != null) {
                 if (line.compareTo("q") == 0) {

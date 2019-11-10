@@ -18,7 +18,6 @@
  */
 package sudoku;
 
-
 import generator.BackgroundGeneratorThread;
 
 import java.awt.Color;
@@ -94,16 +93,17 @@ import solver.SudokuSolverFactory;
 import sudoku.FileDrop;
 
 /**
- *
  * @author  hobiwan
  */
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
     private static final long serialVersionUID = 1L;
-    public static final String VERSION = "HoDoKu - v2.2.1";
-//    public static final String BUILD = "Build 16";
+    public static final String VERSION = "HoDoKu - v2.2.2";
+    
+    // public static final String BUILD = "Build 16";
     public static final String BUILD;
     public static final String REV = "$LastChangedRevision: 116 $";
+    
     /** The size of the toggle button icons */
     private static final int TOGGLE_BUTTON_ICON_SIZE = 32;
     private SudokuPanel sudokuPanel;
@@ -126,8 +126,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private Icon emptyToggleButtonIconOrg = new ImageIcon(getClass().getResource("/img/f_0c.png"));
     /** One empty icon for disabled filter buttons */
     private Icon emptyToggleButtonIconOrgColorKu = new ImageIcon(new ColorKuImage(TOGGLE_BUTTON_ICON_SIZE, Color.WHITE));
-//    /** One empty icon for disabled filter buttons */
-//    private Icon emptyToggleButtonIcon = emptyToggleButtonIconOrg;
+    /** One empty icon for disabled filter buttons */
+    // private Icon emptyToggleButtonIcon = emptyToggleButtonIconOrg;
     private JRadioButtonMenuItem[] levelMenuItems = new JRadioButtonMenuItem[5];
     private JRadioButtonMenuItem[] modeMenuItems;
     private boolean oldShowDeviations = true;
@@ -206,6 +206,154 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     
     private UIExportLine exportWindow;
     private UIImportLine importWindow;
+    
+    // Variables declaration - do not modify //GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JRadioButtonMenuItem allStepsMenuItem;
+    private javax.swing.JMenuItem alleHiddenSinglesSetzenMenuItem;
+    private javax.swing.JMenu viewMenu;
+    private javax.swing.JMenuItem askQuestionMenuItem;
+    private javax.swing.JMenuItem backdoorSearchMenuItem;
+    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JRadioButtonMenuItem cellZoomMenuItem;
+    private javax.swing.ButtonGroup colorButtonGroup;
+    private javax.swing.JRadioButtonMenuItem colorCandidatesMenuItem;
+    private javax.swing.JRadioButtonMenuItem colorCellsMenuItem;
+    private javax.swing.JMenuItem configMenuItem;
+    private javax.swing.JMenuItem copyCluesMenuItem;
+    private javax.swing.JMenuItem copyFilledMenuItem;
+    private javax.swing.JMenuItem copyLibraryMenuItem;
+    private javax.swing.JMenuItem copyPmGridMenuItem;
+    private javax.swing.JMenuItem copyPmGridWithStepMenuItem;
+    private javax.swing.JMenuItem copySSMenuItem;
+    private javax.swing.JMenuItem createSavePointMenuItem;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem printMenuItem;
+    private javax.swing.JMenuItem extendedPrintMenuItem;
+    private javax.swing.JToggleButton f1ToggleButton;
+    private javax.swing.JToggleButton f2ToggleButton;
+    private javax.swing.JToggleButton f3ToggleButton;
+    private javax.swing.JToggleButton f4ToggleButton;
+    private javax.swing.JToggleButton f5ToggleButton;
+    private javax.swing.JToggleButton f6ToggleButton;
+    private javax.swing.JToggleButton f7ToggleButton;
+    private javax.swing.JToggleButton f8ToggleButton;
+    private javax.swing.JToggleButton f9ToggleButton;
+    private javax.swing.JCheckBoxMenuItem fullScreenMenuItem;
+    private javax.swing.JToggleButton fxyToggleButton;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JPanel hintPanel;
+    private javax.swing.JButton hinweisAbbrechenButton;
+    private javax.swing.JButton hinweisAusfuehrenButton;
+    private javax.swing.JTextArea hinweisTextArea;
+    private javax.swing.JMenuItem historyMenuItem;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator11;
+    private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JSeparator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator20;
+    private javax.swing.JPopupMenu.Separator jSeparator23;
+    private javax.swing.JSeparator jSeparator24;
+    private javax.swing.JPopupMenu.Separator jSeparator25;
+    private javax.swing.JPopupMenu.Separator jSeparator26;
+    private javax.swing.JPopupMenu.Separator jSeparator27;
+    private javax.swing.JPopupMenu.Separator jSeparator28;
+    private javax.swing.JPopupMenu.Separator jSeparator29;
+    private javax.swing.JPopupMenu.Separator jSeparator30;
+    private javax.swing.JPopupMenu.Separator jSeparator31;
+    private javax.swing.JPopupMenu.Separator jSeparator32;
+    private javax.swing.JPopupMenu.Separator jSeparator33;
+    private javax.swing.JPopupMenu.Separator jSeparator34;
+    private javax.swing.JPopupMenu.Separator jSeparator35;
+    private javax.swing.JPopupMenu.Separator jSeparator36;
+    private javax.swing.JPopupMenu.Separator jSeparator37;
+    private javax.swing.JPopupMenu.Separator jSeparator38;
+    private javax.swing.JPopupMenu.Separator jSeparator39;
+    private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem keyMenuItem;
+    private javax.swing.JRadioButtonMenuItem learningMenuItem;
+    private javax.swing.ButtonGroup levelButtonGroup;
+    private javax.swing.JComboBox<String> levelComboBox;
+    private javax.swing.JMenu levelMenu;
+    private javax.swing.JRadioButtonMenuItem levelEasyMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelMediumMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelHardMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelDiabolicalMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelExtremeMenuItem;
+    private javax.swing.JMenuItem loadConfigMenuItem;
+    private javax.swing.JMenuItem loadPuzzleMenuItem;
+    private javax.swing.JMenuItem solutionStepMenuItem;
+    private javax.swing.JMenuItem mediumHintMenuItem;
+    private javax.swing.JMenuItem solvePuzzleMenuItem;
+    private javax.swing.ButtonGroup modeButtonGroup;
+    private javax.swing.JMenu modeMenu;
+    private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JButton newNoteButton;
+    private javax.swing.JButton newGameToolButton;
+    private javax.swing.JMenu optionenMenu;
+    private javax.swing.JSplitPane outerSplitPane;
+    private javax.swing.JMenuItem pasteMenuItem;
+    private javax.swing.JRadioButtonMenuItem playingMenuItem;
+    private javax.swing.JRadioButtonMenuItem practisingMenuItem;
+    private javax.swing.JLabel progressLabel;
+    private javax.swing.JMenuItem projectHomePageMenuItem;
+    private javax.swing.JMenu puzzleMenu;
+    private javax.swing.JToggleButton redGreenToggleButton;
+    private javax.swing.JMenuItem redoMenuItem;
+    private javax.swing.JButton redoToolButton;
+    private javax.swing.JMenuItem reportErrorMenuItem;
+    private javax.swing.JMenuItem resetSpielMenuItem;
+    private javax.swing.JMenuItem resetViewMenuItem;
+    private javax.swing.JMenuItem restartSpielMenuItem;
+    private javax.swing.JMenuItem restoreSavePointMenuItem;
+    private javax.swing.JMenuItem saveConfigAsMenuItem;
+    private javax.swing.JMenuItem savePuzzleAsMenuItem;
+    private javax.swing.JMenuItem importPuzzleMenuItem;
+    private javax.swing.JMenuItem exportPuzzleMenuItem;
+    private javax.swing.JMenuItem savePuzzleMenuItem;
+    private javax.swing.JMenuItem printSetupMenuItem;
+    private javax.swing.JMenuItem setGivensMenuItem;
+    private javax.swing.JCheckBoxMenuItem showCandidatesMenuItem;
+    private javax.swing.JCheckBoxMenuItem showColorKuMenuItem;
+    private javax.swing.JCheckBoxMenuItem showDeviationsMenuItem;
+    private javax.swing.JCheckBoxMenuItem showHintButtonsCheckBoxMenuItem;
+    private javax.swing.JCheckBoxMenuItem showHintPanelMenuItem;
+    private javax.swing.JCheckBoxMenuItem showToolBarMenuItem;
+    private javax.swing.JCheckBoxMenuItem showWrongValuesMenuItem;
+    private javax.swing.JRadioButtonMenuItem solutionMenuItem;
+    private javax.swing.JButton solveUpToButton;
+    private javax.swing.JMenuItem solvingGuideMenuItem;
+    private javax.swing.JMenuItem saveAsPictureMenuItem;
+    private javax.swing.JMenuItem editGameMenuItem;
+    private javax.swing.JMenuItem enterGameMenuItem;
+    private javax.swing.JMenuItem playGameMenuItem;
+    private javax.swing.JLabel statusLabelCellCandidate;
+    private javax.swing.JLabel statusLabelLevel;
+    private javax.swing.JLabel statusLabelModus;
+    private javax.swing.JPanel statusLinePanel;
+    private javax.swing.JPanel statusPanelColor1;
+    private javax.swing.JPanel statusPanelColor2;
+    private javax.swing.JPanel statusPanelColor3;
+    private javax.swing.JPanel statusPanelColor4;
+    private javax.swing.JPanel statusPanelColor5;
+    private javax.swing.JPanel statusPanelColorClear;
+    private javax.swing.JPanel statusPanelColorReset;
+    private javax.swing.JPanel statusPanelColorResult;
+    private javax.swing.JRadioButtonMenuItem sudokuOnlyMenuItem;
+    private javax.swing.JRadioButtonMenuItem summaryMenuItem;
+    private javax.swing.JMenuItem undoMenuItem;
+    private javax.swing.JButton undoToolButton;
+    private javax.swing.JMenuItem userManualMenuItem;
+    private javax.swing.JMenuItem vagueHintMenuItem;
+    private javax.swing.ButtonGroup viewButtonGroup;
+    // End of variables declaration//GEN-END:variables
     
     /** Incorporates the last subversion revision of this file into
      *  the version string.<br><br>
@@ -632,6 +780,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         puzzleMenu = new javax.swing.JMenu();
         vagueHintMenuItem = new javax.swing.JMenuItem();
         mediumHintMenuItem = new javax.swing.JMenuItem();
+        solvePuzzleMenuItem = new javax.swing.JMenuItem();
         solutionStepMenuItem = new javax.swing.JMenuItem();
         jSeparator30 = new javax.swing.JPopupMenu.Separator();
         backdoorSearchMenuItem = new javax.swing.JMenuItem();
@@ -1615,6 +1764,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         });
         puzzleMenu.add(solutionStepMenuItem);
         puzzleMenu.add(jSeparator30);
+        
+        solvePuzzleMenuItem.setText("Solve Puzzle");
+        solvePuzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showPuzzleSolution();
+            }
+        });
+        puzzleMenu.add(solvePuzzleMenuItem);
+        puzzleMenu.add(new JSeparator());
 
         backdoorSearchMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.backdoorSearchMenuItem.mnemonic").charAt(0));
         backdoorSearchMenuItem.setText(bundle.getString("MainFrame.backdoorSearchMenuItem.text")); // NOI18N
@@ -2795,11 +2953,13 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
      * @param puzzle
      */
     public void setPuzzle(String puzzle) {
+    	
         try {
             sudokuPanel.setSudoku(puzzle);
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error setting sudoku in SudokuPanel", ex);
         }
+        
         allStepsPanel.setSudoku(sudokuPanel.getSudoku());
         initializeResultPanels();
         sudokuPanel.clearColoring();
@@ -3401,6 +3561,27 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     	}
     	
     	return false;
+    }
+    
+    private void showPuzzleSolution() {
+    	
+    	boolean isStatusValid = sudokuPanel.getSudoku().getStatus() == SudokuStatus.VALID;
+    	
+    	if (!isStatusValid || sudokuPanel.getSudoku().isSolved()) {
+    		return;
+    	}
+    	
+    	sudokuPanel.saveState();
+    	Sudoku2 sudoku = sudokuPanel.getSudoku();
+    	
+    	for (int c = 0; c < 9; c++) {
+    		for (int r = 0; r < 9; r++) {
+    			int value = sudoku.getSolution(r, c);
+    			sudoku.setCell(r, c, value);
+    		}
+    	}
+    	
+    	repaint();
     }
 
     /**
@@ -4109,8 +4290,8 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
                 //System.out.println("Found: start = " + start + ", end = " + end + ", line = " + line);
                 inUpdate = true;
                 if (line == 0) {
-//                    hinweisTextArea.setSelectionStart(0);
-//                    hinweisTextArea.setSelectionEnd(0);
+					// hinweisTextArea.setSelectionStart(0);
+					// hinweisTextArea.setSelectionEnd(0);
                     sudokuPanel.setChainInStep(-1);
                 } else {
                     hinweisTextArea.setSelectionStart(start + 1);
@@ -4121,150 +4302,4 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
             }
         }
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JRadioButtonMenuItem allStepsMenuItem;
-    private javax.swing.JMenuItem alleHiddenSinglesSetzenMenuItem;
-    private javax.swing.JMenu viewMenu;
-    private javax.swing.JMenuItem askQuestionMenuItem;
-    private javax.swing.JMenuItem backdoorSearchMenuItem;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JRadioButtonMenuItem cellZoomMenuItem;
-    private javax.swing.ButtonGroup colorButtonGroup;
-    private javax.swing.JRadioButtonMenuItem colorCandidatesMenuItem;
-    private javax.swing.JRadioButtonMenuItem colorCellsMenuItem;
-    private javax.swing.JMenuItem configMenuItem;
-    private javax.swing.JMenuItem copyCluesMenuItem;
-    private javax.swing.JMenuItem copyFilledMenuItem;
-    private javax.swing.JMenuItem copyLibraryMenuItem;
-    private javax.swing.JMenuItem copyPmGridMenuItem;
-    private javax.swing.JMenuItem copyPmGridWithStepMenuItem;
-    private javax.swing.JMenuItem copySSMenuItem;
-    private javax.swing.JMenuItem createSavePointMenuItem;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem printMenuItem;
-    private javax.swing.JMenuItem extendedPrintMenuItem;
-    private javax.swing.JToggleButton f1ToggleButton;
-    private javax.swing.JToggleButton f2ToggleButton;
-    private javax.swing.JToggleButton f3ToggleButton;
-    private javax.swing.JToggleButton f4ToggleButton;
-    private javax.swing.JToggleButton f5ToggleButton;
-    private javax.swing.JToggleButton f6ToggleButton;
-    private javax.swing.JToggleButton f7ToggleButton;
-    private javax.swing.JToggleButton f8ToggleButton;
-    private javax.swing.JToggleButton f9ToggleButton;
-    private javax.swing.JCheckBoxMenuItem fullScreenMenuItem;
-    private javax.swing.JToggleButton fxyToggleButton;
-    private javax.swing.JMenu helpMenu;
-    private javax.swing.JPanel hintPanel;
-    private javax.swing.JButton hinweisAbbrechenButton;
-    private javax.swing.JButton hinweisAusfuehrenButton;
-    private javax.swing.JTextArea hinweisTextArea;
-    private javax.swing.JMenuItem historyMenuItem;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator11;
-    private javax.swing.JSeparator jSeparator12;
-    private javax.swing.JSeparator jSeparator13;
-    private javax.swing.JPopupMenu.Separator jSeparator20;
-    private javax.swing.JPopupMenu.Separator jSeparator23;
-    private javax.swing.JSeparator jSeparator24;
-    private javax.swing.JPopupMenu.Separator jSeparator25;
-    private javax.swing.JPopupMenu.Separator jSeparator26;
-    private javax.swing.JPopupMenu.Separator jSeparator27;
-    private javax.swing.JPopupMenu.Separator jSeparator28;
-    private javax.swing.JPopupMenu.Separator jSeparator29;
-    private javax.swing.JPopupMenu.Separator jSeparator30;
-    private javax.swing.JPopupMenu.Separator jSeparator31;
-    private javax.swing.JPopupMenu.Separator jSeparator32;
-    private javax.swing.JPopupMenu.Separator jSeparator33;
-    private javax.swing.JPopupMenu.Separator jSeparator34;
-    private javax.swing.JPopupMenu.Separator jSeparator35;
-    private javax.swing.JPopupMenu.Separator jSeparator36;
-    private javax.swing.JPopupMenu.Separator jSeparator37;
-    private javax.swing.JPopupMenu.Separator jSeparator38;
-    private javax.swing.JPopupMenu.Separator jSeparator39;
-    private javax.swing.JPopupMenu.Separator jSeparator6;
-    private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JMenuItem keyMenuItem;
-    private javax.swing.JRadioButtonMenuItem learningMenuItem;
-    private javax.swing.ButtonGroup levelButtonGroup;
-    private javax.swing.JComboBox<String> levelComboBox;
-    private javax.swing.JMenu levelMenu;
-    private javax.swing.JRadioButtonMenuItem levelEasyMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelMediumMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelHardMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelDiabolicalMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelExtremeMenuItem;
-    private javax.swing.JMenuItem loadConfigMenuItem;
-    private javax.swing.JMenuItem loadPuzzleMenuItem;
-    private javax.swing.JMenuItem solutionStepMenuItem;
-    private javax.swing.JMenuItem mediumHintMenuItem;
-    private javax.swing.ButtonGroup modeButtonGroup;
-    private javax.swing.JMenu modeMenu;
-    private javax.swing.JMenuItem newMenuItem;
-    private javax.swing.JButton newNoteButton;
-    private javax.swing.JButton newGameToolButton;
-    private javax.swing.JMenu optionenMenu;
-    private javax.swing.JSplitPane outerSplitPane;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JRadioButtonMenuItem playingMenuItem;
-    private javax.swing.JRadioButtonMenuItem practisingMenuItem;
-    private javax.swing.JLabel progressLabel;
-    private javax.swing.JMenuItem projectHomePageMenuItem;
-    private javax.swing.JMenu puzzleMenu;
-    private javax.swing.JToggleButton redGreenToggleButton;
-    private javax.swing.JMenuItem redoMenuItem;
-    private javax.swing.JButton redoToolButton;
-    private javax.swing.JMenuItem reportErrorMenuItem;
-    private javax.swing.JMenuItem resetSpielMenuItem;
-    private javax.swing.JMenuItem resetViewMenuItem;
-    private javax.swing.JMenuItem restartSpielMenuItem;
-    private javax.swing.JMenuItem restoreSavePointMenuItem;
-    private javax.swing.JMenuItem saveConfigAsMenuItem;
-    private javax.swing.JMenuItem savePuzzleAsMenuItem;
-    private javax.swing.JMenuItem importPuzzleMenuItem;
-    private javax.swing.JMenuItem exportPuzzleMenuItem;
-    private javax.swing.JMenuItem savePuzzleMenuItem;
-    private javax.swing.JMenuItem printSetupMenuItem;
-    private javax.swing.JMenuItem setGivensMenuItem;
-    private javax.swing.JCheckBoxMenuItem showCandidatesMenuItem;
-    private javax.swing.JCheckBoxMenuItem showColorKuMenuItem;
-    private javax.swing.JCheckBoxMenuItem showDeviationsMenuItem;
-    private javax.swing.JCheckBoxMenuItem showHintButtonsCheckBoxMenuItem;
-    private javax.swing.JCheckBoxMenuItem showHintPanelMenuItem;
-    private javax.swing.JCheckBoxMenuItem showToolBarMenuItem;
-    private javax.swing.JCheckBoxMenuItem showWrongValuesMenuItem;
-    private javax.swing.JRadioButtonMenuItem solutionMenuItem;
-    private javax.swing.JButton solveUpToButton;
-    private javax.swing.JMenuItem solvingGuideMenuItem;
-    private javax.swing.JMenuItem saveAsPictureMenuItem;
-    private javax.swing.JMenuItem editGameMenuItem;
-    private javax.swing.JMenuItem enterGameMenuItem;
-    private javax.swing.JMenuItem playGameMenuItem;
-    private javax.swing.JLabel statusLabelCellCandidate;
-    private javax.swing.JLabel statusLabelLevel;
-    private javax.swing.JLabel statusLabelModus;
-    private javax.swing.JPanel statusLinePanel;
-    private javax.swing.JPanel statusPanelColor1;
-    private javax.swing.JPanel statusPanelColor2;
-    private javax.swing.JPanel statusPanelColor3;
-    private javax.swing.JPanel statusPanelColor4;
-    private javax.swing.JPanel statusPanelColor5;
-    private javax.swing.JPanel statusPanelColorClear;
-    private javax.swing.JPanel statusPanelColorReset;
-    private javax.swing.JPanel statusPanelColorResult;
-    private javax.swing.JRadioButtonMenuItem sudokuOnlyMenuItem;
-    private javax.swing.JRadioButtonMenuItem summaryMenuItem;
-    private javax.swing.JMenuItem undoMenuItem;
-    private javax.swing.JButton undoToolButton;
-    private javax.swing.JMenuItem userManualMenuItem;
-    private javax.swing.JMenuItem vagueHintMenuItem;
-    private javax.swing.ButtonGroup viewButtonGroup;
-    // End of variables declaration//GEN-END:variables
 }

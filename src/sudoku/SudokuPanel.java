@@ -984,6 +984,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             repaint();
         }
     }
+    
+    public void saveState() {
+    	undoStack.push(sudoku.clone());
+        mainFrame.check();
+        repaint();
+    }
 
     /**
      * Moves the cursor. If the cell actually changed, a timer is started, that
@@ -3108,12 +3114,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }
 
     public void setSudoku(String init, boolean alreadySolved) {
+    	
         step = null;
         setChainInStep(-1);
         undoStack.clear();
         redoStack.clear();
         coloringMap.clear();
         resetShowHintCellValues();
+        
         if (init == null || init.length() == 0) {
             sudoku = new Sudoku2();
         } else {
@@ -3164,19 +3172,22 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                         tmpSudoku.setSolution(sudoku.getSolution());
                         getSolver().solve(true);
                     }
-//                sudoku.setLevel(tmpSudoku.getLevel());
-//                sudoku.setScore(tmpSudoku.getScore());
+                    
+                    // sudoku.setLevel(tmpSudoku.getLevel());
+                    // sudoku.setScore(tmpSudoku.getScore());
                     sudoku.setLevel(getSolver().getSudoku().getLevel());
                     sudoku.setScore(getSolver().getSudoku().getScore());
                 }
             }
         }
+        
         updateCellZoomPanel();
         if (mainFrame != null) {
             mainFrame.setCurrentLevel(sudoku.getLevel());
             mainFrame.setCurrentScore(sudoku.getScore());
             mainFrame.check();
         }
+        
         repaint();
     }
 
