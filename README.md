@@ -22,6 +22,10 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.1 (2019-11-10)
+
+  - #Added a "Solve Puzzle" option in the Puzzle menu.
+
 Version 2.2.1 (2019-11-07) Fork by PseudoFish
 ---------------------------------------------
 
