@@ -49,9 +49,10 @@ public class ConfigSolverPanel extends javax.swing.JPanel
 implements ListDragAndDropChange {
     private static final long serialVersionUID = 1L;
     private StepConfig[] steps;
-    private DefaultListModel model;
+    private DefaultListModel<StepConfig> model;
     private int dropIndex = -1;
-    private StepConfig dropObject;
+    @SuppressWarnings("unused")
+	private StepConfig dropObject;
     private Color dndColor;
     private Stroke dndStroke;
     
@@ -62,7 +63,7 @@ implements ListDragAndDropChange {
     private boolean listView = false; // absichtlich verkehrt, damit stepList gesetzt wird
     
     /** Creates new form ConfigSolverPanel */
-    @SuppressWarnings({"ResultOfObjectAllocationIgnored", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     public ConfigSolverPanel() {
         initComponents();
         
@@ -72,7 +73,7 @@ implements ListDragAndDropChange {
         
         stepList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stepList.setCellRenderer(new CheckBoxRenderer());
-        model = new DefaultListModel();
+        model = new DefaultListModel<StepConfig>();
         stepList.setModel(model);
         new ListDragAndDrop(stepList, this, this);
         
@@ -107,14 +108,14 @@ implements ListDragAndDropChange {
         jPanel3 = new javax.swing.JPanel();
         levelLabel = new javax.swing.JLabel();
         scoreLabel = new javax.swing.JLabel();
-        levelComboBox = new javax.swing.JComboBox();
+        levelComboBox = new javax.swing.JComboBox<String>();
         scoreTextField = new javax.swing.JTextField();
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         stepScrollPane = new javax.swing.JScrollPane();
-        stepList = new javax.swing.JList();
+        stepList = new javax.swing.JList<StepConfig>();
         jToolBar1 = new javax.swing.JToolBar();
         listButton = new javax.swing.JToggleButton();
         treeButton = new javax.swing.JToggleButton();
@@ -357,7 +358,7 @@ implements ListDragAndDropChange {
     private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelComboBoxActionPerformed
         int index = stepList.getSelectedIndex();
         if (index != -1) {
-            StepConfig conf = (StepConfig)stepList.getSelectedValue();
+            StepConfig conf = stepList.getSelectedValue();
             conf.setLevel(levelComboBox.getSelectedIndex() + 1);
         }
     }//GEN-LAST:event_levelComboBoxActionPerformed
@@ -370,7 +371,7 @@ implements ListDragAndDropChange {
             firstSelected = true;
             levelComboBox.setEnabled(true);
             scoreTextField.setEnabled(true);
-            StepConfig conf = (StepConfig)stepList.getSelectedValue();
+            StepConfig conf = stepList.getSelectedValue();
             levelComboBox.setSelectedIndex(conf.getLevel() - 1);
             scoreTextField.setText(Integer.toString(conf.getBaseScore()));
             // "Nach oben" und "Nach unten" Buttons anpassen
@@ -391,14 +392,13 @@ implements ListDragAndDropChange {
         } else {
             int index = stepList.locationToIndex(evt.getPoint());
             if (index == stepList.getSelectedIndex()) {
-                StepConfig conf = (StepConfig)stepList.getSelectedValue();
+                StepConfig conf = stepList.getSelectedValue();
                 conf.setEnabled(! conf.isEnabled());
                 stepList.repaint();
             }
         }
     }//GEN-LAST:event_stepListMouseClicked
     
-    @SuppressWarnings("unchecked")
     private void moveOneStep(int index, boolean up) {
         //System.out.println("move one step: " + index + "/" + up);
         int toIndex = up ? index + 1 : index - 1;
@@ -452,7 +452,6 @@ implements ListDragAndDropChange {
         Options.getInstance().adjustOrgSolverSteps();
     }
     
-    @SuppressWarnings("unchecked")
     private void initAll(boolean setDefault) {
         // Zuerst die Daten zurücksetzen
         if (setDefault) {
@@ -542,10 +541,12 @@ implements ListDragAndDropChange {
         }
     }
     
-    class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {
+    @SuppressWarnings("rawtypes")
+	class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {
         private static final long serialVersionUID = 1L;
         private boolean isTargetCell;
-        private int index;
+        @SuppressWarnings("unused")
+		private int index;
         
         CheckBoxRenderer() {
         }
@@ -611,13 +612,13 @@ implements ListDragAndDropChange {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JComboBox levelComboBox;
+    private javax.swing.JComboBox<String> levelComboBox;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JToggleButton listButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JLabel scoreLabel;
     private javax.swing.JTextField scoreTextField;
-    private javax.swing.JList stepList;
+    private javax.swing.JList<StepConfig> stepList;
     private javax.swing.JScrollPane stepScrollPane;
     private javax.swing.JTree stepTree;
     private javax.swing.JToggleButton treeButton;
@@ -642,7 +643,7 @@ implements ListDragAndDropChange {
             if (txt == null || txt.isEmpty()) {
                 return;
             }
-            StepConfig conf = (StepConfig)stepList.getSelectedValue();
+            StepConfig conf = stepList.getSelectedValue();
             try {
                 int value = Integer.parseInt(txt);
                 conf.setBaseScore(value);

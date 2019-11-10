@@ -31,7 +31,6 @@ import java.util.logging.Logger;
  *
  * @author hobiwan
  */
-@SuppressWarnings("empty-statement")
 public class Sudoku2 implements Cloneable {
     /** conditional compilation */
     private static final boolean DEBUG = false;
@@ -2199,7 +2198,6 @@ public class Sudoku2 implements Cloneable {
      * Create all 46656 possible templates. Since the calculation has become incredibly
      * slow on Windows 7 64bit, the templates are read from a file.
      */
-    @SuppressWarnings("CallToThreadDumpStack")
     private static void initTemplates() {
         // alle 46656 möglichen Templates anlegen
         try {

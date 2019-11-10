@@ -72,9 +72,8 @@ implements ListDragAndDropChange {
     private static final long serialVersionUID = 1L;
 
     private StepConfig[] steps;
-    private DefaultListModel model;
+    private DefaultListModel<StepConfig> model;
     private int dropIndex = -1;
-    private StepConfig dropObject;
     private Color dndColor;
     private Stroke dndStroke;
     private List<StepConfig> invalidTypes = new ArrayList<StepConfig>();
@@ -82,7 +81,7 @@ implements ListDragAndDropChange {
     private boolean listView = false; // absichtlich verkehrt, damit stepList gesetzt wird
 
     /** Creates new form ConfigSolverPanel */
-    @SuppressWarnings({"ResultOfObjectAllocationIgnored", "unchecked"})
+    @SuppressWarnings({})
     public ConfigProgressPanel() {
         initComponents();
         
@@ -92,7 +91,7 @@ implements ListDragAndDropChange {
         
         stepList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stepList.setCellRenderer(new CheckBoxRenderer());
-        model = new DefaultListModel();
+        model = new DefaultListModel<StepConfig>();
         stepList.setModel(model);
         new ListDragAndDrop(stepList, this, this);
         
@@ -124,7 +123,7 @@ implements ListDragAndDropChange {
         mediumPlusHardButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         stepScrollPane = new javax.swing.JScrollPane();
-        stepList = new javax.swing.JList();
+        stepList = new javax.swing.JList<StepConfig>();
         jToolBar1 = new javax.swing.JToolBar();
         listButton = new javax.swing.JToggleButton();
         treeButton = new javax.swing.JToggleButton();
@@ -343,7 +342,7 @@ implements ListDragAndDropChange {
     private void stepListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stepListMouseClicked
         int index = stepList.locationToIndex(evt.getPoint());
         if (index == stepList.getSelectedIndex()) {
-            StepConfig conf = (StepConfig) stepList.getSelectedValue();
+            StepConfig conf = stepList.getSelectedValue();
             conf.setEnabledProgress(!conf.isEnabledProgress());
             stepList.repaint();
         }
@@ -473,7 +472,6 @@ implements ListDragAndDropChange {
             stepTree.repaint();
         }
     }
-    @SuppressWarnings("unchecked")
     private void moveOneStep(int index, boolean up) {
         //System.out.println("move one step: " + index + "/" + up);
         int toIndex = up ? index + 1 : index - 1;
@@ -511,7 +509,6 @@ implements ListDragAndDropChange {
     @Override
     public void setDropLocation(int index, StepConfig object) {
         dropIndex = index;
-        dropObject = object;
         if (index != -1) {
             if (index <= stepList.getFirstVisibleIndex() + 1) {
                 stepList.ensureIndexIsVisible(index - 1);
@@ -591,7 +588,6 @@ implements ListDragAndDropChange {
     /**
      * Rebuilds the list and the tree
      */
-    @SuppressWarnings("unchecked")
     private void resetView() {
         // Liste neu laden
         model.removeAllElements();
@@ -678,16 +674,14 @@ implements ListDragAndDropChange {
         }
     }
     
-    class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {
+    class CheckBoxRenderer extends JCheckBox implements ListCellRenderer<Object> {
         private static final long serialVersionUID = 1L;
         private boolean isTargetCell;
-        private int index;
-        
         public CheckBoxRenderer() {
         }
         
         @Override
-        public Component getListCellRendererComponent(JList listBox, Object obj, int index,
+        public Component getListCellRendererComponent(JList<?> listBox, Object obj, int index,
                 boolean isSelected, boolean hasFocus) {
             if (isSelected) {
                 Color bg = UIManager.getColor("List.selectionBackground");
@@ -714,7 +708,6 @@ implements ListDragAndDropChange {
             setSelected(((StepConfig)obj).isEnabledProgress());
 
             isTargetCell = false;
-            this.index = index;
             if (index == dropIndex) {
                 isTargetCell = true;
             }
@@ -747,7 +740,7 @@ implements ListDragAndDropChange {
     private javax.swing.JButton mediumPlusHardButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton sstsButton;
-    private javax.swing.JList stepList;
+    private javax.swing.JList<StepConfig> stepList;
     private javax.swing.JScrollPane stepScrollPane;
     private javax.swing.JTree stepTree;
     private javax.swing.JToggleButton treeButton;

@@ -71,7 +71,8 @@ import solver.TablingSolver;
  */
 public class Chain implements Cloneable {
     /** Mask for isolating candidate and indices (used for comparisons). */
-    private static final int EQUALS_MASK = 0x3fffffef;
+    @SuppressWarnings("unused")
+	private static final int EQUALS_MASK = 0x3fffffef;
     /** Mask for isolating the candidate. */
     private static final int CAND_MASK = 0xf;
     /** Mask for isolating the link type (weak or strong). */
@@ -81,19 +82,22 @@ public class Chain implements Cloneable {
      */
     private static final int INDEX_MASK = 0x7f;
     /** Mask for isolating the first index. */
-    private static final int INDEX1_MASK = 0xfe0;
+    @SuppressWarnings("unused")
+	private static final int INDEX1_MASK = 0xfe0;
     /** Number of bits that the entry has to be right shifted to get the
      *  index1 to the right.
      */
     private static final int INDEX1_OFFSET = 5;
     /** Mask for isolating the second index. */
-    private static final int INDEX2_MASK = 0x7f000;
+    @SuppressWarnings("unused")
+	private static final int INDEX2_MASK = 0x7f000;
     /** Number of bits that the entry has to be right shifted to get the
      *  index2 to the right.
      */
     private static final int INDEX2_OFFSET = 12;
     /** Mask for isolating the third index. */
-    private static final int INDEX3_MASK = 0x3f80000;
+    @SuppressWarnings("unused")
+	private static final int INDEX3_MASK = 0x3f80000;
     /** Number of bits that the entry has to be right shifted to get the
      *  index3 to the right.
      */
@@ -107,11 +111,13 @@ public class Chain implements Cloneable {
     /** Mask for isolating the node type */
     private static final int MODE_MASK = 0x3c000000;
     /** Mask for deleting the node type */
-    private static final int MODE_DEL_MASK = 0xc3ffffff;
+    @SuppressWarnings("unused")
+	private static final int MODE_DEL_MASK = 0xc3ffffff;
     /** Number of bits for the node type field */
     private static final int MODE_OFFSET = 26;
     /** Node contains of a single cells thats not an ALS. */
-    private static final int NORMAL_NODE_MASK = 0x0;
+    @SuppressWarnings("unused")
+	private static final int NORMAL_NODE_MASK = 0x0;
     /** Node is a group node. */
     private static final int GROUP_NODE_MASK = 0x4000000;
     /** Node is an ALS (AUR, AHS...). */

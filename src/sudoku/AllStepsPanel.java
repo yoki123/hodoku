@@ -56,7 +56,6 @@ public final class AllStepsPanel extends javax.swing.JPanel implements TreeSelec
      * @param mainFrame
      * @param sudoku  
      */
-    @SuppressWarnings("LeakingThisInConstructor")
     public AllStepsPanel(MainFrame mainFrame, Sudoku2 sudoku) {
         this.mainFrame = mainFrame;
         this.setSudoku(sudoku);
@@ -646,7 +645,8 @@ public final class AllStepsPanel extends javax.swing.JPanel implements TreeSelec
         }
     }
 
-    private void createTreeNodesNumberOfEliminations(DefaultMutableTreeNode root) {
+    @SuppressWarnings("unused")
+	private void createTreeNodesNumberOfEliminations(DefaultMutableTreeNode root) {
         Collections.sort(steps);
         root.setUserObject(java.util.ResourceBundle.getBundle("intl/AllStepsPanel").getString("AllStepsPanel.possible_steps"));
         stepsTree.setRootVisible(false);

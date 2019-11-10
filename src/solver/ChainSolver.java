@@ -186,6 +186,8 @@ public class ChainSolver extends AbstractSolver {
 //            case DISCONTINUOUS_NICE_LOOP:
 //                result = getNiceLoops();
 //                break;
+		default:
+			break;
         }
         return result;
     }
@@ -1000,7 +1002,8 @@ public class ChainSolver extends AbstractSolver {
      * @param m1
      * @param m2
      */
-    private void printSet(String text, long m1, long m2) {
+    @SuppressWarnings("unused")
+	private void printSet(String text, long m1, long m2) {
         SudokuSetBase set = new SudokuSetBase();
         set.setMask1(m1);
         set.setMask2(m2);

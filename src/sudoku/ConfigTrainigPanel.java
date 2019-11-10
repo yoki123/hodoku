@@ -40,7 +40,7 @@ import javax.swing.tree.TreeSelectionModel;
 public class ConfigTrainigPanel extends javax.swing.JPanel {
     private static final long serialVersionUID = 1L;
     private StepConfig[] steps;
-    private DefaultListModel model;
+    private DefaultListModel<StepConfig> model;
     
     private boolean listView = true; // absichtlich verkehrt, damit stepTree initialisiert wird
     
@@ -51,7 +51,7 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
         
         stepList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stepList.setCellRenderer(new CheckBoxRenderer());
-        model = new DefaultListModel();
+        model = new DefaultListModel<StepConfig>();
         stepList.setModel(model);
         
         stepTree.setCellRenderer(new CheckRenderer());
@@ -81,7 +81,7 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
         warningLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         stepScrollPane = new javax.swing.JScrollPane();
-        stepList = new javax.swing.JList();
+        stepList = new javax.swing.JList<StepConfig>();
         jToolBar1 = new javax.swing.JToolBar();
         listButton = new javax.swing.JToggleButton();
         treeButton = new javax.swing.JToggleButton();
@@ -218,7 +218,7 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
     private void stepListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stepListMouseClicked
         int index = stepList.locationToIndex(evt.getPoint());
         if (index == stepList.getSelectedIndex()) {
-            StepConfig conf = (StepConfig) stepList.getSelectedValue();
+            StepConfig conf = stepList.getSelectedValue();
             conf.setEnabledTraining(!conf.isEnabledTraining());
             chosenTextArea.setText(Options.getInstance().getTrainingStepsString(steps, false));
             stepList.repaint();
@@ -258,7 +258,6 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
         }
     }
     
-    @SuppressWarnings("unchecked")
     private void initAll(boolean setDefault) {
         // Zuerst die Daten zurücksetzen
         if (setDefault) {
@@ -363,7 +362,8 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
         }
     }
     
-    class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {
+    @SuppressWarnings("rawtypes")
+	class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {
         private static final long serialVersionUID = 1L;
         
         CheckBoxRenderer() {
@@ -409,7 +409,7 @@ public class ConfigTrainigPanel extends javax.swing.JPanel {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToggleButton listButton;
     private javax.swing.JButton resetButton;
-    private javax.swing.JList stepList;
+    private javax.swing.JList<StepConfig> stepList;
     private javax.swing.JScrollPane stepScrollPane;
     private javax.swing.JTree stepTree;
     private javax.swing.JToggleButton treeButton;

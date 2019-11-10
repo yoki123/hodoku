@@ -30,11 +30,11 @@ import javax.imageio.ImageIO;
 public class ColorKuImage extends BufferedImage {
 
     /** Size of smallest overlay in pixel */
-    private static final int IMG_MIN = 10;
+    public static final int IMG_MIN = 10;
     /** Size of largest overlay in pixel */
-    private static final int IMG_MAX = 98;
+    public static final int IMG_MAX = 98;
     /** Increment for overlay sizes in pixel */
-    private static final int IMG_FACTOR = 4;
+    public static final int IMG_FACTOR = 4;
     /** The overlay source */
     private static BufferedImage sourceOverlay = null;
     /** The latest overlay loaded, for caching */

@@ -97,18 +97,18 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
             newStep.progressScoreSingles = progressScoreSingles;
             newStep.progressScoreSinglesOnly = progressScoreSinglesOnly;
             newStep.progressScore = progressScore;
-            newStep.values = (List<Integer>) ((ArrayList) values).clone();
-            newStep.indices = (List<Integer>) ((ArrayList) indices).clone();
-            newStep.candidatesToDelete = (List<Candidate>) ((ArrayList) candidatesToDelete).clone();
-            newStep.cannibalistic = (List<Candidate>) ((ArrayList) cannibalistic).clone();
-            newStep.fins = (List<Candidate>) ((ArrayList) fins).clone();
-            newStep.endoFins = (List<Candidate>) ((ArrayList) endoFins).clone();
-            newStep.baseEntities = (List<Entity>) ((ArrayList) baseEntities).clone();
-            newStep.coverEntities = (List<Entity>) ((ArrayList) coverEntities).clone();
-            newStep.chains = (List<Chain>) ((ArrayList) chains).clone();
-            newStep.alses = (List<AlsInSolutionStep>) ((ArrayList) alses).clone();
-            newStep.colorCandidates = (SortedMap<Integer, Integer>) ((TreeMap) getColorCandidates()).clone();
-            newStep.restrictedCommons = (List<RestrictedCommon>) ((ArrayList) restrictedCommons).clone();
+            newStep.values = (List<Integer>) ((ArrayList<Integer>) values).clone();
+            newStep.indices = (List<Integer>) ((ArrayList<Integer>) indices).clone();
+            newStep.candidatesToDelete = (List<Candidate>) ((ArrayList<Candidate>) candidatesToDelete).clone();
+            newStep.cannibalistic = (List<Candidate>) ((ArrayList<Candidate>) cannibalistic).clone();
+            newStep.fins = (List<Candidate>) ((ArrayList<Candidate>) fins).clone();
+            newStep.endoFins = (List<Candidate>) ((ArrayList<Candidate>) endoFins).clone();
+            newStep.baseEntities = (List<Entity>) ((ArrayList<Entity>) baseEntities).clone();
+            newStep.coverEntities = (List<Entity>) ((ArrayList<Entity>) coverEntities).clone();
+            newStep.chains = (List<Chain>) ((ArrayList<Chain>) chains).clone();
+            newStep.alses = (List<AlsInSolutionStep>) ((ArrayList<AlsInSolutionStep>) alses).clone();
+            newStep.colorCandidates = (SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) getColorCandidates()).clone();
+            newStep.restrictedCommons = (List<RestrictedCommon>) ((ArrayList<RestrictedCommon>) restrictedCommons).clone();
             newStep.potentialCannibalisticEliminations = potentialCannibalisticEliminations.clone();
             newStep.potentialEliminations = potentialEliminations.clone();
         } catch (CloneNotSupportedException ex) {
@@ -887,7 +887,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 //                    }
                 }
                 if (art >= 2) {
-                    List<Chain> dummy1 = getChains();
+                    //List<Chain> dummy1 = getChains();
                     StringBuffer tmpChain = getChainString(getChains().get(0));
                     // adjust nice loop notation
                     if (type == SolutionType.CONTINUOUS_NICE_LOOP || type == SolutionType.GROUPED_CONTINUOUS_NICE_LOOP) {
@@ -1492,7 +1492,8 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
         }
     }
 
-    private void getIndexes(StringBuffer tmp) {
+    @SuppressWarnings("unused")
+	private void getIndexes(StringBuffer tmp) {
         boolean first = true;
         for (int index : indices) {
             if (first) {
@@ -1512,7 +1513,8 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
      * @param tmp Result is appended to tmp
      */
     private void getRestrictedCommon(RestrictedCommon rc, StringBuffer tmp) {
-        int anz = 0;
+        @SuppressWarnings("unused")
+		int anz = 0;
         tmp.append(" -");
         if (rc.getActualRC() == 1 || rc.getActualRC() == 3) {
             tmp.append(rc.getCand1());

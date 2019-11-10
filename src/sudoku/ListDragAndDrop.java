@@ -52,17 +52,19 @@ public class ListDragAndDrop implements DragSourceListener, DropTargetListener, 
     private DropTarget dropTarget;
     private int draggedIndex = -1;
     private StepConfig dropTargetCell;
-    private JList list;
+    @SuppressWarnings("rawtypes")
+	private JList list;
     private ListDragAndDropChange panel;
-    private JPanel cPanel;
+    @SuppressWarnings("unused")
+	private JPanel cPanel;
     
     static {
         stepConfigDataFlavor = new DataFlavor(StepConfig.class, "sudoku.StepConfig");
         supportedFlavors = new DataFlavor[] { stepConfigDataFlavor };
     }
     
-    @SuppressWarnings("LeakingThisInConstructor")
-    public ListDragAndDrop(JList list, ListDragAndDropChange panel, JPanel cPanel) {
+    @SuppressWarnings("rawtypes")
+	public ListDragAndDrop(JList list, ListDragAndDropChange panel, JPanel cPanel) {
         this.list = list;
         this.panel = panel;
         this.cPanel = cPanel;

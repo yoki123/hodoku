@@ -40,7 +40,6 @@ public class SudokuGeneratorFactory {
     /** A background thread that cleans up unused SudokuGenerator instances. */
     private static final Thread thread = new Thread( new Runnable() {
         @Override
-        @SuppressWarnings("SleepWhileInLoop")
         public void run() {
             while (true) {
                 synchronized (thread) {

@@ -54,7 +54,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -123,7 +122,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     /** Icons for the filter toggle buttons in the toolbar (no candidates left) */
     private Icon[] emptyToggleButtonIcons = new Icon[10];
     /** One empty icon for disabled filter buttons - digits */
-    private Icon emptyToggleButtonIconOrg = new ImageIcon(getClass().getResource("/img/f_0c.png"));
+    @SuppressWarnings("unused")
+	private Icon emptyToggleButtonIconOrg = new ImageIcon(getClass().getResource("/img/f_0c.png"));
     /** One empty icon for disabled filter buttons */
     private Icon emptyToggleButtonIconOrgColorKu = new ImageIcon(new ColorKuImage(TOGGLE_BUTTON_ICON_SIZE, Color.WHITE));
 //    /** One empty icon for disabled filter buttons */
@@ -221,7 +221,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     /** Creates new form MainFrame
      * @param launchFile 
      */
-    @SuppressWarnings({"LeakingThisInConstructor", "unchecked"})
     public MainFrame(String launchFile) {
         // if a configuration file is given at the command line, load it before anything
         // else is done (helps restoring the screen layout)
@@ -244,7 +243,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         Font font = hinweisTextArea.getFont();
 //        System.out.println("fontSize: " + font.getSize() + "/" + getFont().getSize() + "/" + bearbeitenMenu.getFont().getSize());
 //        font = new Font(fontName, font.getStyle(), font.getSize());
-        font = new Font(fontName, font.getStyle(), bearbeitenMenu.getFont().getSize());
+        font = new Font(fontName, font.getStyle(), editMenu.getFont().getSize());
         hinweisTextArea.setFont(font);
 
         // status line fonts are a bit larger than default in Windows LAF
@@ -363,11 +362,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         showToolBarMenuItem.setSelected(Options.getInstance().isShowToolBar());
 
         // Level-MenÃ¼s und Combo-Box
-        levelMenuItems[0] = levelLeichtMenuItem;
-        levelMenuItems[1] = levelMittelMenuItem;
-        levelMenuItems[2] = levelKniffligMenuItem;
-        levelMenuItems[3] = levelSchwerMenuItem;
-        levelMenuItems[4] = levelExtremMenuItem;
+        levelMenuItems[0] = levelEasyMenuItem;
+        levelMenuItems[1] = levelMediumMenuItem;
+        levelMenuItems[2] = levelHardMenuItem;
+        levelMenuItems[3] = levelDiabolicalMenuItem;
+        levelMenuItems[4] = levelExtremeMenuItem;
         FontMetrics metrics = levelComboBox.getFontMetrics(levelComboBox.getFont());
         int miWidth = 0;
         int miHeight = metrics.getHeight();
@@ -549,9 +548,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         undoToolButton = new javax.swing.JButton();
         redoToolButton = new javax.swing.JButton();
         jSeparator9 = new javax.swing.JSeparator();
-        neuesSpielToolButton = new javax.swing.JButton();
+        newGameToolButton = new javax.swing.JButton();
         jSeparator12 = new javax.swing.JSeparator();
-        levelComboBox = new javax.swing.JComboBox();
+        levelComboBox = new javax.swing.JComboBox<String>();
         jSeparator13 = new javax.swing.JSeparator();
         jSeparator11 = new javax.swing.JSeparator();
         redGreenToggleButton = new javax.swing.JToggleButton();
@@ -567,15 +566,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         fxyToggleButton = new javax.swing.JToggleButton();
         outerSplitPane = new javax.swing.JSplitPane();
         hintPanel = new javax.swing.JPanel();
-        neuerHinweisButton = new javax.swing.JButton();
+        newNoteButton = new javax.swing.JButton();
         hinweisAusfuehrenButton = new javax.swing.JButton();
         solveUpToButton = new javax.swing.JButton();
         hinweisAbbrechenButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         hinweisTextArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        dateiMenu = new javax.swing.JMenu();
-        neuMenuItem = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
+        newMenuItem = new javax.swing.JMenuItem();
         jSeparator39 = new javax.swing.JPopupMenu.Separator();
         loadPuzzleMenuItem = new javax.swing.JMenuItem();
         savePuzzleMenuItem = new javax.swing.JMenuItem();
@@ -585,17 +584,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         loadConfigMenuItem = new javax.swing.JMenuItem();
         saveConfigAsMenuItem = new javax.swing.JMenuItem();
         jSeparator38 = new javax.swing.JPopupMenu.Separator();
-        seiteEinrichtenMenuItem = new javax.swing.JMenuItem();
-        druckenMenuItem = new javax.swing.JMenuItem();
+        printSetupMenuItem = new javax.swing.JMenuItem();
+        printMenuItem = new javax.swing.JMenuItem();
         extendedPrintMenuItem = new javax.swing.JMenuItem();
-        speichernAlsBildMenuItem = new javax.swing.JMenuItem();
+        saveAsPictureMenuItem = new javax.swing.JMenuItem();
         jSeparator37 = new javax.swing.JPopupMenu.Separator();
-        spielEingebenMenuItem = new javax.swing.JMenuItem();
-        spielEditierenMenuItem = new javax.swing.JMenuItem();
-        spielSpielenMenuItem = new javax.swing.JMenuItem();
+        enterGameMenuItem = new javax.swing.JMenuItem();
+        editGameMenuItem = new javax.swing.JMenuItem();
+        playGameMenuItem = new javax.swing.JMenuItem();
         jSeparator36 = new javax.swing.JPopupMenu.Separator();
-        beendenMenuItem = new javax.swing.JMenuItem();
-        bearbeitenMenu = new javax.swing.JMenu();
+        exitMenuItem = new javax.swing.JMenuItem();
+        editMenu = new javax.swing.JMenu();
         undoMenuItem = new javax.swing.JMenuItem();
         redoMenuItem = new javax.swing.JMenuItem();
         jSeparator35 = new javax.swing.JPopupMenu.Separator();
@@ -625,15 +624,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         colorCandidatesMenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator31 = new javax.swing.JPopupMenu.Separator();
         levelMenu = new javax.swing.JMenu();
-        levelLeichtMenuItem = new javax.swing.JRadioButtonMenuItem();
-        levelMittelMenuItem = new javax.swing.JRadioButtonMenuItem();
-        levelKniffligMenuItem = new javax.swing.JRadioButtonMenuItem();
-        levelSchwerMenuItem = new javax.swing.JRadioButtonMenuItem();
-        levelExtremMenuItem = new javax.swing.JRadioButtonMenuItem();
-        raetselMenu = new javax.swing.JMenu();
-        vageHintMenuItem = new javax.swing.JMenuItem();
+        levelEasyMenuItem = new javax.swing.JRadioButtonMenuItem();
+        levelMediumMenuItem = new javax.swing.JRadioButtonMenuItem();
+        levelHardMenuItem = new javax.swing.JRadioButtonMenuItem();
+        levelDiabolicalMenuItem = new javax.swing.JRadioButtonMenuItem();
+        levelExtremeMenuItem = new javax.swing.JRadioButtonMenuItem();
+        puzzleMenu = new javax.swing.JMenu();
+        vagueHintMenuItem = new javax.swing.JMenuItem();
         mediumHintMenuItem = new javax.swing.JMenuItem();
-        loesungsSchrittMenuItem = new javax.swing.JMenuItem();
+        solutionStepMenuItem = new javax.swing.JMenuItem();
         jSeparator30 = new javax.swing.JPopupMenu.Separator();
         backdoorSearchMenuItem = new javax.swing.JMenuItem();
         historyMenuItem = new javax.swing.JMenuItem();
@@ -643,7 +642,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         setGivensMenuItem = new javax.swing.JMenuItem();
         jSeparator28 = new javax.swing.JPopupMenu.Separator();
         alleHiddenSinglesSetzenMenuItem = new javax.swing.JMenuItem();
-        ansichtMenu = new javax.swing.JMenu();
+        viewMenu = new javax.swing.JMenu();
         sudokuOnlyMenuItem = new javax.swing.JRadioButtonMenuItem();
         jSeparator20 = new javax.swing.JPopupMenu.Separator();
         summaryMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -907,14 +906,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         jSeparator9.setMaximumSize(new java.awt.Dimension(5, 32767));
         jToolBar1.add(jSeparator9);
 
-        neuesSpielToolButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hodoku02-32.png"))); // NOI18N
-        neuesSpielToolButton.setToolTipText(bundle.getString("MainFrame.neuesSpielToolButton.toolTipText")); // NOI18N
-        neuesSpielToolButton.addActionListener(new java.awt.event.ActionListener() {
+        newGameToolButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hodoku02-32.png"))); // NOI18N
+        newGameToolButton.setToolTipText(bundle.getString("MainFrame.neuesSpielToolButton.toolTipText")); // NOI18N
+        newGameToolButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 neuesSpielToolButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(neuesSpielToolButton);
+        jToolBar1.add(newGameToolButton);
 
         jSeparator12.setEnabled(false);
         jSeparator12.setMaximumSize(new java.awt.Dimension(3, 0));
@@ -1060,10 +1059,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             }
         });
 
-        neuerHinweisButton.setMnemonic('n');
-        neuerHinweisButton.setText(bundle.getString("MainFrame.neuerHinweisButton.text")); // NOI18N
-        neuerHinweisButton.setToolTipText(bundle.getString("MainFrame.neuerHinweisButton.toolTipText")); // NOI18N
-        neuerHinweisButton.addActionListener(new java.awt.event.ActionListener() {
+        newNoteButton.setMnemonic('n');
+        newNoteButton.setText(bundle.getString("MainFrame.neuerHinweisButton.text")); // NOI18N
+        newNoteButton.setToolTipText(bundle.getString("MainFrame.neuerHinweisButton.toolTipText")); // NOI18N
+        newNoteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 neuerHinweisButtonActionPerformed(evt);
             }
@@ -1113,7 +1112,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(neuerHinweisButton)
+                    .addComponent(newNoteButton)
                     .addComponent(solveUpToButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1121,14 +1120,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                     .addComponent(hinweisAbbrechenButton)))
         );
 
-        hintPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
+        hintPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, newNoteButton, solveUpToButton});
 
         hintPanelLayout.setVerticalGroup(
             hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(hintPanelLayout.createSequentialGroup()
                 .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hinweisAusfuehrenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(neuerHinweisButton))
+                    .addComponent(newNoteButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(hintPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hinweisAbbrechenButton)
@@ -1136,25 +1135,25 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
         );
 
-        hintPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, neuerHinweisButton, solveUpToButton});
+        hintPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {hinweisAbbrechenButton, hinweisAusfuehrenButton, newNoteButton, solveUpToButton});
 
         outerSplitPane.setRightComponent(hintPanel);
 
         getContentPane().add(outerSplitPane, java.awt.BorderLayout.CENTER);
 
-        dateiMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.dateiMenuMnemonic").charAt(0));
-        dateiMenu.setText(bundle.getString("MainFrame.dateiMenu.text")); // NOI18N
+        fileMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.dateiMenuMnemonic").charAt(0));
+        fileMenu.setText(bundle.getString("MainFrame.dateiMenu.text")); // NOI18N
 
-        neuMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        neuMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.neuMenuItemMnemonic").charAt(0));
-        neuMenuItem.setText(bundle.getString("MainFrame.neuMenuItem.text")); // NOI18N
-        neuMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        newMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.neuMenuItemMnemonic").charAt(0));
+        newMenuItem.setText(bundle.getString("MainFrame.neuMenuItem.text")); // NOI18N
+        newMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 neuMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(neuMenuItem);
-        dateiMenu.add(jSeparator39);
+        fileMenu.add(newMenuItem);
+        fileMenu.add(jSeparator39);
 
         loadPuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         loadPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.loadMenuItemMnemonic").charAt(0));
@@ -1164,7 +1163,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 loadPuzzleMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(loadPuzzleMenuItem);
+        fileMenu.add(loadPuzzleMenuItem);
 
         savePuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         savePuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.savePuzzleMenuItem.mnemonic").charAt(0));
@@ -1175,7 +1174,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 savePuzzleMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(savePuzzleMenuItem);
+        fileMenu.add(savePuzzleMenuItem);
 
         savePuzzleAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
         savePuzzleAsMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
@@ -1185,7 +1184,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 savePuzzleAsMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(savePuzzleAsMenuItem);
+        fileMenu.add(savePuzzleAsMenuItem);
         
         importPuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         importPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
@@ -1195,7 +1194,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 importPuzzleMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(importPuzzleMenuItem);
+        fileMenu.add(importPuzzleMenuItem);
         
         exportPuzzleMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         exportPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
@@ -1205,7 +1204,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             	exportPuzzleMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(exportPuzzleMenuItem);
+        fileMenu.add(exportPuzzleMenuItem);
 
         loadConfigMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.loadConfigMenuItem.mnemonic").charAt(0));
         loadConfigMenuItem.setText(bundle.getString("MainFrame.loadConfigMenuItem.text")); // NOI18N
@@ -1214,7 +1213,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 loadConfigMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(loadConfigMenuItem);
+        fileMenu.add(loadConfigMenuItem);
 
         saveConfigAsMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.saveConfigAsMenuItem.mnemonic").charAt(0));
         saveConfigAsMenuItem.setText(bundle.getString("MainFrame.saveConfigAsMenuItem.text")); // NOI18N
@@ -1223,27 +1222,27 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 saveConfigAsMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(saveConfigAsMenuItem);
-        dateiMenu.add(jSeparator38);
+        fileMenu.add(saveConfigAsMenuItem);
+        fileMenu.add(jSeparator38);
 
-        seiteEinrichtenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.seiteEinrichtenMenuItemMnemonic").charAt(0));
-        seiteEinrichtenMenuItem.setText(bundle.getString("MainFrame.seiteEinrichtenMenuItem.text")); // NOI18N
-        seiteEinrichtenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        printSetupMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.seiteEinrichtenMenuItemMnemonic").charAt(0));
+        printSetupMenuItem.setText(bundle.getString("MainFrame.seiteEinrichtenMenuItem.text")); // NOI18N
+        printSetupMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seiteEinrichtenMenuItemActionPerformed(evt);
+                printSetupMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(seiteEinrichtenMenuItem);
+        fileMenu.add(printSetupMenuItem);
 
-        druckenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        druckenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.druckenMenuItemMnemonic").charAt(0));
-        druckenMenuItem.setText(bundle.getString("MainFrame.druckenMenuItem.text")); // NOI18N
-        druckenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        printMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        printMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.druckenMenuItemMnemonic").charAt(0));
+        printMenuItem.setText(bundle.getString("MainFrame.druckenMenuItem.text")); // NOI18N
+        printMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 druckenMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(druckenMenuItem);
+        fileMenu.add(printMenuItem);
 
         extendedPrintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.extendedPrintMenuItem.mnemonic").charAt(0));
         extendedPrintMenuItem.setText(bundle.getString("MainFrame.extendedPrintMenuItem.text")); // NOI18N
@@ -1252,61 +1251,61 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 extendedPrintMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(extendedPrintMenuItem);
+        fileMenu.add(extendedPrintMenuItem);
 
-        speichernAlsBildMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.speichernAlsBildMenuItemMnemonic").charAt(0));
-        speichernAlsBildMenuItem.setText(bundle.getString("MainFrame.speichernAlsBildMenuItem.text")); // NOI18N
-        speichernAlsBildMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        saveAsPictureMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.speichernAlsBildMenuItemMnemonic").charAt(0));
+        saveAsPictureMenuItem.setText(bundle.getString("MainFrame.speichernAlsBildMenuItem.text")); // NOI18N
+        saveAsPictureMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 speichernAlsBildMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(speichernAlsBildMenuItem);
-        dateiMenu.add(jSeparator37);
+        fileMenu.add(saveAsPictureMenuItem);
+        fileMenu.add(jSeparator37);
 
-        spielEingebenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.spielEingebenMenuItemMnemonic").charAt(0));
-        spielEingebenMenuItem.setText(bundle.getString("MainFrame.spielEingebenMenuItem.text")); // NOI18N
-        spielEingebenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        enterGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.spielEingebenMenuItemMnemonic").charAt(0));
+        enterGameMenuItem.setText(bundle.getString("MainFrame.spielEingebenMenuItem.text")); // NOI18N
+        enterGameMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 spielEingebenMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(spielEingebenMenuItem);
+        fileMenu.add(enterGameMenuItem);
 
-        spielEditierenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("spielEditierenMenuItemMnemonic").charAt(0));
-        spielEditierenMenuItem.setText(bundle.getString("MainFrame.spielEditierenMenuItem.text")); // NOI18N
-        spielEditierenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        editGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("spielEditierenMenuItemMnemonic").charAt(0));
+        editGameMenuItem.setText(bundle.getString("MainFrame.spielEditierenMenuItem.text")); // NOI18N
+        editGameMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 spielEditierenMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(spielEditierenMenuItem);
+        fileMenu.add(editGameMenuItem);
 
-        spielSpielenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.spielenMenuItemMnemonic").charAt(0));
-        spielSpielenMenuItem.setText(bundle.getString("MainFrame.spielSpielenMenuItem.text")); // NOI18N
-        spielSpielenMenuItem.setEnabled(false);
-        spielSpielenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        playGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.spielenMenuItemMnemonic").charAt(0));
+        playGameMenuItem.setText(bundle.getString("MainFrame.spielSpielenMenuItem.text")); // NOI18N
+        playGameMenuItem.setEnabled(false);
+        playGameMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 spielSpielenMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(spielSpielenMenuItem);
-        dateiMenu.add(jSeparator36);
+        fileMenu.add(playGameMenuItem);
+        fileMenu.add(jSeparator36);
 
-        beendenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
-        beendenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.beendenMenuItemMnemonic").charAt(0));
-        beendenMenuItem.setText(bundle.getString("MainFrame.beendenMenuItem.text")); // NOI18N
-        beendenMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
+        exitMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.beendenMenuItemMnemonic").charAt(0));
+        exitMenuItem.setText(bundle.getString("MainFrame.beendenMenuItem.text")); // NOI18N
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 beendenMenuItemActionPerformed(evt);
             }
         });
-        dateiMenu.add(beendenMenuItem);
+        fileMenu.add(exitMenuItem);
 
-        jMenuBar1.add(dateiMenu);
+        jMenuBar1.add(fileMenu);
 
-        bearbeitenMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.bearbeitenMenuMnemonic").charAt(0));
-        bearbeitenMenu.setText(bundle.getString("MainFrame.bearbeitenMenu.text")); // NOI18N
+        editMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.bearbeitenMenuMnemonic").charAt(0));
+        editMenu.setText(bundle.getString("MainFrame.bearbeitenMenu.text")); // NOI18N
 
         undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
         undoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.undoMenuItemMnemonic").charAt(0));
@@ -1317,7 +1316,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 undoMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(undoMenuItem);
+        editMenu.add(undoMenuItem);
 
         redoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         redoMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.redoMenuItemMnemonic").charAt(0));
@@ -1328,8 +1327,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 redoMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(redoMenuItem);
-        bearbeitenMenu.add(jSeparator35);
+        editMenu.add(redoMenuItem);
+        editMenu.add(jSeparator35);
 
         copyCluesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         copyCluesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyCluesMenuItemMnemonic").charAt(0));
@@ -1339,7 +1338,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copyCluesMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copyCluesMenuItem);
+        editMenu.add(copyCluesMenuItem);
 
         copyFilledMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyFilledMenuItemMnemonic").charAt(0));
         copyFilledMenuItem.setText(bundle.getString("MainFrame.copyFilledMenuItem.text")); // NOI18N
@@ -1348,7 +1347,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copyFilledMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copyFilledMenuItem);
+        editMenu.add(copyFilledMenuItem);
 
         copyPmGridMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyPmGridMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyPmGridMenuItemMnemonic").charAt(0));
@@ -1358,7 +1357,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copyPmGridMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copyPmGridMenuItem);
+        editMenu.add(copyPmGridMenuItem);
 
         copyPmGridWithStepMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyPmGridWithStepMenuItemMnemonic").charAt(0));
         copyPmGridWithStepMenuItem.setText(bundle.getString("MainFrame.copyPmGridWithStepMenuItem.text")); // NOI18N
@@ -1367,7 +1366,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copyPmGridWithStepMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copyPmGridWithStepMenuItem);
+        editMenu.add(copyPmGridWithStepMenuItem);
 
         copyLibraryMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copyLibraryMenuItemMnemonic").charAt(0));
         copyLibraryMenuItem.setText(bundle.getString("MainFrame.copyLibraryMenuItem.text")); // NOI18N
@@ -1376,7 +1375,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copyLibraryMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copyLibraryMenuItem);
+        editMenu.add(copyLibraryMenuItem);
 
         copySSMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.copySSMenuItem.mnemonic").charAt(0));
         copySSMenuItem.setText(bundle.getString("MainFrame.copySSMenuItem.text")); // NOI18N
@@ -1385,7 +1384,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 copySSMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(copySSMenuItem);
+        editMenu.add(copySSMenuItem);
 
         pasteMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.pasteMenuItemMnemonic").charAt(0));
@@ -1395,8 +1394,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 pasteMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(pasteMenuItem);
-        bearbeitenMenu.add(jSeparator34);
+        editMenu.add(pasteMenuItem);
+        editMenu.add(jSeparator34);
 
         restartSpielMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         restartSpielMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.restartSpielMenuItemMnemonic").charAt(0));
@@ -1406,7 +1405,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 restartSpielMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(restartSpielMenuItem);
+        editMenu.add(restartSpielMenuItem);
 
         resetSpielMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.resetSpielMenuItemMnemonic").charAt(0));
         resetSpielMenuItem.setText(bundle.getString("MainFrame.resetSpielMenuItem.text")); // NOI18N
@@ -1415,8 +1414,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 resetSpielMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(resetSpielMenuItem);
-        bearbeitenMenu.add(jSeparator33);
+        editMenu.add(resetSpielMenuItem);
+        editMenu.add(jSeparator33);
 
         configMenuItem.setAccelerator(KeyStroke.getKeyStroke(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.configMenuItemAccelerator")));
         configMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.configMenuItemMnemonic").charAt(0));
@@ -1426,9 +1425,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 configMenuItemActionPerformed(evt);
             }
         });
-        bearbeitenMenu.add(configMenuItem);
+        editMenu.add(configMenuItem);
 
-        jMenuBar1.add(bearbeitenMenu);
+        jMenuBar1.add(editMenu);
 
         modeMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.modeMenu.mnemonic").charAt(0));
         modeMenu.setText(bundle.getString("MainFrame.modeMenu.text")); // NOI18N
@@ -1533,68 +1532,68 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         levelMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.levelMenuMnemonic").charAt(0));
         levelMenu.setText(bundle.getString("MainFrame.levelMenu.text")); // NOI18N
 
-        levelButtonGroup.add(levelLeichtMenuItem);
-        levelLeichtMenuItem.setSelected(true);
-        levelLeichtMenuItem.setText("Leicht"); // NOI18N
-        levelLeichtMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        levelButtonGroup.add(levelEasyMenuItem);
+        levelEasyMenuItem.setSelected(true);
+        levelEasyMenuItem.setText("Leicht"); // NOI18N
+        levelEasyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelLeichtMenuItemActionPerformed(evt);
             }
         });
-        levelMenu.add(levelLeichtMenuItem);
+        levelMenu.add(levelEasyMenuItem);
 
-        levelButtonGroup.add(levelMittelMenuItem);
-        levelMittelMenuItem.setText("Mittel"); // NOI18N
-        levelMittelMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        levelButtonGroup.add(levelMediumMenuItem);
+        levelMediumMenuItem.setText("Mittel"); // NOI18N
+        levelMediumMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelMittelMenuItemActionPerformed(evt);
             }
         });
-        levelMenu.add(levelMittelMenuItem);
+        levelMenu.add(levelMediumMenuItem);
 
-        levelButtonGroup.add(levelKniffligMenuItem);
-        levelKniffligMenuItem.setText("Schwer\n"); // NOI18N
-        levelKniffligMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        levelButtonGroup.add(levelHardMenuItem);
+        levelHardMenuItem.setText("Schwer\n"); // NOI18N
+        levelHardMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelKniffligMenuItemActionPerformed(evt);
             }
         });
-        levelMenu.add(levelKniffligMenuItem);
+        levelMenu.add(levelHardMenuItem);
 
-        levelButtonGroup.add(levelSchwerMenuItem);
-        levelSchwerMenuItem.setText("Unfair"); // NOI18N
-        levelSchwerMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        levelButtonGroup.add(levelDiabolicalMenuItem);
+        levelDiabolicalMenuItem.setText("Unfair"); // NOI18N
+        levelDiabolicalMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelSchwerMenuItemActionPerformed(evt);
             }
         });
-        levelMenu.add(levelSchwerMenuItem);
+        levelMenu.add(levelDiabolicalMenuItem);
 
-        levelButtonGroup.add(levelExtremMenuItem);
-        levelExtremMenuItem.setText("Extrem"); // NOI18N
-        levelExtremMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        levelButtonGroup.add(levelExtremeMenuItem);
+        levelExtremeMenuItem.setText("Extrem"); // NOI18N
+        levelExtremeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 levelExtremMenuItemActionPerformed(evt);
             }
         });
-        levelMenu.add(levelExtremMenuItem);
+        levelMenu.add(levelExtremeMenuItem);
 
         optionenMenu.add(levelMenu);
 
         jMenuBar1.add(optionenMenu);
 
-        raetselMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.raetselMenuMnemonic").charAt(0));
-        raetselMenu.setText(bundle.getString("MainFrame.raetselMenu.text")); // NOI18N
+        puzzleMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.raetselMenuMnemonic").charAt(0));
+        puzzleMenu.setText(bundle.getString("MainFrame.raetselMenu.text")); // NOI18N
 
-        vageHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.ALT_MASK));
-        vageHintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.vageHintMenuItemMnemonic").charAt(0));
-        vageHintMenuItem.setText(bundle.getString("MainFrame.vageHintMenuItem")); // NOI18N
-        vageHintMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        vagueHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.ALT_MASK));
+        vagueHintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.vageHintMenuItemMnemonic").charAt(0));
+        vagueHintMenuItem.setText(bundle.getString("MainFrame.vageHintMenuItem")); // NOI18N
+        vagueHintMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 vageHintMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(vageHintMenuItem);
+        puzzleMenu.add(vagueHintMenuItem);
 
         mediumHintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.CTRL_MASK));
         mediumHintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.mediumHintMenuItemMnemonic").charAt(0));
@@ -1604,18 +1603,18 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 mediumHintMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(mediumHintMenuItem);
+        puzzleMenu.add(mediumHintMenuItem);
 
-        loesungsSchrittMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
-        loesungsSchrittMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.loesungsSchrittMenuItemMnemonic").charAt(0));
-        loesungsSchrittMenuItem.setText(bundle.getString("MainFrame.loesungsSchrittMenuItem.text")); // NOI18N
-        loesungsSchrittMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        solutionStepMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, 0));
+        solutionStepMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.loesungsSchrittMenuItemMnemonic").charAt(0));
+        solutionStepMenuItem.setText(bundle.getString("MainFrame.loesungsSchrittMenuItem.text")); // NOI18N
+        solutionStepMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loesungsSchrittMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(loesungsSchrittMenuItem);
-        raetselMenu.add(jSeparator30);
+        puzzleMenu.add(solutionStepMenuItem);
+        puzzleMenu.add(jSeparator30);
 
         backdoorSearchMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.backdoorSearchMenuItem.mnemonic").charAt(0));
         backdoorSearchMenuItem.setText(bundle.getString("MainFrame.backdoorSearchMenuItem.text")); // NOI18N
@@ -1624,7 +1623,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 backdoorSearchMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(backdoorSearchMenuItem);
+        puzzleMenu.add(backdoorSearchMenuItem);
 
         historyMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.historyMenuItem.mnemonic").charAt(0));
         historyMenuItem.setText(bundle.getString("MainFrame.historyMenuItem.text")); // NOI18N
@@ -1633,7 +1632,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 historyMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(historyMenuItem);
+        puzzleMenu.add(historyMenuItem);
 
         createSavePointMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.setSavePointMenuItem.mnemonic").charAt(0));
         createSavePointMenuItem.setText(bundle.getString("MainFrame.createSavePointMenuItem.text")); // NOI18N
@@ -1642,7 +1641,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 createSavePointMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(createSavePointMenuItem);
+        puzzleMenu.add(createSavePointMenuItem);
 
         restoreSavePointMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.restoreSavePointMenuItem.mnemonic").charAt(0));
         restoreSavePointMenuItem.setText(bundle.getString("MainFrame.restoreSavePointMenuItem.text")); // NOI18N
@@ -1651,8 +1650,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 restoreSavePointMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(restoreSavePointMenuItem);
-        raetselMenu.add(jSeparator29);
+        puzzleMenu.add(restoreSavePointMenuItem);
+        puzzleMenu.add(jSeparator29);
 
         setGivensMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.setGivensMenuItem.mnemonic").charAt(0));
         setGivensMenuItem.setText(bundle.getString("MainFrame.setGivensMenuItem.text")); // NOI18N
@@ -1661,8 +1660,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 setGivensMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(setGivensMenuItem);
-        raetselMenu.add(jSeparator28);
+        puzzleMenu.add(setGivensMenuItem);
+        puzzleMenu.add(jSeparator28);
 
         alleHiddenSinglesSetzenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, 0));
         alleHiddenSinglesSetzenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.alleHiddenSinglesSetzenMenuItemMnemonic").charAt(0));
@@ -1672,12 +1671,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 alleHiddenSinglesSetzenMenuItemActionPerformed(evt);
             }
         });
-        raetselMenu.add(alleHiddenSinglesSetzenMenuItem);
+        puzzleMenu.add(alleHiddenSinglesSetzenMenuItem);
 
-        jMenuBar1.add(raetselMenu);
+        jMenuBar1.add(puzzleMenu);
 
-        ansichtMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.ansichtMenuMnemonic").charAt(0));
-        ansichtMenu.setText(bundle.getString("MainFrame.ansichtMenu.text")); // NOI18N
+        viewMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.ansichtMenuMnemonic").charAt(0));
+        viewMenu.setText(bundle.getString("MainFrame.ansichtMenu.text")); // NOI18N
 
         sudokuOnlyMenuItem.setAccelerator(KeyStroke.getKeyStroke("shift control " + java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.sudokuOnlyMenuItemMnemonic").toUpperCase().charAt(0)));
         viewButtonGroup.add(sudokuOnlyMenuItem);
@@ -1689,8 +1688,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 sudokuOnlyMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(sudokuOnlyMenuItem);
-        ansichtMenu.add(jSeparator20);
+        viewMenu.add(sudokuOnlyMenuItem);
+        viewMenu.add(jSeparator20);
 
         summaryMenuItem.setAccelerator(KeyStroke.getKeyStroke("shift control " + java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.summaryMenuItemMnemonic").toUpperCase().charAt(0)));
         viewButtonGroup.add(summaryMenuItem);
@@ -1701,7 +1700,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 summaryMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(summaryMenuItem);
+        viewMenu.add(summaryMenuItem);
 
         solutionMenuItem.setAccelerator(KeyStroke.getKeyStroke("shift control " + java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solutionMenuItemMnemonic").toUpperCase().charAt(0)));
         viewButtonGroup.add(solutionMenuItem);
@@ -1712,7 +1711,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 solutionMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(solutionMenuItem);
+        viewMenu.add(solutionMenuItem);
 
         allStepsMenuItem.setAccelerator(KeyStroke.getKeyStroke("shift control " + java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.allStepsMenuItemMnemonic").toUpperCase().charAt(0)));
         viewButtonGroup.add(allStepsMenuItem);
@@ -1723,7 +1722,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 allStepsMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(allStepsMenuItem);
+        viewMenu.add(allStepsMenuItem);
 
         cellZoomMenuItem.setAccelerator(KeyStroke.getKeyStroke("shift control " + java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.cellZoomMenuItemMnemonic").toUpperCase().charAt(0)));
         viewButtonGroup.add(cellZoomMenuItem);
@@ -1734,8 +1733,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 cellZoomMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(cellZoomMenuItem);
-        ansichtMenu.add(jSeparator6);
+        viewMenu.add(cellZoomMenuItem);
+        viewMenu.add(jSeparator6);
 
         showHintPanelMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showHintPanelMenuItem.mnemonic").charAt(0));
         showHintPanelMenuItem.setSelected(true);
@@ -1745,7 +1744,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 showHintPanelMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(showHintPanelMenuItem);
+        viewMenu.add(showHintPanelMenuItem);
 
         showToolBarMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showToolBarMenuItem.mnemonic").charAt(0));
         showToolBarMenuItem.setSelected(true);
@@ -1755,7 +1754,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 showToolBarMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(showToolBarMenuItem);
+        viewMenu.add(showToolBarMenuItem);
 
         showHintButtonsCheckBoxMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showHintButtonsCheckBoxMenuItem.mnemonic").charAt(0));
         showHintButtonsCheckBoxMenuItem.setText(bundle.getString("MainFrame.showHintButtonsCheckBoxMenuItem.text")); // NOI18N
@@ -1764,7 +1763,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 showHintButtonsCheckBoxMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(showHintButtonsCheckBoxMenuItem);
+        viewMenu.add(showHintButtonsCheckBoxMenuItem);
 
         fullScreenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         fullScreenMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.fullScreenMenuItem.mnemonic").charAt(0));
@@ -1774,8 +1773,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 fullScreenMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(fullScreenMenuItem);
-        ansichtMenu.add(jSeparator23);
+        viewMenu.add(fullScreenMenuItem);
+        viewMenu.add(jSeparator23);
 
         resetViewMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.resetViewMenuItemMnemonic").charAt(0));
         resetViewMenuItem.setText(bundle.getString("MainFrame.resetViewMenuItem.text")); // NOI18N
@@ -1784,9 +1783,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 resetViewMenuItemActionPerformed(evt);
             }
         });
-        ansichtMenu.add(resetViewMenuItem);
+        viewMenu.add(resetViewMenuItem);
 
-        jMenuBar1.add(ansichtMenu);
+        jMenuBar1.add(viewMenu);
 
         helpMenu.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.helpMenu.mnemonic").charAt(0));
         helpMenu.setText(bundle.getString("MainFrame.helpMenu.text")); // NOI18N
@@ -1980,7 +1979,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         }
     }//GEN-LAST:event_druckenMenuItemActionPerformed
 
-    private void seiteEinrichtenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seiteEinrichtenMenuItemActionPerformed
+    private void printSetupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seiteEinrichtenMenuItemActionPerformed
         if (job == null) {
             job = PrinterJob.getPrinterJob();
         }
@@ -3049,15 +3048,15 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
         }
         showDeviationsMenuItemActionPerformed(null);
 
-        vageHintMenuItem.setEnabled(isSpielen);
+        vagueHintMenuItem.setEnabled(isSpielen);
         mediumHintMenuItem.setEnabled(isSpielen);
-        loesungsSchrittMenuItem.setEnabled(isSpielen);
+        solutionStepMenuItem.setEnabled(isSpielen);
         alleHiddenSinglesSetzenMenuItem.setEnabled(isSpielen);
         showDeviationsMenuItem.setEnabled(isSpielen);
         showColorKuMenuItem.setEnabled(isSpielen);
 
-        spielSpielenMenuItem.setEnabled(!isSpielen);
-        spielEditierenMenuItem.setEnabled(isSpielen);
+        playGameMenuItem.setEnabled(!isSpielen);
+        editGameMenuItem.setEnabled(isSpielen);
     }
 
     public void setSolutionStep(SolutionStep step, boolean setInSudokuPanel) {
@@ -3409,7 +3408,7 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
      * @param path
      * @param fileType 0 .. options, 1 .. sudoku from hsol, 8 .. sudoku from text file
      */
-    @SuppressWarnings({"CallToThreadDumpStack", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     private void loadFromFile(String path, int fileType) {
     	
         try {
@@ -4126,11 +4125,11 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JRadioButtonMenuItem allStepsMenuItem;
     private javax.swing.JMenuItem alleHiddenSinglesSetzenMenuItem;
-    private javax.swing.JMenu ansichtMenu;
+    private javax.swing.JMenu viewMenu;
     private javax.swing.JMenuItem askQuestionMenuItem;
     private javax.swing.JMenuItem backdoorSearchMenuItem;
-    private javax.swing.JMenu bearbeitenMenu;
-    private javax.swing.JMenuItem beendenMenuItem;
+    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JRadioButtonMenuItem cellZoomMenuItem;
     private javax.swing.ButtonGroup colorButtonGroup;
     private javax.swing.JRadioButtonMenuItem colorCandidatesMenuItem;
@@ -4143,8 +4142,8 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem copyPmGridWithStepMenuItem;
     private javax.swing.JMenuItem copySSMenuItem;
     private javax.swing.JMenuItem createSavePointMenuItem;
-    private javax.swing.JMenu dateiMenu;
-    private javax.swing.JMenuItem druckenMenuItem;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JMenuItem extendedPrintMenuItem;
     private javax.swing.JToggleButton f1ToggleButton;
     private javax.swing.JToggleButton f2ToggleButton;
@@ -4195,22 +4194,22 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem keyMenuItem;
     private javax.swing.JRadioButtonMenuItem learningMenuItem;
     private javax.swing.ButtonGroup levelButtonGroup;
-    private javax.swing.JComboBox levelComboBox;
-    private javax.swing.JRadioButtonMenuItem levelExtremMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelKniffligMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelLeichtMenuItem;
+    private javax.swing.JComboBox<String> levelComboBox;
     private javax.swing.JMenu levelMenu;
-    private javax.swing.JRadioButtonMenuItem levelMittelMenuItem;
-    private javax.swing.JRadioButtonMenuItem levelSchwerMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelEasyMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelMediumMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelHardMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelDiabolicalMenuItem;
+    private javax.swing.JRadioButtonMenuItem levelExtremeMenuItem;
     private javax.swing.JMenuItem loadConfigMenuItem;
     private javax.swing.JMenuItem loadPuzzleMenuItem;
-    private javax.swing.JMenuItem loesungsSchrittMenuItem;
+    private javax.swing.JMenuItem solutionStepMenuItem;
     private javax.swing.JMenuItem mediumHintMenuItem;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JMenu modeMenu;
-    private javax.swing.JMenuItem neuMenuItem;
-    private javax.swing.JButton neuerHinweisButton;
-    private javax.swing.JButton neuesSpielToolButton;
+    private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JButton newNoteButton;
+    private javax.swing.JButton newGameToolButton;
     private javax.swing.JMenu optionenMenu;
     private javax.swing.JSplitPane outerSplitPane;
     private javax.swing.JMenuItem pasteMenuItem;
@@ -4218,7 +4217,7 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JRadioButtonMenuItem practisingMenuItem;
     private javax.swing.JLabel progressLabel;
     private javax.swing.JMenuItem projectHomePageMenuItem;
-    private javax.swing.JMenu raetselMenu;
+    private javax.swing.JMenu puzzleMenu;
     private javax.swing.JToggleButton redGreenToggleButton;
     private javax.swing.JMenuItem redoMenuItem;
     private javax.swing.JButton redoToolButton;
@@ -4232,7 +4231,7 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem importPuzzleMenuItem;
     private javax.swing.JMenuItem exportPuzzleMenuItem;
     private javax.swing.JMenuItem savePuzzleMenuItem;
-    private javax.swing.JMenuItem seiteEinrichtenMenuItem;
+    private javax.swing.JMenuItem printSetupMenuItem;
     private javax.swing.JMenuItem setGivensMenuItem;
     private javax.swing.JCheckBoxMenuItem showCandidatesMenuItem;
     private javax.swing.JCheckBoxMenuItem showColorKuMenuItem;
@@ -4244,10 +4243,10 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JRadioButtonMenuItem solutionMenuItem;
     private javax.swing.JButton solveUpToButton;
     private javax.swing.JMenuItem solvingGuideMenuItem;
-    private javax.swing.JMenuItem speichernAlsBildMenuItem;
-    private javax.swing.JMenuItem spielEditierenMenuItem;
-    private javax.swing.JMenuItem spielEingebenMenuItem;
-    private javax.swing.JMenuItem spielSpielenMenuItem;
+    private javax.swing.JMenuItem saveAsPictureMenuItem;
+    private javax.swing.JMenuItem editGameMenuItem;
+    private javax.swing.JMenuItem enterGameMenuItem;
+    private javax.swing.JMenuItem playGameMenuItem;
     private javax.swing.JLabel statusLabelCellCandidate;
     private javax.swing.JLabel statusLabelLevel;
     private javax.swing.JLabel statusLabelModus;
@@ -4265,7 +4264,7 @@ private void extendedPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem undoMenuItem;
     private javax.swing.JButton undoToolButton;
     private javax.swing.JMenuItem userManualMenuItem;
-    private javax.swing.JMenuItem vageHintMenuItem;
+    private javax.swing.JMenuItem vagueHintMenuItem;
     private javax.swing.ButtonGroup viewButtonGroup;
     // End of variables declaration//GEN-END:variables
 }

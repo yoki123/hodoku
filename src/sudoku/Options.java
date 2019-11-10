@@ -895,7 +895,6 @@ public final class Options {
         }
     }
 
-    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
         Options options = new Options();
         try {

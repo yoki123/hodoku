@@ -606,7 +606,7 @@ public class SudokuSolver {
     public void getState(GuiState state, boolean copy) {
         if (copy) {
             state.setAnzSteps(anzSteps.clone());
-            state.setSteps((List<SolutionStep>) ((ArrayList)steps).clone());
+            state.setSteps((List<SolutionStep>) ((ArrayList<SolutionStep>)steps).clone());
         } else {
             state.setAnzSteps(anzSteps);
             state.setSteps(steps);

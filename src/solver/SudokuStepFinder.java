@@ -77,16 +77,19 @@ public class SudokuStepFinder {
     /** The sudoku for which steps should be found. */
     private Sudoku2 sudoku;
     /** The step configuration for searches. */
-    private StepConfig[] stepConfigs;
+    @SuppressWarnings("unused")
+	private StepConfig[] stepConfigs;
     /** A status counter that changes every time a new step has been found. Specialized
      *  solvers can use this counter to use cached steps instead of searching for them
      *  if no step was found since the last search.
      */
     private int stepNumber = 0;
     /** for timing */
-    private long templateNanos;
+    @SuppressWarnings("unused")
+	private long templateNanos;
     /** for timing */
-    private int templateAnz;
+    @SuppressWarnings("unused")
+	private int templateAnz;
     /** Lazy initialization: The solvers are only created when they are used. */
     private boolean initialized = false;
     /** If set to <code>true</code>, the StepFinder contains only one {@link SimpleSolver} instance. */

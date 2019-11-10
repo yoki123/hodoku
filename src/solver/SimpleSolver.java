@@ -89,6 +89,8 @@ public class SimpleSolver extends AbstractSolver {
             case LOCKED_CANDIDATES:
             case LOCKED_CANDIDATES_1:
             case LOCKED_CANDIDATES_2: result = findLockedCandidates(type); break;
+		default:
+			break;
         }
         return result;
     }

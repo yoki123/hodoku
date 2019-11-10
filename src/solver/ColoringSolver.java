@@ -88,6 +88,8 @@ public class ColoringSolver extends AbstractSolver {
             case MULTI_COLORS_2:
                 result = findMultiColorStep(true);
                 break;
+		default:
+			break;
         }
         return result;
     }

@@ -110,6 +110,8 @@ public class UniquenessSolver extends AbstractSolver {
             case BUG_PLUS_1:
                 result = getBugPlus1();
                 break;
+		default:
+			break;
         }
         return result;
     }

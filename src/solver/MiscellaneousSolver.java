@@ -123,6 +123,8 @@ public class MiscellaneousSolver extends AbstractSolver {
             case SUE_DE_COQ:
                 result = getSueDeCoq(true);
                 break;
+		default:
+			break;
         }
         return result;
     }

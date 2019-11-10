@@ -346,6 +346,8 @@ public class TablingSolver extends AbstractSolver {
                     result = steps.get(0);
                 }
                 break;
+		default:
+			break;
         }
         return result;
     }
@@ -1048,24 +1050,6 @@ public class TablingSolver extends AbstractSolver {
             // "only one chain" is set -> store the new step
             deletesMap.put(del, steps.size() - 1);
         }
-    }
-
-    /**
-     * Print all table entries from
-     * <code>entrylist</code> (for debugging only).
-     *
-     * @param entryList
-     * @return
-     */
-    private String printEntryList(List<TableEntry> entryList) {
-        StringBuilder tmp = new StringBuilder();
-        for (int i = 0; i < entryList.size(); i++) {
-            if (i != 0) {
-                tmp.append(", ");
-            }
-            tmp.append(printTableEntry(entryList.get(i).entries[0]));
-        }
-        return tmp.toString();
     }
 
     /**
@@ -2942,53 +2926,6 @@ public class TablingSolver extends AbstractSolver {
             }
         }
         return actChainIndex;
-    }
-
-    /**
-     * Show the contents of one {@link TableEntry} (for debugging).
-     *
-     * @param title
-     * @param entry
-     */
-    private void printTable(String title, TableEntry entry) {
-        System.out.println(title + ": ");
-        int anz = 0;
-        StringBuilder tmp = new StringBuilder();
-        for (int i = 0; i < entry.index; i++) {
-            if (!entry.isStrong(i)) {
-                //continue;
-            }
-            tmp.append(printTableEntry(entry.entries[i]));
-            for (int j = 0; j < entry.getRetIndexAnz(i); j++) {
-                int retIndex = entry.getRetIndex(i, j);
-                tmp.append(" (");
-                if (entry.isExpanded(i)) {
-                    tmp.append("EX:").append(retIndex).append(":").append(entry.isExtendedTable(i)).append("/").append(entry.isOnTable(i)).append("/");
-//                    TableEntry actEntry = entry.isOnTable(i) ? onTable[retIndex] : offTable[retIndex];
-//                    int index1 = actEntry.getEntryIndex(entry.entries[i]);
-//                    // go back one level
-//                    for (int k = 0; k < actEntry.getRetIndexAnz(index1); k++) {
-//                        int retIndex1 = actEntry.getRetIndex(index1, k);
-//                        if (actEntry.isExpanded(index1)) {
-//                            tmp.append("EEX/");
-//                        }
-//                        tmp.append(retIndex1 + "/" + printTableEntry(actEntry.entries[retIndex1]) + ")");
-//                    }
-                } else {
-                    tmp.append(retIndex).append("/").append(printTableEntry(entry.entries[retIndex])).append(")");
-                }
-            }
-            tmp.append(" ");
-            anz++;
-            if ((anz % 5) == 0) {
-                tmp.append("\r\n");
-            }
-        }
-        System.out.println(tmp.toString());
-//        for (int i = 1; i < entry.onSets.length; i++) {
-//            System.out.println(i + " on:  " + entry.onSets[i]);
-//            System.out.println(i + " off: " + entry.offSets[i]);
-//        }
     }
 
     /**

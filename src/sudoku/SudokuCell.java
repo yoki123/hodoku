@@ -26,21 +26,22 @@ package sudoku;
  * @author hobiwan
  */
 public class SudokuCell {
-    public static final int USER = 0;
-    public static final int PLAY = 1;
+
+	public static final int USER = 0;
+	public static final int PLAY = 1;
     public static final int ALL = 2;
 
-    private static final short M_1 = 0x0001;
-    private static final short M_2 = 0x0002;
-    private static final short M_3 = 0x0004;
-    private static final short M_4 = 0x0008;
-    private static final short M_5 = 0x0010;
-    private static final short M_6 = 0x0020;
-    private static final short M_7 = 0x0040;
-    private static final short M_8 = 0x0080;
-    private static final short M_9 = 0x0100;
-    private static final short M_ALL = 0x01FF;
-    private static final short[] masks = { M_1, M_2, M_3, M_4, M_5, M_6, M_7, M_8, M_9 };
+    public static final short M_1 = 0x0001;
+    public static final short M_2 = 0x0002;
+    public static final short M_3 = 0x0004;
+    public static final short M_4 = 0x0008;
+    public static final short M_5 = 0x0010;
+    public static final short M_6 = 0x0020;
+    public static final short M_7 = 0x0040;
+    public static final short M_8 = 0x0080;
+    public static final short M_9 = 0x0100;
+    public static final short M_ALL = 0x01FF;
+    public static final short[] masks = { M_1, M_2, M_3, M_4, M_5, M_6, M_7, M_8, M_9 };
     
     private byte value = 0;
     private boolean isFixed = false; // vorgegebene Zahl, kann nicht verändert werden!

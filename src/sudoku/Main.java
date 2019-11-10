@@ -75,7 +75,6 @@ public class Main {
         return path;
     }
 
-    @SuppressWarnings("empty-statement")
     void searchForType(List<StepType> typeList, DifficultyLevel level, String outFile) {
         //Logger.getLogger(getClass().getName()).log(Level.INFO, "Starting search for " + type.getStepName());
         System.out.println("Starting search for:");
@@ -87,7 +86,7 @@ public class Main {
         if (level != null) {
             System.out.println("   " + level.getName());
         }
-        SearchForTypeThread thread = new SearchForTypeThread(this, typeList, level, outFile);
+        SearchForTypeThread thread = new SearchForTypeThread(typeList, level, outFile);
         thread.start();
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         try {
@@ -120,7 +119,6 @@ public class Main {
         batchSolve(fileName, puzzleString, printSolution, printSolutionPath, printStatistic, cMode, types, outFile, findAllSteps, false, null);
     }
 
-    @SuppressWarnings("CallToThreadDumpStack")
     public void batchSolve(String fileName, String puzzleString, boolean printSolution, boolean printSolutionPath,
             boolean printStatistic, ClipboardMode cMode, Set<SolutionType> types, String outFile, boolean findAllSteps,
             boolean bruteForceTest, List<SolutionType> testTypes) {
@@ -326,11 +324,11 @@ public class Main {
         }
         // When configuring a logger we need a strong reference or
         // it may be garbage collected and the configuration will be lost
-        Logger logger = null;
+        //Logger logger = null;
         //Logger.getLogger(Sudoku2.class.getName()).setLevel(Level.FINER);
         //Logger.getLogger(FishSolver.class.getName()).setLevel(Level.FINER);
         //Logger.getLogger(TablingSolver.class.getName()).setLevel(Level.FINER);
-        loggers.add(logger = Logger.getLogger(SudokuSolver.class.getName()));
+        loggers.add(Logger.getLogger(SudokuSolver.class.getName()));
         //logger.setLevel(Level.FINER);
 
         Logger.getLogger(Main.class.getName()).log(Level.CONFIG, "java.io.tmpdir={0}", System.getProperty("java.io.tmpdir"));
@@ -1077,16 +1075,14 @@ class SearchForTypeThread extends Thread {
             anzCandDel = 0;
         }
     }
-    private Main m;
+
     private List<StepType> typeList;
     private DifficultyLevel level;
     private int anz = 0;
     private int anzFound = 0;
     private String outFile = null;
 
-    SearchForTypeThread(Main m, List<StepType> typeList,
-            DifficultyLevel level, String outFile) {
-        this.m = m;
+    SearchForTypeThread(List<StepType> typeList, DifficultyLevel level, String outFile) {
         this.typeList = typeList;
         this.level = level;
         this.outFile = outFile;
@@ -1112,7 +1108,6 @@ class SearchForTypeThread extends Thread {
     }
 
     @Override
-    @SuppressWarnings({"ResultOfObjectAllocationIgnored", "CallToThreadDumpStack"})
     public void run() {
         //String path = m.getSrcDir() + "ar.txt";
         PuzzleType[] puzzleTypes = new PuzzleType[typeList.size()];
@@ -1484,7 +1479,6 @@ class BatchSolveThread extends Thread {
     }
 
     @Override
-    @SuppressWarnings("CallToThreadDumpStack")
     public void run() {
         System.out.println("Starting batch solve...");
         results = new int[Options.DEFAULT_DIFFICULTY_LEVELS.length];

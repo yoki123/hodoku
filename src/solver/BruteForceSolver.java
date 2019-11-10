@@ -46,6 +46,8 @@ public class BruteForceSolver extends AbstractSolver {
             case BRUTE_FORCE:
                 result = getBruteForce();
                 break;
+		default:
+			break;
         }
         return result;
     }

@@ -74,6 +74,8 @@ public class WingSolver extends AbstractSolver {
             case W_WING:
                 result = getWWing(true);
                 break;
+		default:
+			break;
         }
         return result;
     }

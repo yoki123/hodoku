@@ -86,8 +86,8 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
         showDeviationsCheckBox = new javax.swing.JCheckBox();
         saveWindowLayoutCheckBox = new javax.swing.JCheckBox();
         localLabel = new javax.swing.JLabel();
-        localComboBox = new javax.swing.JComboBox();
-        lookAndFeelComboBox = new javax.swing.JComboBox();
+        localComboBox = new javax.swing.JComboBox<String>();
+        lookAndFeelComboBox = new javax.swing.JComboBox<String>();
         lookAndFeelLabel = new javax.swing.JLabel();
         fontSizeLabel = new javax.swing.JLabel();
         fontSizeTextField = new javax.swing.JTextField();
@@ -425,7 +425,6 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
         Options.getInstance().setUseOrInsteadOfAndForFilter(toggleFilterAndOrCheckBox.isSelected());
     }
     
-    @SuppressWarnings("unchecked")
     private void initAll(boolean setDefault) {
         if (setDefault) {
             defaultSizeCheckBox.setSelected(Options.USE_DEFAULT_FONT_SIZE);
@@ -555,9 +554,9 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JComboBox localComboBox;
+    private javax.swing.JComboBox<String> localComboBox;
     private javax.swing.JLabel localLabel;
-    private javax.swing.JComboBox lookAndFeelComboBox;
+    private javax.swing.JComboBox<String> lookAndFeelComboBox;
     private javax.swing.JLabel lookAndFeelLabel;
     private javax.swing.JCheckBox onlySmallCursorsCheckBox;
     private javax.swing.JCheckBox onlySmallFiltersCheckBox;

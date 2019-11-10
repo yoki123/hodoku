@@ -83,7 +83,7 @@ public class SudokuGenerator {
     private int anzClues = 0;
     private long nanos = 0;
     private long setNanos = 0;
-    private long actSetNanos = 0;
+    //private long actSetNanos = 0;
 
     /** Creates a new instance of SudokuGenerator */
     protected SudokuGenerator() {
@@ -391,7 +391,6 @@ public class SudokuGenerator {
      * done by {@link #doGenerateFullGrid()}, but since this
      * method can fail, we have to check for errors.
      */
-    @SuppressWarnings("empty-statement")
     private void generateFullGrid() {
         while (doGenerateFullGrid() == false);
     }
@@ -601,7 +600,8 @@ public class SudokuGenerator {
      * @param sudoku
      * @return <code>false</code>, if the puzzle has become invalid.
      */
-    private boolean setAllExposedSingles(Sudoku2 sudoku) {
+    @SuppressWarnings("unused")
+	private boolean setAllExposedSingles(Sudoku2 sudoku) {
         boolean valid = true;
         SudokuSinglesQueue nsQueue = sudoku.getNsQueue();
         SudokuSinglesQueue hsQueue = sudoku.getHsQueue();
@@ -658,7 +658,8 @@ public class SudokuGenerator {
         return temp.toString();
     }
 
-    private String getGridStr(Sudoku2 sudoku) {
+    @SuppressWarnings("unused")
+	private String getGridStr(Sudoku2 sudoku) {
         return getSolutionAsString(sudoku.getValues());
     }
 
@@ -666,7 +667,8 @@ public class SudokuGenerator {
         return "anzTries: " + anzTries + ", anzNS: " + anzNS + ", anzHS: " + anzHS;
     }
 
-    public static void main(String[] args) {
+    @SuppressWarnings("unused")
+	public static void main(String[] args) {
         System.out.println("Sudoku2!");
 //        ..15............32...............2.9.5...3......7..8..27.....4.3...9.......6..5..
 //        .1.....2....8..6.......3........43....2.1....8......9.4...7.5.3...2...........4..

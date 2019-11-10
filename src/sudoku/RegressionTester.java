@@ -83,7 +83,8 @@ public class RegressionTester {
 
         int anzLines = 0;
         try {
-            BufferedReader in = new BufferedReader(new FileReader(testFile));
+            @SuppressWarnings("resource")
+			BufferedReader in = new BufferedReader(new FileReader(testFile));
             String line = null;
             while ((line = in.readLine()) != null) {
                 anzLines++;
@@ -700,7 +701,8 @@ public class RegressionTester {
         anzIgnoreCases++;
     }
 
-    private void addNotImplementedTechnique(String technique) {
+    @SuppressWarnings("unused")
+	private void addNotImplementedTechnique(String technique) {
         int count = 1;
         if (notImplementedTechniques.containsKey(technique)) {
             count = notImplementedTechniques.get(technique);

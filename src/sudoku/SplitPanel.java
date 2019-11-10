@@ -30,7 +30,8 @@ import javax.swing.JPanel;
 public class SplitPanel extends javax.swing.JPanel {
     private static final long serialVersionUID = 1L;
     private SudokuPanel sudokuPanel;
-    private Component rightComponent;
+    @SuppressWarnings("unused")
+	private Component rightComponent;
     
     /** Creates new form SplitPanel */
     public SplitPanel() {

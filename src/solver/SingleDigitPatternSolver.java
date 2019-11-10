@@ -171,6 +171,8 @@ public class SingleDigitPatternSolver extends AbstractSolver {
             case EMPTY_RECTANGLE:
                 result = findEmptyRectangle();
                 break;
+		default:
+			break;
         }
         return result;
     }

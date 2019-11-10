@@ -144,6 +144,8 @@ public class AlsSolver extends AbstractSolver {
             case DEATH_BLOSSOM:
                 result = getAlsDeathBlossom(true);
                 break;
+		default:
+			break;
         }
         return result;
     }
@@ -696,7 +698,8 @@ public class AlsSolver extends AbstractSolver {
      * 
      * @param recDepth 
      */
-    private void showActAlsChain(int recDepth) {
+    @SuppressWarnings("unused")
+	private void showActAlsChain(int recDepth) {
         if (DEBUG) {
             globalStep.reset();
             globalStep.setType(SolutionType.ALS_XY_CHAIN);

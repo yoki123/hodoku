@@ -77,6 +77,8 @@ public class TemplateSolver extends AbstractSolver {
                     result = steps.get(0);
                 }
                 break;
+		default:
+			break;
         }
         return result;
     }
@@ -175,7 +177,8 @@ public class TemplateSolver extends AbstractSolver {
         TemplateSolver ts = new TemplateSolver(null);
         long millis = System.currentTimeMillis();
         for (int i = 0; i < 1; i++) {
-            List<SolutionStep> steps = ts.getAllTemplates();
+            @SuppressWarnings("unused")
+			List<SolutionStep> steps = ts.getAllTemplates();
         }
         millis = System.currentTimeMillis() - millis;
         System.out.println("Zeit: " + (millis / 100) + "ms");

@@ -1022,13 +1022,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      */
     @SuppressWarnings("unchecked")
     public void getState(GuiState state, boolean copy) {
-        // items that dont have to be copied
+        // items that don't have to be copied
         state.setChainIndex(chainIndex);
         // items that must be copied anyway
         state.setUndoStack((Stack<Sudoku2>) undoStack.clone());
         state.setRedoStack((Stack<Sudoku2>) redoStack.clone());
-        state.setColoringMap((SortedMap<Integer, Integer>) ((TreeMap) coloringMap).clone());
-        state.setColoringCandidateMap((SortedMap<Integer, Integer>) ((TreeMap) coloringCandidateMap).clone());
+        state.setColoringMap((SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) coloringMap).clone());
+        state.setColoringCandidateMap((SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) coloringCandidateMap).clone());
         // items that might be null (and therefore wont be copied)
         state.setSudoku(sudoku);
         state.setStep(step);
@@ -2650,8 +2650,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     private void drawArrow(Graphics2D g2, int index1, int index2, int cellSize,
             double ddy, List<Point2D.Double> points1) {
         // calculate the start and end points for the arrow
-        Point2D.Double p1 = (Point2D.Double) (points1.get(index1).clone());
-        Point2D.Double p2 = (Point2D.Double) (points1.get(index2).clone());
+        Point2D.Double p1 = (java.awt.geom.Point2D.Double) (points1.get(index1).clone());
+        Point2D.Double p2 = (java.awt.geom.Point2D.Double) (points1.get(index2).clone());
         double length = p1.distance(p2);
         double deltaX = p2.x - p1.x;
         double deltaY = p2.y - p1.y;
@@ -2739,7 +2739,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                 double[] tmpPoints = new double[6];
                 PathIterator pIt = cubicCurve.getPathIterator(null, 0.01);
                 while (!pIt.isDone()) {
-                    int type = pIt.currentSegment(tmpPoints);
+                    @SuppressWarnings("unused")
+					int type = pIt.currentSegment(tmpPoints);
                     double dist = p2.distance(tmpPoints[0], tmpPoints[1]);
                     if (Math.abs(dist - arrowLength) < eps) {
                         eps = Math.abs(dist - arrowLength);

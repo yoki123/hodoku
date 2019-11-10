@@ -407,6 +407,8 @@ public class FishSolver extends AbstractSolver {
                 searchAll = false;
                 result = getKrakenFish();
                 break;
+		default:
+			break;
         }
         return result;
     }
@@ -1680,7 +1682,8 @@ public class FishSolver extends AbstractSolver {
      * @param m1
      * @param m2
      */
-    private void printSet(String text, long m1, long m2) {
+    @SuppressWarnings("unused")
+	private void printSet(String text, long m1, long m2) {
         SudokuSetBase set = new SudokuSetBase();
         set.setMask1(m1);
         set.setMask2(m2);
@@ -1700,7 +1703,6 @@ public class FishSolver extends AbstractSolver {
         System.out.println(tmpBuffer);
     }
 
-    @SuppressWarnings("CallToThreadDumpStack")
     public static void main(String[] args) {
 //        Sudoku2 sudoku = new Sudoku2();
 //        // X-Wing: 3 r37 c34 => r1c34,r4c34,r5c34,r6c34,r9c4<>3
