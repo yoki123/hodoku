@@ -32,7 +32,6 @@ Version 2.2.3 (2019-11-11)
 Features added:
 
   - #Double clicking a user set value removes it.
-  - #Double Click mode added under menu Options.
 
 Version 2.2.2 (2019-11-10)
 --------------------------
