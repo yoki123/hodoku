@@ -26,6 +26,21 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.3 (2019-11-11)
+--------------------------
+
+Features added:
+
+  - #Double clicking a user set value removes it.
+  - #Double Click mode added under menu Options.
+
+Version 2.2.2 (2019-11-10)
+--------------------------
+
+Features added:
+
+  - #Added a menu option under Puzzle -> Solve Puzzle.
+
 Version 2.2.1 (2019-11-07) Fork by PseudoFish
 ---------------------------------------------
 
