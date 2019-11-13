@@ -24,6 +24,7 @@ package sudoku;
  * @author hobiwan
  */
 public class Candidate implements Cloneable, Comparable<Candidate> {
+	
     private int value;
     private int index;
     

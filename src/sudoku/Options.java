@@ -317,6 +317,7 @@ public final class Options {
     public static final int ACT_LEVEL = DEFAULT_DIFFICULTY_LEVELS[1].getOrdinal(); // Standard is EASY
     public static final boolean SHOW_SUDOKU_SOLVED = false;
     public static final boolean EDIT_MODE_AUTO_ADVANCE = false;
+    public static final boolean DOUBLE_CLICK_MODE = true;
     private boolean showCandidates = SHOW_CANDIDATES;
     private boolean showWrongValues = SHOW_WRONG_VALUES;
     private boolean showDeviations = SHOW_DEVIATIONS;
@@ -347,6 +348,7 @@ public final class Options {
     private int actLevel = ACT_LEVEL;
     private boolean showSudokuSolved = SHOW_SUDOKU_SOLVED;
     private boolean editModeAutoAdvance = EDIT_MODE_AUTO_ADVANCE;
+    private boolean doubleClickMode = DOUBLE_CLICK_MODE;
     // Clipboard
     public static final boolean USE_ZERO_INSTEAD_OF_DOT = false; // as the name says...
     private boolean useZeroInsteadOfDot = USE_ZERO_INSTEAD_OF_DOT;
@@ -2262,6 +2264,20 @@ public final class Options {
      */
     public boolean isEditModeAutoAdvance() {
         return editModeAutoAdvance;
+    }
+    
+    /**
+     * @return set click mode
+     */
+    public void setDoubleClickMode(boolean enabled) {
+        this.doubleClickMode = enabled;
+    }
+    
+    /**
+     * @return the click mode
+     */
+    public boolean isDoubleClickMode() {
+        return this.doubleClickMode;
     }
 
     /**
