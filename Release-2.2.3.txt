@@ -9,7 +9,7 @@ Java Runtime Environment (JRE) version 1.6 or higher must be installed on your c
 before you can run HoDoKu. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-Available languages: English and german
+Available languages: English and German
 
 For all Windows versions hodoku.exe is the preferred program version. For all other
 operating systems hodoku.jar has to be used. HoDoKu uses rather a lot of memory
@@ -26,24 +26,18 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.4 (2019-11-14)
+Version 2.2.3 (2019-11-14)
 --------------------------
 
 Features:
-	Options -> Show Candidate Highlight
+  - #Double clicking a user set value removes it.
+  - #Options -> Show Candidate Highlight
 		When enabled, the candidate the mouse is on will preview an empty candidate in the cell.
 		Show Candidates must be enabled for this to work
 		Disabling Show Candidates disabled Show Candidate Highlight
 
 Bugs fixed:
-	Show Candidates now saves correctly after the session is closed.
-
-Version 2.2.3 (2019-11-11)
---------------------------
-
-Features added:
-
-  - #Double clicking a user set value removes it.
+  - #Show Candidates now saves correctly after the session is closed.
 
 Version 2.2.2 (2019-11-10)
 --------------------------
