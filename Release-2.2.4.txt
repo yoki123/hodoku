@@ -26,6 +26,18 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.4 (2019-11-14)
+--------------------------
+
+Features:
+	Options -> Show Candidate Highlight
+		When enabled, the candidate the mouse is on will preview an empty candidate in the cell.
+		Show Candidates must be enabled for this to work
+		Disabling Show Candidates disabled Show Candidate Highlight
+
+Bugs fixed:
+	Show Candidates now saves correctly after the session is closed.
+
 Version 2.2.3 (2019-11-11)
 --------------------------
 

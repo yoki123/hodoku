@@ -98,7 +98,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
     private static final long serialVersionUID = 1L;
-    public static final String VERSION = "HoDoKu - v2.2.2";
+    public static final String VERSION = "HoDoKu - v2.2.4";
     
     // public static final String BUILD = "Build 16";
     public static final String BUILD;
@@ -275,6 +275,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     private javax.swing.JMenuItem mediumHintMenuItem;
     private javax.swing.JMenuItem solvePuzzleMenuItem;
     private javax.swing.JCheckBoxMenuItem clickModeMenuItem;
+    private javax.swing.JCheckBoxMenuItem showCandidateHighlightMenuItem;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JMenu modeMenu;
     private javax.swing.JMenuItem newMenuItem;
@@ -756,6 +757,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         mediumHintMenuItem = new javax.swing.JMenuItem();
         solvePuzzleMenuItem = new javax.swing.JMenuItem();
         clickModeMenuItem = new javax.swing.JCheckBoxMenuItem();
+        showCandidateHighlightMenuItem = new javax.swing.JCheckBoxMenuItem();
         solutionStepMenuItem = new javax.swing.JMenuItem();
         backdoorSearchMenuItem = new javax.swing.JMenuItem();
         historyMenuItem = new javax.swing.JMenuItem();
@@ -1585,12 +1587,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
         showCandidatesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showCandidatesMenuItemMnemonic").charAt(0));
         showCandidatesMenuItem.setText(bundle.getString("MainFrame.showCandidatesMenuItem.text")); // NOI18N
+        showCandidatesMenuItem.setSelected(Options.getInstance().isShowCandidates());
         showCandidatesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showCandidatesMenuItemActionPerformed(evt);
             }
         });
         optionMenu.add(showCandidatesMenuItem);
+        
+        showCandidateHighlightMenuItem.setText("Show Candidate Highlight");
+        showCandidateHighlightMenuItem.setEnabled(showCandidatesMenuItem.isSelected());
+        showCandidateHighlightMenuItem.setSelected(Options.getInstance().isShowCandidateHighlight());
+        showCandidateHighlightMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	toggleCandidateHighlight(evt);
+            }
+        });
+        optionMenu.add(showCandidateHighlightMenuItem);
 
         showWrongValuesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showWrongValuesMenuItemMnemonic").charAt(0));
         showWrongValuesMenuItem.setText(bundle.getString("MainFrame.showWrongValuesMenuItem.text")); // NOI18N
@@ -1652,7 +1665,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             	toggleDoubleClickMode(evt);
             }
         });
-        optionMenu.add(clickModeMenuItem);
+        //optionMenu.add(clickModeMenuItem);
         
         optionMenu.add(new javax.swing.JPopupMenu.Separator());
 
@@ -2341,7 +2354,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     }//GEN-LAST:event_showWrongValuesMenuItemActionPerformed
 
     private void showCandidatesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCandidatesMenuItemActionPerformed
-        if (!showCandidatesMenuItem.isSelected()) {
+        
+    	Options.getInstance().toggleShowCandidates();
+    	
+    	if (!showCandidatesMenuItem.isSelected()) {
             // just set the flag and be done!
             sudokuPanel.setShowCandidates(showCandidatesMenuItem.isSelected());
         } else {
@@ -2385,9 +2401,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
                 }
             }
         }
+    	
+    	showCandidateHighlightMenuItem.setEnabled(showCandidatesMenuItem.isSelected());
+    	
         check();
         fixFocus();
-    }//GEN-LAST:event_showCandidatesMenuItemActionPerformed
+    }
 
     private void redoToolButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoToolButtonActionPerformed
         sudokuPanel.redo();
@@ -2618,6 +2637,10 @@ private void toggleDoubleClickMode(java.awt.event.ActionEvent evt) {
 	if (Options.getInstance().isDoubleClickMode()) {
 		sudokuPanel.clearLastCandidateMouseOn();
 	}
+}
+
+private void toggleCandidateHighlight(java.awt.event.ActionEvent evt) {
+	Options.getInstance().toggleShowCandidateHighlight();
 }
 
 private void cellZoomMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellZoomMenuItemActionPerformed

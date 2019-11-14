@@ -40,9 +40,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author hobiwan
  */
+
+/*
+ * Important Note: the serializer requires a very specific naming convention for the setters 
+ * and getter to function properly otherwise it will not read/write the proper values. Say we have:
+ * boolean showCandidateHighlight, you must create a getter with the 'is' prefix as such:
+ * public boolean isShowCandidateHighlight();
+ * Likewise with the setter, you must have a 'set' prefix.
+ */
+
 public final class Options {
 
     public static final String FILE_NAME = "hodoku.hcfg";
@@ -318,6 +326,7 @@ public final class Options {
     public static final boolean SHOW_SUDOKU_SOLVED = false;
     public static final boolean EDIT_MODE_AUTO_ADVANCE = false;
     public static final boolean DOUBLE_CLICK_MODE = true;
+    public static final boolean SHOW_CANDIDATE_HIGHLIGHT = true;
     private boolean showCandidates = SHOW_CANDIDATES;
     private boolean showWrongValues = SHOW_WRONG_VALUES;
     private boolean showDeviations = SHOW_DEVIATIONS;
@@ -349,6 +358,7 @@ public final class Options {
     private boolean showSudokuSolved = SHOW_SUDOKU_SOLVED;
     private boolean editModeAutoAdvance = EDIT_MODE_AUTO_ADVANCE;
     private boolean doubleClickMode = DOUBLE_CLICK_MODE;
+    private boolean showCandidateHighlight = SHOW_CANDIDATE_HIGHLIGHT;
     // Clipboard
     public static final boolean USE_ZERO_INSTEAD_OF_DOT = false; // as the name says...
     private boolean useZeroInsteadOfDot = USE_ZERO_INSTEAD_OF_DOT;
@@ -495,6 +505,7 @@ public final class Options {
 
     /** Creates a new instance of Options */
     public Options() {
+    	
         difficultyLevels = copyDifficultyLevels(DEFAULT_DIFFICULTY_LEVELS);
         orgSolverSteps = copyStepConfigs(DEFAULT_SOLVER_STEPS, false, false, true);
         solverSteps = copyStepConfigs(DEFAULT_SOLVER_STEPS, false, false, false);
@@ -504,14 +515,17 @@ public final class Options {
         for (int i = 0; i < HINT_CANDIDATE_ALS_BACK_COLORS.length; i++) {
             hintCandidateAlsBackColors[i] = new Color(HINT_CANDIDATE_ALS_BACK_COLORS[i].getRGB());
         }
+        
         hintCandidateAlsColors = new Color[HINT_CANDIDATE_ALS_COLORS.length];
         for (int i = 0; i < HINT_CANDIDATE_ALS_COLORS.length; i++) {
             hintCandidateAlsColors[i] = new Color(HINT_CANDIDATE_ALS_COLORS[i].getRGB());
         }
+        
         coloringColors = new Color[COLORING_COLORS.length];
         for (int i = 0; i < COLORING_COLORS.length; i++) {
             coloringColors[i] = new Color(COLORING_COLORS[i].getRGB());
         }
+        
         colorKuColors = new Color[COLORKU_COLORS.length];
         for (int i = 0; i < COLORKU_COLORS.length; i++) {
             colorKuColors[i] = new Color(COLORKU_COLORS[i].getRGB());
@@ -827,14 +841,17 @@ public final class Options {
     }
 
     public void writeOptions() throws FileNotFoundException {
+    	
         String tmp = System.getProperty("java.io.tmpdir");
         String fileName = null;
+        
         if (tmp.endsWith(File.separator)) {
             fileName = tmp + FILE_NAME;
         } else {
             fileName = tmp + File.separator + FILE_NAME;
         }
-//        readOptions(System.getProperty("java.io.tmpdir") + File.separator + FILE_NAME);
+        
+        // readOptions(System.getProperty("java.io.tmpdir") + File.separator + FILE_NAME);
         writeOptions(fileName);
     }
 
@@ -1501,8 +1518,12 @@ public final class Options {
         this.checkTemplates = checkTemplates;
     }
 
+    public boolean toggleShowCandidates() {
+        return this.showCandidates = !this.showCandidates;
+    }
+    
     public boolean isShowCandidates() {
-        return showCandidates;
+        return this.showCandidates;
     }
 
     public void setShowCandidates(boolean showCandidates) {
@@ -2278,6 +2299,27 @@ public final class Options {
      */
     public boolean isDoubleClickMode() {
         return this.doubleClickMode;
+    }
+    
+    /**
+     * @param do we want to see the candidate preview/highlight on mouse hover over?
+     */
+    public void setShowCandidateHighlight(boolean enabled) {
+    	this.showCandidateHighlight = enabled;
+    }
+    
+    /**
+     * toggle the state
+     */
+    public void toggleShowCandidateHighlight() {
+    	this.showCandidateHighlight = !this.showCandidateHighlight;
+    }
+    
+    /**
+     * @return show candidate mouse highlight.
+     */
+    public boolean isShowCandidateHighlight() {
+    	return this.showCandidateHighlight;
     }
 
     /**

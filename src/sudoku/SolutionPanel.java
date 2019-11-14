@@ -40,6 +40,7 @@ import solver.SudokuSolverFactory;
  * @author  hobiwan
  */
 public class SolutionPanel extends javax.swing.JPanel {
+	
     private static final long serialVersionUID = 1L;
 
     private MainFrame mainFrame;
