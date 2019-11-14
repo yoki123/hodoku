@@ -26,30 +26,30 @@ Version 2.2.3 (2019-11-14)
 --------------------------
 
 Features:
-  - #Double clicking a user set value removes it.
-  - #Options -> Show Candidate Highlight
-		When enabled, the candidate the mouse is on will preview an empty candidate in the cell.
-		Show Candidates must be enabled for this to work
-		Disabling Show Candidates disabled Show Candidate Highlight
+  - Double clicking a user set value removes it.
+  - Options -> Show Candidate Highlight
+  	- When enabled, the candidate the mouse is on will preview an empty candidate in the cell
+	- Show Candidates must be enabled for this to work
+	- Disabling Show Candidates disabled Show Candidate Highlight
 
 Bugs fixed:
-  - #Show Candidates now saves correctly after the session is closed.
+  - Show Candidates now saves correctly after the session is closed.
 
 Version 2.2.2 (2019-11-10)
 --------------------------
 
-  - #Added a "Solve Puzzle" option in the Puzzle menu.
+  - Added a "Solve Puzzle" option in the Puzzle menu.
 
 Version 2.2.1 (2019-11-07) Fork by PseudoFish
 ---------------------------------------------
 
 Features added:
 
-  - #Added an "Import Line" option in File.
-  - #Added an "Export Line" option in File.
-  - #File drag-and-drop to load a puzzle. Currently only supports files of this format:
-		067102000000000007100030000000360050000050892500008003046200000000000200051093004 or
-		.671.2...........71...3.......36..5.....5.8925....8..3.462...........2...51.93..4
+  - Added an "Import Line" option in File.
+  - Added an "Export Line" option in File.
+  - File drag-and-drop to load a puzzle. Currently only supports files of this format:
+  	- 067102000000000007100030000000360050000050892500008003046200000000000200051093004
+	- .671.2...........71...3.......36..5.....5.8925....8..3.462...........2...51.93..4
 
 Bugs fixed:
 
