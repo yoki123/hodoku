@@ -28,7 +28,7 @@ Version 2.2.3 (2019-11-14)
 Features:
   - Double clicking a user set value removes it.
   - Options -> Show Candidate Highlight
-  	- When enabled, the candidate the mouse is on will preview an empty candidate in the cell
+  	- When enabled, mouse hover over candidates will highlight it as a preview.
 	- Show Candidates must be enabled for this to work
 	- Disabling Show Candidates disabled Show Candidate Highlight
 
