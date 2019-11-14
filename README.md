@@ -22,6 +22,19 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.3 (2019-11-14)
+--------------------------
+
+Features:
+  - #Double clicking a user set value removes it.
+  - #Options -> Show Candidate Highlight
+		When enabled, the candidate the mouse is on will preview an empty candidate in the cell.
+		Show Candidates must be enabled for this to work
+		Disabling Show Candidates disabled Show Candidate Highlight
+
+Bugs fixed:
+  - #Show Candidates now saves correctly after the session is closed.
+
 Version 2.2.2 (2019-11-10)
 --------------------------
 
