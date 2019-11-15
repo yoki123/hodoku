@@ -51,7 +51,6 @@ import solver.SudokuSolver;
 import solver.SudokuSolverFactory;
 
 /**
- *
  * @author hobiwan
  */
 public class Main {
@@ -62,13 +61,12 @@ public class Main {
     public static String OS_NAME = "";
 
     /** Creates a new instance of Main */
-    public Main() {
-    }
+    public Main() {}
 
     public String getSrcDir() {
         String path = getClass().getClassLoader().getResource("sudoku").toExternalForm().toLowerCase();
         if (path.startsWith("jar")) {
-            path = path.substring(10, path.indexOf("hodoku.jar"));
+            path = path.substring(10, path.indexOf("Hodoku.jar"));
         } else {
             path = path.substring(6, path.indexOf("build"));
         }
@@ -117,29 +115,55 @@ public class Main {
         batchSolve(fileName, puzzleString, printSolution, printSolutionPath, printStatistic, cMode, types, outFile, findAllSteps, false, null);
     }
 
-    public void batchSolve(String fileName, String puzzleString, boolean printSolution, boolean printSolutionPath,
-            boolean printStatistic, ClipboardMode cMode, Set<SolutionType> types, String outFile, boolean findAllSteps,
-            boolean bruteForceTest, List<SolutionType> testTypes) {
-        BatchSolveThread thread = new BatchSolveThread(fileName, puzzleString, printSolution, printSolutionPath, printStatistic,
-                cMode, types, outFile, findAllSteps, bruteForceTest, testTypes);
+    public void batchSolve(
+		String fileName, 
+		String puzzleString, 
+		boolean printSolution, 
+		boolean printSolutionPath,
+        boolean printStatistic, 
+        ClipboardMode cMode, 
+        Set<SolutionType> types, 
+        String outFile, 
+        boolean findAllSteps,
+        boolean bruteForceTest, 
+        List<SolutionType> testTypes) {
+    	
+        BatchSolveThread thread = new BatchSolveThread(
+    		fileName, 
+    		puzzleString, 
+    		printSolution, 
+    		printSolutionPath, 
+    		printStatistic,
+            cMode, 
+            types, 
+            outFile, 
+            findAllSteps, 
+            bruteForceTest, 
+            testTypes
+        );
+        
         thread.start();
         ShutDownThread st = new ShutDownThread(thread);
         Runtime.getRuntime().addShutdownHook(st);
+        
         try {
             thread.join();
         } catch (InterruptedException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "join interrupted...", ex);
         }
+        
         try {
             Runtime.getRuntime().removeShutdownHook(st);
-        } catch (Exception ex) {
-        }
+        } catch (Exception ex) {}
+        
         int min = (int) (thread.getTicks() / 60000);
         int sec = (int) (thread.getTicks() % 60000);
         int ms = sec % 1000;
+        
         sec /= 1000;
         int hours = min / 60;
         min -= (hours * 60);
+        
         System.out.printf("%d puzzles in %dms (%d:%02d:%02d.%03d)\r\n", thread.getCount(), thread.getTicks(), hours, min, sec, ms);
 //        System.out.println(thread.getCount() + " puzzles in " + thread.getTicks() + "ms (" + hours + ":" + min + ":" + sec + "." + ms + ")");
         System.out.printf("%.03f ms per puzzle\r\n", (thread.getTicks() / (double) thread.getCount()));
@@ -148,9 +172,11 @@ public class Main {
         System.out.println(thread.getGivenUpAnz() + " puzzles unsolved!");
         System.out.println(thread.getUnsolvedAnz() + " puzzles not solved logically!");
         System.out.println();
+        
         for (int i = 1; i < thread.getResultLength(); i++) {
             System.out.println("   " + Options.DEFAULT_DIFFICULTY_LEVELS[i].getName() + ": " + thread.getResult(i));
         }
+        
         if (printStatistic) {
             System.out.println();
             try {
@@ -302,7 +328,7 @@ public class Main {
      * @throws IOException  
      */
     public static void main(String[] args) throws IOException {
-        // Logging: Standardmäßig auf die Console, ins Logfile nur Exceptions
+    	
         Handler fh = new FileHandler("%t/hodoku.log", false);
         fh.setFormatter(new SimpleFormatter());
         fh.setLevel(Level.SEVERE);
@@ -310,6 +336,7 @@ public class Main {
         rootLogger.addHandler(fh);
         rootLogger.setLevel(Level.CONFIG);
 //        rootLogger.setLevel(Level.ALL);
+        
         Handler[] handlers = rootLogger.getHandlers();
         for (Handler handler : handlers) {
             if (handler instanceof ConsoleHandler) {
@@ -320,6 +347,7 @@ public class Main {
             }
             handler.setLevel(Level.ALL);
         }
+        
         // When configuring a logger we need a strong reference or
         // it may be garbage collected and the configuration will be lost
         //Logger logger = null;
@@ -346,42 +374,50 @@ public class Main {
         Options.getInstance();
         String path = System.getProperty("launch4j.exedir");
         if (path == null) {
+        	
             URL startURL = Main.class.getResource("/sudoku/Main.class");
             path = startURL.getPath();
             Logger.getLogger(Main.class.getName()).log(Level.CONFIG, "Startup path: {0}", path);
+            
             // 20120116: CAUTION - jar file might be renamed, dont rely on "hodoku.jar"!
             if (path.contains(".jar!")) {
-                // started from jar file: find path only
-                // format is: file:/C:/Sudoku/hodoku.jar!/sudoku/Main.class
-                // format on Ubuntu: file:/home/ubuntu/Desktop/hodoku.jar!/sudoku/Main.class
+
                 int startIndex = 5;
                 if (OS_NAME.startsWith("windows")) {
                     startIndex = 6;
                 }
+                
                 String tmp = path.substring(startIndex, path.indexOf(".jar!"));
                 int index = tmp.lastIndexOf('/');
                 if (index > 0) {
                     path = tmp.substring(0, index);
                 }
+                
             } else if (path.contains("/build/classes")) {
-                // format is (Netbeans only): /C:/Sudoku/Alles%20rund%20um%20HoDoKu/HoDoKu/build/classes/sudoku/Main.class
+
                 int startIndex = 0;
                 if (OS_NAME.startsWith("windows")) {
                     startIndex = 1;
                 }
+                
                 path = path.substring(startIndex, path.indexOf("/build/classes"));
+                
             } else if (path.contains("/bin/sudoku/Main")) {
-                // format (Eclipse. Ubuntu): /home/ubuntu/HoDoKuEclipse/bin/sudoku/Main.class
+
                 int startIndex = 0;
                 if (OS_NAME.startsWith("windows")) {
                     startIndex = 1;
                 }
+                
                 path = path.substring(startIndex, path.indexOf("/bin/sudoku/Main"));
             }
+            
             path = path.replaceAll("%20", " ");
         }
+        
         File configFile = new File(path + File.separator + Options.FILE_NAME);
         boolean needToResetPuzzles = false;
+        
         if (configFile.exists()) {
             Logger.getLogger(Main.class.getName()).log(Level.CONFIG, "Reading options from {0}", configFile.getPath());
             Options.readOptions(configFile.getPath());
@@ -394,6 +430,7 @@ public class Main {
         if (!Options.getInstance().getLanguage().isEmpty()) {
             Locale.setDefault(new Locale(Options.getInstance().getLanguage()));
         }
+        
         // adjust names of difficulty levels
         Options.getInstance().resetDifficultyLevelStrings();
 
@@ -412,12 +449,15 @@ public class Main {
         boolean launchGui = false;
         String launchFile = null;
         for (int i = 0; i < args.length; i++) {
+        	
             if (args[i].equals("/launch4j")) {
                 launch4jUsed = true;
             }
+            
             if (args[i].equalsIgnoreCase("/gui")) {
                 launchGui = true;
             }
+            
             if (args[i].toLowerCase().endsWith("hsol") || args[i].toLowerCase().endsWith("hcfg")) {
                 launchFile = args[i];
             }
@@ -450,23 +490,28 @@ public class Main {
             // expanded accordingly (/f may be present more than once)
             List<String> options = new ArrayList<String>();
             for (int i = 0; i < args.length; i++) {
+            	
                 //System.out.println("args original: " + args[i]);
                 if (args[i].equals("/launch4j")) {
                     // ignore it
                     continue;
                 }
-                if (args[i].equals("/f")) {
+                
+                if (args[i].equals("/f")) {                	
                     if (i + 1 >= args.length) {
                         System.out.println("No options file given: /f ignored");
                     } else {
                         try {
+                        	
                             System.out.println("reading options from file '" + args[i + 1] + "'");
                             BufferedReader in = new BufferedReader(new FileReader(args[i + 1]));
                             StringBuilder tmpOptions = new StringBuilder();
                             String line = null;
+                            
                             while ((line = in.readLine()) != null) {
                                 tmpOptions.append(line.trim()).append(" ");
                             }
+                            
                             in.close();
                             //String[] tmpOptionsArray = tmpOptions.toString().split(" ");
                             String[] tmpOptionsArray = getOptionsFromStringBuilder(tmpOptions);
@@ -476,21 +521,26 @@ public class Main {
                                     options.add(tmpOptionsArray[j]);
                                 }
                             }
+                            
                         } catch (Exception ex) {
                             System.out.println("Can't read from file '" + args[i + 1] + "': /f ignored");
                         }
+                        
                         i++;
                     }
                 } else if (args[i].equals("/stdin")) {
                     // read options from stdin
                     try {
+                    	
                         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
                         StringBuilder tmpOptions = new StringBuilder();
                         String line = null;
+                        
                         while ((line = in.readLine()) != null) {
                             //System.out.println("Line: <" + line + ">");
                             tmpOptions.append(line.trim()).append(" ");
                         }
+                        
                         in.close();
                         //String[] tmpOptionsArray = tmpOptions.toString().split(" ");
                         String[] tmpOptionsArray = getOptionsFromStringBuilder(tmpOptions);
@@ -500,6 +550,7 @@ public class Main {
                                 options.add(tmpOptionsArray[j]);
                             }
                         }
+                        
                     } catch (Exception ex) {
                         System.out.println("Can't read from stdin: /stdin ignored");
                     }
@@ -514,6 +565,7 @@ public class Main {
             if (consoleFrame != null) {
                 consoleFrame.setIn();
             }
+            
             // store all args in a map (except puzzle string)
             String puzzleString = null;
             Map<String, String> argMap = new TreeMap<String, String>();
@@ -521,21 +573,23 @@ public class Main {
             for (int i = 0; i < options.size(); i++) {
                 String arg = options.get(i).trim().toLowerCase();
                 if (arg.equals("/bs") || arg.equals("/vg") || arg.equals("/sc")
-                        || arg.equals("/sl")
-                        || arg.equals("/so") || arg.equals("/c") || arg.equals("/o")
-                        || arg.equals("/bsaf") || arg.equals("/bts") || arg.equals("/bt")
-                        || arg.equals("/test") || arg.equals("/testf") || arg.equals("/vf")
-                        || (arg.equals("/s") && (i + 1 < options.size()) && options.get(i + 1).trim().charAt(0) != '/')) {
+                    || arg.equals("/sl")
+                    || arg.equals("/so") || arg.equals("/c") || arg.equals("/o")
+                    || arg.equals("/bsaf") || arg.equals("/bts") || arg.equals("/bt")
+                    || arg.equals("/test") || arg.equals("/testf") || arg.equals("/vf")
+                    || (arg.equals("/s") && (i + 1 < options.size()) && options.get(i + 1).trim().charAt(0) != '/')) {
                     // args with parameters (only one parameter per arg permitted)
                     if (i + 1 >= options.size() || options.get(i + 1).trim().charAt(0) == '/') {
                         System.out.println("No value for parameter: '" + arg + "' ignored!");
                     } else {
+                    	
                         if (arg.equals("/s")) {
                             argMap.put("/s", null);
                             argMap.put("/sc", options.get(i + 1));
                         } else {
                             argMap.put(arg, options.get(i + 1));
                         }
+                        
                         i++;
                     }
                 } else {
@@ -561,56 +615,78 @@ public class Main {
                     }
                 }
             }
+            
             // now check for args
             String helpArg = null;
             if (argMap.containsKey("/h")) {
                 helpArg = "/h";
             }
+            
             if (argMap.containsKey("/?")) {
                 helpArg = "/?";
             }
+            
             if (helpArg != null) {
+            	
                 printHelpScreen();
                 printIgnoredOptions(helpArg, argMap);
+                
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/testf")) {
+            	
                 RegressionTester tester = new RegressionTester();
                 tester.runTest(argMap.get("/testf"), true);
+                
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/test")) {
+            	
                 RegressionTester tester = new RegressionTester();
                 tester.runTest(argMap.get("/test"));
+                
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/lt")) {
+            	
                 printIgnoredOptions("/lt", argMap);
                 SortedMap<String, String> tmpMap = new TreeMap<String, String>();
                 for (SolutionType tmpType : SolutionType.values()) {
                     tmpMap.put(tmpType.getStepName(), tmpType.getArgName());
                 }
+                
                 System.out.println("List of Techniques:");
                 for (String stepName : tmpMap.keySet()) {
                     System.out.printf("%6s:%s\r\n", tmpMap.get(stepName), stepName);
                 }
+                
                 System.out.println("Done!");
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/c")) {
+            	
                 String fileName = argMap.get("/c");
+                
                 if (fileName.toLowerCase().equals("default")) {
                     System.out.println("Using default config!");
                     Options.resetAll();
@@ -619,8 +695,10 @@ public class Main {
                     System.out.println("Using configuration file '" + fileName + "'");
                     Options.readOptions(fileName);
                 }
+                
                 argMap.remove("/c");
             }
+            
             String outFile = null;
             if (argMap.containsKey("/o")) {
                 outFile = argMap.get("/o");
@@ -631,6 +709,7 @@ public class Main {
                     System.out.println("Using output file '" + outFile + "'");
                 }
             }
+            
             List<StepType> typeList = new ArrayList<StepType>();
             if (argMap.containsKey("/sc")) {
                 String[] steps = argMap.get("/sc").toLowerCase().split(",");
@@ -639,6 +718,7 @@ public class Main {
                 }
                 argMap.remove("/sc");
             }
+            
             DifficultyLevel actLevel = null;
             if (argMap.containsKey("/sl")) {
                 int levelOrd = -1;
@@ -666,6 +746,7 @@ public class Main {
                 }
                 argMap.remove("/sl");
             }
+            
             if (argMap.containsKey("/so")) {
                 printIgnoredOptions("/so", argMap);
                 new Main().sortPuzzleFile(argMap.get("/so"), typeList, outFile);
@@ -674,6 +755,7 @@ public class Main {
                 }
                 return;
             }
+            
             if (argMap.containsKey("/s")) {
                 printIgnoredOptions("/s", argMap);
                 if (typeList.isEmpty() && actLevel == null) {
@@ -689,21 +771,25 @@ public class Main {
                 }
                 return;
             }
+            
             boolean printSolution = false;
             if (argMap.containsKey("/vs")) {
                 printSolution = true;
                 argMap.remove("/vs");
             }
+            
             boolean printSolutionPath = false;
             if (argMap.containsKey("/vp")) {
                 printSolutionPath = true;
                 argMap.remove("/vp");
             }
+            
             boolean printStatistics = false;
             if (argMap.containsKey("/vst")) {
                 printStatistics = true;
                 argMap.remove("/vst");
             }
+            
             if (argMap.containsKey("/vf")) {
                 String arg = argMap.get("/vf");
                 int fishFormat = 0;
@@ -715,6 +801,7 @@ public class Main {
                 Options.getInstance().setFishDisplayMode(fishFormat);
                 argMap.remove("/vf");
             }
+            
             ClipboardMode clipboardMode = null;
             Set<SolutionType> outTypes = null;
             if (argMap.containsKey("/vg") && printSolutionPath) {
@@ -741,6 +828,7 @@ public class Main {
                     System.out.println("No output mode set for '/vg': 'c' used as default!");
                     clipboardMode = ClipboardMode.PM_GRID;
                 }
+                
                 String[] typesArr = types.split(",");
                 for (int i = 0; i < typesArr.length; i++) {
                     StepConfig[] steps = Options.getInstance().solverSteps;
@@ -756,17 +844,21 @@ public class Main {
                             break;
                         }
                     }
+                    
                     if (!typeFound) {
                         System.out.println("Invalid solution type set for '/vg' (" + typesArr[i] + "): ignored!");
                     }
                 }
+                
                 if (outTypes == null || outTypes.isEmpty()) {
                     System.out.println("No solution type set for '/vg': option ignored!");
                     clipboardMode = null;
                     outTypes = null;
                 }
+                
                 argMap.remove("/vg");
             }
+            
             if (argMap.containsKey("/bs")) {
                 printIgnoredOptions("/bs", argMap);
                 String fileName = argMap.get("/bs");
@@ -775,8 +867,10 @@ public class Main {
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/bsaf")) {
                 printIgnoredOptions("/bsaf", argMap);
                 String fileName = argMap.get("/bsaf");
@@ -785,8 +879,10 @@ public class Main {
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (argMap.containsKey("/bsa")) {
                 printIgnoredOptions("/bsa", argMap);
                 System.out.println("bsa: started");
@@ -795,15 +891,19 @@ public class Main {
                     if (consoleFrame == null) {
                         System.exit(0);
                     }
+                    
                     return;
                 }
+                
                 new Main().batchSolve(null, puzzleString, printSolution, printSolutionPath, printStatistics,
                         clipboardMode, outTypes, outFile, true);
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             List<SolutionType> testTypes = new ArrayList<SolutionType>();
             if (argMap.containsKey("/bts")) {
                 String testArgType = argMap.get("/bts");
@@ -816,11 +916,14 @@ public class Main {
                         testTypes.add(tmp);
                     }
                 }
+                
                 if (testTypes.isEmpty()) {
                     System.out.println("Invalid step(s): <" + testArgType + "> with /bts - ignored!");
                 }
+                
                 argMap.remove("/bts");
             }
+            
             if (argMap.containsKey("/bt")) {
                 printIgnoredOptions("/bt", argMap);
                 String fileName = argMap.get("/bt");
@@ -829,15 +932,19 @@ public class Main {
                     if (consoleFrame == null) {
                         System.exit(0);
                     }
+                    
                     return;
                 }
+                
                 new Main().batchSolve(fileName, null, false, false, true,
                         clipboardMode, outTypes, outFile, false, true, testTypes);
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             if (puzzleString != null) {
                 printIgnoredOptions("", argMap);
                 new Main().batchSolve(null, puzzleString, printSolution, printSolutionPath, printStatistics,
@@ -845,14 +952,17 @@ public class Main {
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
+            
             printIgnoredOptions("", argMap);
             System.out.println("Don't know what to do...");
             printHelpScreen();
             if (consoleFrame == null) {
                 System.exit(0);
             }
+            
             return;
         }
 
@@ -860,9 +970,9 @@ public class Main {
         if (needToResetPuzzles) {
             BackgroundGeneratorThread.getInstance().resetAll();
         }
+        
         final String lf = launchFile;
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             @Override
             public void run() {
                 new MainFrame(lf).setVisible(true);
@@ -909,6 +1019,7 @@ public class Main {
      * @param argMap All options from the command line
      */
     private static void printIgnoredOptions(String option, Map<String, String> argMap) {
+    	
         StringBuilder tmp = new StringBuilder();
         boolean found = false;
         for (String key : argMap.keySet()) {
@@ -918,6 +1029,7 @@ public class Main {
                 tmp.append(" ");
             }
         }
+        
         if (found) {
             System.out.println("The following options were ignored: " + tmp.toString().trim());
         }
@@ -935,6 +1047,7 @@ public class Main {
      * @return Array with options
      */
     private static String[] getOptionsFromStringBuilder(StringBuilder in) {
+    	
         List<String> options = new ArrayList<String>();
         char qualifier = '"';
         boolean qualifierSeen = false;
@@ -946,12 +1059,14 @@ public class Main {
                     // we are in the middle of an option -> ignore it
                     continue;
                 }
+                
                 if (startIndex != -1) {
                     // we reached the end of an option -> copy it
                     options.add(in.substring(startIndex, i));
                     startIndex = -1;
                 }
             }
+            
             if (qualifierSeen && ch == qualifier) {
                 // could be a stuffed character or the end of an option
                 if (i < in.length() - 1 && in.charAt(i + 1) == qualifier) {
@@ -966,6 +1081,7 @@ public class Main {
                     qualifierSeen = false;
                 }
             }
+            
             if (!qualifierSeen && (ch == '"' || ch == '\'')) {
                 // if we are in the middle of an option -> store
                 // what we have so far
@@ -977,18 +1093,22 @@ public class Main {
                 qualifier = ch;
                 qualifierSeen = true;
             }
+            
             if (ch != ' ' && startIndex == -1) {
                 // a new option starts
                 startIndex = i;
             }
         }
+        
         if (startIndex != -1 && startIndex < in.length()) {
             options.add(in.substring(startIndex, in.length()));
         }
+        
         return options.toArray(new String[0]);
     }
 
     private static void printHelpScreen() {
+    	
         System.out.println("Usage: java -Xmx512m -jar hodoku.jar [options] [puzzle]\r\n"
                 + "\r\n"
                 + "Options:\r\n"
@@ -1387,14 +1507,18 @@ class BatchSolveThread extends Thread {
     }
 
     public void printStatistic(PrintWriter out, boolean single) throws IOException {
+    	
         if (out != null) {
+        	
             if (!single) {
                 out.println();
                 out.println("Statistics total:");
             } else {
                 out.println("    Statistics:");
             }
+            
         } else {
+        	
             if (!single) {
                 System.out.println();
                 System.out.println("Statistics total:");
@@ -1402,6 +1526,7 @@ class BatchSolveThread extends Thread {
                 System.out.println("    Statistics:");
             }
         }
+        
         if (single) {
             printStatistic(out, singleStepStatistics, false);
         } else {
@@ -1410,12 +1535,14 @@ class BatchSolveThread extends Thread {
     }
 
     private void printStatistic(PrintWriter out, StepStatistic[] stat, boolean total) throws IOException {
+    	
         int anzSteps = 0;
         int anzSet = 0;
         int anzCandDel = 0;
         int anzInvalidSteps = 0;
         int anzInvalidSet = 0;
         int anzInvalidCandDel = 0;
+        
         for (int i = 0; i < stat.length; i++) {
             if (stat[i].anzSteps > 0) {
                 if (out != null) {
@@ -1442,6 +1569,7 @@ class BatchSolveThread extends Thread {
                     }
                 }
             }
+            
             anzSteps += stat[i].anzSteps;
             anzSet += stat[i].anzSet;
             anzCandDel += stat[i].anzCandDel;
@@ -1449,22 +1577,31 @@ class BatchSolveThread extends Thread {
             anzInvalidSet += stat[i].anzInvalidSet;
             anzInvalidCandDel += stat[i].anzInvalidCandDel;
         }
+        
         if (total) {
+        	
             if (out != null) {
+            	
                 out.println("      ---------------------------------------------------");
                 out.printf("      %8d - %8d/%8d", anzSteps, anzSet, anzCandDel);
                 out.println();
+                
                 if (bruteForceTest) {
                     out.printf("      %8d - %8d/%8d", anzInvalidSteps, anzInvalidSet, anzInvalidCandDel);
                     out.println();
                 }
+                
             } else {
+            	
                 System.out.println("      ---------------------------------------------------");
                 System.out.printf("      %8d - %8d/%8d", anzSteps, anzSet, anzCandDel);
+               
                 if (bruteForceTest) {
                     System.out.printf("      %8d - %8d/%8d", anzInvalidSteps, anzInvalidSet, anzInvalidCandDel);
                 }
+                
             }
+            
             // timing
             if (out != null) {
                 SudokuSolverFactory.getDefaultSolverInstance().printStatistics(out);
@@ -1473,11 +1610,11 @@ class BatchSolveThread extends Thread {
                 SudokuSolverFactory.getDefaultSolverInstance().printStatistics(System.out);
             }
         }
-
     }
 
     @Override
     public void run() {
+    	
         System.out.println("Starting batch solve...");
         results = new int[Options.DEFAULT_DIFFICULTY_LEVELS.length];
         bruteForceAnz = 0;
@@ -1488,18 +1625,23 @@ class BatchSolveThread extends Thread {
         PrintWriter outFile = null;
         ticks = System.currentTimeMillis();
         count = 0;
+        
         try {
+        	
             if (fileName != null) {
                 inFile = new BufferedReader(new FileReader(fileName));
             }
+            
             if (outFileName == null) {
                 outFileName = fileName + ".out.txt";
             }
+            
             if (outFileName.equals("stdout")) {
                 outFile = null;
             } else {
                 outFile = new PrintWriter(new BufferedWriter(new FileWriter(outFileName)));
             }
+            
             String line = null;
             SudokuSolver solver = SudokuSolverFactory.getDefaultSolverInstance();
             //Sudoku2 sudoku = new Sudoku2(true);
@@ -1507,13 +1649,16 @@ class BatchSolveThread extends Thread {
             Sudoku2 tmpSudoku = null;
             Sudoku2 solvedSudoku = null;
             List<SolutionStep> allSteps = null;
+            
             if (bruteForceTest) {
                 allSteps = new ArrayList<SolutionStep>();
             }
+            
             long outTicks = 0;
             while (!isInterrupted()
                     && (inFile != null && (line = inFile.readLine()) != null)
                     || (puzzleString != null)) {
+            	
                 if (puzzleString != null) {
                     line = puzzleString;
                     puzzleString = null;
@@ -1529,16 +1674,19 @@ class BatchSolveThread extends Thread {
                 if (outputGrid || bruteForceTest) {
                     tmpSudoku = sudoku.clone();
                 }
+                
                 if (bruteForceTest) {
                     solvedSudoku = sudoku.clone();
                     generator.validSolution(solvedSudoku);
                 }
+                
                 count++;
                 boolean needsGuessing = false;
                 boolean needsTemplates = false;
                 boolean givenUp = false;
                 boolean unsolved = false;
                 List<SolutionStep> steps = null;
+                
                 if (findAllSteps) {
                     steps = new ArrayList<SolutionStep>();
                     Thread thread = new Thread(new FindAllSteps(steps, sudoku, null));
@@ -1559,21 +1707,25 @@ class BatchSolveThread extends Thread {
                             unsolved = true;
                             bruteForceAnz++;
                         }
+                        
                         if ((steps.get(i).getType() == SolutionType.TEMPLATE_DEL
                                 || steps.get(i).getType() == SolutionType.TEMPLATE_SET) && !needsTemplates) {
                             needsTemplates = true;
                             unsolved = true;
                             templateAnz++;
                         }
+                        
                         if (steps.get(i).getType() == SolutionType.GIVE_UP && !givenUp) {
                             givenUp = true;
                             unsolved = true;
                             givenUpAnz++;
                         }
                     }
+                    
                     if (unsolved) {
                         unsolvedAnz++;
                     }
+                    
                     // only for now: check the solution!
                     for (int i = 0; i < sudoku.getValues().length; i++) {
                         if (sudoku.getValue(i) != sudoku.getSolution(i)) {
@@ -1585,9 +1737,11 @@ class BatchSolveThread extends Thread {
                     }
 //                    System.out.println("solved!");
                 }
+                
                 String guess = needsGuessing ? " " + SolutionType.BRUTE_FORCE.getArgName() : "";
                 String template = needsTemplates ? " " + SolutionType.TEMPLATE_DEL.getArgName() : "";
                 String giveUp = givenUp ? " " + SolutionType.GIVE_UP.getArgName() : "";
+                
                 if (printSolution || bruteForceTest) {
                     solvedSudoku = sudoku.clone();
                     if (sudoku.isSolved()) {
@@ -1601,12 +1755,14 @@ class BatchSolveThread extends Thread {
                         //System.out.println("line: " + line);
                     }
                 }
+                
                 String out = line + " #" + count;
                 if (!findAllSteps) {
                     out += " " + solver.getLevel().getName() + " (" + solver.getScore() + ")"
                             + guess + template + giveUp;
                     results[solver.getLevel().getOrdinal()]++;
                 }
+                
                 if (outFile != null) {
                     outFile.println(out);
                 } else {
@@ -1630,6 +1786,7 @@ class BatchSolveThread extends Thread {
                                     }
                                 }
                             }
+                            
                             if (bruteForceTest && !steps.get(i).getType().isSingle()) {
                                 // get all steps for testType
 //                                System.out.println("Running: " + tmpSudoku.getSudoku(ClipboardMode.LIBRARY));
@@ -1644,6 +1801,7 @@ class BatchSolveThread extends Thread {
                                     if (!testTypes.contains(act.getType())) {
                                         continue;
                                     }
+                                    
                                     boolean invalid = false;
                                     adjustStatistics(act);
                                     if (!act.getValues().isEmpty()) {
@@ -1655,12 +1813,14 @@ class BatchSolveThread extends Thread {
                                             }
                                         }
                                     }
+                                    
                                     for (Candidate cand : act.getCandidatesToDelete()) {
                                         if (cand.getValue() == solvedSudoku.getValue(cand.getIndex())) {
                                             invalid = true;
                                             stepStatistics[act.getType().ordinal()].anzInvalidCandDel++;
                                         }
                                     }
+                                    
                                     if (invalid) {
                                         stepStatistics[act.getType().ordinal()].anzInvalidSteps++;
                                         if (outFile != null) {
@@ -1675,9 +1835,11 @@ class BatchSolveThread extends Thread {
                             }
                             solver.doStep(tmpSudoku, steps.get(i));
                         }
+                        
                         if (printStatistic && !bruteForceTest) {
                             adjustStatistics(steps.get(i));
                         }
+                        
                         if (printSolutionPath || findAllSteps) {
                             if (outFile != null) {
                                 outFile.write("   ");
@@ -1694,6 +1856,7 @@ class BatchSolveThread extends Thread {
                             }
                         }
                     }
+                    
                     if (printStatistic && (printSolutionPath || findAllSteps)) {
                         printStatistic(outFile, true);
                         clearSingleStepStatistics();
@@ -1714,6 +1877,7 @@ class BatchSolveThread extends Thread {
                     }
                 }
             }
+            
             if (printStatistic) {
                 printStatistic(outFile, false);
             }
@@ -1733,11 +1897,13 @@ class BatchSolveThread extends Thread {
                 ex.printStackTrace();
             }
         }
+        
         if (isInterrupted()) {
             System.out.println("Interrupted, shutting down...");
         } else {
             System.out.println("Done!");
         }
+        
         ticks = System.currentTimeMillis() - getTicks();
     }
 
