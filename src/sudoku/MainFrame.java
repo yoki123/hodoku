@@ -2018,6 +2018,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     
     private void importPuzzleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePuzzleAsMenuItemActionPerformed
     	importWindow.setVisible(true);
+    	importWindow.focusCursor();
     }
     
     private void exportPuzzleMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savePuzzleAsMenuItemActionPerformed

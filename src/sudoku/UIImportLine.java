@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -12,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class UIImportLine extends JFrame implements ActionListener, WindowListener {
+public class UIImportLine extends JFrame implements ActionListener, WindowListener, KeyListener {
 
 	private static final long serialVersionUID = 8648013595000698919L;
 	
@@ -38,6 +40,7 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 		
 		textField = new JTextField();
 		textField.setPreferredSize(new Dimension(200, 32));
+		textField.addKeyListener(this);
 		this.add(textField, FlowLayout.CENTER);
 		
 		okButton = new JButton("OK");
@@ -50,17 +53,25 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 		this.pack();
 		this.repaint();
 	}
+	
+	public void focusCursor() {
+		this.textField.requestFocus();
+	}
+	
+	private void importLine() {
+		boolean wasImported = this.mainFrame.loadFromImportLine(this.textField.getText());
+		if (wasImported) {
+			this.textField.setText("");
+			this.setVisible(false);
+			this.mainFrame.repaint();
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	
 		if (e.getSource() == okButton) {
-			boolean wasImported = this.mainFrame.loadFromImportLine(this.textField.getText());
-			if (wasImported) {
-				this.textField.setText("");
-				this.setVisible(false);
-				this.mainFrame.repaint();
-			}
+			importLine();
 		}
 	}
 	
@@ -87,4 +98,17 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 
 	@Override
 	public void windowOpened(WindowEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			importLine();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }

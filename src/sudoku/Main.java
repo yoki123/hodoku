@@ -64,12 +64,14 @@ public class Main {
     public Main() {}
 
     public String getSrcDir() {
+    	
         String path = getClass().getClassLoader().getResource("sudoku").toExternalForm().toLowerCase();
         if (path.startsWith("jar")) {
             path = path.substring(10, path.indexOf("Hodoku.jar"));
         } else {
             path = path.substring(6, path.indexOf("build"));
         }
+        
         return path;
     }
 
@@ -462,9 +464,11 @@ public class Main {
                 launchFile = args[i];
             }
         }
+        
         // handle command line arguments
         SudokuConsoleFrame consoleFrame = null;
-        if (!launchGui && (launch4jUsed && args.length > 1 || !launch4jUsed && args.length > 0)) {
+        boolean parseArgs = !launchGui && (launch4jUsed && args.length > 1 || !launch4jUsed && args.length > 0);
+        if (parseArgs) {
 //            for (int i = 0; i < args.length; i++) {
 //                System.out.println("args[" + i + "]: <" + args[i] + ">");
 //            }
@@ -477,6 +481,7 @@ public class Main {
                 consoleFrame = new SudokuConsoleFrame();
                 consoleFrame.setVisible(true);
             }
+            
 //            System.out.println(path);
             // copyright notice
             System.out.println(MainFrame.VERSION + " - " + MainFrame.BUILD);
@@ -488,6 +493,7 @@ public class Main {
                     + "(at your option) any later version.\r\n\r\n");
             // all options are stored in a list, if /f is present, the list is
             // expanded accordingly (/f may be present more than once)
+            
             List<String> options = new ArrayList<String>();
             for (int i = 0; i < args.length; i++) {
             	
@@ -497,7 +503,7 @@ public class Main {
                     continue;
                 }
                 
-                if (args[i].equals("/f")) {                	
+                if (args[i].equals("/f")) {
                     if (i + 1 >= args.length) {
                         System.out.println("No options file given: /f ignored");
                     } else {
@@ -757,6 +763,7 @@ public class Main {
             }
             
             if (argMap.containsKey("/s")) {
+            	
                 printIgnoredOptions("/s", argMap);
                 if (typeList.isEmpty() && actLevel == null) {
                     System.out.println("No step name given and no difficulty level set!");
@@ -765,10 +772,13 @@ public class Main {
                     }
                     return;
                 }
+                
                 new Main().searchForType(typeList, actLevel, outFile);
+                
                 if (consoleFrame == null) {
                     System.exit(0);
                 }
+                
                 return;
             }
             
@@ -791,6 +801,7 @@ public class Main {
             }
             
             if (argMap.containsKey("/vf")) {
+            	
                 String arg = argMap.get("/vf");
                 int fishFormat = 0;
                 try {
@@ -798,6 +809,7 @@ public class Main {
                 } catch (NumberFormatException ex) {
                     System.out.println("Invalid argument for /vf ('" + arg + "'): '0' used instead!");
                 }
+                
                 Options.getInstance().setFishDisplayMode(fishFormat);
                 argMap.remove("/vf");
             }
@@ -884,8 +896,10 @@ public class Main {
             }
             
             if (argMap.containsKey("/bsa")) {
+            	
                 printIgnoredOptions("/bsa", argMap);
                 System.out.println("bsa: started");
+                
                 if (puzzleString == null) {
                     System.out.println("No puzzle given with /bsa - ignored!");
                     if (consoleFrame == null) {
