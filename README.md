@@ -34,6 +34,7 @@ Features:
 
 Bugs fixed:
   - Show Candidates now saves correctly after the session is closed.
+  - Shift + Click shifts the alternative color.
 
 Version 2.2.2 (2019-11-10)
 --------------------------
