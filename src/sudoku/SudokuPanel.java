@@ -176,9 +176,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     private Stack<Sudoku2> redoStack = new Stack<Sudoku2>();
     // coloring: contains cell index + index in coloringColors[]
     private SortedMap<Integer, Integer> coloringMap = new TreeMap<Integer, Integer>();
-    // coloring canddiates: contains cell index * 10 + candidate + index in coloringColors[]
+    // coloring candidates: contains cell index * 10 + candidate + index in coloringColors[]
     private SortedMap<Integer, Integer> coloringCandidateMap = new TreeMap<Integer, Integer>();
-    // indicates wether coloring is active (-1 means "not active"
+    // indicates whether coloring is active (-1 means "not active"
     private int aktColorIndex = -1;
     // coloring is meant for cells or candidates
     private boolean colorCells = Options.getInstance().isColorCells();
@@ -596,20 +596,21 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         setPreferredSize(new java.awt.Dimension(600, 600));
         addMouseListener(new java.awt.event.MouseListener() {
 
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                formMouseClicked(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                formMouseReleased(evt);
-            }
+        	@Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {}
+            
+            @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                formMousePressed(evt);
+                handleMousePressed(evt);
+            }
+            
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                handleMouseReleased(evt);
             }
 
 			@Override
-			public void mouseEntered(MouseEvent evt) {
-				
-			}
+			public void mouseEntered(MouseEvent evt) {}
 
 			@Override
 			public void mouseExited(MouseEvent evt) {
@@ -652,33 +653,39 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         });
         
         addKeyListener(new java.awt.event.KeyAdapter() {
+        	
+        	@Override
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
+                handleKeyPressed(evt);
             }
+            
+        	@Override
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
+                handleKeyReleased(evt);
             }
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
+        
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 600, Short.MAX_VALUE)
         );
+        
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+    private void handleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         handleKeysReleased(evt);
         updateCellZoomPanel();
         mainFrame.fixFocus();
     }//GEN-LAST:event_formKeyReleased
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    private void handleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         int keyCode = evt.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_ESCAPE:
@@ -694,10 +701,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         updateCellZoomPanel();
         mainFrame.fixFocus();
     }//GEN-LAST:event_formKeyPressed
-
-    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-//        handleMouseClicked(evt, evt.getClickCount() == 2);
-    }//GEN-LAST:event_formMouseClicked
 
     private void make1MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_make1MenuItemActionPerformed
         popupSetCell((JMenuItem) evt.getSource());
@@ -737,13 +740,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         popupToggleColor((JMenuItem) evt.getSource());
     }//GEN-LAST:event_color1aMenuItemActionPerformed
 
-    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+    private void handleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         lastPressedLine = getLine(evt.getPoint());
         lastPressedCol = getCol(evt.getPoint());
         lastPressedCand = getCandidate(evt.getPoint(), lastPressedLine, lastPressedCol);
     }//GEN-LAST:event_formMousePressed
 
-    private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+    private void handleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
     	
         int line = getLine(evt.getPoint());
         int col = getCol(evt.getPoint());
@@ -857,8 +860,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                                 // show deviations is set, it is displayed, although technically
                                 // not present: it should be toggled, even if it is not the
                                 // hint value
-                                if (showDeviations && sudoku.isSolutionSet()
-                                        && cand == sudoku.getSolution(aktLine, aktCol)) {
+                                if (showDeviations && sudoku.isSolutionSet() && cand == sudoku.getSolution(aktLine, aktCol)) {
                                     toggleCandidateInCell(aktLine, aktCol, cand);
                                 } else {
                                     toggleCandidateInCell(aktLine, aktCol, showHintCellValue);
@@ -877,7 +879,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                 if (aktColorIndex != -1) {
                     // coloring is active
                     int colorNumber = aktColorIndex;
-                    if (isMiddleClick) {
+                    if (shiftPressed || isMiddleClick) {
                         if (colorNumber % 2 == 0) {
                             colorNumber++;
                         } else {
