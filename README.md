@@ -1,7 +1,7 @@
 Hodoku is a solver/generator/trainer/analyzer for standard sudoku. It is written in
 Java/Swing and should therefore run on any platform supported by Java (tested
 on Windows and Linux - Ubuntu/GTK+-LAF). Since it is written in Java the
-Java Runtime Environment (JRE) version 1.6 or higher must be installed on your computer
+Java Runtime Environment (JRE) version 1.8 or higher must be installed on your computer
 before you can run HoDoKu. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
