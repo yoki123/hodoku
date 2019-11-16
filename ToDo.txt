@@ -1,8 +1,4 @@
 20191115:
-
-	Drag to make a cell selection
-		Ctrl + Drag to append to selection
-		Ctrl + Click/Drag over existing selection toggles it
 		
 	Single Click Mode:
 		LCtrl + LClick toggles a candidate's state.
@@ -28,9 +24,7 @@
 	Create Savepoint should have an optional field for Description.
 	
 	Add translation support for the new features I have created.
-	
-	Disable candidate highlight on mouse hover as a default.
-	
+
 	Ability to hide selector.
 		Maybe an option to make it less bulky
 

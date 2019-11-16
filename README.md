@@ -22,6 +22,14 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.4 (2019-11-16)
+--------------------------
+
+Features:
+  - Mouse click and drag selects cells
+  - Ctrl + Drag appends to existing selection
+  - Ctrl + Drag over existing selection toggled the selection
+
 Version 2.2.3 (2019-11-14)
 --------------------------
 

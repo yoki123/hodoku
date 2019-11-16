@@ -326,7 +326,7 @@ public final class Options {
     public static final boolean SHOW_SUDOKU_SOLVED = false;
     public static final boolean EDIT_MODE_AUTO_ADVANCE = false;
     public static final boolean DOUBLE_CLICK_MODE = true;
-    public static final boolean SHOW_CANDIDATE_HIGHLIGHT = true;
+    public static final boolean SHOW_CANDIDATE_HIGHLIGHT = false;
     private boolean showCandidates = SHOW_CANDIDATES;
     private boolean showWrongValues = SHOW_WRONG_VALUES;
     private boolean showDeviations = SHOW_DEVIATIONS;
