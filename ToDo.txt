@@ -1,3 +1,38 @@
+20191115:
+
+	Drag to make a cell selection
+		Ctrl + Drag to append to selection
+		Ctrl + Click/Drag over existing selection toggles it
+		
+	Single Click Mode:
+		LCtrl + LClick toggles a candidate's state.
+		Cell selection still works as usual.
+		We commit a click event on mouse down and up on same target.
+		Clicking on a visible candidate makes the cell become this value.
+		Clicking on a cell with a given value assuming not an original given toggles it back to candidate mode.
+		Coloring will be broken. Redisign toolbar or add a hotkey for coloring (tricky for alternate color).
+	
+	Redesign the color palette
+	
+	Export Line: I want it to export user input cells too.
+	
+	Grouped Discontinuous Nice Loops is confusing:
+		Why do eliminations have arrows going to them?
+		Make it clear where the chain begins, and where it ends.
+		
+	Detect an arbitrary file's format to perform automatic loading regardless of file Drag-Dropped into Hodoku.
+	
+	Redesign highlighting in the toolbar to have a dropbown panel with a 3x3 grid of toggle buttons. More compact.
+	
+	Create Savepoint should have an optional field for Description.
+	
+	Add translation support for the new features I have created.
+	
+	Disable candidate highlight on mouse hover as a default.
+	
+	Ability to hide selector.
+		Maybe an option to make it less bulky
+
 20110806:
 
    - user created arrows (3022071)
