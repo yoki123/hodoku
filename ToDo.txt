@@ -1,3 +1,10 @@
+20191116:
+
+	Single Click Mode already exists under Alternative Mouse Mode. Add a menu option to toggle it and make it more obvious what it is.
+	
+	Cell selection acts funny when a key is pressed.
+		Delete should remove given cell values
+
 20191115:
 		
 	Single Click Mode:
@@ -25,8 +32,7 @@
 	
 	Add translation support for the new features I have created.
 
-	Ability to hide selector.
-		Maybe an option to make it less bulky
+	Ability to hide selector. Maybe an option to make it less bulky.
 
 20110806:
 
