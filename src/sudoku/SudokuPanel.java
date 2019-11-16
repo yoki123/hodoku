@@ -50,6 +50,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -190,6 +191,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     private Cursor oldCursor = null;
     // if more than one cell is selected, the indices of all selected cells are stored here
     private SortedSet<Integer> selectedCells = new TreeSet<Integer>();
+    private boolean[] dragCellSelection = new boolean[82];
     // Array containing all "Make x" menu items from the popup menu
     private JMenuItem[] makeItems = null;
     // Array containing all "Exclude x" menu items from the popup menu
@@ -249,12 +251,15 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
     private Candidate lastCandidateMouseOn = new Candidate();
     
+    private boolean isCtrlDown;
+    
     /**
      * Creates new form SudokuPanel
      *
      * @param mf
      */
     public SudokuPanel(MainFrame mf) {
+    	
         mainFrame = mf;
         sudoku = new Sudoku2();
         sudoku.clearSudoku();
@@ -264,6 +269,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         solver.setSudoku(sudoku.clone());
         solver.solve();
         progressChecker = new ProgressChecker(mainFrame);
+        isCtrlDown = false;
+        clearDragSelection();
 
         initComponents();
 
@@ -300,9 +307,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         if (cs instanceof Integer) {
             doubleClickSpeed = ((Integer) cs).intValue();
         }
+        
         if (doubleClickSpeed == -1) {
             doubleClickSpeed = 500;
         }
+    }
+    
+    private void clearDragSelection() {
+    	Arrays.fill(dragCellSelection, false);
     }
 
     /**
@@ -602,6 +614,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 handleMousePressed(evt);
+                
+                if (!isCtrlDown) {
+                	clearDragSelection();
+                	selectedCells.clear();	
+                }
             }
             
             @Override
@@ -622,7 +639,36 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         addMouseMotionListener(new java.awt.event.MouseMotionListener() {
         	
 			@Override
-			public void mouseDragged(MouseEvent e) {}
+			public void mouseDragged(MouseEvent e) {
+				
+		        int line = getLine(e.getPoint());
+		        int col = getCol(e.getPoint());
+		        int index = Sudoku2.getIndex(line, col);
+				
+		        if (line < 0 || line >= 9 || col < 0 || col >= 9) {
+		        	return;
+		        }
+		        
+				if (isCtrlDown) {
+					
+	        		if (selectedCells.isEmpty()) {
+	        			selectedCells.add(Sudoku2.getIndex(aktLine, aktCol));
+	        		}
+				}
+				
+	        	if (!dragCellSelection[index]) {
+	        		
+	        		dragCellSelection[index] = true;
+	        		
+	        		if (selectedCells.contains(index)) {
+	        			selectedCells.remove(index);
+	        		} else {
+	        			selectedCells.add(index);
+	        		}
+	        		
+	        		repaint();
+	        	}
+			}
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -685,7 +731,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         mainFrame.fixFocus();
     }//GEN-LAST:event_formKeyReleased
 
-    private void handleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    private void handleKeyPressed(java.awt.event.KeyEvent evt) {
+    	
         int keyCode = evt.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_ESCAPE:
@@ -698,6 +745,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             default:
                 handleKeys(evt);
         }
+        
         updateCellZoomPanel();
         mainFrame.fixFocus();
     }//GEN-LAST:event_formKeyPressed
@@ -744,6 +792,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         lastPressedLine = getLine(evt.getPoint());
         lastPressedCol = getCol(evt.getPoint());
         lastPressedCand = getCandidate(evt.getPoint(), lastPressedLine, lastPressedCol);
+        clearDragSelection();
     }//GEN-LAST:event_formMousePressed
 
     private void handleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
@@ -787,7 +836,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         lastPressedLine = -1;
         lastPressedCol = -1;
         lastPressedCand = -1;
-    }//GEN-LAST:event_formMouseReleased
+    }
 
     private void deleteValueMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteValueMenuItemActionPerformed
         popupDeleteValueFromCell();
@@ -1192,10 +1241,15 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }
 
     public void handleKeysReleased(KeyEvent evt) {
+    	
         // wenn <Left-Shift> und <Left-Ctrl> gedrï¿½ckt sind, soll showAllCandidatesAkt true sein, sonst false
         int modifiers = evt.getModifiersEx();
         int keyCode = 0; // getKeyCode() liefert immer noch die zuletzt gedrï¿½ckte Taste
 
+        if (evt.getKeyCode() == KeyEvent.VK_CONTROL) {
+        	isCtrlDown = false;
+        }
+        
         checkShowAllCandidates(modifiers, keyCode);
 
         if (aktColorIndex >= 0) {
@@ -1219,6 +1273,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         checkShowAllCandidates(modifiers, keyCode);
 
         // if only <shift> is pressed and coloring is active, the cursor should change to complementary color
+        
+        if (!isCtrlDown && evt.getKeyCode() == KeyEvent.VK_CONTROL) {
+        	isCtrlDown = true;
+        }
+        
         if (aktColorIndex >= 0) {
             if ((modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0) {
                 if (getCursor() == colorCursor) {
@@ -1677,18 +1736,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         shiftLine = -1;
         shiftCol = -1;
     }
-
-    /**
-     * Initializes {@link #shiftLine}/{@link #shiftCol} for selecting regions of
-     * cells using the keyboard
-     */
-    private void setShift() {
-        if (shiftLine == -1) {
-            shiftLine = aktLine;
-            shiftCol = aktCol;
-        }
-    }
-
+    
     /**
      * Select all cells in the rectangle defined by
      * {@link #aktLine}/{@link #aktCol} and line/col
@@ -1697,6 +1745,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * @param col
      */
     private void selectRegion(int line, int col) {
+
         selectedCells.clear();
         if (line == aktLine && col == aktCol) {
             // same cell clicked twice -> no region selected -> do nothing
@@ -1713,6 +1762,17 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }
 
     /**
+     * Initializes {@link #shiftLine}/{@link #shiftCol} for selecting regions of
+     * cells using the keyboard
+     */
+    private void setShift() {
+        if (shiftLine == -1) {
+            shiftLine = aktLine;
+            shiftCol = aktCol;
+        }
+    }
+
+    /**
      * Finds the next colored cell, if filters are applied. mode gives the
      * direction in which to search (as KeyEvent). The search wraps at sudoku
      * boundaries.
@@ -1723,11 +1783,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * @return
      */
     private int findNextHintCandidate(int line, int col, int mode) {
+    	
         int index = Sudoku2.getIndex(line, col);
         int showHintCellValue = getShowHintCellValue();
+        
         if (showHintCellValue == 0) {
             return index;
         }
+        
         switch (mode) {
             case KeyEvent.VK_DOWN:
                 // let's start with the next line
