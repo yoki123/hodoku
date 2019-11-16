@@ -13,6 +13,7 @@
 		Coloring will be broken. Redisign toolbar or add a hotkey for coloring (tricky for alternate color).
 	
 	Redesign the color palette
+		Ability to clear a given color from the board.
 	
 	Export Line: I want it to export user input cells too.
 	
