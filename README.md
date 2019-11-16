@@ -5,14 +5,14 @@ Java Runtime Environment (JRE) version 1.8 or higher must be installed on your c
 before you can run HoDoKu. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-Available languages: English and german
+Available languages: English and German
 
 For all Windows versions hodoku.exe is the preferred program version. For all other
 operating systems hodoku.jar has to be used. HoDoKu uses rather a lot of memory
 (especially if you use the "Find all available steps" feature). The recommended way
 to run HoDoKu is:
 
-	java -Xmx256m -jar hodoku.jar
+	java -Xmx256m -jar Hodoku.jar
 
 Note: the parameter "-Xmx" is specific to the JRE provided by Oracle. If you use a 
 different JRE, please look up the correct parameter for setting the maximum 
