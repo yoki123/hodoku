@@ -253,6 +253,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     
     private boolean isCtrlDown;
     
+    private Point lastMousePosition = new Point();
+    
     /**
      * Creates new form SudokuPanel
      *
@@ -613,6 +615,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
+            	
                 handleMousePressed(evt);
                 
                 if (!isCtrlDown) {
@@ -634,16 +637,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				lastCandidateMouseOn = null;
 				repaint();
 			}
-        });        
+        });
         
         addMouseMotionListener(new java.awt.event.MouseMotionListener() {
         	
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				
+				lastMousePosition = e.getPoint();
+				
 		        int line = getLine(e.getPoint());
 		        int col = getCol(e.getPoint());
 		        int index = Sudoku2.getIndex(line, col);
+		        
+		        updateCandidateMouseHighlight(e.getPoint());
 				
 		        if (line < 0 || line >= 9 || col < 0 || col >= 9) {
 		        	return;
@@ -662,6 +669,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	        		
 	        		if (selectedCells.contains(index)) {
 	        			selectedCells.remove(index);
+	        			if (selectedCells.isEmpty()) {
+	        				aktLine = Sudoku2.getLine(index);
+	        				aktCol = Sudoku2.getCol(index);
+	        			}
 	        		} else {
 	        			selectedCells.add(index);
 	        		}
@@ -672,29 +683,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				
-				if (showCandidateHighlightOnMouseHover()) {
-				
-			        int line = getLine(e.getPoint());
-			        int col = getCol(e.getPoint());
-			        int candidate = getCandidate(e.getPoint(), line, col);
-			        int index = Sudoku2.getIndex(line, col);
-			        
-			        if (line >= 0 && line < 9 && col >= 0 && col < 9) {
-			        	
-				        Candidate mouseOn = new Candidate(index, candidate);
-				        if (lastCandidateMouseOn != mouseOn) {
-				        	lastCandidateMouseOn = mouseOn;	
-				        	repaint();
-				        }
-				        
-			        } else {
-			        	if (lastCandidateMouseOn != null) {
-			        		lastCandidateMouseOn = null;
-			        		repaint();
-			        	}
-			        }
-				}
+				lastMousePosition = e.getPoint();
+				updateCandidateMouseHighlight(e.getPoint());
 			}
         });
         
@@ -724,6 +714,32 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void updateCandidateMouseHighlight(Point mouse) {
+    	
+		if (mouseHighlightCandidate()) {
+			
+	        int line = getLine(mouse);
+	        int col = getCol(mouse);
+	        int candidate = getCandidate(mouse, line, col);
+	        int index = Sudoku2.getIndex(line, col);
+	        
+	        if (line >= 0 && line < 9 && col >= 0 && col < 9) {
+	        	
+		        Candidate mouseOn = new Candidate(index, candidate);
+		        if (lastCandidateMouseOn != mouseOn) {
+		        	lastCandidateMouseOn = mouseOn;	
+		        	repaint();
+		        }
+		        
+	        } else {
+	        	if (lastCandidateMouseOn != null) {
+	        		lastCandidateMouseOn = null;
+	        		repaint();
+	        	}
+	        }
+		}
+    }
 
     private void handleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
         handleKeysReleased(evt);
@@ -789,13 +805,16 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }//GEN-LAST:event_color1aMenuItemActionPerformed
 
     private void handleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        lastPressedLine = getLine(evt.getPoint());
+    	lastMousePosition = evt.getPoint();
+    	lastPressedLine = getLine(evt.getPoint());
         lastPressedCol = getCol(evt.getPoint());
         lastPressedCand = getCandidate(evt.getPoint(), lastPressedLine, lastPressedCol);
         clearDragSelection();
     }//GEN-LAST:event_formMousePressed
 
     private void handleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
+    	
+    	lastMousePosition = evt.getPoint();
     	
         int line = getLine(evt.getPoint());
         int col = getCol(evt.getPoint());
@@ -888,7 +907,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         if (isValidCellIndex) {
             //System.out.println((evt.getButton() == MouseEvent.BUTTON1) + "/" + (evt.getButton() == MouseEvent.BUTTON2) + "/" + (evt.getButton() == MouseEvent.BUTTON3));
             if (isRightClick) {
-                if (Options.getInstance().isAlternativeMouseMode()) {
+                if (Options.getInstance().isSingleClickMode()) {
                     // toggle candidate in cell(s) (three state mode)
                     if (selectedCells.contains(Sudoku2.getIndex(line, col))) {
                         // a region select exists and the cells lies within: toggle candidate
@@ -1034,15 +1053,15 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                             // select single cell, delete old markings if available
                             // in the alternative mouse mode a single cell is only
                             // selected, if the cell is outside a selected region
-                            if (Options.getInstance().isAlternativeMouseMode() == false
-                                    || (Options.getInstance().isAlternativeMouseMode() == true
+                            if (Options.getInstance().isSingleClickMode() == false
+                                    || (Options.getInstance().isSingleClickMode() == true
                                     && selectedCells.contains(Sudoku2.getIndex(line, col)) == false)) {
                                 setAktRowCol(line, col);
 //                                aktLine = line;
 //                                aktCol = col;
                                 clearRegion();
                             }
-                            if (Options.getInstance().isAlternativeMouseMode()) {
+                            if (Options.getInstance().isSingleClickMode()) {
 //                                System.out.println(index + "/" + cand);
                                 // the selected cell(s) must be set to cand
                                 if (sudoku.getValue(index) == 0) {
@@ -1248,6 +1267,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
         if (evt.getKeyCode() == KeyEvent.VK_CONTROL) {
         	isCtrlDown = false;
+        	clearLastCandidateMouseOn();
+        	repaint();
         }
         
         checkShowAllCandidates(modifiers, keyCode);
@@ -1276,6 +1297,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         
         if (!isCtrlDown && evt.getKeyCode() == KeyEvent.VK_CONTROL) {
         	isCtrlDown = true;
+        	updateCandidateMouseHighlight(lastMousePosition);
         }
         
         if (aktColorIndex >= 0) {
@@ -2377,7 +2399,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                     g2.fillRect(cx, cy + cellSize - frameSize, cellSize, frameSize);
                 }
                 
-                if (this.showCandidateHighlightOnMouseHover()) {
+                if (mouseHighlightCandidate()) {
               
                     // draw candidate mouse highlight
                     if (lastCandidateMouseOn != null &&
@@ -4276,8 +4298,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     	lastCandidateMouseOn = null;
     }
     
-    private boolean showCandidateHighlightOnMouseHover() {
-    	return Options.getInstance().isShowCandidates() &&
-    		   Options.getInstance().isShowCandidateHighlight();
+    private boolean mouseHighlightCandidate() {
+    	return isCtrlDown;
     }
 }

@@ -18,7 +18,9 @@
  */
 package sudoku;
 
-import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,13 +50,13 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
     /** the class anems of all available LAFs */
     private List<String> availableLafClassNames = new ArrayList<String>();
     
-    private Component mainFrame;
+    private Frame mainFrame;
 
     /**
      * Creates new form ConfigGeneralPanel
      * @param mainFrame 
      */
-    public ConfigGeneralPanel(Component mainFrame) {
+    public ConfigGeneralPanel(Frame mainFrame) {
         this.mainFrame = mainFrame;
         
         initComponents();
@@ -103,7 +105,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
         deleteCursorAfterMsTextField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         toggleFilterAndOrCheckBox = new javax.swing.JCheckBox();
-        alternativeMouseModeCheckBox = new javax.swing.JCheckBox();
+        singleClickModeCheckBox = new javax.swing.JCheckBox();
         onlySmallFiltersCheckBox = new javax.swing.JCheckBox();
         editModeAutoAdvanceCheckBox = new javax.swing.JCheckBox();
         drawExtraBoxesCheckBox = new javax.swing.JCheckBox();
@@ -258,9 +260,16 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
         toggleFilterAndOrCheckBox.setMnemonic(java.util.ResourceBundle.getBundle("intl/ConfigGeneralPanel").getString("ConfigGeneralPanel.toggleFilterAndOrCheckBox.mnemonic").charAt(0));
         toggleFilterAndOrCheckBox.setText(bundle.getString("ConfigGeneralPanel.toggleFilterAndOrCheckBox.text")); // NOI18N
 
-        alternativeMouseModeCheckBox.setMnemonic(java.util.ResourceBundle.getBundle("intl/ConfigGeneralPanel").getString("ConfigGeneralPanel.alternativeMouseModeCheckBox.mnemonic").charAt(0));
-        alternativeMouseModeCheckBox.setText(bundle.getString("ConfigGeneralPanel.alternativeMouseModeCheckBox.text")); // NOI18N
-
+        singleClickModeCheckBox.setMnemonic(java.util.ResourceBundle.getBundle("intl/ConfigGeneralPanel").getString("ConfigGeneralPanel.singleClickModeCheckBox.mnemonic").charAt(0));
+        singleClickModeCheckBox.setText(bundle.getString("ConfigGeneralPanel.singleClickModeCheckBox.text")); // NOI18N
+        singleClickModeCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainFrame mf = (MainFrame) mainFrame;
+				mf.setSingleClickMode(singleClickModeCheckBox.isSelected());
+			}        	
+        });
+        
         onlySmallFiltersCheckBox.setMnemonic(java.util.ResourceBundle.getBundle("intl/ConfigGeneralPanel").getString("ConfigGeneralPanel.onlySmallFiltersCheckBox.mnemonic").charAt(0));
         onlySmallFiltersCheckBox.setText(bundle.getString("ConfigGeneralPanel.onlySmallFiltersCheckBox.text")); // NOI18N
 
@@ -289,7 +298,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
                         .addComponent(deleteCursorAfterMsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1))
-                    .addComponent(alternativeMouseModeCheckBox)
+                    .addComponent(singleClickModeCheckBox)
                     .addComponent(onlySmallFiltersCheckBox)
                     .addComponent(editModeAutoAdvanceCheckBox))
                 .addContainerGap(26, Short.MAX_VALUE))
@@ -316,7 +325,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
                     .addComponent(deleteCursorAfterMsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(alternativeMouseModeCheckBox)
+                .addComponent(singleClickModeCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(onlySmallFiltersCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -379,7 +388,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
         Options.getInstance().setShowDeviations(showDeviationsCheckBox.isSelected());
         Options.getInstance().setShowColorKu(showColorKuCheckBox.isSelected());
         Options.getInstance().setSaveWindowLayout(saveWindowLayoutCheckBox.isSelected());
-        Options.getInstance().setAlternativeMouseMode(alternativeMouseModeCheckBox.isSelected());
+        Options.getInstance().setSingleClickMode(singleClickModeCheckBox.isSelected());
         Options.getInstance().setOnlySmallFilters(onlySmallFiltersCheckBox.isSelected());
         Options.getInstance().setEditModeAutoAdvance(editModeAutoAdvanceCheckBox.isSelected());
         Options.getInstance().setDrawMode(drawExtraBoxesCheckBox.isSelected() ? 0 : 1);
@@ -434,7 +443,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
             showDeviationsCheckBox.setSelected(Options.SHOW_DEVIATIONS);
             showColorKuCheckBox.setSelected(Options.SHOW_COLORKU);
             saveWindowLayoutCheckBox.setSelected(Options.SAVE_WINDOW_LAYOUT);
-            alternativeMouseModeCheckBox.setSelected(Options.ALTERNATIVE_MOUSE_MODE);
+            singleClickModeCheckBox.setSelected(Options.SINGLE_CLICK_MODE);
             onlySmallFiltersCheckBox.setSelected(Options.ONLY_SMALL_FILTERS);
             drawExtraBoxesCheckBox.setSelected(Options.DRAW_MODE == 0);
             
@@ -457,7 +466,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
             showDeviationsCheckBox.setSelected(Options.getInstance().isShowDeviations());
             showColorKuCheckBox.setSelected(Options.getInstance().isShowColorKu());
             saveWindowLayoutCheckBox.setSelected(Options.getInstance().isSaveWindowLayout());
-            alternativeMouseModeCheckBox.setSelected(Options.getInstance().isAlternativeMouseMode());
+            singleClickModeCheckBox.setSelected(Options.getInstance().isSingleClickMode());
             onlySmallFiltersCheckBox.setSelected(Options.getInstance().isOnlySmallFilters());
             drawExtraBoxesCheckBox.setSelected(Options.getInstance().getDrawMode() == 0);
             editModeAutoAdvanceCheckBox.setSelected(Options.getInstance().isEditModeAutoAdvance());
@@ -542,7 +551,7 @@ public class ConfigGeneralPanel extends javax.swing.JPanel {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox alternativeMouseModeCheckBox;
+    private javax.swing.JCheckBox singleClickModeCheckBox;
     private javax.swing.JCheckBox colorValuesCheckBox;
     private javax.swing.JCheckBox defaultSizeCheckBox;
     private javax.swing.JCheckBox deleteCursorAfterCheckBox;

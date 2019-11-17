@@ -46,8 +46,8 @@ import java.util.logging.Logger;
 /*
  * Important Note: the serializer requires a very specific naming convention for the setters 
  * and getter to function properly otherwise it will not read/write the proper values. Say we have:
- * boolean showCandidateHighlight, you must create a getter with the 'is' prefix as such:
- * public boolean isShowCandidateHighlight();
+ * boolean singleClickMode, you must create a getter with the 'is' prefix as such:
+ * public boolean isSingleClickMode();
  * Likewise with the setter, you must have a 'set' prefix.
  */
 
@@ -301,7 +301,6 @@ public final class Options {
     public static final boolean COLOR_CELLS = true;        // color cells or candidates
     public static final boolean SAVE_WINDOW_LAYOUT = true; // save window layout at shutdown
     public static final boolean USE_SHIFT_FOR_REGION_SELECT = true; // use shift for selecting cells or toggeling candidates
-    public static final boolean ALTERNATIVE_MOUSE_MODE = false; // use simpler mouse mode (less clicks required)
     public static final boolean DELETE_CURSOR_DISPLAY = false; // let the cursor disappear after a while
     public static final int DELETE_CURSOR_DISPLAY_LENGTH = 1000; // time in ms
     public static final boolean USE_OR_INSTEAD_OF_AND_FOR_FILTER = false; // used when filtering more than one candidate
@@ -325,8 +324,7 @@ public final class Options {
     public static final int ACT_LEVEL = DEFAULT_DIFFICULTY_LEVELS[1].getOrdinal(); // Standard is EASY
     public static final boolean SHOW_SUDOKU_SOLVED = false;
     public static final boolean EDIT_MODE_AUTO_ADVANCE = false;
-    public static final boolean DOUBLE_CLICK_MODE = true;
-    public static final boolean SHOW_CANDIDATE_HIGHLIGHT = false;
+    public static final boolean SINGLE_CLICK_MODE = false;
     private boolean showCandidates = SHOW_CANDIDATES;
     private boolean showWrongValues = SHOW_WRONG_VALUES;
     private boolean showDeviations = SHOW_DEVIATIONS;
@@ -337,7 +335,6 @@ public final class Options {
     private boolean colorCells = COLOR_CELLS;
     private boolean saveWindowLayout = SAVE_WINDOW_LAYOUT;
     private boolean useShiftForRegionSelect = USE_SHIFT_FOR_REGION_SELECT;
-    private boolean alternativeMouseMode = ALTERNATIVE_MOUSE_MODE;
     private boolean deleteCursorDisplay = DELETE_CURSOR_DISPLAY;
     private int deleteCursorDisplayLength = DELETE_CURSOR_DISPLAY_LENGTH;
     private boolean useDefaultFontSize = USE_DEFAULT_FONT_SIZE;
@@ -357,8 +354,7 @@ public final class Options {
     private int actLevel = ACT_LEVEL;
     private boolean showSudokuSolved = SHOW_SUDOKU_SOLVED;
     private boolean editModeAutoAdvance = EDIT_MODE_AUTO_ADVANCE;
-    private boolean doubleClickMode = DOUBLE_CLICK_MODE;
-    private boolean showCandidateHighlight = SHOW_CANDIDATE_HIGHLIGHT;
+    private boolean isSingleClickMode = SINGLE_CLICK_MODE;
     // Clipboard
     public static final boolean USE_ZERO_INSTEAD_OF_DOT = false; // as the name says...
     private boolean useZeroInsteadOfDot = USE_ZERO_INSTEAD_OF_DOT;
@@ -1146,20 +1142,6 @@ public final class Options {
      */
     public void setColorValues(boolean colorValues) {
         this.colorValues = colorValues;
-    }
-
-    /**
-     * @return the alternativeMouseMode
-     */
-    public boolean isAlternativeMouseMode() {
-        return alternativeMouseMode;
-    }
-
-    /**
-     * @param alternativeMouseMode the alternativeMouseMode to set
-     */
-    public void setAlternativeMouseMode(boolean alternativeMouseMode) {
-        this.alternativeMouseMode = alternativeMouseMode;
     }
 
     /**
@@ -2290,36 +2272,15 @@ public final class Options {
     /**
      * @return set click mode
      */
-    public void setDoubleClickMode(boolean enabled) {
-        this.doubleClickMode = enabled;
+    public void setSingleClickMode(boolean enabled) {
+        this.isSingleClickMode = enabled;
     }
     
     /**
      * @return the click mode
      */
-    public boolean isDoubleClickMode() {
-        return this.doubleClickMode;
-    }
-    
-    /**
-     * @param do we want to see the candidate preview/highlight on mouse hover over?
-     */
-    public void setShowCandidateHighlight(boolean enabled) {
-    	this.showCandidateHighlight = enabled;
-    }
-    
-    /**
-     * toggle the state
-     */
-    public void toggleShowCandidateHighlight() {
-    	this.showCandidateHighlight = !this.showCandidateHighlight;
-    }
-    
-    /**
-     * @return show candidate mouse highlight.
-     */
-    public boolean isShowCandidateHighlight() {
-    	return this.showCandidateHighlight;
+    public boolean isSingleClickMode() {
+        return this.isSingleClickMode;
     }
 
     /**

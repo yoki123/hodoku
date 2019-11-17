@@ -98,7 +98,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
     private static final long serialVersionUID = 1L;
-    public static final String VERSION = "HoDoKu - v2.2.4";
+    public static final String VERSION = "HoDoKu - v2.2.5";
     
     // public static final String BUILD = "Build 16";
     public static final String BUILD;
@@ -274,8 +274,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     private javax.swing.JMenuItem solutionStepMenuItem;
     private javax.swing.JMenuItem mediumHintMenuItem;
     private javax.swing.JMenuItem solvePuzzleMenuItem;
-    private javax.swing.JCheckBoxMenuItem clickModeMenuItem;
-    private javax.swing.JCheckBoxMenuItem showCandidateHighlightMenuItem;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JMenu modeMenu;
     private javax.swing.JMenuItem newMenuItem;
@@ -756,8 +754,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         vagueHintMenuItem = new javax.swing.JMenuItem();
         mediumHintMenuItem = new javax.swing.JMenuItem();
         solvePuzzleMenuItem = new javax.swing.JMenuItem();
-        clickModeMenuItem = new javax.swing.JCheckBoxMenuItem();
-        showCandidateHighlightMenuItem = new javax.swing.JCheckBoxMenuItem();
         solutionStepMenuItem = new javax.swing.JMenuItem();
         backdoorSearchMenuItem = new javax.swing.JMenuItem();
         historyMenuItem = new javax.swing.JMenuItem();
@@ -1594,16 +1590,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             }
         });
         optionMenu.add(showCandidatesMenuItem);
-        
-        showCandidateHighlightMenuItem.setText("Show Candidate Highlight");
-        showCandidateHighlightMenuItem.setEnabled(showCandidatesMenuItem.isSelected());
-        showCandidateHighlightMenuItem.setSelected(Options.getInstance().isShowCandidateHighlight());
-        showCandidateHighlightMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	toggleCandidateHighlight(evt);
-            }
-        });
-        optionMenu.add(showCandidateHighlightMenuItem);
 
         showWrongValuesMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.showWrongValuesMenuItemMnemonic").charAt(0));
         showWrongValuesMenuItem.setText(bundle.getString("MainFrame.showWrongValuesMenuItem.text")); // NOI18N
@@ -1655,17 +1641,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             }
         });
         optionMenu.add(colorCandidatesMenuItem);
-        
-        optionMenu.add(new javax.swing.JPopupMenu.Separator());
-        
-        clickModeMenuItem.setText("Double Click"); // NOI18N
-        clickModeMenuItem.setSelected(Options.getInstance().isDoubleClickMode());
-        clickModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	toggleDoubleClickMode(evt);
-            }
-        });
-        //optionMenu.add(clickModeMenuItem);
         
         optionMenu.add(new javax.swing.JPopupMenu.Separator());
 
@@ -2403,8 +2378,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
             }
         }
     	
-    	showCandidateHighlightMenuItem.setEnabled(showCandidatesMenuItem.isSelected());
-    	
         check();
         fixFocus();
     }
@@ -2633,15 +2606,20 @@ private void colorCandidatesMenuItemActionPerformed(java.awt.event.ActionEvent e
     fixFocus();
 }//GEN-LAST:event_colorCandidatesMenuItemActionPerformed
 
-private void toggleDoubleClickMode(java.awt.event.ActionEvent evt) {
-	Options.getInstance().setDoubleClickMode(!Options.getInstance().isDoubleClickMode());
-	if (Options.getInstance().isDoubleClickMode()) {
+public void toggleSingleClickMode() {
+	Options.getInstance().setSingleClickMode(!Options.getInstance().isSingleClickMode());
+	if (Options.getInstance().isSingleClickMode()) {
 		sudokuPanel.clearLastCandidateMouseOn();
 	}
 }
 
-private void toggleCandidateHighlight(java.awt.event.ActionEvent evt) {
-	Options.getInstance().toggleShowCandidateHighlight();
+public void setSingleClickMode(boolean enabled) {
+	
+	if (enabled && !Options.getInstance().isSingleClickMode()) {
+		sudokuPanel.clearLastCandidateMouseOn();
+	}
+	
+	Options.getInstance().setSingleClickMode(enabled);
 }
 
 private void cellZoomMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cellZoomMenuItemActionPerformed
