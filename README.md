@@ -8,11 +8,11 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 Available languages: English and German
 
 For all Windows versions hodoku.exe is the preferred program version. For all other
-operating systems hodoku.jar has to be used. HoDoKu uses rather a lot of memory
+operating systems Hodoku.jar has to be used. HoDoKu uses rather a lot of memory
 (especially if you use the "Find all available steps" feature). The recommended way
 to run HoDoKu is:
 
-	java -Xmx256m -jar Hodoku.jar
+	java -Xmx512m -jar Hodoku.jar
 
 Note: the parameter "-Xmx" is specific to the JRE provided by Oracle. If you use a 
 different JRE, please look up the correct parameter for setting the maximum 
@@ -21,6 +21,20 @@ heap size at startup.
 
 Change log
 ==========
+
+Version 2.2.5 (2019-11-17)
+--------------------------
+
+Features:
+
+  - Single Click Mode has replaced Alternative Mouse Mode from: 
+    - edit -> preferences -> General -> Appearance/Behaviour -> Single click mode
+
+  - Single Click Mode is off by default.
+
+  - Single Click Mode cannot toggle a missing candidate in a single click because this would break the multi-selection behaviour. For this reason, toggling empty candidates must remain a double click.
+
+  - Candidate Highlight Mode is toggled when LCtrl is held down. This makes it more clear that candidates are interactable when LCtrl is held down, and more obvious what you are editing.
 
 Version 2.2.4 (2019-11-16)
 --------------------------
