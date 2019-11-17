@@ -1,24 +1,9 @@
-2019-11-17:
-
-	Single Click Mode already exists under Alternative Mouse Mode. Add a menu option to toggle it and make it more obvious what it is.
-		Holding LCtrl should enable candidate highlight to make it more obvious that you can interact with missing candidates in an empty cell.
-		Single Click Mode should toggle given digits instead of being a double click.
-		Candidate click only registers is it received both the down and up event.
-		
 20191116:
 
 	Cell selection acts funny when a key is pressed.
 		Delete should remove given cell values
 
 20191115:
-		
-	Single Click Mode:
-		LCtrl + LClick toggles a candidate's state.
-		Cell selection still works as usual.
-		We commit a click event on mouse down and up on same target.
-		Clicking on a visible candidate makes the cell become this value.
-		Clicking on a cell with a given value assuming not an original given toggles it back to candidate mode.
-		Coloring will be broken. Redisign toolbar or add a hotkey for coloring (tricky for alternate color).
 	
 	Redesign the color palette
 		Ability to clear a given color from the board.
