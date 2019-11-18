@@ -142,17 +142,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private SolutionPanel solutionPanel = new SolutionPanel(this);
 	private AllStepsPanel allStepsPanel = new AllStepsPanel(this, null);
 	private CellZoomPanel cellZoomPanel = new CellZoomPanel(this);
-	private JTabbedPane tabPane = new JTabbedPane(); // Ausdruck
+	private JTabbedPane tabPane = new JTabbedPane();
 	private PageFormat pageFormat = null;
 	private PrinterJob job = null;
 	private double bildSize = 400;
 	private int bildAufloesung = 96;
 	private int bildEinheit = 2; // File/IO
-	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { new MyFileFilter(1), new MyFileFilter(2),
-			new MyFileFilter(3), new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6), new MyFileFilter(7),
-			new MyFileFilter(9) };
-	private MyFileFilter[] puzzleFileLoadFilters = new MyFileFilter[] { new MyFileFilter(1), new MyFileFilter(8),
-			new MyFileFilter(9) };
+	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { 
+		new MyFileFilter(1), new MyFileFilter(2), new MyFileFilter(3),
+		new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6),
+		new MyFileFilter(7), new MyFileFilter(9)
+	};
+	private MyFileFilter[] puzzleFileLoadFilters = new MyFileFilter[] { 
+		new MyFileFilter(1), new MyFileFilter(8), new MyFileFilter(9)
+	};
 	private MyFileFilter[] configFileFilters = new MyFileFilter[] { new MyFileFilter(0) };
 	private MyCaretListener caretListener = new MyCaretListener();
 	private boolean outerSplitPaneInitialized = false;
@@ -160,12 +163,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private boolean resetHDivLoc = false;
 	private long resetHDivLocTicks = 0;
-	private String configFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame")
-			.getString("MainFrame.config_file_ext");
-	private String solutionFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame")
-			.getString("MainFrame.solution_file_ext");
-	private String textFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame")
-			.getString("MainFrame.text_file_ext");
+	private String configFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.config_file_ext");
+	private String solutionFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_ext");
+	private String textFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.text_file_ext");
 	private String ssFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.ss_file_ext");
 	private MessageFormat formatter = new MessageFormat("");
 	private List<GuiState> savePoints = new ArrayList<GuiState>();
@@ -344,12 +344,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param launchFile
 	 */
 	public MainFrame(String launchFile) {
+		
 		// if a configuration file is given at the command line, load it before anything
 		// else is done (helps restoring the screen layout)
 		if (launchFile != null && launchFile.endsWith("." + configFileExt)) {
 			Options.readOptions(launchFile);
 			BackgroundGeneratorThread.getInstance().resetAll();
 		}
+		
 		Options.getInstance().checkAllFonts();
 
 		initComponents();
@@ -362,9 +364,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (!Options.getInstance().checkFont(fontName)) {
 			fontName = Font.SANS_SERIF;
 		}
+		
 		Font font = hinweisTextArea.getFont();
-//        System.out.println("fontSize: " + font.getSize() + "/" + getFont().getSize() + "/" + bearbeitenMenu.getFont().getSize());
-//        font = new Font(fontName, font.getStyle(), font.getSize());
+		// System.out.println("fontSize: " + font.getSize() + "/" + getFont().getSize() + "/" + bearbeitenMenu.getFont().getSize());
+		// font = new Font(fontName, font.getStyle(), font.getSize());
 		font = new Font(fontName, font.getStyle(), editMenu.getFont().getSize());
 		hinweisTextArea.setFont(font);
 
@@ -375,10 +378,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (!Options.getInstance().checkFont(fontName)) {
 			fontName = font.getName();
 		}
+		
 		int fontSize = 12;
 		if (font.getSize() > fontSize) {
 			fontSize = font.getSize();
 		}
+		
 		font = new Font(fontName, getFont().getStyle(), fontSize);
 		statusLabelCellCandidate.setFont(font);
 		statusLabelLevel.setFont(font);
@@ -391,45 +396,52 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 		Color lafMenuBackColor = UIManager.getColor("textHighlight");
 		Color lafMenuColor = UIManager.getColor("textHighlightText");
-//        Color lafMenuInactiveColor = UIManager.getColor("textInactiveText");
+		// Color lafMenuInactiveColor = UIManager.getColor("textInactiveText");
+		
 		if (lafMenuBackColor == null) {
 			lafMenuBackColor = Color.BLUE;
 		}
+		
 		if (lafMenuColor == null) {
 			lafMenuColor = Color.BLACK;
 		}
-//        if (lafMenuInactiveColor == null) {
-//            lafMenuInactiveColor = Color.WHITE;
-//        }
+		
+		/*
+		if (lafMenuInactiveColor == null) {
+			lafMenuInactiveColor = Color.WHITE;
+		}*/
+		
 		statusLinePanel.setBackground(lafMenuBackColor);
 		statusLabelLevel.setForeground(lafMenuColor);
 		summaryPanel.setTitleLabelColors(lafMenuColor, lafMenuBackColor);
 		solutionPanel.setTitleLabelColors(lafMenuColor, lafMenuBackColor);
 		cellZoomPanel.setTitleLabelColors(lafMenuColor, lafMenuBackColor);
-		statusLabelModus
-				.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.playingMenuItem.text"));
+		statusLabelModus.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.playingMenuItem.text"));
 
-//        UIDefaults def = UIManager.getDefaults();
-//        Enumeration defEnum = def.keys();
-//        SortedSet<String> defSet = new TreeSet<String>();
-//        while (defEnum.hasMoreElements()) {
-//            Object tmp = defEnum.nextElement();
-//            if (tmp instanceof String) {
-//                defSet.add((String)tmp);
-//            }
-//        }
-//        for (String key : defSet) {
-//            System.out.println(key + ": " + def.get(key));
-//        }
+		/*
+		UIDefaults def = UIManager.getDefaults();
+		Enumeration defEnum = def.keys();
+		SortedSet<String> defSet = new TreeSet<String>();
+		
+		while (defEnum.hasMoreElements()) {
+		    Object tmp = defEnum.nextElement();
+		    if (tmp instanceof String) {
+		        defSet.add((String)tmp);
+		    }
+		}
+		
+		for (String key : defSet) {
+		    System.out.println(key + ": " + def.get(key));
+		}*/
 
 		clipTimer.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				clipTimer.stop();
 				adjustPasteMenuItem();
 			}
 		});
+		
 		try {
 			Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 			clip.addFlavorListener(this);
@@ -444,16 +456,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		outerSplitPane.setLeftComponent(splitPanel);
 		splitPanel.setSplitPane(sudokuPanel, null);
 
-		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.summary"),
-				summaryPanel);
-		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_path"),
-				solutionPanel);
-		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.all_steps"),
-				allStepsPanel);
-		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.cell_zoom"),
-				cellZoomPanel);
+		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.summary"), summaryPanel);
+		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_path"), solutionPanel);
+		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.all_steps"), allStepsPanel);
+		tabPane.addTab(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.cell_zoom"), cellZoomPanel);
 		tabPane.addMouseListener(new java.awt.event.MouseAdapter() {
-
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				tabPaneMouseClicked(evt);
@@ -465,26 +472,34 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		} else {
 			setWindowLayout(true);
 		}
+		
 		outerSplitPaneInitialized = false;
 		if (Options.getInstance().getInitialXPos() != -1 && Options.getInstance().getInitialYPos() != -1) {
+			
 			Toolkit t = Toolkit.getDefaultToolkit();
 			Dimension screenSize = t.getScreenSize();
 			int x = Options.getInstance().getInitialXPos();
 			int y = Options.getInstance().getInitialYPos();
+			
 			if (x + getWidth() > screenSize.width) {
 				x = screenSize.width - getWidth() - 10;
 			}
+			
 			if (y + getHeight() > screenSize.height) {
 				y = screenSize.height - getHeight() - 10;
 			}
+			
 			if (x < 0) {
 				x = 0;
 			}
+			
 			if (y < 0) {
 				y = 0;
 			}
+			
 			setLocation(x, y);
 		}
+		
 		showHintPanelMenuItem.setSelected(Options.getInstance().isShowHintPanel());
 		showToolBarMenuItem.setSelected(Options.getInstance().isShowToolBar());
 
@@ -498,6 +513,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		int miWidth = 0;
 		int miHeight = metrics.getHeight();
 		Set<Character> mnemonics = new HashSet<Character>();
+		
 		for (int i = 1; i < DifficultyType.values().length; i++) {
 			levelMenuItems[i - 1].setText(Options.getInstance().getDifficultyLevels()[i].getName());
 			char mnemonic = 0;
@@ -509,10 +525,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					break;
 				}
 			}
+			
 			if (mnemonicFound) {
 				mnemonics.add(mnemonic);
 				levelMenuItems[i - 1].setMnemonic(mnemonic);
 			}
+			
 			levelComboBox.addItem(Options.getInstance().getDifficultyLevels()[i].getName());
 			int aktWidth = metrics.stringWidth(Options.getInstance().getDifficultyLevels()[i].getName());
 			// System.out.println(Options.getInstance().getDifficultyLevels()[i].getName() +
@@ -521,6 +539,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				miWidth = aktWidth;
 			}
 		}
+		
 		mnemonics = null;
 
 		// mode menu items
@@ -541,12 +560,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		// set back the saved difficulty level
 		Options.getInstance().setActLevel(actLevel);
 
-		// MenÃ¼zustand prÃ¼fen, Ã¼bernimmt Werte von SudokuPanel; muss am Anfang
-		// stehen,
-		// weil die Werte spÃ¤ter in der Methode verwendet werden
 		check();
 
-		// Die ToggleButtons in ein Array stecken, ist spÃ¤ter einfacher
 		toggleButtons[0] = f1ToggleButton;
 		toggleButtons[1] = f2ToggleButton;
 		toggleButtons[2] = f3ToggleButton;
@@ -557,6 +572,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		toggleButtons[7] = f8ToggleButton;
 		toggleButtons[8] = f9ToggleButton;
 		toggleButtons[9] = fxyToggleButton;
+		
 		for (int i = 0, lim = toggleButtons.length; i < lim; i++) {
 			toggleButtonIconsOrg[i] = toggleButtons[i].getIcon();
 			toggleButtonIcons[i] = toggleButtons[i].getIcon();
@@ -567,6 +583,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				emptyToggleButtonIcons[i] = toggleButtons[i].getIcon();
 			}
 		}
+		
 		setToggleButton(null, false);
 		prepareToggleButtonIcons(Options.getInstance().isShowColorKu());
 
@@ -591,6 +608,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (launchFile != null && launchFile.endsWith("." + solutionFileExt)) {
 			loadFromFile(launchFile, 1);
 		}
+		
 		if (launchFile != null && launchFile.endsWith("." + textFileExt)) {
 			loadFromFile(launchFile, 8);
 		}
@@ -600,18 +618,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		// Start background creation
 		BackgroundGeneratorThread.getInstance().startCreation();
 
-//        Color bg = UIManager.getColor("List.selectionBackground");
-//        System.out.println("List.selectionBackground = " + bg);
-//        bg = UIManager.getColor("List[Selected].textBackground");
-//        System.out.println("List[Selected].textBackground = " + bg);
-//        bg = UIManager.getColor("List.selectionForeground");
-//        System.out.println("List.selectionForeground = " + bg);
-//        bg = UIManager.getColor("List[Selected].textForeground");
-//        System.out.println("List[Selected].textForeground = " + bg);
-//        bg = UIManager.getColor("List.background");
-//        System.out.println("List.background = " + bg);
-//        bg = UIManager.getColor("List.foreground");
-//        System.out.println("List.foreground = " + bg);
+		/*
+		Color bg = UIManager.getColor("List.selectionBackground");
+		System.out.println("List.selectionBackground = " + bg);
+		bg = UIManager.getColor("List[Selected].textBackground");
+		System.out.println("List[Selected].textBackground = " + bg);
+		bg = UIManager.getColor("List.selectionForeground");
+		System.out.println("List.selectionForeground = " + bg);
+		bg = UIManager.getColor("List[Selected].textForeground");
+		System.out.println("List[Selected].textForeground = " + bg);
+		bg = UIManager.getColor("List.background");
+		System.out.println("List.background = " + bg);
+		bg = UIManager.getColor("List.foreground");
+		System.out.println("List.foreground = " + bg);*/
 
 		new FileDrop(this, new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
@@ -638,11 +657,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 	}
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
 	private void initComponents() {
 
 		levelButtonGroup = new javax.swing.ButtonGroup();
@@ -779,10 +793,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		setTitle(bundle.getString("MainFrame.title"));
 		setIconImage(getIcon());
 		addWindowListener(new java.awt.event.WindowAdapter() {
+			
+			@Override
 			public void windowClosed(java.awt.event.WindowEvent evt) {
 				formWindowClosed(evt);
 			}
 
+			@Override
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				formWindowClosing(evt);
 			}
@@ -2051,9 +2068,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		helpMenu.add(aboutMenuItem);
 
 		jMenuBar1.add(helpMenu);
-
 		setJMenuBar(jMenuBar1);
-
 		pack();
 	}
 
@@ -2075,12 +2090,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		new ConfigDialog(this, true, -1).setVisible(true);
 		sudokuPanel.resetActiveColor();
+		
 		if (sudokuPanel.getActiveColor() != -1) {
-			statusPanelColorResult
-					.setBackground(Options.getInstance().getColoringColors()[sudokuPanel.getActiveColor()]);
+			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[sudokuPanel.getActiveColor()]);
 		}
+		
 		sudokuPanel.setColorIconsInPopupMenu();
 		check();
 		fixFocus();
@@ -2123,8 +2140,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void speichernAlsBildMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		WriteAsPNGDialog dlg = new WriteAsPNGDialog(this, true, bildSize, bildAufloesung, bildEinheit);
 		dlg.setVisible(true);
+		
 		if (dlg.isOk()) {
 			File bildFile = dlg.getBildFile();
 			bildAufloesung = dlg.getAufloesung();
@@ -2142,6 +2161,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				size = (int) bildSize;
 				break;
 			}
+			
 			if (bildFile.exists()) {
 				// Override warning!
 				MessageFormat msgf = new MessageFormat("");
@@ -2160,12 +2180,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void druckenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (job == null) {
 			job = PrinterJob.getPrinterJob();
 		}
+		
 		if (pageFormat == null) {
 			pageFormat = job.defaultPage();
 		}
+		
 		try {
 			job.setPrintable(sudokuPanel, pageFormat);
 			if (job.printDialog()) {
@@ -2179,20 +2202,25 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void printSetupMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (job == null) {
 			job = PrinterJob.getPrinterJob();
 		}
+		
 		if (pageFormat == null) {
 			pageFormat = job.defaultPage();
 		}
+		
 		pageFormat = job.pageDialog(pageFormat);
 	}
 
 	private void restartSpielMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (JOptionPane.showConfirmDialog(this,
-				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.start_new_game"),
-				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.start_new"),
-				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.start_new_game"),
+			java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.start_new"),
+			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			
 			sudokuPanel.setSudoku(sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY));
 			sudokuPanel.checkProgress();
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
@@ -2214,14 +2242,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void copyPmGridWithStepMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		SolutionStep activeStep = sudokuPanel.getStep();
 		if (activeStep == null) {
 			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.no_step_selected"),
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-					JOptionPane.ERROR_MESSAGE);
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.no_step_selected"),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
 			return;
 		}
+		
 		copyToClipboard(ClipboardMode.PM_GRID_WITH_STEP, false);
 	}
 
@@ -2250,13 +2281,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		String preGenSudoku = BackgroundGeneratorThread.getInstance().getSudoku(actDiffLevel,
 				Options.getInstance().getGameMode());
 		Sudoku2 tmpSudoku = null;
+		
 		if (preGenSudoku == null) {
+			
 			// no pregenrated puzzle available -> do it in GUI
 			GenerateSudokuProgressDialog dlg = new GenerateSudokuProgressDialog(this, true, actDiffLevel,
 					Options.getInstance().getGameMode());
 			dlg.setVisible(true);
 			tmpSudoku = dlg.getSudoku();
 		} else {
+			
 			tmpSudoku = new Sudoku2();
 			tmpSudoku.setSudoku(preGenSudoku, true);
 			Sudoku2 solvedSudoku = tmpSudoku.clone();
@@ -2266,7 +2300,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			tmpSudoku.setLevel(solvedSudoku.getLevel());
 			tmpSudoku.setScore(solvedSudoku.getScore());
 		}
+		
 		if (tmpSudoku != null) {
+			
 			sudokuPanel.setSudoku(tmpSudoku, true);
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 			initializeResultPanels();
@@ -2274,6 +2310,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			sudokuPanel.clearColoring();
 			sudokuPanel.setShowHintCellValue(0);
 			sudokuPanel.setShowInvalidOrPossibleCells(false);
+			
 			if (Options.getInstance().getGameMode() == GameMode.LEARNING) {
 				// solve the sudoku up until the first trainingStep
 				Sudoku2 trainingSudoku = sudokuPanel.getSudoku();
@@ -2287,11 +2324,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					}
 				}
 			}
+			
 			clearSavePoints();
 			sudokuFileName = null;
 			setTitleWithFile();
 			check();
 		}
+		
 		setSpielen(true);
 		fixFocus();
 	}
@@ -2350,12 +2389,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void alleHiddenSinglesSetzenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		hinweisAbbrechenButtonActionPerformed(null);
 		SolutionStep step = null;
+		
 		while ((step = sudokuPanel.getNextStep(true)) != null && (step.getType() == SolutionType.HIDDEN_SINGLE
 				|| step.getType() == SolutionType.FULL_HOUSE || step.getType() == SolutionType.NAKED_SINGLE)) {
 			sudokuPanel.doStep();
 		}
+		
 		sudokuPanel.abortStep();
 		sudokuPanel.checkProgress();
 		fixFocus();
@@ -2435,6 +2477,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 									.getString("MainFrame.candidatesMissing"),
 							java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
 							JOptionPane.YES_NO_CANCEL_OPTION);
+					
 					if (ret == JOptionPane.CANCEL_OPTION) {
 						// change the menu item!
 						showCandidatesMenuItem.setSelected(false);
@@ -2446,6 +2489,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 						doYes = false;
 					}
 				}
+				
 				if (doYes) {
 					// retain all changes to the user candidates
 					sudokuPanel.getSudoku().switchToAllCandidates();
@@ -2499,6 +2543,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		try {
 			Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 			Transferable clipboardContent = clip.getContents(this);
@@ -2510,6 +2555,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error pasting from clipboard", ex);
 		}
+		
 		check();
 		fixFocus();
 	}
@@ -2568,6 +2614,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (sudokuPanel != null) {
 			sudokuPanel.solveUpTo();
 		}
+		
 		check();
 		fixFocus();
 	}
@@ -2608,6 +2655,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				return;
 			}
 		}
+		
 		sudokuPanel.setSudoku((String) null);
 		sudokuPanel.checkProgress();
 		allStepsPanel.setSudoku(sudokuPanel.getSudoku());
@@ -2627,20 +2675,24 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void spielSpielenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (sudokuPanel.getSolvedCellsAnz() > 0) {
 			sudokuPanel.setSudoku(sudokuPanel.getSudokuString(ClipboardMode.VALUES_ONLY));
 			sudokuPanel.checkProgress();
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 			initializeResultPanels();
 		}
+		
 		setSpielen(true);
 	}
 
 	private void resetSpielMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (JOptionPane.showConfirmDialog(this,
-				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.reset_game"),
-				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.reset"),
-				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.reset_game"),
+			java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.reset"),
+			JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			
 			sudokuPanel.setSudoku(sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY));
 			sudokuPanel.checkProgress();
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
@@ -2735,11 +2787,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void historyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		GuiState state = new GuiState(sudokuPanel, sudokuPanel.getSolver(), solutionPanel);
 		state.get(true);
 		HistoryDialog dlg = new HistoryDialog(this, true);
 		dlg.setVisible(true);
 		String puzzle = dlg.getSelectedPuzzle();
+		
 		if (puzzle != null) {
 			if (dlg.isDoubleClicked()) {
 				// everything is already initialized, so dont do anything
@@ -2752,16 +2806,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			// restore everything
 			setState(state);
 		}
+		
 		state = null;
 	}
 
 	private void createSavePointMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		String defaultName = ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.createsp.default") + " "
 				+ (savePoints.size() + 1);
 		String name = (String) JOptionPane.showInputDialog(this,
 				ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.createsp.message"),
 				ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.createsp.title"),
 				JOptionPane.QUESTION_MESSAGE, null, null, defaultName);
+		
 		if (name != null) {
 			GuiState state = new GuiState(sudokuPanel, sudokuPanel.getSolver(), solutionPanel);
 			state.get(true);
@@ -2772,14 +2829,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void restoreSavePointMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		GuiState state = new GuiState(sudokuPanel, sudokuPanel.getSolver(), solutionPanel);
 		state.get(true);
 		RestoreSavePointDialog dlg = new RestoreSavePointDialog(this, true);
 		dlg.setVisible(true);
+		
 		if (!dlg.isOkPressed()) {
 			// restore everything
 			setState(state);
 		}
+		
 		state = null;
 	}
 
@@ -2803,8 +2863,10 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void setGivensMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		SetGivensDialog dlg = new SetGivensDialog(this, true);
 		dlg.setVisible(true);
+		
 		if (dlg.isOkPressed()) {
 			String givens = dlg.getGivens();
 			sudokuPanel.setGivens(givens);
@@ -2812,6 +2874,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void fullScreenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (fullScreenMenuItem.isSelected()) {
 			changingFullScreenMode = true;
 			saveWindowStateInOptions();
@@ -2835,13 +2898,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			setWindowLayout(false);
 			setVisible(true);
 		}
+		
 		check();
 		fixFocus();
 	}
 
 	private void showHintPanelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		Options.getInstance().setShowHintPanel(showHintPanelMenuItem.isSelected());
 		hintPanel.setVisible(showHintPanelMenuItem.isSelected());
+		
 		if (Options.getInstance().isShowHintPanel()) {
 			int horzDivLoc = Options.getInstance().getInitialHorzDividerLoc();
 			if (horzDivLoc > getHeight() - 204) {
@@ -2941,17 +3007,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 *             hint" and <code>2</code> for "show next step".
 	 */
 	private void getHint(int mode) {
+		
 		if (sudokuPanel.getSudoku().isSolved()) {
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.already_solved"));
 			return;
 		}
+		
 		if (sudokuPanel.getSudoku().getStatus() == SudokuStatus.EMPTY
 				|| sudokuPanel.getSudoku().getStatus() == SudokuStatus.INVALID) {
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.invalid_puzzle"));
 			return;
 		}
+		
 		if (!sudokuPanel.isShowCandidates()) {
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.not_available"),
@@ -2959,6 +3028,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
+		
 		if (sudokuPanel.getSudoku().checkSudoku() == false) {
 			JOptionPane.showMessageDialog(this,
 					java.util.ResourceBundle.getBundle("intl/MainFrame")
@@ -2967,6 +3037,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
+		
 		SolutionStep step = sudokuPanel.getNextStep(false);
 		if (mode == 0 || mode == 1) {
 			sudokuPanel.abortStep();
@@ -2997,6 +3068,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				hinweisTextArea.setCaretPosition(0);
 			}
 		}
+		
 		fixFocus();
 		check();
 	}
@@ -3014,9 +3086,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param showDialog
 	 */
 	private void setMode(GameMode newMode, boolean showDialog) {
+		
 		if (newMode == GameMode.PLAYING) {
 			Options.getInstance().setGameMode(newMode);
 		} else {
+			
 			if (showDialog) {
 				// show config dialog
 				ConfigTrainingDialog dlg = new ConfigTrainingDialog(this, true);
@@ -3025,6 +3099,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					return;
 				}
 			}
+			
 			String techniques = Options.getInstance().getTrainingStepsString(true);
 			if (techniques.isEmpty()) {
 				JOptionPane.showMessageDialog(this,
@@ -3104,6 +3179,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		for (int i = 0; i < savePoints.size(); i++) {
 			savePoints.set(i, null);
 		}
+		
 		savePoints.clear();
 	}
 
@@ -3121,13 +3197,17 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public void coloringPanelClicked(int colorNumber) {
+		
 		if (colorNumber == -1 || colorNumber == -2) {
+			
 			statusPanelColorResult.setBackground(Options.getInstance().getDefaultCellColor());
 			sudokuPanel.setActiveColor(-1);
+			
 			if (colorNumber == -2) {
 				sudokuPanel.clearColoring();
 				repaint();
 			}
+			
 		} else {
 			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[colorNumber]);
 			sudokuPanel.setActiveColor(colorNumber);
@@ -3155,29 +3235,36 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void saveWindowStateInOptions() {
+		
 		// save the complete window state
 		Options o = Options.getInstance();
 		o.setInitialXPos(getX());
 		o.setInitialYPos(getY());
 		o.setInitialHeight(getHeight());
 		o.setInitialWidth(getWidth());
+		
 		// the horizontal divider pos mustnt be saved if the panel is not visible!
 		if (o.isShowHintPanel()) {
 			o.setInitialHorzDividerLoc(outerSplitPane.getDividerLocation());
 		}
+		
 		o.setInitialDisplayMode(0); // sudoku only
 		if (summaryMenuItem.isSelected()) {
 			o.setInitialDisplayMode(1);
 		}
+		
 		if (solutionMenuItem.isSelected()) {
 			o.setInitialDisplayMode(2);
 		}
+		
 		if (allStepsMenuItem.isSelected()) {
 			o.setInitialDisplayMode(3);
 		}
+		
 		if (cellZoomMenuItem.isSelected()) {
 			o.setInitialDisplayMode(4);
 		}
+		
 		o.setInitialVertDividerLoc(-1);
 		if (o.getInitialDisplayMode() != 0) {
 			splitPanel.getDividerLocation();
@@ -3196,6 +3283,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void setWindowLayout(boolean reset) {
+		
 		Options o = Options.getInstance();
 		// System.out.println("initialHorzDividerLoc: " + o.initialHorzDividerLoc);
 
@@ -3224,11 +3312,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (screenSize.height - 45 < height) {
 			height = screenSize.height - 45;
 		}
+		
 		if (horzDivLoc > height - 204) {
 			horzDivLoc = height - 204;
 			// can be used during program run, so has to be saved here
 			Options.getInstance().setInitialHorzDividerLoc(horzDivLoc);
 		}
+		
 		if (screenSize.width - 20 < width) {
 			width = screenSize.width - 20;
 		}
@@ -3256,6 +3346,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			setSplitPane(cellZoomPanel);
 			cellZoomMenuItem.setSelected(true);
 		}
+		
 		if (o.getInitialVertDividerLoc() != -1) {
 			splitPanel.setDividerLocation(o.getInitialVertDividerLoc());
 		}
@@ -3286,13 +3377,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void setSplitPane(JPanel panel) {
+		
 		if (!splitPanel.hasRight()) {
 			splitPanel.setRight(tabPane);
 		}
+		
 		tabPane.setSelectedComponent(panel);
 	}
 
 	private void setSpielen(boolean isSpielen) {
+		
 		eingabeModus = !isSpielen;
 		if (isSpielen) {
 			if (oldShowDeviationsValid) {
@@ -3304,6 +3398,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			oldShowDeviationsValid = true;
 			showDeviationsMenuItem.setSelected(false);
 		}
+		
 		showDeviationsMenuItemActionPerformed(null);
 
 		vagueHintMenuItem.setEnabled(isSpielen);
@@ -3318,6 +3413,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public void setSolutionStep(SolutionStep step, boolean setInSudokuPanel) {
+		
 		if (setInSudokuPanel) {
 			if (step == null) {
 				sudokuPanel.abortStep();
@@ -3325,29 +3421,37 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				sudokuPanel.setStep(step);
 			}
 		}
+		
 		if (step == null) {
+			
 			hinweisTextArea.setText("");
 			hinweisAbbrechenButton.setEnabled(false);
 			hinweisAusfuehrenButton.setEnabled(false);
+			
 			if (executeStepToggleButton != null) {
 				executeStepToggleButton.setEnabled(false);
 			}
+			
 			if (abortStepToggleButton != null) {
 				abortStepToggleButton.setEnabled(false);
 			}
 		} else {
+			
 			hinweisTextArea.setText(step.toString());
 			hinweisTextArea.setCaretPosition(0);
 			hinweisAbbrechenButton.setEnabled(true);
 			hinweisAusfuehrenButton.setEnabled(true);
 			getRootPane().setDefaultButton(hinweisAusfuehrenButton);
+			
 			if (executeStepToggleButton != null) {
 				executeStepToggleButton.setEnabled(true);
 			}
+			
 			if (abortStepToggleButton != null) {
 				abortStepToggleButton.setEnabled(true);
 			}
 		}
+		
 		fixFocus();
 	}
 
@@ -3360,6 +3464,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param simpleSudoku
 	 */
 	private void copyToClipboard(ClipboardMode mode, boolean simpleSudoku) {
+		
 		String clipStr = "";
 		if (simpleSudoku) {
 			String dummy = sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY);
@@ -3375,6 +3480,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		} else {
 			clipStr = sudokuPanel.getSudokuString(mode);
 		}
+		
 		try {
 			Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 			StringSelection content = new StringSelection(clipStr);
@@ -3382,19 +3488,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		} catch (Exception ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error writing to clipboard", ex);
 		}
+		
 		fixFocus();
 	}
 
 	private void setToggleButton(JToggleButton button, boolean ctrlPressed) {
+		
 		if (button == null) {
 			sudokuPanel.resetShowHintCellValues();
 		} else {
+			
 			int index = 0;
 			for (index = 0; index < toggleButtons.length; index++) {
 				if (toggleButtons[index] == button) {
 					break;
 				}
 			}
+			
 			if (index == 9) {
 				sudokuPanel.setShowHintCellValue(index + 1);
 			} else {
@@ -3410,6 +3520,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					}
 				}
 			}
+			
 			sudokuPanel.checkIsShowInvalidOrPossibleCells();
 //            if (button.isSelected()) {
 //                sudokuPanel.setShowHintCellValue(index + 1);
@@ -3419,6 +3530,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 //                sudokuPanel.setShowInvalidOrPossibleCells(false);
 //            }
 		}
+		
 		check();
 		sudokuPanel.repaint();
 		fixFocus();
@@ -3430,15 +3542,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param puzzle
 	 */
 	private void saveToFile(boolean puzzle) {
+		
 		JFileChooser chooser = new JFileChooser(Options.getInstance().getDefaultFileDir());
 		chooser.setAcceptAllFileFilterUsed(false);
 		MyFileFilter[] filters = puzzleFileSaveFilters;
+		
 		if (!puzzle) {
 			filters = configFileFilters;
 		}
+		
 		for (int i = 0; i < filters.length; i++) {
 			chooser.addChoosableFileFilter(filters[i]);
 		}
+		
 		int returnVal = chooser.showSaveDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
@@ -3468,6 +3584,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 						}
 					}
 				}
+				
 				File checkFile = new File(path);
 				if (checkFile.exists()) {
 					// Override warning!
@@ -3491,10 +3608,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 //                            java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"), JOptionPane.ERROR_MESSAGE);
 			} catch (Exception ex2) {
 				JOptionPane.showMessageDialog(this, ex2.toString(),
-						java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-						JOptionPane.ERROR_MESSAGE);
+					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+					JOptionPane.ERROR_MESSAGE);
 				sudokuFileName = null;
 			}
+			
 			setTitleWithFile();
 		}
 	}
@@ -3513,7 +3631,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @throws IOException
 	 */
 	private void saveToFile(boolean puzzle, String path, int filterType) throws FileNotFoundException, IOException {
+		
 		sudokuFileName = path;
+		
 		if (!puzzle) {
 			// Options
 			writeOptionsWithWindowState(path);
@@ -3521,6 +3641,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			// Sudoku2 und Lï¿½sung
 			String newLine = System.getProperty("line.separator");
 			if (filterType == 1) {
+				
 				sudokuFileType = 1;
 				ZipOutputStream zOut = new ZipOutputStream(new FileOutputStream(path));
 				zOut.putNextEntry(new ZipEntry("SudokuData"));
@@ -3534,7 +3655,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				out.close();
 				zOut.flush();
 				zOut.close();
+				
 			} else if (filterType == 9) {
+				
 				sudokuFileType = 9;
 				// SimpleSudoku format (see comment in loadFromFile())
 				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path)));
@@ -3548,6 +3671,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 						out.printf("I%02d%d%n", i, tmpSudoku.getValue(i));
 					}
 				}
+				
 				// eliminated candidates
 				for (int i = 0; i < Sudoku2.LENGTH; i++) {
 					if (tmpSudoku.getValue(i) == 0) {
@@ -3558,15 +3682,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 						}
 					}
 				}
+				
 				out.close();
+				
 			} else {
+				
 				sudokuFileType = 8;
 				if (filterType == 8) {
 					// generic text file: can occur when save is executed
 					filterType = 6;
 				}
+				
 				BufferedWriter out = new BufferedWriter(new FileWriter(path));
 				String line = "";
+				
 				switch (filterType) {
 				case 2:
 					line = sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY);
@@ -3593,6 +3722,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					line = sudokuPanel.getSudokuString(ClipboardMode.LIBRARY);
 					break;
 				}
+				
 				out.write(line);
 				out.close();
 			}
@@ -3606,15 +3736,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param puzzle
 	 */
 	private void loadFromFile(boolean puzzle) {
+		
 		JFileChooser chooser = new JFileChooser(Options.getInstance().getDefaultFileDir());
 		chooser.setAcceptAllFileFilterUsed(false);
 		MyFileFilter[] filters = puzzleFileLoadFilters;
+		
 		if (!puzzle) {
 			filters = configFileFilters;
 		}
+		
 		for (int i = 0; i < filters.length; i++) {
 			chooser.addChoosableFileFilter(filters[i]);
 		}
+		
 		int returnVal = chooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			String path = chooser.getSelectedFile().getPath();
@@ -3730,11 +3864,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					// that is not needed anymore
 					sudokuTemp = in.readObject();
 				}
+				
 				state.setAnzSteps((int[]) in.readObject());
 				state.setSteps((List<SolutionStep>) in.readObject());
 				state.setTitels((List<String>) in.readObject());
 				state.setTabSteps((List<List<SolutionStep>>) in.readObject());
 				state.resetAnzSteps();
+				
 				try {
 					savePoints = (List<GuiState>) in.readObject();
 					for (int i = 0; i < savePoints.size(); i++) {
@@ -3748,9 +3884,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					// ex.printStackTrace();
 					clearSavePoints();
 				}
+				
 				in.close();
 				setState(state);
 				setMode(GameMode.PLAYING, true);
+				
 			} else if (fileType == 8) {
 				// load from text file
 				BufferedReader in = new BufferedReader(new FileReader(path));
@@ -3795,6 +3933,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				BufferedReader in = new BufferedReader(new FileReader(path));
 				StringBuilder tmp = new StringBuilder();
 				String line = null;
+				
 				while ((line = in.readLine()) != null) {
 					if (line.trim().isEmpty()) {
 						// all the givens are read -> abort reading
@@ -3811,6 +3950,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					if (line.trim().isEmpty()) {
 						continue;
 					}
+					
 					char recordType = line.charAt(0);
 					if (recordType == 'I') {
 						int index = Integer.parseInt(line.substring(1, 3));
@@ -3831,8 +3971,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 						java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.invalid_filename"));
 				String msg = formatter.format(new Object[] { path });
 				JOptionPane.showMessageDialog(this, msg,
-						java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-						JOptionPane.ERROR_MESSAGE);
+					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+					JOptionPane.ERROR_MESSAGE);
 				sudokuFileName = null;
 			}
 		} catch (Exception ex2) {
@@ -3842,6 +3982,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			ex2.printStackTrace();
 			sudokuFileName = null;
 		}
+		
 		setTitleWithFile();
 	}
 
@@ -3849,13 +3990,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
 			Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, "Error setting LaF", ex);
 		}
+		
 		java.awt.EventQueue.invokeLater(new Runnable() {
-
 			@Override
 			public void run() {
 				new MainFrame(null).setVisible(true);
@@ -3864,6 +4006,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void setTitleWithFile() {
+		
 		savePuzzleMenuItem.setEnabled(sudokuFileName != null);
 		if (sudokuFileName == null) {
 			setTitle(VERSION);
@@ -3879,6 +4022,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void setLevelFromMenu() {
+		
 		int selected = 0;
 		for (int i = 0; i < levelMenuItems.length; i++) {
 			if (levelMenuItems[i].isSelected()) {
@@ -3910,7 +4054,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public final void check() {
+		
 		if (sudokuPanel != null) {
+			
 			undoMenuItem.setEnabled(sudokuPanel.undoPossible());
 			undoToolButton.setEnabled(sudokuPanel.undoPossible());
 			redoMenuItem.setEnabled(sudokuPanel.redoPossible());
@@ -3920,6 +4066,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			showDeviationsMenuItem.setSelected(sudokuPanel.isShowDeviations());
 			showColorKuMenuItem.setSelected(Options.getInstance().isShowColorKuAct());
 			prepareToggleButtonIcons(Options.getInstance().isShowColorKuAct());
+			
 			// either all ToggleButtons are set or none is
 			if (toggleButtons[0] != null) {
 				boolean[] remainingCandidates = sudokuPanel.getRemainingCandidates();
@@ -3946,6 +4093,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 //                        }
 					}
 				}
+				
 				for (int i = 0; i < toggleButtons.length; i++) {
 					if (toggleButtons[i].isEnabled()) {
 						if (sudokuPanel.getShowHintCellValues()[i + 1]) {
@@ -3956,6 +4104,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					}
 				}
 			}
+			
 			redGreenToggleButton.setSelected(sudokuPanel.isInvalidCells());
 			Sudoku2 sudoku = sudokuPanel.getSudoku();
 			if (sudoku != null) {
@@ -3971,6 +4120,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				statusLabelLevel.setText(
 						ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.statusLabelLevel.text"));
 			}
+			
 			if (sudokuPanel.isColorCells()) {
 				colorCellsMenuItem.setSelected(true);
 				statusLabelCellCandidate.setText(ResourceBundle.getBundle("intl/MainFrame")
@@ -3980,6 +4130,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				statusLabelCellCandidate.setText(ResourceBundle.getBundle("intl/MainFrame")
 						.getString("MainFrame.statusLabelCellCandidate.text.candidate"));
 			}
+			
 			fixFocus();
 		}
 		// adjust mode menus and labels
@@ -4000,11 +4151,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					Options.getInstance().setActLevel(tmpLevel);
 				}
 			}
+			
 			int ord = Options.getInstance().getActLevel() - 1;
 			if (levelMenuItems[ord] != null && levelComboBox.getItemCount() > ord) {
 				levelMenuItems[ord].setSelected(true);
 				levelComboBox.setSelectedIndex(ord);
 			}
+			
 			int mOrdinal = Options.getInstance().getGameMode().ordinal();
 			if (modeMenuItems != null && modeMenuItems[mOrdinal] != null) {
 				modeMenuItems[mOrdinal].setSelected(true);
@@ -4024,6 +4177,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private boolean isStringFlavorInClipboard() {
+		
 		Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 //        DataFlavor[] flavors = clip.getAvailableDataFlavors();
 //        System.out.println("BEGIN DataFlavors");
@@ -4034,10 +4188,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (clip.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
 			return true;
 		}
+		
 		return false;
 	}
 
 	private void adjustPasteMenuItem() {
+		
 		try {
 			if (Main.OS_NAME.contains("mac")) {
 				pasteMenuItem.setEnabled(true);
@@ -4070,20 +4226,25 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public void abortStep() {
+		
 		sudokuPanel.abortStep();
 		hinweisTextArea.setText("");
 		hinweisAbbrechenButton.setEnabled(false);
 		hinweisAusfuehrenButton.setEnabled(false);
+		
 		if (executeStepToggleButton != null) {
 			executeStepToggleButton.setEnabled(false);
 		}
+		
 		if (abortStepToggleButton != null) {
 			abortStepToggleButton.setEnabled(false);
 		}
+		
 		fixFocus();
 	}
 
 	private void createProgressLabelImages() {
+		
 		try {
 			progressImages[0] = new ImageIcon(getClass().getResource("/img/invalid20.png"));
 			BufferedImage overlayImage = ImageIO.read(getClass().getResource("/img/ce1-20.png"));
@@ -4102,10 +4263,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public void setProgressLabel() {
+		
 		if (sudokuPanel == null) {
 			// do nothing
 			return;
 		}
+		
 		Sudoku2 sudoku = sudokuPanel.getSudoku();
 		if (sudoku.getStatus() != SudokuStatus.VALID) {
 			progressLabel.setIcon(progressImages[0]);
@@ -4115,18 +4278,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		// ok valid sudoku, currentLevel and currentScore must have been set
 		// not necessarily!
 		if (getCurrentLevel() != null) {
+			
 			progressLabel.setIcon(progressImages[getCurrentLevel().getOrdinal()]);
 			double proc = getCurrentScore();
 			int intProc = (int) (proc / sudoku.getScore() * 100);
+			
 			if (intProc > 100) {
 				intProc = 100;
 			}
+			
 			if (intProc < 1) {
 				intProc = 1;
 			}
+			
 			if (getCurrentScore() == 0) {
 				intProc = 0;
 			}
+			
 			progressLabel.setText(intProc + "%");
 		}
 	}
@@ -4165,7 +4333,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * 
 	 */
 	private void setShowHintButtonsInToolbar() {
+		
 		if (vageHintToggleButton == null) {
+			
 			// create the buttons
 			hintSeperator = new javax.swing.JSeparator();
 			hintSeperator.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -4177,23 +4347,21 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			vageHintToggleButton = new javax.swing.JButton();
 			vageHintToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/vageHint.png")));
 			vageHintToggleButton.addActionListener(new java.awt.event.ActionListener() {
-
 				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					hintToggleButtonActionPerformed(true);
 				}
 			});
 			vageHintToggleButton.setToolTipText(java.util.ResourceBundle.getBundle("intl/MainFrame")
-					.getString("MainFrame.vageHintToolButton.toolTipText"));
+				.getString("MainFrame.vageHintToolButton.toolTipText"));
 			vageHintToggleButton.setVisible(false);
 			jToolBar1.add(vageHintToggleButton);
 
 //            concreteHintToggleButton = new javax.swing.JToggleButton();
 			concreteHintToggleButton = new javax.swing.JButton();
 			concreteHintToggleButton
-					.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/concreteHint.png")));
+				.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/concreteHint.png")));
 			concreteHintToggleButton.addActionListener(new java.awt.event.ActionListener() {
-
 				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					hintToggleButtonActionPerformed(false);
@@ -4201,52 +4369,51 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			});
 			concreteHintToggleButton.setVisible(false);
 			concreteHintToggleButton.setToolTipText(java.util.ResourceBundle.getBundle("intl/MainFrame")
-					.getString("MainFrame.concreteHintToolButton.toolTipText"));
+				.getString("MainFrame.concreteHintToolButton.toolTipText"));
 			jToolBar1.add(concreteHintToggleButton);
 
 			showNextStepToggleButton = new javax.swing.JButton();
 			showNextStepToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nextHint.png")));
 			showNextStepToggleButton.addActionListener(new java.awt.event.ActionListener() {
-
 				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					loesungsSchrittMenuItemActionPerformed(null);
 				}
 			});
 			showNextStepToggleButton.setToolTipText(java.util.ResourceBundle.getBundle("intl/MainFrame")
-					.getString("MainFrame.neuerHinweisButton.toolTipText"));
+				.getString("MainFrame.neuerHinweisButton.toolTipText"));
 			showNextStepToggleButton.setVisible(false);
 			jToolBar1.add(showNextStepToggleButton);
 
 			executeStepToggleButton = new javax.swing.JButton();
 			executeStepToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/executeHint.png")));
 			executeStepToggleButton.addActionListener(new java.awt.event.ActionListener() {
-
 				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					hinweisAusfuehrenButtonActionPerformed(null);
 				}
 			});
 			executeStepToggleButton.setToolTipText(java.util.ResourceBundle.getBundle("intl/MainFrame")
-					.getString("MainFrame.hinweisAusfuehrenButton.toolTipText"));
+				.getString("MainFrame.hinweisAusfuehrenButton.toolTipText"));
 			executeStepToggleButton.setVisible(false);
 			jToolBar1.add(executeStepToggleButton);
 
 			abortStepToggleButton = new javax.swing.JButton();
 			abortStepToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/abortHint.png")));
 			abortStepToggleButton.addActionListener(new java.awt.event.ActionListener() {
-
 				@Override
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
 					hinweisAbbrechenButtonActionPerformed(null);
 				}
 			});
 			abortStepToggleButton.setToolTipText(java.util.ResourceBundle.getBundle("intl/MainFrame")
-					.getString("MainFrame.hinweisAbbrechenButton.toolTipText"));
+				.getString("MainFrame.hinweisAbbrechenButton.toolTipText"));
 			abortStepToggleButton.setVisible(false);
 			jToolBar1.add(abortStepToggleButton);
 		}
+		
 		if (Options.getInstance().isShowHintButtonsInToolbar()) {
+			
 			hintSeperator.setVisible(true);
 			vageHintToggleButton.setVisible(true);
 			concreteHintToggleButton.setVisible(true);
@@ -4255,7 +4422,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			abortStepToggleButton.setVisible(true);
 			executeStepToggleButton.setEnabled(hinweisAusfuehrenButton.isEnabled());
 			abortStepToggleButton.setEnabled(hinweisAusfuehrenButton.isEnabled());
+			
 		} else {
+			
 			hintSeperator.setVisible(false);
 			vageHintToggleButton.setVisible(false);
 			concreteHintToggleButton.setVisible(false);
@@ -4263,6 +4432,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			executeStepToggleButton.setVisible(false);
 			abortStepToggleButton.setVisible(false);
 		}
+		
 		check();
 		fixFocus();
 	}
@@ -4294,9 +4464,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 		@Override
 		public boolean accept(File f) {
+			
 			if (f.isDirectory()) {
 				return true;
 			}
+			
 			String[] parts = f.getName().split("\\.");
 			if (parts.length > 1) {
 				String ext = parts[parts.length - 1];
@@ -4330,8 +4502,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					break;
 				case 9:
 					// SimpleSudoku files
-					if (ext.equalsIgnoreCase(
-							java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.ss_file_ext"))) {
+					if (ext.equalsIgnoreCase(java.util.ResourceBundle.getBundle("intl/MainFrame")
+							.getString("MainFrame.ss_file_ext"))) {
 						return true;
 					}
 					break;
@@ -4350,29 +4522,21 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			case 1:
 				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr");
 			case 2:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_gal");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_gal");
 			case 3:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_gf");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_gf");
 			case 4:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_pm");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_pm");
 			case 5:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_pms");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_pms");
 			case 6:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_pmg");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_pmg");
 			case 7:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_l");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_l");
 			case 8:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_text");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_text");
 			case 9:
-				return java.util.ResourceBundle.getBundle("intl/MainFrame")
-						.getString("MainFrame.solution_file_descr_ss");
+				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solution_file_descr_ss");
 			default:
 				return java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.unknown_file_type");
 			}
@@ -4389,6 +4553,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 		@Override
 		public void caretUpdate(CaretEvent e) {
+			
 			if (inUpdate) {
 				// no recursion!
 				return;
@@ -4408,6 +4573,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			int start = 0;
 			int end = 0;
 			int act = -1;
+			
 			while (act < dot) {
 				act = text.indexOf('\n', act + 1);
 				if (act == -1) {
@@ -4422,10 +4588,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					break;
 				}
 			}
+			
 			if (end > 0) {
 				// System.out.println("Found: start = " + start + ", end = " + end + ", line = "
 				// + line);
 				inUpdate = true;
+				
 				if (line == 0) {
 					// hinweisTextArea.setSelectionStart(0);
 					// hinweisTextArea.setSelectionEnd(0);
@@ -4435,6 +4603,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 					hinweisTextArea.setSelectionEnd(end);
 					sudokuPanel.setChainInStep(line - 1);
 				}
+				
 				inUpdate = false;
 			}
 		}
