@@ -45,38 +45,38 @@ import javax.swing.JPanel;
  * @author hobiwan
  */
 public class ListDragAndDrop implements DragSourceListener, DropTargetListener, DragGestureListener {
-    private static final DataFlavor stepConfigDataFlavor;
-    private static final DataFlavor[] supportedFlavors;
-    
-    private DragSource dragSource;
-    private DropTarget dropTarget;
-    private int draggedIndex = -1;
-    private StepConfig dropTargetCell;
-    @SuppressWarnings("rawtypes")
-	private JList list;
-    private ListDragAndDropChange panel;
-    @SuppressWarnings("unused")
-	private JPanel cPanel;
-    
-    static {
-        stepConfigDataFlavor = new DataFlavor(StepConfig.class, "sudoku.StepConfig");
-        supportedFlavors = new DataFlavor[] { stepConfigDataFlavor };
-    }
-    
-    @SuppressWarnings("rawtypes")
-	public ListDragAndDrop(JList list, ListDragAndDropChange panel, JPanel cPanel) {
-        this.list = list;
-        this.panel = panel;
-        this.cPanel = cPanel;
-        
-        dragSource = new DragSource();
-        dragSource.createDefaultDragGestureRecognizer(list, DnDConstants.ACTION_MOVE, this);
-        dropTarget = new DropTarget(list, this);
-    }
+	private static final DataFlavor stepConfigDataFlavor;
+	private static final DataFlavor[] supportedFlavors;
 
-    @Override
-    public void dragEnter(DragSourceDragEvent dsde) {
-        //System.out.println("dragEnter(DragSourceDragEvent)");
+	private DragSource dragSource;
+	private DropTarget dropTarget;
+	private int draggedIndex = -1;
+	private StepConfig dropTargetCell;
+	@SuppressWarnings("rawtypes")
+	private JList list;
+	private ListDragAndDropChange panel;
+	@SuppressWarnings("unused")
+	private JPanel cPanel;
+
+	static {
+		stepConfigDataFlavor = new DataFlavor(StepConfig.class, "sudoku.StepConfig");
+		supportedFlavors = new DataFlavor[] { stepConfigDataFlavor };
+	}
+
+	@SuppressWarnings("rawtypes")
+	public ListDragAndDrop(JList list, ListDragAndDropChange panel, JPanel cPanel) {
+		this.list = list;
+		this.panel = panel;
+		this.cPanel = cPanel;
+
+		dragSource = new DragSource();
+		dragSource.createDefaultDragGestureRecognizer(list, DnDConstants.ACTION_MOVE, this);
+		dropTarget = new DropTarget(list, this);
+	}
+
+	@Override
+	public void dragEnter(DragSourceDragEvent dsde) {
+		// System.out.println("dragEnter(DragSourceDragEvent)");
 //        DragSourceContext context = dsde.getDragSourceContext();
 //        //intersection of the users selected action, and the source and target actions
 //        int myaction = dsde.getDropAction();
@@ -85,138 +85,138 @@ public class ListDragAndDrop implements DragSourceListener, DropTargetListener, 
 //        } else {
 //            context.setCursor(DragSource.DefaultMoveNoDrop);
 //        }
-    }
+	}
 
-    @Override
-    public void dragOver(DragSourceDragEvent dsde) {
-        //System.out.println("dragOver(DragSourceDragEvent)");
-    }
+	@Override
+	public void dragOver(DragSourceDragEvent dsde) {
+		// System.out.println("dragOver(DragSourceDragEvent)");
+	}
 
-    @Override
-    public void dropActionChanged(DragSourceDragEvent dsde) {
-        //System.out.println("dropActionChanged(DragSourceDragEvent)");
-    }
+	@Override
+	public void dropActionChanged(DragSourceDragEvent dsde) {
+		// System.out.println("dropActionChanged(DragSourceDragEvent)");
+	}
 
-    @Override
-    public void dragExit(DragSourceEvent dse) {
-        //System.out.println("dragExit(DragSourceDragEvent)");
-    }
+	@Override
+	public void dragExit(DragSourceEvent dse) {
+		// System.out.println("dragExit(DragSourceDragEvent)");
+	}
 
-    @Override
-    public void dragDropEnd(DragSourceDropEvent dsde) {
-        //System.out.println("dragDropEnd(DragSourceDragEvent)");
-        dropTargetCell = null;
-        draggedIndex = -1;
-        panel.setDropLocation(-1, null);
-        list.repaint();
-    }
+	@Override
+	public void dragDropEnd(DragSourceDropEvent dsde) {
+		// System.out.println("dragDropEnd(DragSourceDragEvent)");
+		dropTargetCell = null;
+		draggedIndex = -1;
+		panel.setDropLocation(-1, null);
+		list.repaint();
+	}
 
-    @Override
-    public void dragEnter(DropTargetDragEvent dtde) {
-        //System.out.println("dragEnter(DropTargetDragEvent)");
-        if (dtde.getSource() != dropTarget) {
-            dtde.rejectDrag();
-            panel.setDropLocation(-1, null);
-        } else {
-            dtde.acceptDrag(DnDConstants.ACTION_MOVE);
-            //System.out.println("accepted dragEnter");
-        }
-    }
+	@Override
+	public void dragEnter(DropTargetDragEvent dtde) {
+		// System.out.println("dragEnter(DropTargetDragEvent)");
+		if (dtde.getSource() != dropTarget) {
+			dtde.rejectDrag();
+			panel.setDropLocation(-1, null);
+		} else {
+			dtde.acceptDrag(DnDConstants.ACTION_MOVE);
+			// System.out.println("accepted dragEnter");
+		}
+	}
 
-    @Override
-    public void dragOver(DropTargetDragEvent dtde) {
-        //System.out.println("dragOver(DropTargetDragEvent)");
-        if (dtde.getSource() != dropTarget) {
-            dtde.rejectDrag();
-            panel.setDropLocation(-1, null);
-            return;
-        }
-        Point dragPoint = dtde.getLocation();
-        int index = list.locationToIndex(dragPoint);
-        if (index == -1) {
-            dropTargetCell = null;
-        } else {
-            dropTargetCell = (StepConfig) list.getModel().getElementAt(index);
-        }
-        panel.setDropLocation(index, dropTargetCell);
-        list.repaint();
-    }
+	@Override
+	public void dragOver(DropTargetDragEvent dtde) {
+		// System.out.println("dragOver(DropTargetDragEvent)");
+		if (dtde.getSource() != dropTarget) {
+			dtde.rejectDrag();
+			panel.setDropLocation(-1, null);
+			return;
+		}
+		Point dragPoint = dtde.getLocation();
+		int index = list.locationToIndex(dragPoint);
+		if (index == -1) {
+			dropTargetCell = null;
+		} else {
+			dropTargetCell = (StepConfig) list.getModel().getElementAt(index);
+		}
+		panel.setDropLocation(index, dropTargetCell);
+		list.repaint();
+	}
 
-    @Override
-    public void dropActionChanged(DropTargetDragEvent dtde) {
-        //System.out.println("dragActionChanged(DropTargetDragEvent)");
-    }
+	@Override
+	public void dropActionChanged(DropTargetDragEvent dtde) {
+		// System.out.println("dragActionChanged(DropTargetDragEvent)");
+	}
 
-    @Override
-    public void dragExit(DropTargetEvent dte) {
-        //System.out.println("dragExit(DropTargetDragEvent)");
-    }
+	@Override
+	public void dragExit(DropTargetEvent dte) {
+		// System.out.println("dragExit(DropTargetDragEvent)");
+	}
 
-    @Override
-    public void drop(DropTargetDropEvent dtde) {
-        //System.out.println("drop(DropTargetDragEvent)");
-        if (dtde.getSource() != dropTarget) {
-            dtde.rejectDrop();
-            panel.setDropLocation(-1, null);
-            return;
-        }
-        Point dropPoint = dtde.getLocation();
-        int index = list.locationToIndex(dropPoint);
-        boolean dropped = false;
-        if (index == -1 || index == draggedIndex) {
-            //System.out.println("dropped onto self");
-            dtde.rejectDrop();
-            panel.setDropLocation(-1, null);
-            return;
-        }
-        dtde.acceptDrop(DnDConstants.ACTION_MOVE);
-        //System.out.println("accepted: " + draggedIndex + "/" + index);
-        panel.setDropLocation(-1, null);
-        panel.moveStep(draggedIndex, index);
-        dropped = true;
-        dtde.dropComplete(dropped);
-    }
+	@Override
+	public void drop(DropTargetDropEvent dtde) {
+		// System.out.println("drop(DropTargetDragEvent)");
+		if (dtde.getSource() != dropTarget) {
+			dtde.rejectDrop();
+			panel.setDropLocation(-1, null);
+			return;
+		}
+		Point dropPoint = dtde.getLocation();
+		int index = list.locationToIndex(dropPoint);
+		boolean dropped = false;
+		if (index == -1 || index == draggedIndex) {
+			// System.out.println("dropped onto self");
+			dtde.rejectDrop();
+			panel.setDropLocation(-1, null);
+			return;
+		}
+		dtde.acceptDrop(DnDConstants.ACTION_MOVE);
+		// System.out.println("accepted: " + draggedIndex + "/" + index);
+		panel.setDropLocation(-1, null);
+		panel.moveStep(draggedIndex, index);
+		dropped = true;
+		dtde.dropComplete(dropped);
+	}
 
-    @Override
-    public void dragGestureRecognized(DragGestureEvent dge) {
-        //System.out.println("dragGestureRecognized");
-        Point clickPoint = dge.getDragOrigin();
-        int index = list.locationToIndex(clickPoint);
-        if (index == -1) {
-            return;
-        }
-        StepConfig target = (StepConfig) list.getModel().getElementAt(index);
-        Transferable trans = new RJLTransferable(target);
-        draggedIndex = index;
-        dragSource.startDrag(dge, Cursor.getDefaultCursor(), trans, this);
-        //dragSource.startDrag(dge, DragSource.DefaultMoveDrop, trans, this);
-    }
+	@Override
+	public void dragGestureRecognized(DragGestureEvent dge) {
+		// System.out.println("dragGestureRecognized");
+		Point clickPoint = dge.getDragOrigin();
+		int index = list.locationToIndex(clickPoint);
+		if (index == -1) {
+			return;
+		}
+		StepConfig target = (StepConfig) list.getModel().getElementAt(index);
+		Transferable trans = new RJLTransferable(target);
+		draggedIndex = index;
+		dragSource.startDrag(dge, Cursor.getDefaultCursor(), trans, this);
+		// dragSource.startDrag(dge, DragSource.DefaultMoveDrop, trans, this);
+	}
 
-    class RJLTransferable implements Transferable {
+	class RJLTransferable implements Transferable {
 
-        private StepConfig object;
+		private StepConfig object;
 
-        RJLTransferable(StepConfig object) {
-            this.object = object;
-        }
+		RJLTransferable(StepConfig object) {
+			this.object = object;
+		}
 
-        @Override
-        public DataFlavor[] getTransferDataFlavors() {
-            return supportedFlavors;
-        }
+		@Override
+		public DataFlavor[] getTransferDataFlavors() {
+			return supportedFlavors;
+		}
 
-        @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return flavor.equals(stepConfigDataFlavor);
-        }
+		@Override
+		public boolean isDataFlavorSupported(DataFlavor flavor) {
+			return flavor.equals(stepConfigDataFlavor);
+		}
 
-        @Override
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-            if (isDataFlavorSupported(flavor)) {
-                return object;
-            } else {
-                throw new UnsupportedFlavorException(flavor);
-            }
-        }
-    }
+		@Override
+		public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+			if (isDataFlavorSupported(flavor)) {
+				return object;
+			} else {
+				throw new UnsupportedFlavorException(flavor);
+			}
+		}
+	}
 }

@@ -19,20 +19,19 @@
 package sudoku;
 
 /**
- * Describes, if the sudoku is valid or not.<br><br>
+ * Describes, if the sudoku is valid or not.<br>
+ * <br>
  * <ul>
- *  <li><b>EMPTY</b>: No cell has been set</li>
- *  <li><b>INVALID</b>: Cells have been set, but no solution exists</li>
- *  <li><b>VALUID</b>: The sudoku has exactly one solution</li>
- *  <li><b>MULTIPLE_SOLUTIONS</b>: The sudoku is solvable but has multiple solutions</li>
+ * <li><b>EMPTY</b>: No cell has been set</li>
+ * <li><b>INVALID</b>: Cells have been set, but no solution exists</li>
+ * <li><b>VALUID</b>: The sudoku has exactly one solution</li>
+ * <li><b>MULTIPLE_SOLUTIONS</b>: The sudoku is solvable but has multiple
+ * solutions</li>
  * </ul>
  * The SudokuStatus doesnt say anything about givens.
  * 
  * @author hobiwan
  */
 public enum SudokuStatus {
-    EMPTY,
-    INVALID,
-    VALID,
-    MULTIPLE_SOLUTIONS
+	EMPTY, INVALID, VALID, MULTIPLE_SOLUTIONS
 }

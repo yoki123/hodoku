@@ -26,71 +26,72 @@ import java.awt.Color;
  * @author hobiwan
  */
 public final class DifficultyLevel {
-    private DifficultyType type;
-    private int ordinal;
-    private int maxScore;
-    private String name;
-    private Color backgroundColor;
-    private Color foregroundColor;
-    
-    public DifficultyLevel() {
-        // für XMLEncoder
-    }
-    
-    public DifficultyLevel(DifficultyType type, int maxScore, String name, Color backgroundColor, Color foregroundColor) {
-        setType(type);
-        setMaxScore(maxScore);
-        setName(name);
-        setBackgroundColor(backgroundColor);
-        setForegroundColor(foregroundColor);
-    }
-    
-    public int getMaxScore() {
-        return maxScore;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-    
-    public Color getForegroundColor() {
-        return foregroundColor;
-    }
+	private DifficultyType type;
+	private int ordinal;
+	private int maxScore;
+	private String name;
+	private Color backgroundColor;
+	private Color foregroundColor;
 
-    public void setMaxScore(int maxScore) {
-        this.maxScore = maxScore;
-    }
+	public DifficultyLevel() {
+		// für XMLEncoder
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public DifficultyLevel(DifficultyType type, int maxScore, String name, Color backgroundColor,
+			Color foregroundColor) {
+		setType(type);
+		setMaxScore(maxScore);
+		setName(name);
+		setBackgroundColor(backgroundColor);
+		setForegroundColor(foregroundColor);
+	}
 
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
+	public int getMaxScore() {
+		return maxScore;
+	}
 
-    public void setForegroundColor(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public DifficultyType getType() {
-        return type;
-    }
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
 
-    public void setType(DifficultyType type) {
-        this.type = type;
-        this.ordinal = type.ordinal();
-    }
+	public Color getForegroundColor() {
+		return foregroundColor;
+	}
 
-    public int getOrdinal() {
-        return ordinal;
-    }
+	public void setMaxScore(int maxScore) {
+		this.maxScore = maxScore;
+	}
 
-    public void setOrdinal(int ordinal) {
-        this.ordinal = ordinal;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public void setForegroundColor(Color foregroundColor) {
+		this.foregroundColor = foregroundColor;
+	}
+
+	public DifficultyType getType() {
+		return type;
+	}
+
+	public void setType(DifficultyType type) {
+		this.type = type;
+		this.ordinal = type.ordinal();
+	}
+
+	public int getOrdinal() {
+		return ordinal;
+	}
+
+	public void setOrdinal(int ordinal) {
+		this.ordinal = ordinal;
+	}
 }

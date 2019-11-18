@@ -24,7 +24,5 @@ package sudoku;
  * @author hobiwan
  */
 public enum GameMode {
-    PLAYING,
-    LEARNING,
-    PRACTISING;
+	PLAYING, LEARNING, PRACTISING;
 }

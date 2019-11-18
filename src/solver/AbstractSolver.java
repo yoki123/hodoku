@@ -48,41 +48,45 @@ import sudoku.Sudoku2;
  * @author hobiwan
  */
 public abstract class AbstractSolver {
-    /** The {@link SudokuStepFinder} to which this specialized solver belongs. */
-    protected SudokuStepFinder finder;
-    /** Every solver needs the sudoku... */
-    protected Sudoku2 sudoku;
+	/** The {@link SudokuStepFinder} to which this specialized solver belongs. */
+	protected SudokuStepFinder finder;
+	/** Every solver needs the sudoku... */
+	protected Sudoku2 sudoku;
 
 //    private SudokuSet tmpSet = new SudokuSet();
-    
-    /** Creates a new instance of AbstractSolver
-     * @param finder 
-     */
-    public AbstractSolver(SudokuStepFinder finder) {
-        this.finder = finder;
-    }
 
-    /**
-     * Method for finding a new instance of a specific technique.
-     * @param type
-     * @return
-     */
-    protected abstract SolutionStep getStep(SolutionType type);
+	/**
+	 * Creates a new instance of AbstractSolver
+	 * 
+	 * @param finder
+	 */
+	public AbstractSolver(SudokuStepFinder finder) {
+		this.finder = finder;
+	}
 
-    /**
-     * Method for executing a specific technique.
-     * @param step
-     * @return
-     */
-    protected abstract boolean doStep(SolutionStep step);
-    
-    /**
-     * Method is called in regular intervals to clean up
-     * data structures. If a solver wants to use this functionality,
-     * it has to override this method. If the method is overriden,
-     * special care has to be taken to synchronize correctly.
-     */
-    protected void cleanUp() {
-        // do nothing
-    }
+	/**
+	 * Method for finding a new instance of a specific technique.
+	 * 
+	 * @param type
+	 * @return
+	 */
+	protected abstract SolutionStep getStep(SolutionType type);
+
+	/**
+	 * Method for executing a specific technique.
+	 * 
+	 * @param step
+	 * @return
+	 */
+	protected abstract boolean doStep(SolutionStep step);
+
+	/**
+	 * Method is called in regular intervals to clean up data structures. If a
+	 * solver wants to use this functionality, it has to override this method. If
+	 * the method is overriden, special care has to be taken to synchronize
+	 * correctly.
+	 */
+	protected void cleanUp() {
+		// do nothing
+	}
 }
