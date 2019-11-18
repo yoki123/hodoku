@@ -55,7 +55,7 @@ public final class Options {
 
 	public static final String FILE_NAME = "hodoku.hcfg";
 	private static final ProgressComparator progressComparator = new ProgressComparator();
-	// Schwierigkeitsstufen
+
 	public static final DifficultyLevel[] DEFAULT_DIFFICULTY_LEVELS = {
 			new DifficultyLevel(DifficultyType.INCOMPLETE, 0,
 					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.incomplete"), Color.BLACK,
