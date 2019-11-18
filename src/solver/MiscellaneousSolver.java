@@ -159,7 +159,7 @@ public class MiscellaneousSolver extends AbstractSolver {
 		sudoku = finder.getSudoku();
 		List<SolutionStep> oldSteps = steps;
 		steps = new ArrayList<SolutionStep>();
-		getSueDeCoqInt(Sudoku2.LINE_TEMPLATES, Sudoku2.BLOCK_TEMPLATES, false);
+		getSueDeCoqInt(Sudoku2.ROW_TEMPLATES, Sudoku2.BLOCK_TEMPLATES, false);
 		getSueDeCoqInt(Sudoku2.COL_TEMPLATES, Sudoku2.BLOCK_TEMPLATES, false);
 		List<SolutionStep> result = steps;
 		steps = oldSteps;
@@ -167,7 +167,7 @@ public class MiscellaneousSolver extends AbstractSolver {
 	}
 
 	private SolutionStep getSueDeCoq(boolean onlyOne) {
-		SolutionStep step = getSueDeCoqInt(Sudoku2.LINE_TEMPLATES, Sudoku2.BLOCK_TEMPLATES, onlyOne);
+		SolutionStep step = getSueDeCoqInt(Sudoku2.ROW_TEMPLATES, Sudoku2.BLOCK_TEMPLATES, onlyOne);
 		if (onlyOne && step != null) {
 			return step;
 		}

@@ -334,7 +334,7 @@ public class SimpleSolver extends AbstractSolver {
 		if (step != null || lockedOnly) {
 			return step;
 		}
-		step = findNakedXleInEntity(Sudoku2.LINES, anz, lockedOnly, !lockedOnly, true);
+		step = findNakedXleInEntity(Sudoku2.ROWS, anz, lockedOnly, !lockedOnly, true);
 		if (step != null) {
 			return step;
 		}
@@ -358,7 +358,7 @@ public class SimpleSolver extends AbstractSolver {
 		// now everything else
 		for (int i = 2; i <= 4; i++) {
 			findNakedXleInEntity(Sudoku2.BLOCKS, i, false, false, false);
-			findNakedXleInEntity(Sudoku2.LINES, i, false, false, false);
+			findNakedXleInEntity(Sudoku2.ROWS, i, false, false, false);
 			findNakedXleInEntity(Sudoku2.COLS, i, false, false, false);
 		}
 		Collections.sort(steps);
@@ -553,7 +553,7 @@ public class SimpleSolver extends AbstractSolver {
 		steps.addAll(tmpSteps);
 		for (int i = 2; i <= 4; i++) {
 			findHiddenXleInEntity(2 * Sudoku2.UNITS, Sudoku2.BLOCKS, i, false);
-			findHiddenXleInEntity(0, Sudoku2.LINES, i, false);
+			findHiddenXleInEntity(0, Sudoku2.ROWS, i, false);
 			findHiddenXleInEntity(Sudoku2.UNITS, Sudoku2.COLS, i, false);
 		}
 		Collections.sort(steps);
@@ -573,7 +573,7 @@ public class SimpleSolver extends AbstractSolver {
 		if (step != null) {
 			return step;
 		}
-		step = findHiddenXleInEntity(0, Sudoku2.LINES, anz, true);
+		step = findHiddenXleInEntity(0, Sudoku2.ROWS, anz, true);
 		if (step != null) {
 			return step;
 		}
@@ -708,7 +708,7 @@ public class SimpleSolver extends AbstractSolver {
 			}
 		}
 		if (type == SolutionType.LOCKED_CANDIDATES || type == SolutionType.LOCKED_CANDIDATES_2) {
-			step = findLockedCandidatesInEntityN(0, Sudoku2.LINES, true);
+			step = findLockedCandidatesInEntityN(0, Sudoku2.ROWS, true);
 			if (step != null) {
 				return step;
 			}
@@ -731,7 +731,7 @@ public class SimpleSolver extends AbstractSolver {
 		List<SolutionStep> newList = new ArrayList<SolutionStep>();
 		steps = newList;
 		findLockedCandidatesInEntityN(18, Sudoku2.BLOCKS, false);
-		findLockedCandidatesInEntityN(0, Sudoku2.LINES, false);
+		findLockedCandidatesInEntityN(0, Sudoku2.ROWS, false);
 		findLockedCandidatesInEntityN(9, Sudoku2.COLS, false);
 		Collections.sort(steps);
 		steps = oldList;

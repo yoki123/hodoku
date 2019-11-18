@@ -1107,7 +1107,7 @@ public class AlsSolver extends AbstractSolver {
 				for (int i2 = 0; i2 < als2.indicesPerCandidat[cand].size(); i2++) {
 					int index1 = als1.indicesPerCandidat[cand].get(i1);
 					int index2 = als2.indicesPerCandidat[cand].get(i2);
-					int dx = Sudoku2.getLine(index1) - Sudoku2.getLine(index2);
+					int dx = Sudoku2.getRow(index1) - Sudoku2.getRow(index2);
 					int dy = Sudoku2.getCol(index1) - Sudoku2.getCol(index2);
 					int dist = dx * dx + dy * dy;
 					if (dist < minDist) {

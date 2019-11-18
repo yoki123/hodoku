@@ -59,8 +59,8 @@ public class GroupNode {
 			index3 = indices.get(2);
 		}
 		block = Sudoku2.getBlock(index1);
-		if (Sudoku2.getLine(index1) == Sudoku2.getLine(index2)) {
-			line = Sudoku2.getLine(index1);
+		if (Sudoku2.getRow(index1) == Sudoku2.getRow(index2)) {
+			line = Sudoku2.getRow(index1);
 		}
 		if (Sudoku2.getCol(index1) == Sudoku2.getCol(index2)) {
 			col = Sudoku2.getCol(index1);
@@ -92,7 +92,7 @@ public class GroupNode {
 	public static List<GroupNode> getGroupNodes(SudokuStepFinder finder) {
 		List<GroupNode> groupNodes = new ArrayList<GroupNode>();
 
-		getGroupNodesForHouseType(groupNodes, finder, Sudoku2.LINE_TEMPLATES);
+		getGroupNodesForHouseType(groupNodes, finder, Sudoku2.ROW_TEMPLATES);
 		getGroupNodesForHouseType(groupNodes, finder, Sudoku2.COL_TEMPLATES);
 
 		return groupNodes;

@@ -42,15 +42,15 @@ public class Sudoku2 implements Cloneable {
 
 	/** The internal number for block units. */
 	public static final int BLOCK = 0;
-	/** The internal number for line units. */
-	public static final int LINE = 1;
+	/** The internal number for row units. */
+	public static final int ROW = 1;
 	/** The internal number for column units. */
 	public static final int COL = 2;
 	/** The internal number for cell units. */
 	public static final int CELL = 3;
 
-	/** All indices for every line */
-	public static final int[][] LINES = { { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 9, 10, 11, 12, 13, 14, 15, 16, 17 },
+	/** All indices for every row */
+	public static final int[][] ROWS = { { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 9, 10, 11, 12, 13, 14, 15, 16, 17 },
 			{ 18, 19, 20, 21, 22, 23, 24, 25, 26 }, { 27, 28, 29, 30, 31, 32, 33, 34, 35 },
 			{ 36, 37, 38, 39, 40, 41, 42, 43, 44 }, { 45, 46, 47, 48, 49, 50, 51, 52, 53 },
 			{ 54, 55, 56, 57, 58, 59, 60, 61, 62 }, { 63, 64, 65, 66, 67, 68, 69, 70, 71 },
@@ -68,12 +68,12 @@ public class Sudoku2 implements Cloneable {
 			{ 54, 55, 56, 63, 64, 65, 72, 73, 74 }, { 57, 58, 59, 66, 67, 68, 75, 76, 77 },
 			{ 60, 61, 62, 69, 70, 71, 78, 79, 80 } };
 	/** All indices for all constraints: first lines, then cols, then blocks */
-	public static final int[][] ALL_UNITS = { LINES[0], LINES[1], LINES[2], LINES[3], LINES[4], LINES[5], LINES[6],
-			LINES[7], LINES[8], COLS[0], COLS[1], COLS[2], COLS[3], COLS[4], COLS[5], COLS[6], COLS[7], COLS[8],
+	public static final int[][] ALL_UNITS = { ROWS[0], ROWS[1], ROWS[2], ROWS[3], ROWS[4], ROWS[5], ROWS[6],
+			ROWS[7], ROWS[8], COLS[0], COLS[1], COLS[2], COLS[3], COLS[4], COLS[5], COLS[6], COLS[7], COLS[8],
 			BLOCKS[0], BLOCKS[1], BLOCKS[2], BLOCKS[3], BLOCKS[4], BLOCKS[5], BLOCKS[6], BLOCKS[7], BLOCKS[8] };
 	/** All indices for lines and blocks (fish search) */
-	public static final int[][] LINE_BLOCK_UNITS = { LINES[0], LINES[1], LINES[2], LINES[3], LINES[4], LINES[5],
-			LINES[6], LINES[7], LINES[8], BLOCKS[0], BLOCKS[1], BLOCKS[2], BLOCKS[3], BLOCKS[4], BLOCKS[5], BLOCKS[6],
+	public static final int[][] LINE_BLOCK_UNITS = { ROWS[0], ROWS[1], ROWS[2], ROWS[3], ROWS[4], ROWS[5],
+			ROWS[6], ROWS[7], ROWS[8], BLOCKS[0], BLOCKS[1], BLOCKS[2], BLOCKS[3], BLOCKS[4], BLOCKS[5], BLOCKS[6],
 			BLOCKS[7], BLOCKS[8] };
 	/** All indices for columns and blocks (fish search) */
 	public static final int[][] COL_BLOCK_UNITS = { COLS[0], COLS[1], COLS[2], COLS[3], COLS[4], COLS[5], COLS[6],
@@ -84,7 +84,7 @@ public class Sudoku2 implements Cloneable {
 			1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 3, 3, 3, 4, 4, 4, 5, 5, 5, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7,
 			7, 8, 8, 8, 6, 6, 6, 7, 7, 7, 8, 8, 8, 6, 6, 6, 7, 7, 7, 8, 8, 8 };
 	/** The internal Unit for every constraint */
-	public static final int[] CONSTRAINT_TYPE_FROM_CONSTRAINT = { LINE, LINE, LINE, LINE, LINE, LINE, LINE, LINE, LINE,
+	public static final int[] CONSTRAINT_TYPE_FROM_CONSTRAINT = { ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW, ROW,
 			COL, COL, COL, COL, COL, COL, COL, COL, COL, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK,
 			BLOCK };
 	/** The internal unit number for every constraint */
@@ -106,7 +106,7 @@ public class Sudoku2 implements Cloneable {
 	 * The length of the array in {@link #POSSIBLE_VALUES} for each bit combination.
 	 */
 	public static final int[] ANZ_VALUES = new int[0x200];
-	/** The indices of the constraints for every cell (LINE, COL, BLOCK) */
+	/** The indices of the constraints for every cell (ROW, COL, BLOCK) */
 	public static int[][] CONSTRAINTS = new int[LENGTH][3];
 	/**
 	 * The candidate represented by the least significant bit that is set in a
@@ -136,14 +136,14 @@ public class Sudoku2 implements Cloneable {
 	public static long[][] groupedBuddiesM1 = new long[11][256];
 	/** The high order long from {@link #groupedBuddies} */
 	public static long[][] groupedBuddiesM2 = new long[11][256];
-	/** One bitmap with all cells of each line */
-	public static SudokuSet[] LINE_TEMPLATES = new SudokuSet[LINES.length];
+	/** One bitmap with all cells of each row */
+	public static SudokuSet[] ROW_TEMPLATES = new SudokuSet[ROWS.length];
 	/** One bitmap with all cells of each column */
 	public static SudokuSet[] COL_TEMPLATES = new SudokuSet[COLS.length];
 	/** One bitmap with all cells of each block */
 	public static SudokuSet[] BLOCK_TEMPLATES = new SudokuSet[BLOCKS.length];
-	/** One bitmap with all cells of each line and each block */
-	public static SudokuSet[] LINE_BLOCK_TEMPLATES = new SudokuSet[LINE_BLOCK_UNITS.length];
+	/** One bitmap with all cells of each row and each block */
+	public static SudokuSet[] ROW_BLOCK_TEMPLATES = new SudokuSet[LINE_BLOCK_UNITS.length];
 	/** One bitmap with all cells of each column and each block */
 	public static SudokuSet[] COL_BLOCK_TEMPLATES = new SudokuSet[COL_BLOCK_UNITS.length];
 	/** One bitmap with all cells of each constraint */
@@ -221,7 +221,9 @@ public class Sudoku2 implements Cloneable {
 		POSSIBLE_VALUES[0] = new int[0];
 		ANZ_VALUES[0] = 0;
 		int[] temp = new int[9];
+		
 		for (int i = 1; i <= 0x1ff; i++) {
+			
 			int index = 0;
 			int mask = 1;
 			for (int j = 1; j <= 0x1ff; j++) {
@@ -230,6 +232,7 @@ public class Sudoku2 implements Cloneable {
 				}
 				mask <<= 1;
 			}
+			
 			POSSIBLE_VALUES[i] = new int[index];
 //            for (int k = 0; k < index; k++) {
 //                POSSIBLE_VALUES[i][k] = temp[k];
@@ -240,17 +243,17 @@ public class Sudoku2 implements Cloneable {
 
 		// initialize the constraints table
 		// lookup tables for constraints: three constraints for every cell
-		// lines go from 0 .. 8
+		// rows go from 0 .. 8
 		// cols go from 9 .. 17
 		// boxes from 18 .. 26
 		int index = 0;
-		// one loop for every line
-		for (int line = 0; line < 9; line++) {
-			// base box index for line index
-			int boxBase = 2 * 9 + ((line / 3) * 3);
-			// one loop for every column in line index
+		// one loop for every row
+		for (int row = 0; row < 9; row++) {
+			// base box index for row index
+			int boxBase = 2 * 9 + ((row / 3) * 3);
+			// one loop for every column in row index
 			for (int col = 9; col < 2 * 9; col++) {
-				CONSTRAINTS[index][0] = line;
+				CONSTRAINTS[index][0] = row;
 				CONSTRAINTS[index][1] = col;
 				CONSTRAINTS[index][2] = boxBase + ((col / 3) % 3);
 				index++;
@@ -262,8 +265,7 @@ public class Sudoku2 implements Cloneable {
 		// is set in a candidate mask
 		for (int i = 1; i < CAND_FROM_MASK.length; i++) {
 			short j = -1;
-			while ((i & MASKS[++j]) == 0)
-				;
+			while ((i & MASKS[++j]) == 0);
 			CAND_FROM_MASK[i] = j;
 		}
 	}
@@ -284,8 +286,11 @@ public class Sudoku2 implements Cloneable {
 	 */
 	@Override
 	public Sudoku2 clone() {
+		
 		Sudoku2 newSudoku = null;
+		
 		try {
+			
 			newSudoku = (Sudoku2) super.clone();
 			newSudoku.cells = cells.clone();
 			newSudoku.userCells = userCells.clone();
@@ -293,19 +298,23 @@ public class Sudoku2 implements Cloneable {
 			newSudoku.solution = solution.clone();
 			newSudoku.fixed = fixed.clone();
 			newSudoku.free = new byte[free.length][];
+			
 			for (int i = 0; i < free.length; i++) {
 				newSudoku.free[i] = free[i].clone();
 			}
+			
 			if (initialState != null) {
 				// no copy needed, is immutable!
 				newSudoku.initialState = initialState;
 			}
+			
 			newSudoku.nsQueue = nsQueue.clone();
 			newSudoku.hsQueue = hsQueue.clone();
 			// no deep copy required for level, it is constant
 		} catch (CloneNotSupportedException ex) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error while cloning", ex);
 		}
+		
 		return newSudoku;
 	}
 
@@ -315,22 +324,27 @@ public class Sudoku2 implements Cloneable {
 	 * @param src
 	 */
 	public void set(Sudoku2 src) {
+		
 		System.arraycopy(src.cells, 0, cells, 0, LENGTH);
 		System.arraycopy(src.userCells, 0, userCells, 0, LENGTH);
 		System.arraycopy(src.values, 0, values, 0, LENGTH);
 		System.arraycopy(src.solution, 0, solution, 0, LENGTH);
 		System.arraycopy(src.fixed, 0, fixed, 0, LENGTH);
+		
 		for (int i = 0; i < free.length; i++) {
 			System.arraycopy(src.free[i], 0, free[i], 0, UNITS + 1);
 		}
+		
 		unsolvedCellsAnz = src.unsolvedCellsAnz;
 		solutionSet = src.solutionSet;
 		score = src.score;
 		level = src.level; // no deep copy required, level is constant
+		
 		if (src.initialState != null) {
 			// no copy needed, is immutable!
 			initialState = src.initialState;
 		}
+		
 		status = src.status;
 		statusGivens = src.statusGivens;
 		nsQueue.set(src.nsQueue);
@@ -344,11 +358,14 @@ public class Sudoku2 implements Cloneable {
 	 * @param src
 	 */
 	public void setBS(Sudoku2 src) {
+		
 		cells = Arrays.copyOf(src.cells, cells.length);
 		values = Arrays.copyOf(src.values, values.length);
+		
 		for (int i = 0; i < free.length; i++) {
 			free[i] = Arrays.copyOf(src.free[i], free[i].length);
 		}
+		
 		unsolvedCellsAnz = src.unsolvedCellsAnz;
 		nsQueue.clear();
 		hsQueue.clear();
@@ -359,20 +376,24 @@ public class Sudoku2 implements Cloneable {
 	 * all candidates are possible), the queues are deleted.
 	 */
 	public final void clearSudoku() {
+		
 		for (int i = 0; i < cells.length; i++) {
 			cells[i] = MAX_MASK;
 			userCells[i] = 0;
 		}
+		
 		for (int i = 0; i < free.length; i++) {
 			for (int j = 1; j < free[i].length; j++) {
 				free[i][j] = 9;
 			}
 		}
+		
 		for (int i = 0; i < values.length; i++) {
 			values[i] = 0;
 			solution[i] = 0;
 			fixed[i] = false;
 		}
+		
 		unsolvedCellsAnz = LENGTH;
 		initialState = null;
 		solutionSet = false;
@@ -423,7 +444,9 @@ public class Sudoku2 implements Cloneable {
 	 * @param saveInitialState
 	 */
 	public void setSudoku(String init, boolean saveInitialState) {
+		
 		clearSudoku();
+		
 		if (init == null) {
 			return;
 		}
@@ -517,8 +540,8 @@ public class Sudoku2 implements Cloneable {
 //             *-----------------------------------------------------------------------------*
 
 		// Split input in lines, identify border lines (SudoCue uses '.' in borders,
-		// gives an error) and erase markup characters
-		// a line counts as border line, if it contains at least one occurence of "---"
+		// gives an error) and erase mark-up characters
+		// a line counts as border line, if it contains at least one occurrence of "---"
 		String lineEnd = null;
 		int[][] cands = new int[9][9];
 		if (init.contains("\r\n")) {
@@ -528,6 +551,7 @@ public class Sudoku2 implements Cloneable {
 		} else if (init.contains("\n")) {
 			lineEnd = "\n";
 		}
+		
 		String[] lines = null;
 		if (lineEnd != null) {
 			lines = init.split(lineEnd);
@@ -542,6 +566,7 @@ public class Sudoku2 implements Cloneable {
 			lines[0] = init;
 //            Logger.getLogger(getClass().getName()).log(Level.FINE, "Einzeiler: <" + lines[0] + ">");
 		}
+		
 		int anzLines = lines.length;
 
 		// Check for library format: a one liner with 6 or 7 ":"
@@ -604,7 +629,7 @@ public class Sudoku2 implements Cloneable {
 			}
 		}
 
-		// delete markup characters, parse the candidates and set them
+		// delete mark-up characters, parse the candidates and set them
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i] != null) {
 				// all characters except digits, '.' and ' ' are deleted (consecutive blanks
@@ -620,10 +645,12 @@ public class Sudoku2 implements Cloneable {
 							tmpIndex--;
 						}
 					}
+					
 					int endIndex = tmpIndex + 1;
 					while (endIndex < tmp.length() && tmp.charAt(endIndex) == '-') {
 						endIndex++;
 					}
+					
 					if (endIndex < tmp.length() - 1) {
 						char ch = tmp.charAt(endIndex + 1);
 						if (!Character.isDigit(ch) && ch != ' ' && ch != '|') {
@@ -633,6 +660,7 @@ public class Sudoku2 implements Cloneable {
 					// tmp.delete(0, tmp.length());
 					tmp.delete(tmpIndex, endIndex + 1);
 				}
+				
 				// throw out garbage
 				for (int j = 0; j < tmp.length(); j++) {
 					char ch = tmp.charAt(j);
@@ -645,28 +673,35 @@ public class Sudoku2 implements Cloneable {
 						}
 					}
 				}
+				
 				// remove consecutive blanks
 				int index = 0;
 				while ((index = tmp.indexOf("  ")) != -1) {
 					tmp.deleteCharAt(index);
 				}
+				
 				lines[i] = tmp.toString().trim();
 				// if lines[i] is now empty it is removed
 				if (lines[i].length() == 0) {
+					
 					for (int j = i; j < lines.length - 1; j++) {
 						lines[j] = lines[j + 1];
 					}
+					
 					lines[lines.length - 1] = null;
 					anzLines--;
 					i--;
 				}
 			}
 		}
+		
 		if (DEBUG) {
+			
 			System.out.println("lines trimmed:");
 			for (int i = 0; i < lines.length; i++) {
 				System.out.println("lines[" + i + "]: " + lines[i]);
 			}
+			
 			System.out.println("anzLines: " + anzLines);
 		}
 
@@ -674,13 +709,16 @@ public class Sudoku2 implements Cloneable {
 		if (anzLines == 10) {
 			anzLines--;
 		}
+		
 		// SimpleSudoku can contain 3 grids: givens, solved cells and PM
 		boolean logAgain = false;
 		boolean ssGivensRead = false;
 		String ssGivens = null;
 		boolean ssCellsRead = false;
 		String ssCells = null;
+		
 		while (anzLines > 9 && anzLines % 9 == 0) {
+			
 			if (!ssGivensRead) {
 				ssGivens = getSSString(lines);
 				ssGivensRead = true;
@@ -693,6 +731,7 @@ public class Sudoku2 implements Cloneable {
 				ssCells = getSSString(lines);
 				ssCellsRead = true;
 			}
+			
 			logAgain = true;
 			for (int i = 9; i < anzLines; i++) {
 				lines[i - 9] = lines[i];
@@ -700,14 +739,17 @@ public class Sudoku2 implements Cloneable {
 					lines[i] = null;
 				}
 			}
+			
 			anzLines -= 9;
 		}
 		if (logAgain) {
 			if (DEBUG) {
+				
 				System.out.println("lines after SimpleSudoku:");
 				for (int i = 0; i < lines.length; i++) {
 					System.out.println("lines[" + i + "]: " + lines[i]);
 				}
+				
 				System.out.println("anzLines: " + anzLines);
 			}
 		}
@@ -723,18 +765,23 @@ public class Sudoku2 implements Cloneable {
 		for (int i = 1; i < anzLines; i++) {
 			sInit += " " + lines[i];
 		}
+		
 		if (DEBUG) {
 			System.out.println("sInit: " + sInit);
 		}
+		
 		if (sInit.length() > 81) {
 			singleDigits = false;
 		}
+		
 		if (sInit.length() > 2 * 81) {
 			isPmGrid = true;
 		}
+		
 		if (DEBUG) {
 			System.out.println(singleDigits + "/" + isPmGrid + "/" + sInit);
 		}
+		
 		while (sIndex < sInit.length()) {
 			// jump to next block of digits
 			char ch = sInit.charAt(sIndex);
@@ -742,9 +789,11 @@ public class Sudoku2 implements Cloneable {
 				sIndex++;
 				ch = sInit.charAt(sIndex);
 			}
+			
 			if (sIndex >= sInit.length()) {
 				break;
 			}
+			
 			if (isPmGrid) {
 				if (ch == '.' || ch == '0') {
 					Logger.getLogger(getClass().getName()).log(Level.WARNING, "Invalid character: {0}", ch);
@@ -780,6 +829,7 @@ public class Sudoku2 implements Cloneable {
 				}
 				sIndex++;
 			}
+			
 			sCol++;
 			if (sCol == 9) {
 				sCol = 0;
@@ -1424,12 +1474,12 @@ public class Sudoku2 implements Cloneable {
 	/**
 	 * Returns the value set in <code>index</code> or 0, if the cell is not set.
 	 * 
-	 * @param line
+	 * @param row
 	 * @param col
 	 * @return
 	 */
-	public int getValue(int line, int col) {
-		return getValue(getIndex(line, col));
+	public int getValue(int row, int col) {
+		return getValue(getIndex(row, col));
 	}
 
 	/**
@@ -1969,12 +2019,12 @@ public class Sudoku2 implements Cloneable {
 	}
 
 	/**
-	 * Calculates the index into {@link #LINES} from the cell index.
+	 * Calculates the index into {@link #ROWS} from the cell index.
 	 * 
 	 * @param index
 	 * @return
 	 */
-	public static int getLine(int index) {
+	public static int getRow(int index) {
 		return index / UNITS;
 	}
 
@@ -1999,15 +2049,15 @@ public class Sudoku2 implements Cloneable {
 	}
 
 	/**
-	 * Calculates the cell index. <code>line</code> and <code>col</code> are zero
+	 * Calculates the cell index. <code>row</code> and <code>col</code> are zero
 	 * based.
 	 * 
-	 * @param line
+	 * @param row
 	 * @param col
 	 * @return
 	 */
-	public static int getIndex(int line, int col) {
-		return line * 9 + col;
+	public static int getIndex(int row, int col) {
+		return row * 9 + col;
 	}
 
 	/**
@@ -2079,7 +2129,7 @@ public class Sudoku2 implements Cloneable {
 		for (int i = 0; i < 81; i++) {
 			buddies[i] = new SudokuSet();
 			for (int j = 0; j < 81; j++) {
-				if (i != j && (Sudoku2.getLine(i) == Sudoku2.getLine(j) || Sudoku2.getCol(i) == Sudoku2.getCol(j)
+				if (i != j && (Sudoku2.getRow(i) == Sudoku2.getRow(j) || Sudoku2.getCol(i) == Sudoku2.getCol(j)
 						|| Sudoku2.getBlock(i) == Sudoku2.getBlock(j))) {
 					// Zelle ist Buddy
 					buddies[i].add(j);
@@ -2091,12 +2141,12 @@ public class Sudoku2 implements Cloneable {
 
 		// Ein Set für jedes Haus mit allen Zellen des Hauses
 		for (int i = 0; i < UNITS; i++) {
-			LINE_TEMPLATES[i] = new SudokuSet();
-			for (int j = 0; j < LINES[i].length; j++) {
-				LINE_TEMPLATES[i].add(LINES[i][j]);
+			ROW_TEMPLATES[i] = new SudokuSet();
+			for (int j = 0; j < ROWS[i].length; j++) {
+				ROW_TEMPLATES[i].add(ROWS[i][j]);
 			}
-			LINE_BLOCK_TEMPLATES[i] = LINE_TEMPLATES[i];
-			ALL_CONSTRAINTS_TEMPLATES[i] = LINE_TEMPLATES[i];
+			ROW_BLOCK_TEMPLATES[i] = ROW_TEMPLATES[i];
+			ALL_CONSTRAINTS_TEMPLATES[i] = ROW_TEMPLATES[i];
 			COL_TEMPLATES[i] = new SudokuSet();
 			for (int j = 0; j < COLS[i].length; j++) {
 				COL_TEMPLATES[i].add(COLS[i][j]);
@@ -2107,7 +2157,7 @@ public class Sudoku2 implements Cloneable {
 			for (int j = 0; j < BLOCKS[i].length; j++) {
 				BLOCK_TEMPLATES[i].add(BLOCKS[i][j]);
 			}
-			LINE_BLOCK_TEMPLATES[i + 9] = BLOCK_TEMPLATES[i];
+			ROW_BLOCK_TEMPLATES[i + 9] = BLOCK_TEMPLATES[i];
 			COL_BLOCK_TEMPLATES[i + 9] = BLOCK_TEMPLATES[i];
 			ALL_CONSTRAINTS_TEMPLATES[i + 18] = BLOCK_TEMPLATES[i];
 		}
@@ -2271,9 +2321,9 @@ public class Sudoku2 implements Cloneable {
 //        }
 
 		// jetzt noch die Templates für die Häuser
-		for (int i = 0; i < LINES.length; i++) {
-			for (int j = 0; j < LINES[i].length; j++) {
-				LINE_TEMPLATES[i].add(LINES[i][j]);
+		for (int i = 0; i < ROWS.length; i++) {
+			for (int j = 0; j < ROWS[i].length; j++) {
+				ROW_TEMPLATES[i].add(ROWS[i][j]);
 				COL_TEMPLATES[i].add(COLS[i][j]);
 				BLOCK_TEMPLATES[i].add(BLOCKS[i][j]);
 			}
