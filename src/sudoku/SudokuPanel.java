@@ -91,175 +91,99 @@ import solver.SudokuStepFinder;
  *
  * The solution is simple: Catch the PRESSED and RELEASED events and decide for
  * yourself, if a CLICKED has happened. For HoDoKu a CLICKED event is generated,
- * if PRESSED and RELEASED occured on the same candidate.
+ * if PRESSED and RELEASED occurred on the same candidate.
  *
  * @author hobiwan
  */
 public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
     private static final long serialVersionUID = 1L;
-    // Konstante
-    /**
-     * Translation of KeyChars in KeyCodes for laptops that use special key
-     * combinations for number
-     */
-    private static final int[] KEY_CODES = new int[]{
+    
+    private static final int DELTA = 5;
+    private static final int DELTA_RAND = 5;
+    private static BufferedImage[] colorKuImagesSmall = new BufferedImage[Sudoku2.UNITS + 2];
+    private static BufferedImage[] colorKuImagesLarge = new BufferedImage[Sudoku2.UNITS];
+    private static final int[] KEY_CODES = new int[] {
         KeyEvent.VK_0, KeyEvent.VK_1, KeyEvent.VK_2, KeyEvent.VK_3, KeyEvent.VK_4,
         KeyEvent.VK_5, KeyEvent.VK_6, KeyEvent.VK_7, KeyEvent.VK_8, KeyEvent.VK_9
     };
-    private static final int DELTA = 5; // Abstand zwischen den Quadraten in Pixel
-    private static final int DELTA_RAND = 5; // Abstand zu den Rändern
-    private static BufferedImage[] colorKuImagesSmall = new BufferedImage[Sudoku2.UNITS + 2];
-    private static BufferedImage[] colorKuImagesLarge = new BufferedImage[Sudoku2.UNITS];
-    // Konfigurationseigenschaften
-    private boolean showCandidates = Options.getInstance().isShowCandidates(); // Alle mÃ¶glichen Kandidaten anzeigen
-    private boolean showWrongValues = Options.getInstance().isShowWrongValues();    // falsche Werte mit anderer Farbe
-    private boolean showDeviations = Options.getInstance().isShowDeviations();  // Werte und Kandidaten, die von der LÃ¶sung abweichen
-    private boolean invalidCells = Options.getInstance().isInvalidCells(); // true: ungÃ¼ltige Zellen, false: mÃ¶gliche Zellen
-    private boolean showInvalidOrPossibleCells = false;  // UngÃ¼ltige/MÃ¶gliche Zellen fÃ¼r showHintCellValue mit anderem Hintergrund
-    /**
-     * An array for every candidate for which a filter is set; index 10 stands
-     * for "filter bivalue cells"
-     */
+    
+    private boolean showCandidates = Options.getInstance().isShowCandidates();
+    private boolean showWrongValues = Options.getInstance().isShowWrongValues();
+    private boolean showDeviations = Options.getInstance().isShowDeviations();
+    private boolean invalidCells = Options.getInstance().isInvalidCells();
+    private boolean showInvalidOrPossibleCells = false;
     private boolean[] showHintCellValues = new boolean[11];
     //private int showHintCellValue = 0;
-    private boolean showAllCandidatesAkt = false; // bei alle Kandidaten anzeigen (nur aktive Zelle)
-    private boolean showAllCandidates = false; // bei alle Kandidaten anzeigen (alle Zellen)
-    private int delta = DELTA; // Zwischenraum zwischen BlÃ¶cken
-    private int deltaRand = DELTA_RAND; // Zwischenraum zu den RÃ¤ndern
-    private Font valueFont;    // Font fÃ¼r die Zellenwerte
-    private Font candidateFont; // Font fÃ¼r die Kandidaten
-    /**
-     * Height of a digit in the current {@link AboutDialog#candidateFont}
-     */
+    private boolean showAllCandidatesAkt = false;
+    private boolean showAllCandidates = false;
+    private int delta = DELTA;
+    private int deltaRand = DELTA_RAND;
+    private Font valueFont;
+    private Font candidateFont;
     private int candidateHeight;
-    /**
-     * Font used for printing: Since it has to be scaled according to the
-     * printer resolution, {@link Options#bigFont} cannot be used directly.
-     */
     private Font bigFont;
-    /**
-     * Font used for printing: Since it has to be scaled according to the
-     * printer resolution, {@link Options#smallFont} cannot be used directly.
-     */
     private Font smallFont;
-    // interne Variable
-    private Sudoku2 sudoku; // Daten fÃ¼r das Sudoku
-    private SudokuSolver solver; // LÃ¶sung fÃ¼r das Sudoku
-    private SudokuGenerator generator; // LÃ¶sung mit BruteForce (Dancing Links)
-    private MainFrame mainFrame; // fÃ¶r OberflÃ¤che
-    private CellZoomPanel cellZoomPanel; // active cell display and color chooser
-    private SolutionStep step;   // fÃ¼r Anzeige der Hinweise
-    private int chainIndex = -1; // if != -1, only the chain with the right index is shown
-    private List<Integer> alsToShow = new ArrayList<Integer>(); // if chainIndex is != -1, alsToShow contains the indices of the ALS, that are part of the chain
-    private int oldWidth; // Breite des Panels, als das letzte Mal Fonts erzeugt wurden
-    private int width;    // Breite des Panels, auf Quadrat normiert
-    private int height;   // HÃ¶he des Panels, auf Quadrat normiert
-    private int cellSize; // KantenlÃ¤nge einer Zelle
-    private int startSX;  // x-Koordinate des linken oberen Punktes des Sudoku
-    private int startSY;  // y-Koordinate des linken oberen Punktes des Sudoku
-    private Graphics2D g2; // zum Zeichnen, spart eine Menge Parameter
-    private CubicCurve2D.Double cubicCurve = new CubicCurve2D.Double(); // fÃ¼r Chain-Pfeile
-    private Polygon arrow = new Polygon(); // Pfeilspitze
-    private Stroke arrowStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // Pfeilspitzen abrunden
-    private Stroke strongLinkStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); // strong links durchziehen
-    private Stroke weakLinkStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-            10.0f, new float[]{5.0f}, 0.0f); // weak links punkten
+    private Sudoku2 sudoku;
+    private SudokuSolver solver;
+    private SudokuGenerator generator;
+    private MainFrame mainFrame;
+    private CellZoomPanel cellZoomPanel;
+    private SolutionStep step;
+    private int chainIndex = -1;
+    // if chainIndex is != -1, alsToShow contains the indices of the ALS, that are part of the chain
+    private List<Integer> alsToShow = new ArrayList<Integer>();
+    private int oldWidth;
+    private int width;
+    private int height;
+    private int cellSize;
+    private int startSX; 
+    private int startSY;
+    private Graphics2D g2;
+    private CubicCurve2D.Double cubicCurve = new CubicCurve2D.Double();
+    private Polygon arrow = new Polygon();
+    private Stroke arrowStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    private Stroke strongLinkStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    private Stroke weakLinkStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, new float[]{5.0f}, 0.0f);
     private List<Point2D.Double> points = new ArrayList<Point2D.Double>(200);
     private double arrowLengthFactor = 1.0 / 6.0;
     private double arrowHeightFactor = 1.0 / 3.0;
-    private int aktLine = 4; // aktuell markiertes Feld (Zeile)
-    private int aktCol = 4;  // aktuell markiertes Feld (Spalte)
-    private int shiftLine = -1; // second cell for creating regions with the keyboard (shift pressed)
-    private int shiftCol = -1; // second cell for creating regions with the keyboard (shift pressed)
-    // Undo/Redo
+    private int aktLine = 4;
+    private int aktCol = 4;
+    private int shiftLine = -1;
+    private int shiftCol = -1;
     private Stack<Sudoku2> undoStack = new Stack<Sudoku2>();
     private Stack<Sudoku2> redoStack = new Stack<Sudoku2>();
-    // coloring: contains cell index + index in coloringColors[]
     private SortedMap<Integer, Integer> coloringMap = new TreeMap<Integer, Integer>();
-    // coloring candidates: contains cell index * 10 + candidate + index in coloringColors[]
     private SortedMap<Integer, Integer> coloringCandidateMap = new TreeMap<Integer, Integer>();
-    // indicates whether coloring is active (-1 means "not active"
     private int aktColorIndex = -1;
-    // coloring is meant for cells or candidates
     private boolean colorCells = Options.getInstance().isColorCells();
-    // Cursor for coloring: shows the strong color
     private Cursor colorCursor = null;
-    // Cursor for coloring: shows the weak color
     private Cursor colorCursorShift = null;
-    // old cursor for reset
     private Cursor oldCursor = null;
-    // if more than one cell is selected, the indices of all selected cells are stored here
     private SortedSet<Integer> selectedCells = new TreeSet<Integer>();
     private boolean[] dragCellSelection = new boolean[82];
-    // Array containing all "Make x" menu items from the popup menu
     private JMenuItem[] makeItems = null;
-    // Array containing all "Exclude x" menu items from the popup menu
     private JMenuItem[] excludeItems = null;
-    // Array containing all "Toggle color x" menu items from the popup menu
     private JMenuItem[] toggleColorItems = null;
-    /**
-     * for background progress checks
-     */
     private ProgressChecker progressChecker = null;
-    /**
-     * A timer for deleting the cursor marker after one second
-     */
     private Timer deleteCursorTimer = new Timer(Options.getInstance().getDeleteCursorDisplayLength(), null);
-    /**
-     * The time of the last cursor movement
-     */
     private long lastCursorChanged = -1;
+    
     // mouse handling
-    /**
-     * The line in which the last mouse PRESSED occured
-     */
     private int lastPressedLine = -1;
-    /**
-     * The column in which the last mouse PRESSED occured
-     */
     private int lastPressedCol = -1;
-    /**
-     * The candidate for which the last mouse PRESSED occured
-     */
     private int lastPressedCand = -1;
-    /**
-     * The line in which the last mouse CLICKED occured
-     */
     private int lastClickedLine = -1;
-    /**
-     * The column in which the last mouse CLICKED occured
-     */
     private int lastClickedCol = -1;
-    /**
-     * The candidate for which the last mouse CLICKED occured
-     */
     private int lastClickedCand = -1;
-    /**
-     * The time in TICKS of the last CLICKED event
-     */
     private long lastClickedTime = 0;
-    /**
-     * The AWT double click speed (depends on system settings)
-     */
     private long doubleClickSpeed = -1;
-    /**
-     * <
-     * code>true</code> for every candidate that can still be filtered
-     */
     private boolean[] remainingCandidates = new boolean[Sudoku2.UNITS];
-
     private Candidate lastCandidateMouseOn = new Candidate();
-    
     private boolean isCtrlDown;
-    
     private Point lastMousePosition = new Point();
     
-    /**
-     * Creates new form SudokuPanel
-     *
-     * @param mf
-     */
     public SudokuPanel(MainFrame mf) {
     	
         mainFrame = mf;
