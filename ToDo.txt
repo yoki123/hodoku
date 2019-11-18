@@ -1,3 +1,13 @@
+20191117:
+
+I dislike having candidate highlight when pressing LCtrl to select cells. There should be an option to disable it.
+
+Bugs:
+
+	Right click removed selection
+	Right click should not perform a selection
+	Single Click Mode right click commits without showing menu
+
 20191116:
 
 	Cell selection acts funny when a key is pressed.

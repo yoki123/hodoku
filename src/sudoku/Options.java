@@ -297,6 +297,7 @@ public final class Options {
     public static final boolean SHOW_WRONG_VALUES = true;  // Ungültige Zellen-/Kandidatenwerte anzeigen (Constraint-Verletzungen)
     public static final boolean SHOW_DEVIATIONS = true;    // Abweichungen von der richtigen Lösung anzeigen
     public static final boolean SHOW_COLORKU = false;	   // use colors instead of numbers
+    public static final boolean SHOW_CANDIDATE_HIGHLIGHT = false;
     public static final boolean INVALID_CELLS = false;     // show possible cells
     public static final boolean COLOR_CELLS = true;        // color cells or candidates
     public static final boolean SAVE_WINDOW_LAYOUT = true; // save window layout at shutdown
@@ -329,6 +330,7 @@ public final class Options {
     private boolean showWrongValues = SHOW_WRONG_VALUES;
     private boolean showDeviations = SHOW_DEVIATIONS;
     private boolean showColorKu = SHOW_COLORKU;
+    private boolean showCandidateHighlight = SHOW_CANDIDATE_HIGHLIGHT;
     /** Current state, set by {@link MainFrame}. */
     private boolean showColorKuAct = SHOW_COLORKU;
     private boolean invalidCells = INVALID_CELLS;
@@ -2190,6 +2192,15 @@ public final class Options {
      */
     public void setShowColorKu(boolean showColorKu) {
         this.showColorKu = showColorKu;
+    }
+    
+
+    public boolean isShowCandidateHighlight() {
+        return showCandidateHighlight;
+    }
+
+    public void setShowCandidateHighlight(boolean enabled) {
+        this.showCandidateHighlight = enabled;
     }
 
 //    /**

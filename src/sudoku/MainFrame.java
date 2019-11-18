@@ -305,6 +305,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
     private javax.swing.JCheckBoxMenuItem showCandidatesMenuItem;
     private javax.swing.JCheckBoxMenuItem showColorKuMenuItem;
     private javax.swing.JCheckBoxMenuItem showDeviationsMenuItem;
+    private javax.swing.JCheckBoxMenuItem showCandidateHighlightMenuItem;
     private javax.swing.JCheckBoxMenuItem showHintButtonsCheckBoxMenuItem;
     private javax.swing.JCheckBoxMenuItem showHintPanelMenuItem;
     private javax.swing.JCheckBoxMenuItem showToolBarMenuItem;
@@ -741,6 +742,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         showCandidatesMenuItem = new javax.swing.JCheckBoxMenuItem();
         showWrongValuesMenuItem = new javax.swing.JCheckBoxMenuItem();
         showDeviationsMenuItem = new javax.swing.JCheckBoxMenuItem();
+        showCandidateHighlightMenuItem = new javax.swing.JCheckBoxMenuItem();
         showColorKuMenuItem = new javax.swing.JCheckBoxMenuItem();
         colorCellsMenuItem = new javax.swing.JRadioButtonMenuItem();
         colorCandidatesMenuItem = new javax.swing.JRadioButtonMenuItem();
@@ -1621,6 +1623,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
         optionMenu.add(showColorKuMenuItem);
         optionMenu.add(new javax.swing.JPopupMenu.Separator());
 
+        showCandidateHighlightMenuItem.setSelected(Options.getInstance().isShowCandidateHighlight());
+        showCandidateHighlightMenuItem.setText("Show Candidate Highlight");
+        showCandidateHighlightMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Options.getInstance().setShowCandidateHighlight(showCandidateHighlightMenuItem.isSelected());
+                repaint();
+            }
+        });
+        optionMenu.add(showCandidateHighlightMenuItem);
+        optionMenu.add(new javax.swing.JPopupMenu.Separator());
+
+        optionMenu.add(new javax.swing.JPopupMenu.Separator());
+        
         colorButtonGroup.add(colorCellsMenuItem);
         colorCellsMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.colorCellsMenuItem.mnemonic").charAt(0));
         colorCellsMenuItem.setSelected(true);

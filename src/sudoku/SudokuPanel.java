@@ -821,9 +821,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
         int cand = getCandidate(evt.getPoint(), line, col);
         
         boolean isCandidateClicked = 
-        		line == lastPressedLine && 
-        		col == lastPressedCol && 
-        		cand == lastPressedCand;        
+    		line == lastPressedLine && 
+    		col == lastPressedCol && 
+    		cand == lastPressedCand;        
         
         if (isCandidateClicked) {
             // RELEASED on same candidate as PRESSED -> this is a click
@@ -831,11 +831,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             long ticks = System.currentTimeMillis();
             
             boolean isDoubleClick = 
-            		lastClickedTime != -1 && 
-            		(ticks - lastClickedTime) <= doubleClickSpeed && 
-            		line == lastClickedLine && 
-            		col == lastClickedCol && 
-            		cand == lastClickedCand;
+        		lastClickedTime != -1 && 
+        		(ticks - lastClickedTime) <= doubleClickSpeed && 
+        		line == lastClickedLine && 
+        		col == lastClickedCol && 
+        		cand == lastClickedCand;
             
             if (isDoubleClick) {
                 // this is a double click
@@ -886,6 +886,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
      * @param evt
      */
     private void handleMouseClicked(MouseEvent evt, boolean doubleClick) {
+    	
         // undo/Redo siehe handleKeys()
         undoStack.push(sudoku.clone());
         boolean changed = false;
@@ -908,6 +909,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             //System.out.println((evt.getButton() == MouseEvent.BUTTON1) + "/" + (evt.getButton() == MouseEvent.BUTTON2) + "/" + (evt.getButton() == MouseEvent.BUTTON3));
             if (isRightClick) {
                 if (Options.getInstance().isSingleClickMode()) {
+                	
                     // toggle candidate in cell(s) (three state mode)
                     if (selectedCells.contains(Sudoku2.getIndex(line, col))) {
                         // a region select exists and the cells lies within: toggle candidate
@@ -943,7 +945,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                     // bring up popup menu
                     showPopupMenu(line, col);
                 }
+                
             } else {
+            	
                 if (aktColorIndex != -1) {
                     // coloring is active
                     int colorNumber = aktColorIndex;
@@ -1055,15 +1059,16 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                             // selected, if the cell is outside a selected region
                             if (Options.getInstance().isSingleClickMode() == false
                                     || (Options.getInstance().isSingleClickMode() == true
-                                    && selectedCells.contains(Sudoku2.getIndex(line, col)) == false)) {
+                                    && selectedCells.contains(Sudoku2.getIndex(line, col)) == false)) {                            	
                                 setAktRowCol(line, col);
 //                                aktLine = line;
 //                                aktCol = col;
                                 clearRegion();
                             }
+                            
                             if (Options.getInstance().isSingleClickMode()) {
 //                                System.out.println(index + "/" + cand);
-                                // the selected cell(s) must be set to cand
+                                // the selected cell(s) must be set to cand                           	
                                 if (sudoku.getValue(index) == 0) {
                                     if (selectedCells.isEmpty()) {
                                         int showHintCellValue = getShowHintCellValue();
@@ -1117,12 +1122,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
                     }
                 }
             }
+            
             if (changed) {
                 redoStack.clear();
                 checkProgress();
             } else {
                 undoStack.pop();
             }
+            
             updateCellZoomPanel();
             mainFrame.check();
             repaint();
@@ -4299,6 +4306,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }
     
     private boolean mouseHighlightCandidate() {
-    	return isCtrlDown;
+    	return isCtrlDown && Options.getInstance().isShowCandidateHighlight();
     }
 }
