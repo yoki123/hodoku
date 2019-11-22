@@ -476,38 +476,33 @@ public final class Options {
 	private boolean editModeAutoAdvance = EDIT_MODE_AUTO_ADVANCE;
 	private boolean isSingleClickMode = SINGLE_CLICK_MODE;
 	// Clipboard
-	public static final boolean USE_ZERO_INSTEAD_OF_DOT = false; // as the name says...
+	public static final boolean USE_ZERO_INSTEAD_OF_DOT = false;
 	private boolean useZeroInsteadOfDot = USE_ZERO_INSTEAD_OF_DOT;
 	// Farben und Fonts
 	public static final Color GRID_COLOR = Color.BLACK; // Zeichenfarbe für den Rahmen
 	public static final Color INNER_GRID_COLOR = Color.LIGHT_GRAY; // Linien innerhalb des Rahmens
 	public static final Color WRONG_VALUE_COLOR = Color.RED; // Wert oder Kandidat an dieser Stelle nicht möglich
-	public static final Color DEVIATION_COLOR = new Color(255, 185, 185); // Wert oder Kandidat stimmt nicht mit Lösung
-																			// überein
+	public static final Color DEVIATION_COLOR = new Color(255, 185, 185); // Wert oder Kandidat stimmt nicht mit Lösung überein
 	public static final Color CELL_FIXED_VALUE_COLOR = Color.BLACK; // vorgegebene Werte
 	public static final Color CELL_VALUE_COLOR = Color.BLUE; // korrekte selbst eingegebene Zellenwerte
 	public static final Color CANDIDATE_COLOR = new Color(100, 100, 100); // korrekte Kandidaten
 	public static final Color DEFAULT_CELL_COLOR = Color.WHITE; // Hintergrund normale Zelle
 	public static final Color ALTERNATE_CELL_COLOR = Color.WHITE; // Hintergrund normale Zelle in jedem zweiten Block
 	public static final Color AKT_CELL_COLOR = new Color(255, 255, 150); // Hintergrund aktuell markierte Zelle
+	public static final Color CELL_SELECTION_COLOR = new Color(255, 230, 150);
 	public static final Color INVALID_CELL_COLOR = new Color(255, 185, 185); // Hintergrund Zelle mit ungültigen Wert
 	public static final Color POSSIBLE_CELL_COLOR = new Color(185, 255, 185); // Hintergrund Zelle mit möglichem Wert
 	public static final Color HINT_CANDIDATE_BACK_COLOR = new Color(63, 218, 101); // Hintergrund Kandidat in Hinweis
-	public static final Color HINT_CANDIDATE_DELETE_BACK_COLOR = new Color(255, 118, 132); // Hintergrund für zu
-																							// löschende Kandidaten
-	public static final Color HINT_CANDIDATE_CANNIBALISTIC_BACK_COLOR = new Color(235, 0, 0); // Hintergrund für zu
-																								// löschende Kandidaten
+	public static final Color HINT_CANDIDATE_DELETE_BACK_COLOR = new Color(255, 118, 132); // Hintergrund für zu löschende Kandidaten
+	public static final Color HINT_CANDIDATE_CANNIBALISTIC_BACK_COLOR = new Color(235, 0, 0); // Hintergrund für zu löschende Kandidaten
 	public static final Color HINT_CANDIDATE_FIN_BACK_COLOR = new Color(127, 187, 255); // Hintergrund für Fins
-	public static final Color HINT_CANDIDATE_ENDO_FIN_BACK_COLOR = new Color(216, 178, 255); // Hintergrund für
-																								// Endo-Fins
+	public static final Color HINT_CANDIDATE_ENDO_FIN_BACK_COLOR = new Color(216, 178, 255); // Hintergrund für Endo-Fins
 	public static final Color HINT_CANDIDATE_COLOR = Color.BLACK; // Zeichenfarbe Kandidat in Hinweis
 	public static final Color HINT_CANDIDATE_DELETE_COLOR = Color.BLACK; // Zeichenfarbe für zu löschende Kandidaten
-	public static final Color HINT_CANDIDATE_CANNIBALISTIC_COLOR = Color.BLACK; // Zeichenfarbe für zu löschende
-																				// Kandidaten
+	public static final Color HINT_CANDIDATE_CANNIBALISTIC_COLOR = Color.BLACK; // Zeichenfarbe für zu löschende Kandidaten
 	public static final Color HINT_CANDIDATE_FIN_COLOR = Color.BLACK; // Zeichenfarbe für Fins
 	public static final Color HINT_CANDIDATE_ENDO_FIN_COLOR = Color.BLACK; // Zeichenfarbe für Endo-Fins
-	public static final Color[] HINT_CANDIDATE_ALS_BACK_COLORS = { // Hintergrund für ALS (verschieden wegen Chains und
-																	// Wings)
+	public static final Color[] HINT_CANDIDATE_ALS_BACK_COLORS = { // Hintergrund für ALS (verschieden wegen Chains und Wings)
 			new Color(197, 232, 140), new Color(255, 203, 203), new Color(178, 223, 223), new Color(252, 220, 165)
 //        new Color(150, 150, 255),
 //        new Color(150, 255, 150),
@@ -550,6 +545,7 @@ public final class Options {
 	private Color defaultCellColor = DEFAULT_CELL_COLOR;
 	private Color alternateCellColor = ALTERNATE_CELL_COLOR;
 	private Color aktCellColor = AKT_CELL_COLOR;
+	private Color cellSelectionColor = CELL_SELECTION_COLOR;
 	private Color invalidCellColor = INVALID_CELL_COLOR;
 	private Color possibleCellColor = POSSIBLE_CELL_COLOR;
 	private Color hintCandidateBackColor = HINT_CANDIDATE_BACK_COLOR;
@@ -1746,6 +1742,14 @@ public final class Options {
 
 	public void setAktCellColor(Color aktCellColor) {
 		this.aktCellColor = aktCellColor;
+	}
+	
+	public Color getCellSelectionColor() {
+		return cellSelectionColor;
+	}
+
+	public void setCellSelectionColor(Color color) {
+		this.cellSelectionColor = color;
 	}
 
 	public Color getInvalidCellColor() {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2019 PseudoFish
+ */
+
 package sudoku;
 
 import java.awt.Dimension;

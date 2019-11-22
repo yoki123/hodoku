@@ -20,6 +20,7 @@ package sudoku;
 
 import generator.SudokuGenerator;
 import generator.SudokuGeneratorFactory;
+
 import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.SortedSet;
@@ -28,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author hobiwan
  */
 public class Sudoku2 implements Cloneable {
@@ -1606,6 +1606,14 @@ public class Sudoku2 implements Cloneable {
 			return isCandidate(index, cand);
 		}
 	}
+	
+	public static boolean isValidIndex(int row, int col) {
+		return 
+			row >= 0 && 
+			row < Sudoku2.UNITS && 
+			col >= 0 && 
+			col < Sudoku2.UNITS;
+	}
 
 	/**
 	 * Checks, if a given candidate is set and valid; used for display.
@@ -1898,29 +1906,30 @@ public class Sudoku2 implements Cloneable {
 	 * @return <code>false</code>, if the puzzle becomes invalid by setting a cell
 	 */
 	public boolean setCell(int index, int value, boolean isFixed, boolean user) {
-		if (value == 0) {
-//            System.out.println("setCell(" + index + ", " + value + ", " + isFixed + ", " + user + ");");
-		}
+		
 		if (values[index] == value) {
-			// nothing to do
 			return true;
 		}
+		
 		boolean valid = true; // puzzle still valid after setting a cell?
 		int oldValue = values[index]; // needed for delete
 		values[index] = value;
 		fixed[index] = isFixed;
+		
 		if (value != 0) {
-//            System.out.println("   set " + index + "/" + value);
 			// set a cell
 			// adjust mask and check for Hidden Singles
 			int[] cands = POSSIBLE_VALUES[cells[index]];
 			cells[index] = 0;
+			
 			if (user) {
 				userCells[index] = 0;
 			}
+			
 			unsolvedCellsAnz--;
 			// check the buddies
 			for (int i = 0; i < buddies[index].size(); i++) {
+				
 				int buddyIndex = buddies[index].get(i);
 				// candidates are deleted in userCells as well
 				// delCandidate does the check for Naked or Hidden Single
@@ -1928,16 +1937,21 @@ public class Sudoku2 implements Cloneable {
 				if (!setCandidate(buddyIndex, value, false)) {
 					valid = false;
 				}
+				
 				if (user) {
 					userCells[buddyIndex] &= ~MASKS[value];
 				}
 			}
+			
 			// now check all candidates from the cell itself
 			for (int i = 0; i < cands.length; i++) {
+				
 				int cand = cands[i];
 				for (int j = 0; j < CONSTRAINTS[index].length; j++) {
+					
 					int constr = CONSTRAINTS[index][j];
 					int newFree = --free[constr][cand];
+					
 					if (newFree == 1 && value != cand) {
 						addHiddenSingle(constr, cand);
 					} else if (newFree == 0 && cand != value) {
@@ -1945,7 +1959,9 @@ public class Sudoku2 implements Cloneable {
 					}
 				}
 			}
+			
 		} else {
+			
 			// in the cell itself all candidates that are possible are set
 			// userCandidates is not changed
 			for (int cand = 1; cand <= 9; cand++) {
@@ -1953,6 +1969,7 @@ public class Sudoku2 implements Cloneable {
 					setCandidate(index, cand);
 				}
 			}
+			
 			// the deleted value is a candidate in all buddies that are not set and not
 			// invalid
 			for (int i = 0; i < buddies[index].size(); i++) {
@@ -1961,12 +1978,14 @@ public class Sudoku2 implements Cloneable {
 					setCandidate(buddyIndex, oldValue);
 				}
 			}
+			
 			// the singles queues get invalid by deleting a value from a cell
 			// -> rebuild everything from scratch!
 			// adjusts unsolvedCellsAnz as well!
 //            unsolvedCellsAnz++;
 			rebuildInternalData();
 		}
+		
 		return valid;
 	}
 
@@ -2024,7 +2043,7 @@ public class Sudoku2 implements Cloneable {
 	 * @param index
 	 * @return
 	 */
-	public static int getRow(int index) {
+	public static int getRow(int index) {		
 		return index / UNITS;
 	}
 
@@ -2057,7 +2076,7 @@ public class Sudoku2 implements Cloneable {
 	 * @return
 	 */
 	public static int getIndex(int row, int col) {
-		return row * 9 + col;
+		return row * UNITS + col;
 	}
 
 	/**

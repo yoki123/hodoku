@@ -1,7 +1,21 @@
+/*
+ * Copyright (C) 2019 PseudoFish
+ * 
+ * This is the menu that is displayed when the user right
+ * clicks on a cell. Originally, Bernhard Hobiger embedded this
+ * in the SudokuPanel, but I felt that it needed to be decoupled
+ * and made into it's own proper class.
+ * 
+ * I dislike the circular dependency that this created, but
+ * at least it fees-up a couple hundred lines from the SudokuPanel.
+ */
+
 package sudoku;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -13,7 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-public class CellRightClickMenu extends JPopupMenu {
+public class RightClickMenu extends JPopupMenu implements ActionListener {
 	
 	private static final long serialVersionUID = 2320401834850980638L;
 	
@@ -59,7 +73,7 @@ public class CellRightClickMenu extends JPopupMenu {
 	private javax.swing.JMenuItem make8MenuItem;
 	private javax.swing.JMenuItem make9MenuItem;
 	
-	public CellRightClickMenu(MainFrame mainFrame, SudokuPanel sudokuPanel) {
+	public RightClickMenu(MainFrame mainFrame, SudokuPanel sudokuPanel) {
 		
 		super();
 		
@@ -130,246 +144,167 @@ public class CellRightClickMenu extends JPopupMenu {
 
 		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SudokuPanel");
 		make1MenuItem.setText(bundle.getString("SudokuPanel.popup.make1"));
-		make1MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make1MenuItem.addActionListener(this);
 		this.add(make1MenuItem);
 
 		make2MenuItem.setText(bundle.getString("SudokuPanel.popup.make2"));
-		make2MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make2MenuItem.addActionListener(this);
 		this.add(make2MenuItem);
 
 		make3MenuItem.setText(bundle.getString("SudokuPanel.popup.make3"));
-		make3MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make3MenuItem.addActionListener(this);
 		this.add(make3MenuItem);
 
 		make4MenuItem.setText(bundle.getString("SudokuPanel.popup.make4"));
-		make4MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make4MenuItem.addActionListener(this);
 		this.add(make4MenuItem);
 
 		make5MenuItem.setText(bundle.getString("SudokuPanel.popup.make5"));
-		make5MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make5MenuItem.addActionListener(this);
 		this.add(make5MenuItem);
 
 		make6MenuItem.setText(bundle.getString("SudokuPanel.popup.make6"));
-		make6MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make6MenuItem.addActionListener(this);
 		this.add(make6MenuItem);
 
 		make7MenuItem.setText(bundle.getString("SudokuPanel.popup.make7"));
-		make7MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make7MenuItem.addActionListener(this);
 		this.add(make7MenuItem);
 
 		make8MenuItem.setText(bundle.getString("SudokuPanel.popup.make8"));
-		make8MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make8MenuItem.addActionListener(this);
 		this.add(make8MenuItem);
 
 		make9MenuItem.setText(bundle.getString("SudokuPanel.popup.make9"));
-		make9MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupSetCell((JMenuItem) evt.getSource());
-			}
-		});
+		make9MenuItem.addActionListener(this);
 		this.add(make9MenuItem);
 		this.add(jSeparator1);
 
 		exclude1MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude1"));
-		exclude1MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude1MenuItem.addActionListener(this);
 		this.add(exclude1MenuItem);
 
 		exclude2MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude2"));
-		exclude2MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude2MenuItem.addActionListener(this);
 		this.add(exclude2MenuItem);
 
 		exclude3MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude3"));
-		exclude3MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude3MenuItem.addActionListener(this);
 		this.add(exclude3MenuItem);
 
 		exclude4MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude4"));
-		exclude4MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude4MenuItem.addActionListener(this);
 		this.add(exclude4MenuItem);
 
 		exclude5MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude5"));
-		exclude5MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude5MenuItem.addActionListener(this);
 		this.add(exclude5MenuItem);
 
 		exclude6MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude6"));
-		exclude6MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude6MenuItem.addActionListener(this);
 		this.add(exclude6MenuItem);
 
 		exclude7MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude7"));
-		exclude7MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude7MenuItem.addActionListener(this);
 		this.add(exclude7MenuItem);
 
 		exclude8MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude8"));
-		exclude8MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude8MenuItem.addActionListener(this);
 		this.add(exclude8MenuItem);
 
 		exclude9MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude9"));
-		exclude9MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupExcludeCandidate((JMenuItem) evt.getSource());
-			}
-		});
+		exclude9MenuItem.addActionListener(this);
 		this.add(exclude9MenuItem);
 
 		excludeSeveralMenuItem.setText(bundle.getString("SudokuPanel.popup.several"));
-		excludeSeveralMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				excludeSeveralMenuItemActionPerformed(evt);
-			}
-		});
+		excludeSeveralMenuItem.addActionListener(this);
 		this.add(excludeSeveralMenuItem);
 		this.add(jSeparator2);
 
 		color1aMenuItem.setText(bundle.getString("SudokuPanel.popup.color1a"));
-		color1aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color1aMenuItem.addActionListener(this);
 		this.add(color1aMenuItem);
 
 		color1bMenuItem.setText(bundle.getString("SudokuPanel.popup.color1b"));
-		color1bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color1bMenuItem.addActionListener(this);
 		this.add(color1bMenuItem);
 
 		color2aMenuItem.setText(bundle.getString("SudokuPanel.popup.color2a"));
-		color2aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color2aMenuItem.addActionListener(this);
 		this.add(color2aMenuItem);
 
 		color2bMenuItem.setText(bundle.getString("SudokuPanel.popup.color2b"));
-		color2bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color2bMenuItem.addActionListener(this);
 		this.add(color2bMenuItem);
 
 		color3aMenuItem.setText(bundle.getString("SudokuPanel.popup.color3a"));
-		color3aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color3aMenuItem.addActionListener(this);
 		this.add(color3aMenuItem);
 
 		color3bMenuItem.setText(bundle.getString("SudokuPanel.popup.color3b"));
-		color3bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color3bMenuItem.addActionListener(this);
 		this.add(color3bMenuItem);
 
 		color4aMenuItem.setText(bundle.getString("SudokuPanel.popup.color4a"));
-		color4aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color4aMenuItem.addActionListener(this);
 		this.add(color4aMenuItem);
 
 		color4bMenuItem.setText(bundle.getString("SudokuPanel.popup.color4b"));
-		color4bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color4bMenuItem.addActionListener(this);
 		this.add(color4bMenuItem);
 
 		color5aMenuItem.setText(bundle.getString("SudokuPanel.popup.color5a"));
-		color5aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color5aMenuItem.addActionListener(this);
 		this.add(color5aMenuItem);
 
 		color5bMenuItem.setText(bundle.getString("SudokuPanel.popup.color5b"));
-		color5bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				popupToggleColor((JMenuItem) evt.getSource());
-			}
-		});
+		color5bMenuItem.addActionListener(this);
 		this.add(color5bMenuItem);
 
 		deleteValueMenuItem.setText(bundle.getString("SudokuPanel.deleteValueItem.text"));
-		deleteValueMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				deleteValueMenuItemActionPerformed(evt);
-			}
-		});
+		deleteValueMenuItem.addActionListener(this);
 		deleteValuePopupMenu.add(deleteValueMenuItem);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == make1MenuItem || e.getSource() == make2MenuItem ||
+			e.getSource() == make3MenuItem || e.getSource() == make4MenuItem ||
+			e.getSource() == make5MenuItem || e.getSource() == make6MenuItem ||
+			e.getSource() == make7MenuItem || e.getSource() == make8MenuItem ||
+			e.getSource() == make9MenuItem) {
+			popupSetCell((JMenuItem) e.getSource());
+			return;
+		}
+		
+		if (e.getSource() == exclude1MenuItem || e.getSource() == exclude2MenuItem ||
+			e.getSource() == exclude3MenuItem || e.getSource() == exclude4MenuItem ||
+			e.getSource() == exclude5MenuItem || e.getSource() == exclude6MenuItem ||
+			e.getSource() == exclude7MenuItem || e.getSource() == exclude8MenuItem ||
+			e.getSource() == exclude9MenuItem) {
+			popupExcludeCandidate((JMenuItem) e.getSource());
+			return;
+		}
+		
+		if (e.getSource() == excludeSeveralMenuItem) {
+			excludeSeveralMenuItemActionPerformed(e);
+			return;
+		}
+		
+		if (e.getSource() == color1aMenuItem || e.getSource() == color1bMenuItem ||
+			e.getSource() == color2aMenuItem || e.getSource() == color2bMenuItem ||
+			e.getSource() == color3aMenuItem || e.getSource() == color3bMenuItem ||
+			e.getSource() == color4aMenuItem || e.getSource() == color4bMenuItem ||
+			e.getSource() == color5aMenuItem || e.getSource() == color5bMenuItem) {
+			popupToggleColor((JMenuItem) e.getSource());
+			return;
+		}
+		
+		if (e.getSource() == deleteValueMenuItem) {
+			deleteValueMenuItemActionPerformed(e);
+			return;
+		}
 	}
 	
 	/**
@@ -525,8 +460,8 @@ public class CellRightClickMenu extends JPopupMenu {
 		if (color != -1) {
 			// removeCandidateFromActiveCells(color);
 			// coloring is active
-			int aktLine = sudokuPanel.getAKTLine();
-			int aktCol = sudokuPanel.getAKTCol();
+			int aktLine = sudokuPanel.getActiveRow();
+			int aktCol = sudokuPanel.getActiveCol();
 			sudokuPanel.handleColoring(aktLine, aktCol, -1, color);
 			sudokuPanel.updateCellZoomPanel();
 			mainFrame.check();
@@ -543,25 +478,25 @@ public class CellRightClickMenu extends JPopupMenu {
 	 * appear in all cells, "Exclude x" is restricted to the combined set of
 	 * candidates in all cells.
 	 *
-	 * @param line
+	 * @param row
 	 * @param col
 	 */
-	public void showPopupMenu(int line, int col, int cellSize) {
+	public void showPopupMenu(int row, int col, int cellSize) {
 		
-		jSeparator2.setVisible(true);
-		if (sudokuPanel.getSudoku().getValue(line, col) != 0 && sudokuPanel.getSelectedCells().isEmpty()) {
-			// cell is already set -> delete value popup (not for givens!)
-			int aktLine = sudokuPanel.getAKTLine();
-			int aktCol = sudokuPanel.getAKTCol();
-			if (!sudokuPanel.getSudoku().isFixed(aktLine, aktCol)) {
-				sudokuPanel.setAktRowCol(line, col);
-				deleteValuePopupMenu.show(this, sudokuPanel.getX(line, col) + cellSize, sudokuPanel.getY(line, col));
-			}
+		if (!Sudoku2.isValidIndex(row, col)) {
 			return;
 		}
 		
-		if (sudokuPanel.getSelectedCells().isEmpty()) {
-			sudokuPanel.setAktRowCol(line, col);
+		jSeparator2.setVisible(true);
+		if (sudokuPanel.getSudoku().getValue(row, col) != 0 && sudokuPanel.getSelectedCells().isEmpty()) {
+			// cell is already set -> delete value popup (not for givens!)
+			int aktLine = sudokuPanel.getActiveRow();
+			int aktCol = sudokuPanel.getActiveCol();
+			if (!sudokuPanel.getSudoku().isFixed(aktLine, aktCol)) {
+				deleteValuePopupMenu.show(this, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
+			}
+			
+			return;
 		}
 		
 		excludeSeveralMenuItem.setVisible(false);
@@ -590,7 +525,7 @@ public class CellRightClickMenu extends JPopupMenu {
 			jSeparator2.setVisible(false);
 		}
 		
-		this.show(sudokuPanel, sudokuPanel.getX(line, col) + cellSize, sudokuPanel.getY(line, col));
+		this.show(sudokuPanel, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
 	}
 	
 	/**
@@ -609,8 +544,8 @@ public class CellRightClickMenu extends JPopupMenu {
 			}
 		}
 		
-		int aktLine = sudokuPanel.getAKTLine();
-		int aktCol = sudokuPanel.getAKTCol();
+		int aktLine = sudokuPanel.getActiveRow();
+		int aktCol = sudokuPanel.getActiveCol();
 		
 		if (candidate != -1) {
 			
@@ -651,8 +586,8 @@ public class CellRightClickMenu extends JPopupMenu {
 		// System.out.println("delete valuefrom " + aktLine+ "/"+aktCol);
 		sudokuPanel.pushUndo();
 		boolean changed = false;
-		int aktLine = sudokuPanel.getAKTLine();
-		int aktCol = sudokuPanel.getAKTCol();
+		int aktLine = sudokuPanel.getActiveRow();
+		int aktCol = sudokuPanel.getActiveCol();
 		
 		if (sudokuPanel.getSudoku().getValue(aktLine, aktCol) != 0 && !sudokuPanel.getSudoku().isFixed(aktLine, aktCol)) {
 			// System.out.println("clear cell: ");

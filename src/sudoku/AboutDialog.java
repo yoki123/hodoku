@@ -75,25 +75,25 @@ public class AboutDialog extends javax.swing.JDialog {
 		closeButton = new javax.swing.JButton();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/AboutDialog"); // NOI18N
-		setTitle(bundle.getString("AboutDialog.title")); // NOI18N
+		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/AboutDialog");
+		setTitle(bundle.getString("AboutDialog.title"));
 
-		versionLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+		versionLabel.setFont(new java.awt.Font("Tahoma", 1, 18));
 		versionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		versionLabel.setText("HoDoKu v1.0"); // NOI18N
+		versionLabel.setText("HoDoKu v1.0");
 
 		copyrightLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		copyrightLabel.setText(bundle.getString("AboutDialog.copyrightLabel.text")); // NOI18N
+		copyrightLabel.setText(bundle.getString("AboutDialog.copyrightLabel.text"));
 
 		copyleftLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		copyleftLabel.setText(bundle.getString("AboutDialog.copyleftLabel.text")); // NOI18N
+		copyleftLabel.setText(bundle.getString("AboutDialog.copyleftLabel.text"));
 
 		logoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/gplv3-127x51.png"))); // NOI18N
+		logoLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/gplv3-127x51.png")));
 
 		closeButton.setMnemonic(java.util.ResourceBundle.getBundle("intl/AboutDialog")
 				.getString("AboutDialog.closeButton.mnemonic").charAt(0));
-		closeButton.setText(bundle.getString("AboutDialog.closeButton.text")); // NOI18N
+		closeButton.setText(bundle.getString("AboutDialog.closeButton.text"));
 		closeButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				closeButtonActionPerformed(evt);

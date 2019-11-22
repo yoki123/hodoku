@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2008-12  Bernhard Hobiger
+ * Copyright (C) 2019 PseudoFish
+ * Copyright (C) 2008-12 Bernhard Hobiger
  *
  * This file is part of HoDoKu.
  *
@@ -3772,7 +3773,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 */
 	public boolean ValidateImportLine(String line) {
 
-		if (line.length() != 81) {
+		if (line.length() != Sudoku2.LENGTH) {
 			ShowWarningMSG("Warning", "Import string must be 81 characters long.");
 			return false;
 		}
@@ -3813,8 +3814,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		sudokuPanel.saveState();
 		Sudoku2 sudoku = sudokuPanel.getSudoku();
 
-		for (int c = 0; c < 9; c++) {
-			for (int r = 0; r < 9; r++) {
+		for (int c = 0; c < Sudoku2.UNITS; c++) {
+			for (int r = 0; r < Sudoku2.UNITS; r++) {
 				int value = sudoku.getSolution(r, c);
 				sudoku.setCell(r, c, value);
 			}
