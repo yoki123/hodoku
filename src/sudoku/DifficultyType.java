@@ -24,10 +24,5 @@ package sudoku;
  * @author hobiwan
  */
 public enum DifficultyType {
-    INCOMPLETE,
-    EASY,
-    MEDIUM,
-    HARD,
-    UNFAIR,
-    EXTREME;
+	INCOMPLETE, EASY, MEDIUM, HARD, UNFAIR, EXTREME;
 }

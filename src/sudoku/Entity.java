@@ -24,54 +24,54 @@ package sudoku;
  * @author hobiwan
  */
 public class Entity implements Cloneable {
-    private int entityName;
-    private int entityNumber;
-    
-    public Entity() {
-        
-    }
-    
-    public Entity(int name, int number) {
-        entityName = name;
-        entityNumber = number;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (! (o instanceof Entity)) {
-            return false;
-        }
-        Entity c = (Entity) o;
-        if (entityName == c.entityName && entityNumber == c.entityNumber) {
-            return true;
-        }
-        return false;
-    }
+	private int entityName;
+	private int entityNumber;
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + this.entityName;
-        hash = 13 * hash + this.entityNumber;
-        return hash;
-    }
-    
-    public int getEntityName() {
-        return entityName;
-    }
-    
-    public void setEntityName(int entityName) {
-        this.entityName = entityName;
-    }
-    
-    public int getEntityNumber() {
-        return entityNumber;
-    }
-    
-    public void setEntityNumber(int entityNumber) {
-        this.entityNumber = entityNumber;
-    }
+	public Entity() {
+
+	}
+
+	public Entity(int name, int number) {
+		entityName = name;
+		entityNumber = number;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (!(o instanceof Entity)) {
+			return false;
+		}
+		Entity c = (Entity) o;
+		if (entityName == c.entityName && entityNumber == c.entityNumber) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 13 * hash + this.entityName;
+		hash = 13 * hash + this.entityNumber;
+		return hash;
+	}
+
+	public int getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(int entityName) {
+		this.entityName = entityName;
+	}
+
+	public int getEntityNumber() {
+		return entityNumber;
+	}
+
+	public void setEntityNumber(int entityNumber) {
+		this.entityNumber = entityNumber;
+	}
 }

@@ -27,95 +27,94 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class CheckNode extends DefaultMutableTreeNode {
 
-    protected static final int NONE = 0;
-    protected static final int HALF = 1;
-    protected static final int FULL = 2;
-    private static final long serialVersionUID = 1L;
-    private int selectionState;
-    private StepConfig step;
-    private boolean allSteps;
-    private SolutionCategory category;
-    private boolean heuristics;
-    private boolean training;
+	protected static final int NONE = 0;
+	protected static final int HALF = 1;
+	protected static final int FULL = 2;
+	private static final long serialVersionUID = 1L;
+	private int selectionState;
+	private StepConfig step;
+	private boolean allSteps;
+	private SolutionCategory category;
+	private boolean heuristics;
+	private boolean training;
 
-    public CheckNode() {
-        this(null);
-    }
+	public CheckNode() {
+		this(null);
+	}
 
-    public CheckNode(Object userObject) {
-        this(userObject, true, NONE, null, false, false, false, null);
-    }
+	public CheckNode(Object userObject) {
+		this(userObject, true, NONE, null, false, false, false, null);
+	}
 
-    public CheckNode(Object userObject, boolean allowsChildren, int selectionState,
-            StepConfig step, boolean allSteps, boolean heuristics,
-            boolean training, SolutionCategory category) {
-        super(userObject, allowsChildren);
-        this.selectionState = selectionState;
-        this.step = step;
-        this.allSteps = allSteps;
-        this.heuristics = heuristics;
-        this.training = training;
-        this.category = category;
-    }
+	public CheckNode(Object userObject, boolean allowsChildren, int selectionState, StepConfig step, boolean allSteps,
+			boolean heuristics, boolean training, SolutionCategory category) {
+		super(userObject, allowsChildren);
+		this.selectionState = selectionState;
+		this.step = step;
+		this.allSteps = allSteps;
+		this.heuristics = heuristics;
+		this.training = training;
+		this.category = category;
+	}
 
-    public void toggleSelectionState() {
-        if (children == null) {
-            // normaler Knoten, kann nur AN oder AUS sein
-            selectionState = selectionState == FULL ? NONE : FULL;
-            adjustModel(this);
-            // der selectionState des parents muss ebenfalls überprüft werden
-            int actState = -1;
-            CheckNode tmpParent = (CheckNode) getParent();
-            for (int i = 0; i < tmpParent.children.size(); i++) {
-                CheckNode act = (CheckNode) tmpParent.children.get(i);
-                if (actState == -1) {
-                    actState = act.selectionState;
-                } else {
-                    if (actState != act.selectionState) {
-                        actState = CheckNode.HALF;
-                        break;
-                    }
-                }
-            }
-            tmpParent.selectionState = actState;
-        } else {
-            // NONE -> FULL
-            // HALF -> FULL
-            // FULL -> NONE
-            selectionState = selectionState == FULL ? NONE : FULL;
-            @SuppressWarnings("unchecked")
-            Enumeration<CheckNode> enumeration = (Enumeration<CheckNode>)children.elements();
-            while (enumeration.hasMoreElements()) {
-                CheckNode node = enumeration.nextElement();
-                node.selectionState = selectionState;
-                adjustModel(node);
-            }
-        }
-    }
+	public void toggleSelectionState() {
+		if (children == null) {
+			// normaler Knoten, kann nur AN oder AUS sein
+			selectionState = selectionState == FULL ? NONE : FULL;
+			adjustModel(this);
+			// der selectionState des parents muss ebenfalls überprüft werden
+			int actState = -1;
+			CheckNode tmpParent = (CheckNode) getParent();
+			for (int i = 0; i < tmpParent.children.size(); i++) {
+				CheckNode act = (CheckNode) tmpParent.children.get(i);
+				if (actState == -1) {
+					actState = act.selectionState;
+				} else {
+					if (actState != act.selectionState) {
+						actState = CheckNode.HALF;
+						break;
+					}
+				}
+			}
+			tmpParent.selectionState = actState;
+		} else {
+			// NONE -> FULL
+			// HALF -> FULL
+			// FULL -> NONE
+			selectionState = selectionState == FULL ? NONE : FULL;
+			@SuppressWarnings("unchecked")
+			Enumeration<CheckNode> enumeration = (Enumeration<CheckNode>) children.elements();
+			while (enumeration.hasMoreElements()) {
+				CheckNode node = enumeration.nextElement();
+				node.selectionState = selectionState;
+				adjustModel(node);
+			}
+		}
+	}
 
-    private void adjustModel(CheckNode node) {
-        if (node.step != null) {
-            if (allSteps) {
-                node.step.setAllStepsEnabled(node.selectionState == FULL);
-            } else if (heuristics) {
-                node.step.setEnabledProgress(node.selectionState == FULL);
-            } else if (training) {
-                node.step.setEnabledTraining(node.selectionState == FULL);
-            } else {
-                node.step.setEnabled(node.selectionState == FULL);
-            }
-        }
-    }
+	private void adjustModel(CheckNode node) {
+		if (node.step != null) {
+			if (allSteps) {
+				node.step.setAllStepsEnabled(node.selectionState == FULL);
+			} else if (heuristics) {
+				node.step.setEnabledProgress(node.selectionState == FULL);
+			} else if (training) {
+				node.step.setEnabledTraining(node.selectionState == FULL);
+			} else {
+				node.step.setEnabled(node.selectionState == FULL);
+			}
+		}
+	}
 
-    public int getSelectionState() {
-        return selectionState;
-    }
+	public int getSelectionState() {
+		return selectionState;
+	}
 
-    public void setSelectionState(int selectionState) {
-        this.selectionState = selectionState;
-    }
+	public void setSelectionState(int selectionState) {
+		this.selectionState = selectionState;
+	}
 
-    public SolutionCategory getCategory() {
-        return category;
-    }
+	public SolutionCategory getCategory() {
+		return category;
+	}
 }

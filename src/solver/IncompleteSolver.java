@@ -27,33 +27,35 @@ import sudoku.SolutionType;
  * @author hobiwan
  */
 public class IncompleteSolver extends AbstractSolver {
-    
-    /** Creates a new instance of IncompleteSolver
-     * @param finder 
-     */
-    public IncompleteSolver(SudokuStepFinder finder) {
-        super(finder);
-    }
 
-    @Override
-    protected SolutionStep getStep(SolutionType type) {
-        if (type == SolutionType.INCOMPLETE) {
-            return null;
-        }
-        return null;
-    }
+	/**
+	 * Creates a new instance of IncompleteSolver
+	 * 
+	 * @param finder
+	 */
+	public IncompleteSolver(SudokuStepFinder finder) {
+		super(finder);
+	}
 
-    @Override
-    protected boolean doStep(SolutionStep step) {
-        boolean handled = false;
-        switch (step.getType()) {
-            case INCOMPLETE:
-                handled = true;
-                break;
-            default:
-                handled = false;
-        }
-        return handled;
-    }
-    
+	@Override
+	protected SolutionStep getStep(SolutionType type) {
+		if (type == SolutionType.INCOMPLETE) {
+			return null;
+		}
+		return null;
+	}
+
+	@Override
+	protected boolean doStep(SolutionStep step) {
+		boolean handled = false;
+		switch (step.getType()) {
+		case INCOMPLETE:
+			handled = true;
+			break;
+		default:
+			handled = false;
+		}
+		return handled;
+	}
+
 }
