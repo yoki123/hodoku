@@ -2975,10 +2975,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			return;
 		}
 		
-		if (sudokuPanel.getSudoku().getStatus() == SudokuStatus.EMPTY
-				|| sudokuPanel.getSudoku().getStatus() == SudokuStatus.INVALID) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.invalid_puzzle"));
+		if (sudokuPanel.getSudoku().getStatus() == SudokuStatus.EMPTY || 
+			sudokuPanel.getSudoku().getStatus() == SudokuStatus.INVALID) {
+			
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.invalid_puzzle")
+			);
+			
 			return;
 		}
 		

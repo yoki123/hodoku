@@ -56,7 +56,8 @@ public class UIExportLine extends JFrame implements ActionListener {
 		super.setVisible(isVisible);
 
 		if (isVisible) {
-			String line = sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY);
+			//String line = sudokuPanel.getSudokuString(ClipboardMode.CLUES_ONLY);
+			String line = sudokuPanel.getSudokuString(ClipboardMode.VALUES_ONLY);
 			this.textField.setText(line);
 			this.textField.selectAll();
 		}
