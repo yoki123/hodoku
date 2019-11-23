@@ -7,6 +7,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,21 +28,23 @@ public class UIExportLine extends JFrame implements ActionListener {
 		super();
 
 		this.sudokuPanel = sudokuPanel;
+		
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/UIExportLine");
 
 		this.setVisible(false);
 		this.setLocation(200, 200);
 		this.setLayout(new FlowLayout());
-		this.setTitle("Export Line");
+		this.setTitle(bundle.getString("UIExportLine.title"));
 		this.setResizable(false);
-
-		label = new JLabel("Export Line: ");
+		
+		label = new JLabel(bundle.getString("UIExportLine.label.text"));
 		this.add(label, FlowLayout.LEFT);
 
 		textField = new JTextField();
 		textField.setPreferredSize(new Dimension(200, 32));
 		this.add(textField, FlowLayout.CENTER);
 
-		copyButton = new JButton("Copy");
+		copyButton = new JButton(bundle.getString("UIExportLine.copyButton.text"));
 		copyButton.addActionListener(this);
 		this.add(copyButton, FlowLayout.RIGHT);
 

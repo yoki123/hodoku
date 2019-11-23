@@ -3126,16 +3126,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					}
 
 					if (!alreadySolved) {
-						// Sudoku tmpSudoku = sudoku.clone();
-						// getSolver().setSudoku(tmpSudoku);
 						tmpSudoku.setStatus(SudokuStatus.VALID);
 						tmpSudoku.setStatusGivens(sudoku.getStatusGivens());
 						tmpSudoku.setSolution(sudoku.getSolution());
 						getSolver().solve(true);
 					}
 
-					// sudoku.setLevel(tmpSudoku.getLevel());
-					// sudoku.setScore(tmpSudoku.getScore());
 					sudoku.setLevel(getSolver().getSudoku().getLevel());
 					sudoku.setScore(getSolver().getSudoku().getScore());
 				}
@@ -3143,6 +3139,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		}
 
 		updateCellZoomPanel();
+		
 		if (mainFrame != null) {
 			mainFrame.setCurrentLevel(sudoku.getLevel());
 			mainFrame.setCurrentScore(sudoku.getScore());
@@ -3184,6 +3181,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					break;
 				}
 			}
+			
 			// still here? do the step
 			getSolver().doStep(sudoku, actStep);
 			changed = true;

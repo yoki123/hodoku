@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,16 +27,18 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 	public UIImportLine(MainFrame mainFrame) {
 
 		super();
+		
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/UIImportLine");
 
 		this.setVisible(false);
 		this.setLocation(200, 200);
 		this.setLayout(new FlowLayout());
-		this.setTitle("Import Line");
+		this.setTitle(bundle.getString("UIImportLine.title"));
 		this.setResizable(false);
 
 		this.mainFrame = mainFrame;
 
-		label = new JLabel("Import Line: ");
+		label = new JLabel(bundle.getString("UIImportLine.label.text"));
 		this.add(label, FlowLayout.LEFT);
 
 		textField = new JTextField();
@@ -43,7 +46,7 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 		textField.addKeyListener(this);
 		this.add(textField, FlowLayout.CENTER);
 
-		okButton = new JButton("OK");
+		okButton = new JButton(bundle.getString("UIImportLine.okButton.text"));
 		okButton.addActionListener(this);
 		this.add(okButton, FlowLayout.RIGHT);
 
@@ -59,7 +62,9 @@ public class UIImportLine extends JFrame implements ActionListener, WindowListen
 	}
 
 	private void importLine() {
+		
 		boolean wasImported = this.mainFrame.loadFromImportLine(this.textField.getText());
+		
 		if (wasImported) {
 			this.textField.setText("");
 			this.setVisible(false);

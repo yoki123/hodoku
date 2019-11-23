@@ -1266,7 +1266,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
 		importPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
-		importPuzzleMenuItem.setText("Import Line");
+		importPuzzleMenuItem.setText(bundle.getString("MainFrame.importPuzzleMenuItem.text"));
 		importPuzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				importPuzzleMenuItemActionPerformed(evt);
@@ -1278,7 +1278,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
 		exportPuzzleMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("MainFrame.saveAsMenuItemMnemonic").charAt(0));
-		exportPuzzleMenuItem.setText("Export Line");
+		exportPuzzleMenuItem.setText(bundle.getString("MainFrame.exportPuzzleMenuItem.text"));
 		exportPuzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				exportPuzzleMenuItemActionPerformed(evt);
@@ -1596,7 +1596,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		});
 		optionMenu.add(showCandidatesMenuItem);
 
-		showCandidateHighlightMenuItem.setText("Show Candidate Highlight");
+		showCandidateHighlightMenuItem.setText(bundle.getString("MainFrame.showCandidateHighlightMenuItem.text"));
 		showCandidateHighlightMenuItem.setSelected(Options.getInstance().isShowCandidateHighlight());
 		showCandidateHighlightMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2163,9 +2163,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				job.print();
 			}
 		} catch (PrinterException ex) {
-			JOptionPane.showMessageDialog(this, ex.toString(),
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(
+				this,
+				ex.toString(),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
 		}
 	}
 
@@ -2207,10 +2210,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private void copyPmGridWithStepMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		SolutionStep activeStep = sudokuPanel.getStep();
 		if (activeStep == null) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.no_step_selected"),
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.no_step_selected"),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
 			return;
 		}
 		copyToClipboard(ClipboardMode.PM_GRID_WITH_STEP, false);
@@ -2938,16 +2943,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param on
 	 */
 	private void prepareToggleButtonIcons(boolean on) {
+		
 		if (on) {
+			
 			for (int i = 0, lim = toggleButtons.length - 1; i < lim; i++) {
-				if (toggleButtonImagesColorKu[i] == null || !toggleButtonImagesColorKu[i].getColor()
-						.equals(Options.getInstance().getColorKuColor(i + 1))) {
-					// create a new image (we need the image to access the color without needing yet
-					// another class)
-					toggleButtonImagesColorKu[i] = new ColorKuImage(TOGGLE_BUTTON_ICON_SIZE,
-							Options.getInstance().getColorKuColor(i + 1));
+				
+				if (toggleButtonImagesColorKu[i] == null || 
+					!toggleButtonImagesColorKu[i].getColor().
+					equals(Options.getInstance().getColorKuColor(i + 1))) {
+
+					toggleButtonImagesColorKu[i] = new ColorKuImage(
+						TOGGLE_BUTTON_ICON_SIZE, 
+						Options.getInstance().getColorKuColor(i + 1)
+					);
+					
 					toggleButtonIconsColorKu[i] = new ImageIcon(toggleButtonImagesColorKu[i]);
 				}
+				
 				toggleButtonIcons[i] = toggleButtonIconsColorKu[i];
 				emptyToggleButtonIcons[i] = emptyToggleButtonIconOrgColorKu;
 			}
@@ -2970,8 +2982,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private void getHint(int mode) {
 		
 		if (sudokuPanel.getSudoku().isSolved()) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.already_solved"));
+			
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.already_solved")
+			);
+			
 			return;
 		}
 		
@@ -3726,8 +3742,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 */
 	public boolean ValidateImportLine(String line) {
 
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/MainFrame");
+		String title = bundle.getString("MainFrame.ValidateImportLine.title");
+		String error1 = bundle.getString("MainFrame.ValidateImportLine.error1");
+		String error2a = bundle.getString("MainFrame.ValidateImportLine.error2a");
+		String error2b = bundle.getString("MainFrame.ValidateImportLine.error2b");
+		
 		if (line.length() != Sudoku2.LENGTH) {
-			ShowWarningMSG("Warning", "Import string must be 81 characters long.");
+			ShowWarningMSG(title, error1);
 			return false;
 		}
 
@@ -3738,7 +3760,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			boolean isEmpty = c == '.';
 			
 			if (!isDigit && !isEmpty) {
-				ShowWarningMSG("Warning", "Unexpected character '" + c + "' found in import string.");
+				ShowWarningMSG(title, error2a + c + error2b);
 				return false;
 			}
 		}
@@ -3761,7 +3783,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private void showPuzzleSolution() {
 
 		boolean isStatusValid = sudokuPanel.getSudoku().getStatus() == SudokuStatus.VALID;
-
+		boolean hasMultipleSolutions = sudokuPanel.getSudoku().getStatus() == SudokuStatus.MULTIPLE_SOLUTIONS;
+		
+		if (hasMultipleSolutions) {			
+			String msg = java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.solve_error");
+			JOptionPane.showMessageDialog(this, msg);			
+			return;
+		}
+		
 		if (!isStatusValid || sudokuPanel.getSudoku().isSolved()) {
 			return;
 		}
