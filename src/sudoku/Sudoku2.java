@@ -1571,6 +1571,14 @@ public class Sudoku2 implements Cloneable {
 		}
 		return false;
 	}
+	
+	public static boolean isValidIndex(int row, int col) {
+		return 
+			row >= 0 && 
+			row < Sudoku2.UNITS && 
+			col >= 0 && 
+			col < Sudoku2.UNITS;
+	}
 
 	/**
 	 * Checks, if a given set of candidates is present in the cell

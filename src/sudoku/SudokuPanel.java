@@ -53,12 +53,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.IIOImage;
@@ -70,8 +67,6 @@ import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
-import javax.swing.ImageIcon;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.w3c.dom.Node;
@@ -173,14 +168,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private Cursor colorCursor = null;
 	private Cursor colorCursorShift = null;
 	private Cursor oldCursor = null;
-	private SortedSet<Integer> selectedCells = new TreeSet<Integer>();
+	private ArrayList<Integer> cellSelection = new ArrayList<Integer>();
 	private boolean[] dragCellSelection = new boolean[82];
-	private JMenuItem[] makeItems = null;
-	private JMenuItem[] excludeItems = null;
-	private JMenuItem[] toggleColorItems = null;
 	private ProgressChecker progressChecker = null;
 	private Timer deleteCursorTimer = new Timer(Options.getInstance().getDeleteCursorDisplayLength(), null);
 	private long lastCursorChanged = -1;
+	private RightClickMenu rightClickMenu;
 	
 	// mouse handling
 	private int lastPressedLine = -1;
@@ -196,42 +189,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private Candidate lastCandidateMouseOn = new Candidate();
 	private boolean isCtrlDown;
 	private Point lastMousePosition = new Point();
-	
-	// ui
-	private javax.swing.JPopupMenu cellPopupMenu;
-	private javax.swing.JMenuItem color1aMenuItem;
-	private javax.swing.JMenuItem color1bMenuItem;
-	private javax.swing.JMenuItem color2aMenuItem;
-	private javax.swing.JMenuItem color2bMenuItem;
-	private javax.swing.JMenuItem color3aMenuItem;
-	private javax.swing.JMenuItem color3bMenuItem;
-	private javax.swing.JMenuItem color4aMenuItem;
-	private javax.swing.JMenuItem color4bMenuItem;
-	private javax.swing.JMenuItem color5aMenuItem;
-	private javax.swing.JMenuItem color5bMenuItem;
-	private javax.swing.JMenuItem deleteValueMenuItem;
-	private javax.swing.JPopupMenu deleteValuePopupMenu;
-	private javax.swing.JMenuItem exclude1MenuItem;
-	private javax.swing.JMenuItem exclude2MenuItem;
-	private javax.swing.JMenuItem exclude3MenuItem;
-	private javax.swing.JMenuItem exclude4MenuItem;
-	private javax.swing.JMenuItem exclude5MenuItem;
-	private javax.swing.JMenuItem exclude6MenuItem;
-	private javax.swing.JMenuItem exclude7MenuItem;
-	private javax.swing.JMenuItem exclude8MenuItem;
-	private javax.swing.JMenuItem exclude9MenuItem;
-	private javax.swing.JMenuItem excludeSeveralMenuItem;
-	private javax.swing.JSeparator jSeparator1;
-	private javax.swing.JSeparator jSeparator2;
-	private javax.swing.JMenuItem make1MenuItem;
-	private javax.swing.JMenuItem make2MenuItem;
-	private javax.swing.JMenuItem make3MenuItem;
-	private javax.swing.JMenuItem make4MenuItem;
-	private javax.swing.JMenuItem make5MenuItem;
-	private javax.swing.JMenuItem make6MenuItem;
-	private javax.swing.JMenuItem make7MenuItem;
-	private javax.swing.JMenuItem make8MenuItem;
-	private javax.swing.JMenuItem make9MenuItem;
 
 	/**
 	 * Creates new form SudokuPanel
@@ -252,25 +209,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		
 		clearDragSelection();
 		initComponents();
-
-		makeItems = new JMenuItem[] {
-			make1MenuItem, make2MenuItem, make3MenuItem,
-			make4MenuItem, make5MenuItem, make6MenuItem,
-			make7MenuItem, make8MenuItem, make9MenuItem
-		};
-		excludeItems = new JMenuItem[] {
-			exclude1MenuItem, exclude2MenuItem, exclude3MenuItem,
-			exclude4MenuItem, exclude5MenuItem, exclude6MenuItem,
-			exclude7MenuItem, exclude8MenuItem, exclude9MenuItem
-		};
-		toggleColorItems = new JMenuItem[] {
-			color1aMenuItem, color1bMenuItem, color2aMenuItem,
-			color2bMenuItem, color3aMenuItem, color3bMenuItem,
-			color4aMenuItem, color4bMenuItem, color5aMenuItem,
-			color5bMenuItem
-		};
 		
-		setColorIconsInPopupMenu();
+		rightClickMenu.setColorIconsInPopupMenu();
 		updateCellZoomPanel();
 
 		deleteCursorTimer.addActionListener(new ActionListener() {
@@ -298,283 +238,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 	private void initComponents() {
 
-		cellPopupMenu = new javax.swing.JPopupMenu();
-		make1MenuItem = new javax.swing.JMenuItem();
-		make2MenuItem = new javax.swing.JMenuItem();
-		make3MenuItem = new javax.swing.JMenuItem();
-		make4MenuItem = new javax.swing.JMenuItem();
-		make5MenuItem = new javax.swing.JMenuItem();
-		make6MenuItem = new javax.swing.JMenuItem();
-		make7MenuItem = new javax.swing.JMenuItem();
-		make8MenuItem = new javax.swing.JMenuItem();
-		make9MenuItem = new javax.swing.JMenuItem();
-		jSeparator1 = new javax.swing.JSeparator();
-		exclude1MenuItem = new javax.swing.JMenuItem();
-		exclude2MenuItem = new javax.swing.JMenuItem();
-		exclude3MenuItem = new javax.swing.JMenuItem();
-		exclude4MenuItem = new javax.swing.JMenuItem();
-		exclude5MenuItem = new javax.swing.JMenuItem();
-		exclude6MenuItem = new javax.swing.JMenuItem();
-		exclude7MenuItem = new javax.swing.JMenuItem();
-		exclude8MenuItem = new javax.swing.JMenuItem();
-		exclude9MenuItem = new javax.swing.JMenuItem();
-		excludeSeveralMenuItem = new javax.swing.JMenuItem();
-		jSeparator2 = new javax.swing.JSeparator();
-		color1aMenuItem = new javax.swing.JMenuItem();
-		color1bMenuItem = new javax.swing.JMenuItem();
-		color2aMenuItem = new javax.swing.JMenuItem();
-		color2bMenuItem = new javax.swing.JMenuItem();
-		color3aMenuItem = new javax.swing.JMenuItem();
-		color3bMenuItem = new javax.swing.JMenuItem();
-		color4aMenuItem = new javax.swing.JMenuItem();
-		color4bMenuItem = new javax.swing.JMenuItem();
-		color5aMenuItem = new javax.swing.JMenuItem();
-		color5bMenuItem = new javax.swing.JMenuItem();
-		deleteValuePopupMenu = new javax.swing.JPopupMenu();
-		deleteValueMenuItem = new javax.swing.JMenuItem();
-
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SudokuPanel");
-		make1MenuItem.setText(bundle.getString("SudokuPanel.popup.make1"));
-		make1MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make1MenuItem);
-
-		make2MenuItem.setText(bundle.getString("SudokuPanel.popup.make2"));
-		make2MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make2MenuItem);
-
-		make3MenuItem.setText(bundle.getString("SudokuPanel.popup.make3"));
-		make3MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make3MenuItem);
-
-		make4MenuItem.setText(bundle.getString("SudokuPanel.popup.make4"));
-		make4MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make4MenuItem);
-
-		make5MenuItem.setText(bundle.getString("SudokuPanel.popup.make5"));
-		make5MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make5MenuItem);
-
-		make6MenuItem.setText(bundle.getString("SudokuPanel.popup.make6"));
-		make6MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make6MenuItem);
-
-		make7MenuItem.setText(bundle.getString("SudokuPanel.popup.make7"));
-		make7MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make7MenuItem);
-
-		make8MenuItem.setText(bundle.getString("SudokuPanel.popup.make8"));
-		make8MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make8MenuItem);
-
-		make9MenuItem.setText(bundle.getString("SudokuPanel.popup.make9"));
-		make9MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				make1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(make9MenuItem);
-		cellPopupMenu.add(jSeparator1);
-
-		exclude1MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude1"));
-		exclude1MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude1MenuItem);
-
-		exclude2MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude2"));
-		exclude2MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude2MenuItem);
-
-		exclude3MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude3"));
-		exclude3MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude3MenuItem);
-
-		exclude4MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude4"));
-		exclude4MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude4MenuItem);
-
-		exclude5MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude5"));
-		exclude5MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude5MenuItem);
-
-		exclude6MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude6"));
-		exclude6MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude6MenuItem);
-
-		exclude7MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude7"));
-		exclude7MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude7MenuItem);
-
-		exclude8MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude8"));
-		exclude8MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude8MenuItem);
-
-		exclude9MenuItem.setText(bundle.getString("SudokuPanel.popup.exclude9"));
-		exclude9MenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exclude1MenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(exclude9MenuItem);
-
-		excludeSeveralMenuItem.setText(bundle.getString("SudokuPanel.popup.several"));
-		excludeSeveralMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				excludeSeveralMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(excludeSeveralMenuItem);
-		cellPopupMenu.add(jSeparator2);
-
-		color1aMenuItem.setText(bundle.getString("SudokuPanel.popup.color1a"));
-		color1aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color1aMenuItem);
-
-		color1bMenuItem.setText(bundle.getString("SudokuPanel.popup.color1b"));
-		color1bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color1bMenuItem);
-
-		color2aMenuItem.setText(bundle.getString("SudokuPanel.popup.color2a"));
-		color2aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color2aMenuItem);
-
-		color2bMenuItem.setText(bundle.getString("SudokuPanel.popup.color2b"));
-		color2bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color2bMenuItem);
-
-		color3aMenuItem.setText(bundle.getString("SudokuPanel.popup.color3a"));
-		color3aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color3aMenuItem);
-
-		color3bMenuItem.setText(bundle.getString("SudokuPanel.popup.color3b"));
-		color3bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color3bMenuItem);
-
-		color4aMenuItem.setText(bundle.getString("SudokuPanel.popup.color4a"));
-		color4aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color4aMenuItem);
-
-		color4bMenuItem.setText(bundle.getString("SudokuPanel.popup.color4b"));
-		color4bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color4bMenuItem);
-
-		color5aMenuItem.setText(bundle.getString("SudokuPanel.popup.color5a"));
-		color5aMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color5aMenuItem);
-
-		color5bMenuItem.setText(bundle.getString("SudokuPanel.popup.color5b"));
-		color5bMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				color1aMenuItemActionPerformed(evt);
-			}
-		});
-		cellPopupMenu.add(color5bMenuItem);
-
-		deleteValueMenuItem.setText(bundle.getString("SudokuPanel.deleteValueItem.text"));
-		deleteValueMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				deleteValueMenuItemActionPerformed(evt);
-			}
-		});
-		deleteValuePopupMenu.add(deleteValueMenuItem);
+		rightClickMenu = new RightClickMenu(this.mainFrame, this);
 
 		setBackground(new java.awt.Color(255, 255, 255));
 		setMinimumSize(new java.awt.Dimension(300, 300));
@@ -623,8 +287,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 				if (isCtrlDown) {
 
-					if (selectedCells.isEmpty()) {
-						selectedCells.add(Sudoku2.getIndex(aktLine, aktCol));
+					if (cellSelection.isEmpty()) {
+						cellSelection.add(Sudoku2.getIndex(aktLine, aktCol));
 					}
 				}
 
@@ -632,14 +296,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 					dragCellSelection[index] = true;
 
-					if (selectedCells.contains(index)) {
-						selectedCells.remove(index);
-						if (selectedCells.isEmpty()) {
+					if (cellSelection.contains(index)) {
+						cellSelection.remove(index);
+						if (cellSelection.isEmpty()) {
 							aktLine = Sudoku2.getLine(index);
 							aktCol = Sudoku2.getCol(index);
 						}
 					} else {
-						selectedCells.add(index);
+						cellSelection.add(index);
 					}
 
 					repaint();
@@ -727,46 +391,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		mainFrame.fixFocus();
 	}
 
-	private void make1MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		popupSetCell((JMenuItem) evt.getSource());
-	}
-
-	private void exclude1MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		popupExcludeCandidate((JMenuItem) evt.getSource());
-	}
-
-	private void excludeSeveralMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		String input = JOptionPane.showInputDialog(this,
-				ResourceBundle.getBundle("intl/SudokuPanel").getString("SudokuPanel.cmessage"),
-				ResourceBundle.getBundle("intl/SudokuPanel").getString("SudokuPanel.ctitle"),
-				JOptionPane.QUESTION_MESSAGE);
-		if (input != null) {
-			undoStack.push(sudoku.clone());
-			boolean changed = false;
-			for (int i = 0; i < input.length(); i++) {
-				char digit = input.charAt(i);
-				if (Character.isDigit(digit)) {
-					if (removeCandidateFromActiveCells(Character.getNumericValue(digit))) {
-						changed = true;
-					}
-				}
-			}
-			if (changed) {
-				redoStack.clear();
-				checkProgress();
-			} else {
-				undoStack.pop();
-			}
-			updateCellZoomPanel();
-			mainFrame.check();
-			repaint();
-		}
-	}
-
-	private void color1aMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		popupToggleColor((JMenuItem) evt.getSource());
-	}
-
 	private void handleMousePressed(java.awt.event.MouseEvent evt) {
 
 		lastMousePosition = evt.getPoint();
@@ -778,9 +402,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 		Integer index = Sudoku2.getIndex(lastPressedLine, lastPressedCol);
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
-		if (!selectedCells.contains(index) && isRightClick) {
+		if (!cellSelection.contains(index) && isRightClick) {
 			clearDragSelection();
-			selectedCells.clear();
+			cellSelection.clear();
 		}
 	}
 
@@ -820,10 +444,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		lastPressedLine = -1;
 		lastPressedCol = -1;
 		lastPressedCand = -1;
-	}
-
-	private void deleteValueMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		popupDeleteValueFromCell();
 	}
 
 	/**
@@ -878,7 +498,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if (isRightClick) {
 				if (Options.getInstance().isSingleClickMode()) {
 					// toggle candidate in cell(s) (three state mode)
-					if (selectedCells.contains(Sudoku2.getIndex(line, col))) {
+					if (cellSelection.contains(Sudoku2.getIndex(line, col))) {
 						// a region select exists and the cells lies within: toggle candidate
 						if (cand != -1) {
 							changed = toggleCandidateInAktCells(cand);
@@ -888,7 +508,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						setAktRowCol(line, col);
 						clearRegion();
 						if (sudoku.getValue(line, col) != 0 && !sudoku.isFixed(line, col)) {
-							deleteValuePopupMenu.show(this, getX(line, col) + cellSize, getY(line, col));
+							
+							rightClickMenu.deleteValuePopup(line, col, cellSize);
+							//deleteValuePopupMenu.show(this, getX(line, col) + cellSize, getY(line, col));
 						} else {
 							int showHintCellValue = getShowHintCellValue();
 							if ((cand == -1 || !sudoku.isCandidate(line, col, cand, !showCandidates)) && showHintCellValue != 0) {
@@ -910,7 +532,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					}
 				} else {
 					// bring up popup menu
-					showPopupMenu(line, col);
+					rightClickMenu.showPopupMenu(line, col, cellSize);
 				}
 			} else {
 				if (aktColorIndex != -1) {
@@ -979,17 +601,17 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					} else if (!doubleClick) {
 						if (ctrlPressed) {
 							// select additional cell
-							if (selectedCells.size() == 0) {
+							if (cellSelection.size() == 0) {
 								// the last selected cell is not yet in the set
-								selectedCells.add(Sudoku2.getIndex(aktLine, aktCol));
-								selectedCells.add(Sudoku2.getIndex(line, col));
+								cellSelection.add(Sudoku2.getIndex(aktLine, aktCol));
+								cellSelection.add(Sudoku2.getIndex(line, col));
 								setAktRowCol(line, col);
 							} else {
 								int index2 = Sudoku2.getIndex(line, col);
-								if (selectedCells.contains(index2)) {
-									selectedCells.remove(index2);
+								if (cellSelection.contains(index2)) {
+									cellSelection.remove(index2);
 								} else {
-									selectedCells.add(Sudoku2.getIndex(line, col));
+									cellSelection.add(Sudoku2.getIndex(line, col));
 								}
 								setAktRowCol(line, col);
 							}
@@ -1015,14 +637,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							// selected, if the cell is outside a selected region
 							if (Options.getInstance().isSingleClickMode() == false
 								|| (Options.getInstance().isSingleClickMode() == true
-								&& selectedCells.contains(Sudoku2.getIndex(line, col)) == false)) {
+								&& cellSelection.contains(Sudoku2.getIndex(line, col)) == false)) {
 								setAktRowCol(line, col);
 								clearRegion();
 							}
 							if (Options.getInstance().isSingleClickMode()) {
 								// the selected cell(s) must be set to cand
 								if (sudoku.getValue(index) == 0) {
-									if (selectedCells.isEmpty()) {
+									if (cellSelection.isEmpty()) {
 										int showHintCellValue = getShowHintCellValue();
 										if (sudoku.getAnzCandidates(index, !showCandidates) == 1) {
 											// Naked single -> set it!
@@ -1051,7 +673,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 											// an actual candiate was clicked -> set value in all cells where it is
 											// still possible (collect cells first to avoid side effects!)
 											List<Integer> cells = new ArrayList<Integer>();
-											for (int selIndex : selectedCells) {
+											for (int selIndex : cellSelection) {
 												if (sudoku.getValue(selIndex) == 0
 														&& sudoku.isCandidate(selIndex, cand, !showCandidates)) {
 													cells.add(selIndex);
@@ -1094,6 +716,23 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		repaint();
 	}
 
+	public int getActiveRow() {
+		return aktLine;
+	}
+	
+	public int getActiveCol() {
+		return aktCol;
+	}
+	
+	public Point getActiveCell() {
+
+		if (aktLine == -1 || aktCol == -1) {
+			return null;	
+		}
+
+		return new Point(aktLine, aktCol);
+	}
+	
 	/**
 	 * Moves the cursor. If the cell actually changed, a timer is started, that
 	 * triggers a repaint after {@link Options#getDeleteCursorDisplayLength() } ms.
@@ -1118,6 +757,22 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			deleteCursorTimer.setInitialDelay(Options.getInstance().getDeleteCursorDisplayLength());
 			deleteCursorTimer.start();
 		}
+	}
+	
+	public void pushUndo() {
+		this.undoStack.push(this.sudoku.clone());
+	}
+	
+	public void popUndo() {
+		this.undoStack.pop();
+	}
+	
+	public void clearRedoStack() {
+		this.redoStack.clear();
+	}
+	
+	public ArrayList<Integer> getSelectedCells() {
+		return this.cellSelection;
 	}
 
 	/**
@@ -1523,7 +1178,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		case KeyEvent.VK_NUMPAD1:
 			number++;
 			if ((modifiers & KeyEvent.CTRL_DOWN_MASK) == 0) {
-				if (selectedCells.isEmpty()) {
+				if (cellSelection.isEmpty()) {
 					setCell(aktLine, aktCol, number);
 					if (mainFrame.isEingabeModus() && Options.getInstance().isEditModeAutoAdvance()) {
 						// automatically advance to the next cell
@@ -1538,7 +1193,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					// problem: setting the first removes all other candidates in the
 					// corresponding blocks so we have to collect the applicable cells first
 					List<Integer> cells = new ArrayList<Integer>();
-					for (int index : selectedCells) {
+					for (int index : cellSelection) {
 						if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, number, !showCandidates)) {
 							cells.add(index);
 						}
@@ -1554,7 +1209,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			} else {
 				// only when shift is NOT pressed (if pressed its a menu accelerator)
 				// 20120115: the accelerators have been removed!
-				if (selectedCells.isEmpty()) {
+				if (cellSelection.isEmpty()) {
 					toggleCandidateInCell(aktLine, aktCol, number);
 					changed = true;
 				} else {
@@ -1724,7 +1379,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * Clears a selected region of cells
 	 */
 	private void clearRegion() {
-		selectedCells.clear();
+		cellSelection.clear();
 		shiftLine = -1;
 		shiftCol = -1;
 	}
@@ -1738,7 +1393,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 */
 	private void selectRegion(int line, int col) {
 
-		selectedCells.clear();
+		cellSelection.clear();
 		if (line == aktLine && col == aktCol) {
 			// same cell clicked twice -> no region selected -> do nothing
 		} else {
@@ -1747,7 +1402,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			int lStart = line < aktLine ? line : aktLine;
 			for (int i = cStart; i <= cStart + Math.abs(col - aktCol); i++) {
 				for (int j = lStart; j <= lStart + Math.abs(line - aktLine); j++) {
-					selectedCells.add(Sudoku2.getIndex(j, i));
+					cellSelection.add(Sudoku2.getIndex(j, i));
 				}
 			}
 		}
@@ -1884,11 +1539,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 * @param colorNumber
 	 */
-	private void handleColoring(int candidate, int colorNumber) {
-		if (selectedCells.isEmpty()) {
+	public void handleColoring(int candidate, int colorNumber) {
+		if (cellSelection.isEmpty()) {
 			handleColoring(aktLine, aktCol, candidate, colorNumber);
 		} else {
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				handleColoring(Sudoku2.getLine(index), Sudoku2.getCol(index), candidate, colorNumber);
 			}
 		}
@@ -1920,7 +1575,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 * @param colorNumber
 	 */
-	private void handleColoring(int line, int col, int candidate, int colorNumber) {
+	public void handleColoring(int line, int col, int candidate, int colorNumber) {
 		if (!Options.getInstance().isColorValues() && sudoku.getValue(line, col) != 0) {
 			// do nothing
 			return;
@@ -1951,10 +1606,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	public void setCellFromCellZoomPanel(int number) {
 		
 		undoStack.push(sudoku.clone());
-		if (selectedCells.isEmpty()) {
+		if (cellSelection.isEmpty()) {
 			setCell(aktLine, aktCol, number);
 		} else {
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				setCell(Sudoku2.getLine(index), Sudoku2.getCol(index), number);
 			}
 		}
@@ -1964,7 +1619,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		repaint();
 	}
 
-	private void setCell(int line, int col, int number) {
+	public void setCell(int line, int col, int number) {
 
 		int index = Sudoku2.getIndex(line, col);
 		if (!sudoku.isFixed(index) && sudoku.getValue(index) != number) {
@@ -1988,8 +1643,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	}
 
 	/**
-	 * Toggles candidate in all active cells (all cells in {@link #selectedCells} or
-	 * cell denoted by {@link #aktLine}/{@link #aktCol} if {@link #selectedCells} is
+	 * Toggles candidate in all active cells (all cells in {@link #cellSelection} or
+	 * cell denoted by {@link #aktLine}/{@link #aktCol} if {@link #cellSelection} is
 	 * empty).<br>
 	 *
 	 * @param candidate
@@ -1998,20 +1653,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private boolean toggleCandidateInAktCells(int candidate) {
 		
 		boolean changed = false;
-		if (selectedCells.isEmpty()) {
+		if (cellSelection.isEmpty()) {
 			toggleCandidateInCell(aktLine, aktCol, candidate);
 			return true;
 		} else {
 			
 			boolean candPresent = false;
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
 					candPresent = true;
 					break;
 				}
 			}
 			
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				if (candPresent) {
 					if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
 						sudoku.setCandidate(index, candidate, false, !showCandidates);
@@ -2327,11 +1982,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				}
 
 				int cellIndex = Sudoku2.getIndex(line, col);
-				boolean isSelected = (selectedCells.isEmpty() && line == aktLine && col == aktCol)
-						|| selectedCells.contains(cellIndex);
+				boolean isSelected = (cellSelection.isEmpty() && line == aktLine && col == aktCol)
+						|| cellSelection.contains(cellIndex);
 				// the cell doesn't count as selected, if the last change of the cursor has been
 				// a while
-				if (isSelected && selectedCells.isEmpty() && Options.getInstance().isDeleteCursorDisplay()) {
+				if (isSelected && cellSelection.isEmpty() && Options.getInstance().isDeleteCursorDisplay()) {
 					if ((System.currentTimeMillis() - lastCursorChanged) > Options.getInstance()
 							.getDeleteCursorDisplayLength()) {
 						isSelected = false;
@@ -3106,7 +2761,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		return new Point2D.Double(x, y);
 	}
 
-	private int getX(int line, int col) {
+	public int getX(int line, int col) {
 		
 		int x = col * cellSize + delta + startSX;
 		if (col > 2) {
@@ -3120,7 +2775,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		return x;
 	}
 
-	private int getY(int line, int col) {
+	public int getY(int line, int col) {
 		
 		int y = line * cellSize + delta + startSY;
 		if (line > 2) {
@@ -3817,110 +3472,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	}
 
 	/**
-	 * Sets all the color icons in the popup menu.
-	 */
-	public final void setColorIconsInPopupMenu() {
-		setColorIconInPopupMenu(color1aMenuItem, Options.getInstance().getColoringColors()[0], false);
-		setColorIconInPopupMenu(color1bMenuItem, Options.getInstance().getColoringColors()[1], false);
-		setColorIconInPopupMenu(color2aMenuItem, Options.getInstance().getColoringColors()[2], false);
-		setColorIconInPopupMenu(color2bMenuItem, Options.getInstance().getColoringColors()[3], false);
-		setColorIconInPopupMenu(color3aMenuItem, Options.getInstance().getColoringColors()[4], false);
-		setColorIconInPopupMenu(color3bMenuItem, Options.getInstance().getColoringColors()[5], false);
-		setColorIconInPopupMenu(color4aMenuItem, Options.getInstance().getColoringColors()[6], false);
-		setColorIconInPopupMenu(color4bMenuItem, Options.getInstance().getColoringColors()[7], false);
-		setColorIconInPopupMenu(color5aMenuItem, Options.getInstance().getColoringColors()[8], false);
-		setColorIconInPopupMenu(color5bMenuItem, Options.getInstance().getColoringColors()[9], false);
-	}
-
-	public void setColorkuInPopupMenu(boolean on) {
-		
-		if (on) {
-			setColorIconInPopupMenu(make1MenuItem, Options.getInstance().getColorKuColor(1), true);
-			setColorIconInPopupMenu(make2MenuItem, Options.getInstance().getColorKuColor(2), true);
-			setColorIconInPopupMenu(make3MenuItem, Options.getInstance().getColorKuColor(3), true);
-			setColorIconInPopupMenu(make4MenuItem, Options.getInstance().getColorKuColor(4), true);
-			setColorIconInPopupMenu(make5MenuItem, Options.getInstance().getColorKuColor(5), true);
-			setColorIconInPopupMenu(make6MenuItem, Options.getInstance().getColorKuColor(6), true);
-			setColorIconInPopupMenu(make7MenuItem, Options.getInstance().getColorKuColor(7), true);
-			setColorIconInPopupMenu(make8MenuItem, Options.getInstance().getColorKuColor(8), true);
-			setColorIconInPopupMenu(make9MenuItem, Options.getInstance().getColorKuColor(9), true);
-
-			setColorIconInPopupMenu(exclude1MenuItem, Options.getInstance().getColorKuColor(1), true);
-			setColorIconInPopupMenu(exclude2MenuItem, Options.getInstance().getColorKuColor(2), true);
-			setColorIconInPopupMenu(exclude3MenuItem, Options.getInstance().getColorKuColor(3), true);
-			setColorIconInPopupMenu(exclude4MenuItem, Options.getInstance().getColorKuColor(4), true);
-			setColorIconInPopupMenu(exclude5MenuItem, Options.getInstance().getColorKuColor(5), true);
-			setColorIconInPopupMenu(exclude6MenuItem, Options.getInstance().getColorKuColor(6), true);
-			setColorIconInPopupMenu(exclude7MenuItem, Options.getInstance().getColorKuColor(7), true);
-			setColorIconInPopupMenu(exclude8MenuItem, Options.getInstance().getColorKuColor(8), true);
-			setColorIconInPopupMenu(exclude9MenuItem, Options.getInstance().getColorKuColor(9), true);
-
-			excludeSeveralMenuItem.setEnabled(false);
-			
-		} else {
-			
-			setColorIconInPopupMenu(make1MenuItem, null, false);
-			setColorIconInPopupMenu(make2MenuItem, null, false);
-			setColorIconInPopupMenu(make3MenuItem, null, false);
-			setColorIconInPopupMenu(make4MenuItem, null, false);
-			setColorIconInPopupMenu(make5MenuItem, null, false);
-			setColorIconInPopupMenu(make6MenuItem, null, false);
-			setColorIconInPopupMenu(make7MenuItem, null, false);
-			setColorIconInPopupMenu(make8MenuItem, null, false);
-			setColorIconInPopupMenu(make9MenuItem, null, false);
-
-			setColorIconInPopupMenu(exclude1MenuItem, null, false);
-			setColorIconInPopupMenu(exclude2MenuItem, null, false);
-			setColorIconInPopupMenu(exclude3MenuItem, null, false);
-			setColorIconInPopupMenu(exclude4MenuItem, null, false);
-			setColorIconInPopupMenu(exclude5MenuItem, null, false);
-			setColorIconInPopupMenu(exclude6MenuItem, null, false);
-			setColorIconInPopupMenu(exclude7MenuItem, null, false);
-			setColorIconInPopupMenu(exclude8MenuItem, null, false);
-			setColorIconInPopupMenu(exclude9MenuItem, null, false);
-
-			excludeSeveralMenuItem.setEnabled(true);
-		}
-	}
-
-	/**
-	 * Creates an icon (rectangle showing color) and sets it on the MenuItem.
-	 *
-	 * @param item
-	 * @param color
-	 */
-	private void setColorIconInPopupMenu(JMenuItem item, Color color, boolean colorKu) {
-		
-		if (color == null) {
-			// delete the icon
-			item.setIcon(null);
-			return;
-		}
-		
-		try {
-			BufferedImage img = null;
-			if (colorKu) {
-				img = new ColorKuImage(12, color);
-			} else {
-				img = ImageIO.read(getClass().getResource("/img/c_icon.png"));
-				Graphics2D gImg = (Graphics2D) img.getGraphics();
-				gImg.setColor(color);
-				gImg.fillRect(1, 1, 12, 12);
-			}
-			item.setIcon(new ImageIcon(img));
-		} catch (Exception ex) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error setting color icons in popup menu", ex);
-		}
-	}
-
-	/**
 	 * Collects the intersection or union of all valid candidates in all selected
 	 * cells. Used to adjust the popup menu.
 	 *
 	 * @param intersection
 	 * @return
 	 */
-	private SudokuSet collectCandidates(boolean intersection) {
+	public SudokuSet collectCandidates(boolean intersection) {
 		
 		SudokuSet resultSet = new SudokuSet();
 		SudokuSet tmpSet = new SudokuSet();
@@ -3929,7 +3487,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			resultSet.setAll();
 		}
 		
-		if (selectedCells.isEmpty()) {
+		if (cellSelection.isEmpty()) {
 			if (sudoku.getValue(aktLine, aktCol) == 0) {
 				// get candidates only when cell is not set!
 				sudoku.getCandidateSet(aktLine, aktCol, tmpSet);
@@ -3943,7 +3501,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			// BUG: if all cells in the selection are set,
 			// all candidates become valid for intersection == true
 			boolean emptyCellsOnly = true;
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				if (sudoku.getValue(index) == 0) {
 					emptyCellsOnly = false;
 					// get candidates only when cell is not set!
@@ -3965,148 +3523,22 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	}
 
 	/**
-	 * Brings up the popup menu for the cell at line/col. If the cell is already
-	 * set, a different menu is displayed, that allowsto delete the value from the
-	 * cell. For every other cell the contents of the menu is restricted to sensible
-	 * actions.<br>
-	 * If a region of cells is selected, "Make x" is restricted to candidates, that
-	 * appear in all cells, "Exclude x" is restricted to the combined set of
-	 * candidates in all cells.
-	 *
-	 * @param line
-	 * @param col
-	 */
-	private void showPopupMenu(int line, int col) {
-		
-		jSeparator2.setVisible(true);
-		if (sudoku.getValue(line, col) != 0 && selectedCells.isEmpty()) {
-			// cell is already set -> delete value popup (not for givens!)
-			if (!sudoku.isFixed(aktLine, aktCol)) {
-				setAktRowCol(line, col);
-				deleteValuePopupMenu.show(this, getX(line, col) + cellSize, getY(line, col));
-			}
-			return;
-		}
-		
-		if (selectedCells.isEmpty()) {
-			setAktRowCol(line, col);
-		}
-		
-		excludeSeveralMenuItem.setVisible(false);
-		for (int i = 1; i <= 9; i++) {
-			makeItems[i - 1].setVisible(false);
-			excludeItems[i - 1].setVisible(false);
-		}
-		
-		SudokuSet candSet = collectCandidates(true);
-		for (int i = 0; i < candSet.size(); i++) {
-			makeItems[candSet.get(i) - 1].setVisible(true);
-		}
-		
-		candSet = collectCandidates(false);
-		if (candSet.size() > 1) {
-			if (candSet.size() > 2) {
-				excludeSeveralMenuItem.setVisible(true);
-			}
-			for (int i = 0; i < candSet.size(); i++) {
-				excludeItems[candSet.get(i) - 1].setVisible(true);
-			}
-		} else {
-			jSeparator2.setVisible(false);
-		}
-		
-		cellPopupMenu.show(this, getX(line, col) + cellSize, getY(line, col));
-	}
-
-	/**
-	 * Handles activation of a "Make x" menu item. The selected number is set in all
-	 * selected cells (if they are not already set).
-	 *
-	 * @param menuItem
-	 */
-	private void popupSetCell(JMenuItem menuItem) {
-		
-		int candidate = -1;
-		for (int i = 0; i < makeItems.length; i++) {
-			if (makeItems[i] == menuItem) {
-				candidate = i + 1;
-				break;
-			}
-		}
-		
-		if (candidate != -1) {
-			undoStack.push(sudoku.clone());
-			boolean changed = false;
-			if (selectedCells.isEmpty()) {
-				if (sudoku.getValue(aktLine, aktCol) == 0) {
-					setCell(aktLine, aktCol, candidate);
-					changed = true;
-				}
-			} else {
-				for (int index : selectedCells) {
-					if (sudoku.getValue(index) == 0) {
-						sudoku.setCell(index, candidate);
-						changed = true;
-					}
-				}
-			}
-			
-			if (changed) {
-				redoStack.clear();
-				checkProgress();
-			} else {
-				undoStack.pop();
-			}
-			
-			updateCellZoomPanel();
-			mainFrame.check();
-			mainFrame.fixFocus();
-			repaint();
-		}
-	}
-
-	/**
-	 * Deletes the value from the active cell.
-	 */
-	private void popupDeleteValueFromCell() {
-
-		undoStack.push(sudoku.clone());
-		boolean changed = false;
-		if (sudoku.getValue(aktLine, aktCol) != 0 && !sudoku.isFixed(aktLine, aktCol)) {
-			sudoku.setCell(aktLine, aktCol, 0);
-			changed = true;
-		}
-		
-		if (changed) {
-			redoStack.clear();
-			checkProgress();
-		} else {
-			undoStack.pop();
-		}
-		
-		updateCellZoomPanel();
-		mainFrame.fixFocus();
-		mainFrame.check();
-		repaint();
-	}
-
-	/**
 	 * Removes the candidate from all selected cells.
 	 *
 	 * @param candidate
 	 * @return true if sudoku is changed, false otherwise
 	 */
-	private boolean removeCandidateFromActiveCells(int candidate) {
+	public boolean removeCandidateFromActiveCells(int candidate) {
 		
 		boolean changed = false;
-		if (selectedCells.isEmpty()) {
+		if (cellSelection.isEmpty()) {
 			int index = Sudoku2.getIndex(aktLine, aktCol);
 			if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
 				sudoku.setCandidate(index, candidate, false, !showCandidates);
 				changed = true;
 			}
 		} else {
-			for (int index : selectedCells) {
+			for (int index : cellSelection) {
 				if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
 					sudoku.setCandidate(index, candidate, false, !showCandidates);
 					changed = true;
@@ -4130,7 +3562,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			undoStack.push(sudoku.clone());
 			boolean changed = false;
 			
-			if (selectedCells.isEmpty()) {
+			if (cellSelection.isEmpty()) {
 				
 				int index = Sudoku2.getIndex(aktLine, aktCol);
 				if (sudoku.isCandidate(index, candidate, !showCandidates)) {
@@ -4159,66 +3591,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	}
 
 	/**
-	 * Handles activation of an "Exclude x" menu item. The selected number is
-	 * deleted in all selected cells (if they present).
-	 *
-	 * @param menuItem
-	 */
-	private void popupExcludeCandidate(JMenuItem menuItem) {
-		
-		int candidate = -1;
-		for (int i = 0; i < excludeItems.length; i++) {
-			if (excludeItems[i] == menuItem) {
-				candidate = i + 1;
-				break;
-			}
-		}
-		
-		if (candidate != -1) {
-			
-			undoStack.push(sudoku.clone());
-			boolean changed = removeCandidateFromActiveCells(candidate);
-			
-			if (changed) {
-				redoStack.clear();
-				checkProgress();
-			} else {
-				undoStack.pop();
-			}
-			
-			updateCellZoomPanel();
-			mainFrame.check();
-			mainFrame.fixFocus();
-			repaint();
-		}
-	}
-
-	/**
-	 * Handles activation of an "Toggle color x" menu item. Th color is set in the
-	 * cell if not present or deleted if already present.
-	 *
-	 * @param menuItem
-	 */
-	private void popupToggleColor(JMenuItem menuItem) {
-		
-		int color = -1;
-		for (int i = 0; i < toggleColorItems.length; i++) {
-			if (toggleColorItems[i] == menuItem) {
-				color = i;
-				break;
-			}
-		}
-		
-		if (color != -1) {
-			// coloring is active
-			handleColoring(aktLine, aktCol, -1, color);
-			updateCellZoomPanel();
-			mainFrame.check();
-			repaint();
-		}
-	}
-
-	/**
 	 * @return the cellZoomPanel
 	 */
 	public CellZoomPanel getCellZoomPanel() {
@@ -4232,16 +3604,16 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		this.cellZoomPanel = cellZoomPanel;
 	}
 
-	private void updateCellZoomPanel() {
+	public void updateCellZoomPanel() {
 		
 		if (cellZoomPanel != null) {
 			
 			int index = Sudoku2.getIndex(aktLine, aktCol);
-			boolean singleCell = selectedCells.isEmpty() && sudoku.getValue(index) == 0;
+			boolean singleCell = cellSelection.isEmpty() && sudoku.getValue(index) == 0;
 			
 			if (aktColorIndex == -1) {
 				// normal operation -> collect candidates for selected cell(s)
-				if (sudoku.getValue(index) != 0 && selectedCells.isEmpty()) {
+				if (sudoku.getValue(index) != 0 && cellSelection.isEmpty()) {
 					// cell is already set -> nothing can be selected
 					cellZoomPanel.update(
 						SudokuSetBase.EMPTY_SET,
@@ -4273,7 +3645,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				
 			} else {
 				
-				if (!selectedCells.isEmpty() || (selectedCells.isEmpty() && sudoku.getValue(index) != 0)) {
+				if (!cellSelection.isEmpty() || (cellSelection.isEmpty() && sudoku.getValue(index) != 0)) {
 					// no coloring, when set of cells is selected
 					cellZoomPanel.update(
 						SudokuSetBase.EMPTY_SET,
@@ -4381,9 +3753,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			}
 		}
 	}
+	
+	public void setColorIconsInPopupMenu() {
+		rightClickMenu.setColorIconsInPopupMenu();
+	}
 
 	public void setShowColorKu() {
-		setColorkuInPopupMenu(Options.getInstance().isShowColorKuAct());
+		rightClickMenu.setColorkuInPopupMenu(Options.getInstance().isShowColorKuAct());
 		cellZoomPanel.calculateLayout();
 		updateCellZoomPanel();
 		repaint();

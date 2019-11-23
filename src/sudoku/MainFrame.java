@@ -2060,12 +2060,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		new ConfigDialog(this, true, -1).setVisible(true);
 		sudokuPanel.resetActiveColor();
+		
 		if (sudokuPanel.getActiveColor() != -1) {
-			statusPanelColorResult
-					.setBackground(Options.getInstance().getColoringColors()[sudokuPanel.getActiveColor()]);
+			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[sudokuPanel.getActiveColor()]);
 		}
+		
 		sudokuPanel.setColorIconsInPopupMenu();
 		check();
 		fixFocus();
