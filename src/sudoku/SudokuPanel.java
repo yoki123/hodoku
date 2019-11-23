@@ -68,6 +68,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import org.w3c.dom.Node;
 import solver.SudokuSolver;
@@ -95,11 +96,9 @@ import solver.SudokuStepFinder;
 public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 	private static final long serialVersionUID = 1L;
-	// Konstante
-	/**
-	 * Translation of KeyChars in KeyCodes for laptops that use special key
-	 * combinations for number
-	 */
+
+	private static BufferedImage[] colorKuImagesSmall = new BufferedImage[Sudoku2.UNITS + 2];
+	private static BufferedImage[] colorKuImagesLarge = new BufferedImage[Sudoku2.UNITS];
 	private static final int DELTA = 5;
 	private static final int DELTA_RAND = 5;
 	private static final int[] KEY_CODES = new int[] {
@@ -109,18 +108,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		KeyEvent.VK_9
 	};
 	
-	private static BufferedImage[] colorKuImagesSmall = new BufferedImage[Sudoku2.UNITS + 2];
-	private static BufferedImage[] colorKuImagesLarge = new BufferedImage[Sudoku2.UNITS];
 	private boolean showCandidates = Options.getInstance().isShowCandidates();
 	private boolean showWrongValues = Options.getInstance().isShowWrongValues();
 	private boolean showDeviations = Options.getInstance().isShowDeviations();
 	private boolean invalidCells = Options.getInstance().isInvalidCells();
 	private boolean showInvalidOrPossibleCells = false;
-	
-	/*
-	 * An array for every candidate for which a filter is set; index 10 stands for
-	 * "filter bivalue cells"
-	 */
 	private boolean[] showHintCellValues = new boolean[11];
 	private boolean showAllCandidatesAkt = false;
 	private boolean showAllCandidates = false;
@@ -128,7 +120,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private int deltaRand = DELTA_RAND;
 	private Font valueFont;
 	private Font candidateFont;
-	// Height of a digit in the current {@link AboutDialog#candidateFont}
 	private int candidateHeight;
 	private Font bigFont;
 	private Font smallFont;
@@ -174,8 +165,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private Timer deleteCursorTimer = new Timer(Options.getInstance().getDeleteCursorDisplayLength(), null);
 	private long lastCursorChanged = -1;
 	private RightClickMenu rightClickMenu;
+	private boolean[] remainingCandidates = new boolean[Sudoku2.UNITS];
 	
-	// mouse handling
+	// event meta data
 	private int lastPressedLine = -1;
 	private int lastPressedCol = -1;
 	private int lastPressedCand = -1;
@@ -184,8 +176,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private int lastClickedCand = -1;
 	private long lastClickedTime = 0;
 	private long doubleClickSpeed = -1;
-	
-	private boolean[] remainingCandidates = new boolean[Sudoku2.UNITS];
 	private Candidate lastCandidateMouseOn = new Candidate();
 	private boolean isCtrlDown;
 	private Point lastMousePosition = new Point();
@@ -281,7 +271,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 				updateCandidateMouseHighlight(e.getPoint());
 
-				if (line < 0 || line >= 9 || col < 0 || col >= 9) {
+				if (!SwingUtilities.isLeftMouseButton(e)) {
+					return;
+				}
+				
+				if (!Sudoku2.isValidIndex(line, col)) {
 					return;
 				}
 
@@ -333,12 +327,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
 		this.setLayout(layout);
 
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 600, Short.MAX_VALUE));
+		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 600, Short.MAX_VALUE));
 
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 600, Short.MAX_VALUE));
-	}//GEN-END:initComponents
+		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 600, Short.MAX_VALUE));
+	}
 
 	private void updateCandidateMouseHighlight(Point mouse) {
 
@@ -349,7 +341,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			int candidate = getCandidate(mouse, line, col);
 			int index = Sudoku2.getIndex(line, col);
 
-			if (line >= 0 && line < 9 && col >= 0 && col < 9) {
+			if (Sudoku2.isValidIndex(line, col)) {
 
 				Candidate mouseOn = new Candidate(index, candidate);
 				if (lastCandidateMouseOn != mouseOn) {
@@ -402,9 +394,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 		Integer index = Sudoku2.getIndex(lastPressedLine, lastPressedCol);
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
+		
 		if (!cellSelection.contains(index) && isRightClick) {
 			clearDragSelection();
 			cellSelection.clear();
+			aktLine = lastPressedLine;
+			aktCol = lastPressedCol;
+			repaint();
 		}
 	}
 
@@ -423,8 +419,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			// is it a double click?
 			long ticks = System.currentTimeMillis();
 
-			boolean isDoubleClick = lastClickedTime != -1 && (ticks - lastClickedTime) <= doubleClickSpeed
-					&& line == lastClickedLine && col == lastClickedCol && cand == lastClickedCand;
+			boolean isDoubleClick = 
+				lastClickedTime != -1 && 
+				(ticks - lastClickedTime) <= doubleClickSpeed && 
+				line == lastClickedLine && 
+				col == lastClickedCol && 
+				cand == lastClickedCand;
 
 			if (isDoubleClick) {
 				// this is a double click
@@ -489,7 +489,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		int cand = getCandidate(evt.getPoint(), line, col);
 		boolean ctrlPressed = (evt.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
 		boolean shiftPressed = (evt.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0;
-		boolean isValidCellIndex = line >= 0 && line <= 8 && col >= 0 && col <= 8;
+		boolean isValidCellIndex = Sudoku2.isValidIndex(line, col);
 		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
 		boolean isMiddleClick = evt.getButton() == MouseEvent.BUTTON2;
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
