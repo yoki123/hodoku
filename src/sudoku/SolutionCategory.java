@@ -24,41 +24,55 @@ package sudoku;
  * @author hobiwan
  */
 public enum SolutionCategory {
-	SINGLES("Singles"), INTERSECTIONS("Intersections"), SUBSETS("Subsets"), BASIC_FISH("Basic Fish"),
-	FINNED_BASIC_FISH("(Sashimi) Finned Fish"), FRANKEN_FISH("Franken Fish"),
-	FINNED_FRANKEN_FISH("Finned Franken Fish"), MUTANT_FISH("Mutant Fish"), FINNED_MUTANT_FISH("Finned Mutant Fish"),
-	SINGLE_DIGIT_PATTERNS("Single Digit Patterns"), COLORING("Coloring"), UNIQUENESS("Uniqueness"),
-	CHAINS_AND_LOOPS("Chains and Loops"), WINGS("Wings"), ALMOST_LOCKED_SETS("Almost Locked Sets"),
-	ENUMERATIONS("Enumerations"), MISCELLANEOUS("Miscellaneous"), LAST_RESORT("Last Resort");
+    SINGLES("Singles"),
+    INTERSECTIONS("Intersections"),
+    SUBSETS("Subsets"),
+    BASIC_FISH("Basic Fish"),
+    FINNED_BASIC_FISH("(Sashimi) Finned Fish"),
+    FRANKEN_FISH("Franken Fish"),
+    FINNED_FRANKEN_FISH("Finned Franken Fish"),
+    MUTANT_FISH("Mutant Fish"),
+    FINNED_MUTANT_FISH("Finned Mutant Fish"),
+    SINGLE_DIGIT_PATTERNS("Single Digit Patterns"),
+    COLORING("Coloring"),
+    UNIQUENESS("Uniqueness"),
+    CHAINS_AND_LOOPS("Chains and Loops"),
+    WINGS("Wings"),
+    ALMOST_LOCKED_SETS("Almost Locked Sets"),
+    ENUMERATIONS("Enumerations"),
+    MISCELLANEOUS("Miscellaneous"),
+    LAST_RESORT("Last Resort")
+    ;
+    
+    private String categoryName;
+    
+    SolutionCategory() {
+        // für XMLEncoder
+    }
+    
+    SolutionCategory(String catName) {
+        categoryName = catName;
+    }
 
-	private String categoryName;
-
-	SolutionCategory() {
-		// für XMLEncoder
-	}
-
-	SolutionCategory(String catName) {
-		categoryName = catName;
-	}
-
-	@Override
-	public String toString() {
-		return "enum SolutionCategory: " + categoryName;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String name) {
-		categoryName = name;
-	}
-
-	public boolean isFish() {
-		if (this == BASIC_FISH || this == FINNED_BASIC_FISH || this == FRANKEN_FISH || this == FINNED_FRANKEN_FISH
-				|| this == MUTANT_FISH || this == FINNED_MUTANT_FISH) {
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public String toString() {
+        return "enum SolutionCategory: " + categoryName;
+    }
+    
+    public String getCategoryName() {
+        return categoryName;
+    }
+    
+    public void setCategoryName(String name) {
+        categoryName = name;
+    }
+    
+    public boolean isFish() {
+        if (this == BASIC_FISH || this == FINNED_BASIC_FISH ||
+                this == FRANKEN_FISH || this == FINNED_FRANKEN_FISH ||
+                this == MUTANT_FISH || this == FINNED_MUTANT_FISH) {
+            return true;
+        }
+        return false;
+    }
 }

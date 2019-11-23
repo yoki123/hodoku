@@ -22,144 +22,138 @@ import java.util.Arrays;
 import sudoku.Sudoku2;
 
 /**
- * A pattern, that indicates, which cells should contain givens when generating
- * new puzzles.<br>
- * <br>
+ * A pattern, that indicates, which cells should contain givens
+ * when generating new puzzles.<br><br>
  * 
- * <b>Caution:</b> The setter for {@link #pattern} only sets the reference, the
- * constructor actually makes a copy of the pattern, that has been passed in.
- * When working with new patterns, only the constructore should be used, the
+ * <b>Caution:</b> The setter for {@link #pattern} only sets
+ * the reference, the constructor actually makes a copy of
+ * the pattern, that has been passed in. When working with
+ * new patterns, only the constructore should be used, the
  * setter is used internally by <code>XmlDecoder</code>.
  * 
  * @author hobiwan
  */
 public class GeneratorPattern implements Cloneable {
-	/** One entry per cell; if it is <code>true</code>, the cell must be a given. */
-	private boolean[] pattern = new boolean[Sudoku2.LENGTH];
-	/** The name of the pattern. */
-	private String name = "";
-	/**
-	 * Patterns must be tested befor they can be applied. the result of the test is
-	 * stored here.
-	 */
-	private boolean valid = false;
+    /** One entry per cell; if it is <code>true</code>, the cell must be a given. */
+    private boolean[] pattern = new boolean[Sudoku2.LENGTH];
+    /** The name of the pattern. */
+    private String name = "";
+    /** Patterns must be tested befor they can be applied. the result of the test is stored here. */
+    private boolean valid = false;
+    
+    /**
+     * Default constructor.
+     */
+    public GeneratorPattern() {
+        // does nothing, only for XmlDecoder
+    }
+    
+    /**
+     * Constructor: Makes a new pattern with a given name.
+     * 
+     * @param name
+     */
+    public GeneratorPattern(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * Default constructor.
-	 */
-	public GeneratorPattern() {
-		// does nothing, only for XmlDecoder
-	}
+    /**
+     * Constructor: Makes a copy of the pattern and sets it.
+     * 
+     * @param name
+     * @param pattern 
+     */
+    public GeneratorPattern(String name, boolean[] pattern) {
+        this.name = name;
+        this.pattern = Arrays.copyOf(pattern, pattern.length);
+    }
 
-	/**
-	 * Constructor: Makes a new pattern with a given name.
-	 * 
-	 * @param name
-	 */
-	public GeneratorPattern(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Constructor: Makes a copy of the pattern and sets it.
-	 * 
-	 * @param name
-	 * @param pattern
-	 */
-	public GeneratorPattern(String name, boolean[] pattern) {
-		this.name = name;
-		this.pattern = Arrays.copyOf(pattern, pattern.length);
-	}
-
-	/**
-	 * Makes a copy of a GeneratorPattern.
-	 * 
-	 * @return
-	 */
-	@Override
-	public GeneratorPattern clone() {
-		GeneratorPattern newPattern = null;
+    /**
+     * Makes a copy of a GeneratorPattern.
+     * @return 
+     */
+    @Override
+    public GeneratorPattern clone() {
+        GeneratorPattern newPattern = null;
 //        try {
-		// clone() would result in to many arrays created for nothing,
-		// so we just do it ourselves
+            // clone() would result in to many arrays created for nothing,
+            // so we just do it ourselves
 //            newPattern = (GeneratorPattern) super.clone();
-		newPattern = new GeneratorPattern();
-		// no deep copy required for name, it is immutable
-		newPattern.setName(name);
-		newPattern.setValid(valid);
-		System.arraycopy(pattern, 0, newPattern.pattern, 0, pattern.length);
+            newPattern = new GeneratorPattern();
+            // no deep copy required for name, it is immutable
+            newPattern.setName(name);
+            newPattern.setValid(valid);
+            System.arraycopy(pattern, 0, newPattern.pattern, 0, pattern.length);
 //        } catch (CloneNotSupportedException ex) {
 //            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error while cloning", ex);
 //        }
-		return newPattern;
-	}
+        return newPattern;
+    }
+    
+    /**
+     * Return a printable representation of the pattern.
+     * 
+     * @return 
+     */
+    @Override
+    public String toString() {
+        return name + ": " + Arrays.toString(pattern);
+    }
 
-	/**
-	 * Return a printable representation of the pattern.
-	 * 
-	 * @return
-	 */
-	@Override
-	public String toString() {
-		return name + ": " + Arrays.toString(pattern);
-	}
+    /**
+     * Returns the number of entries in {@link #pattern}, that are <code>true</code>.
+     * @return 
+     */
+    public int getAnzGivens() {
+        int anz = 0;
+        for (int i = 0; i < pattern.length; i++) {
+            if (pattern[i]) {
+                anz++;
+            }
+        }
+        return anz;
+    }
+    
+    /**
+     * @return the pattern
+     */
+    public boolean[] getPattern() {
+        return pattern;
+    }
 
-	/**
-	 * Returns the number of entries in {@link #pattern}, that are
-	 * <code>true</code>.
-	 * 
-	 * @return
-	 */
-	public int getAnzGivens() {
-		int anz = 0;
-		for (int i = 0; i < pattern.length; i++) {
-			if (pattern[i]) {
-				anz++;
-			}
-		}
-		return anz;
-	}
+    /**
+     * @param pattern the pattern to set
+     */
+    public void setPattern(boolean[] pattern) {
+        this.pattern = pattern;
+    }
 
-	/**
-	 * @return the pattern
-	 */
-	public boolean[] getPattern() {
-		return pattern;
-	}
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param pattern the pattern to set
-	 */
-	public void setPattern(boolean[] pattern) {
-		this.pattern = pattern;
-	}
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return the valid
+     */
+    public boolean isValid() {
+        return valid;
+    }
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the valid
-	 */
-	public boolean isValid() {
-		return valid;
-	}
-
-	/**
-	 * @param valid the valid to set
-	 */
-	public void setValid(boolean valid) {
-		this.valid = valid;
-	}
-
+    /**
+     * @param valid the valid to set
+     */
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+    
 }

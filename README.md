@@ -22,6 +22,16 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.6 (2019-11-22)
+--------------------------
+
+  - The cell selector now wraps around the board instead of getting stuck at the edge.
+
+  - The Active Cell panel color selection has been made more responsive.
+
+  - Disabled candidate highlight on LCtrl down because it was currently doing too many things. Until I find a better way to edit candidates and append cells selection, this feature will only be toggleable via the Options -> Show Candidate Highlight.
+
+
 Version 2.2.5 (2019-11-17)
 --------------------------
 

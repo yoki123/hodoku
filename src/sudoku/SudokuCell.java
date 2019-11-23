@@ -19,9 +19,9 @@
 package sudoku;
 
 /**
- * Compatibility class for loading Sudoku files that were stored with an older
- * version of HoDoKu (2.0 or older). It contains only the public contract for
- * XMLEncoder.
+ * Compatibility class for loading Sudoku files that were stored with 
+ * an older version of HoDoKu (2.0 or older). It contains only the 
+ * public contract for XMLEncoder.
  * 
  * @author hobiwan
  */
@@ -29,33 +29,33 @@ public class SudokuCell {
 
 	public static final int USER = 0;
 	public static final int PLAY = 1;
-	public static final int ALL = 2;
+    public static final int ALL = 2;
 
-	public static final short M_1 = 0x0001;
-	public static final short M_2 = 0x0002;
-	public static final short M_3 = 0x0004;
-	public static final short M_4 = 0x0008;
-	public static final short M_5 = 0x0010;
-	public static final short M_6 = 0x0020;
-	public static final short M_7 = 0x0040;
-	public static final short M_8 = 0x0080;
-	public static final short M_9 = 0x0100;
-	public static final short M_ALL = 0x01FF;
-	public static final short[] masks = { M_1, M_2, M_3, M_4, M_5, M_6, M_7, M_8, M_9 };
-
-	private byte value = 0;
-	private boolean isFixed = false; // vorgegebene Zahl, kann nicht verändert werden!
-	private short[] candidates = new short[3];
-
-	/** Creates a new instance of SudokuCell */
-	public SudokuCell() {
-		// do nothing
-	}
-
-	public SudokuCell(byte value) {
-		this.value = value;
-	}
-
+    public static final short M_1 = 0x0001;
+    public static final short M_2 = 0x0002;
+    public static final short M_3 = 0x0004;
+    public static final short M_4 = 0x0008;
+    public static final short M_5 = 0x0010;
+    public static final short M_6 = 0x0020;
+    public static final short M_7 = 0x0040;
+    public static final short M_8 = 0x0080;
+    public static final short M_9 = 0x0100;
+    public static final short M_ALL = 0x01FF;
+    public static final short[] masks = { M_1, M_2, M_3, M_4, M_5, M_6, M_7, M_8, M_9 };
+    
+    private byte value = 0;
+    private boolean isFixed = false; // vorgegebene Zahl, kann nicht verändert werden!
+    private short[] candidates = new short[3];
+    
+    /** Creates a new instance of SudokuCell */
+    public SudokuCell() {
+        // do nothing
+    }
+    
+    public SudokuCell(byte value) {
+        this.value = value;
+    }
+    
 //    @Override
 //    public SudokuCell clone() throws CloneNotSupportedException {
 //        SudokuCell newCell = (SudokuCell) super.clone();
@@ -66,47 +66,47 @@ public class SudokuCell {
 //        return newCell;
 //    }
 
-	public void setValue(byte value) {
-		this.value = value;
-	}
+    public void setValue(byte value) {
+        this.value = value;
+    }
 
-	public byte getValue() {
-		return value;
-	}
-
+    public byte getValue() {
+        return value;
+    }
+    
 //    public void setValue(int value, boolean isFixed) {
 //        this.value = (byte) value;
 //        this.isFixed = isFixed;
 //    }
+    
+    public void setIsFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+    
+    public boolean isIsFixed() {
+        return isFixed;
+    }
 
-	public void setIsFixed(boolean isFixed) {
-		this.isFixed = isFixed;
-	}
+    public short[] getCandidates() {
+        return candidates;
+    }
 
-	public boolean isIsFixed() {
-		return isFixed;
-	}
-
-	public short[] getCandidates() {
-		return candidates;
-	}
-
-	public void setCandidates(short[] candidates) {
-		this.candidates = candidates;
-	}
-
-	public String getCandidateString(int type) {
-		StringBuilder tmp = new StringBuilder();
-		for (int i = 1; i <= 9; i++) {
-			if (isCandidate(type, i)) {
-				tmp.append(i);
-			}
-		}
-		return tmp.toString();
-	}
-
-	protected boolean isCandidate(int type, int value) {
-		short mask = masks[value - 1];
-		return (candidates[type] & mask) != 0 ? true : false;
-	}
+    public void setCandidates(short[] candidates) {
+        this.candidates = candidates;
+    }
+    
+    public String getCandidateString(int type) {
+        StringBuilder tmp = new StringBuilder();
+        for (int i = 1; i <= 9; i++) {
+            if (isCandidate(type, i)) {
+                tmp.append(i);
+            }
+        }
+        return tmp.toString();
+    }
+    
+    protected boolean isCandidate(int type, int value) {
+        short mask = masks[value - 1];
+        return (candidates[type] & mask) != 0 ? true : false;
+    }
 }
