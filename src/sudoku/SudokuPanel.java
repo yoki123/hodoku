@@ -615,13 +615,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
             
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-            	
                 handleMousePressed(evt);
-                
-                if (!isCtrlDown) {
-                	clearDragSelection();
-                	selectedCells.clear();	
-                }
             }
             
             @Override
@@ -805,11 +799,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
     }//GEN-LAST:event_color1aMenuItemActionPerformed
 
     private void handleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+    	
     	lastMousePosition = evt.getPoint();
     	lastPressedLine = getLine(evt.getPoint());
         lastPressedCol = getCol(evt.getPoint());
         lastPressedCand = getCandidate(evt.getPoint(), lastPressedLine, lastPressedCol);
+        
         clearDragSelection();
+        
+        Integer index = Sudoku2.getIndex(lastPressedLine, lastPressedCol);
+        boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
+        if (!selectedCells.contains(index) && isRightClick) {
+        	clearDragSelection();
+        	selectedCells.clear();	
+        }
     }//GEN-LAST:event_formMousePressed
 
     private void handleMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased

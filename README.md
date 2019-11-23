@@ -25,11 +25,17 @@ Change log
 Version 2.2.6 (2019-11-22)
 --------------------------
 
+Features:
+
   - The cell selector now wraps around the board instead of getting stuck at the edge.
+  
+Bug Fixes:
 
   - The Active Cell panel color selection has been made more responsive.
 
   - Disabled candidate highlight on LCtrl down because it was currently doing too many things. Until I find a better way to edit candidates and append cells selection, this feature will only be toggleable via the Options -> Show Candidate Highlight.
+  
+  - Right click menu does not clear the selection anymore, unless right clicking outside of the selection.
 
 
 Version 2.2.5 (2019-11-17)
