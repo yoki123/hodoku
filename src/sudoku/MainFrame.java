@@ -978,7 +978,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		newGameToolButton.setToolTipText(bundle.getString("MainFrame.neuesSpielToolButton.toolTipText"));
 		newGameToolButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				neuesSpielToolButtonActionPerformed(evt);
+				newGameToolButtonActionPerformed(evt);
 			}
 		});
 		jToolBar1.add(newGameToolButton);
@@ -1672,7 +1672,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		levelEasyMenuItem.setText("Leicht");
 		levelEasyMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				levelLeichtMenuItemActionPerformed(evt);
+				levelEasyMenuItemActionPerformed(evt);
 			}
 		});
 		levelMenu.add(levelEasyMenuItem);
@@ -1681,7 +1681,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		levelMediumMenuItem.setText("Mittel");
 		levelMediumMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				levelMittelMenuItemActionPerformed(evt);
+				levelMediumMenuItemActionPerformed(evt);
 			}
 		});
 		levelMenu.add(levelMediumMenuItem);
@@ -1690,7 +1690,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		levelHardMenuItem.setText("Schwer\n");
 		levelHardMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				levelKniffligMenuItemActionPerformed(evt);
+				levelHardMenuItemActionPerformed(evt);
 			}
 		});
 		levelMenu.add(levelHardMenuItem);
@@ -1699,7 +1699,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		levelDiabolicalMenuItem.setText("Unfair");
 		levelDiabolicalMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				levelSchwerMenuItemActionPerformed(evt);
+				levelDiabolicalMenuItemActionPerformed(evt);
 			}
 		});
 		levelMenu.add(levelDiabolicalMenuItem);
@@ -1708,7 +1708,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		levelExtremeMenuItem.setText("Extrem");
 		levelExtremeMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				levelExtremMenuItemActionPerformed(evt);
+				levelExtremeMenuItemActionPerformed(evt);
 			}
 		});
 		levelMenu.add(levelExtremeMenuItem);
@@ -2235,7 +2235,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		fixFocus();
 	}
 
-	private void neuesSpielToolButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void newGameToolButtonActionPerformed(java.awt.event.ActionEvent evt) {
 
 		int actLevel = Options.getInstance().getActLevel();
 		DifficultyLevel actDiffLevel = Options.getInstance().getDifficultyLevel(actLevel);
@@ -2269,6 +2269,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			tmpSudoku.setLevel(solvedSudoku.getLevel());
 			tmpSudoku.setScore(solvedSudoku.getScore());
 		}
+		
 		if (tmpSudoku != null) {
 			sudokuPanel.setSudoku(tmpSudoku, true);
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
@@ -2307,23 +2308,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		fixFocus();
 	}
 
-	private void levelExtremMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void levelExtremeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		setLevelFromMenu();
 	}
 
-	private void levelSchwerMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void levelDiabolicalMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		setLevelFromMenu();
 	}
 
-	private void levelKniffligMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void levelHardMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		setLevelFromMenu();
 	}
 
-	private void levelMittelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void levelMediumMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		setLevelFromMenu();
 	}
 
-	private void levelLeichtMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void levelEasyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		setLevelFromMenu();
 	}
 
@@ -2401,7 +2402,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void neuMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		neuesSpielToolButtonActionPerformed(null);
+		newGameToolButtonActionPerformed(null);
 	}
 
 	private void copyCluesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

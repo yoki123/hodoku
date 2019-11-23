@@ -3169,7 +3169,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		undoStack.push(sudoku.clone());
 		GameMode gm = Options.getInstance().getGameMode();
 		
-		while ((actStep = solver.getHint(sudoku, false)) != null) {
+		actStep = solver.getHint(sudoku, false);		
+		while (actStep != null) {
+			
 			if (gm == GameMode.PLAYING) {
 				if (!actStep.getType().getStepConfig().isEnabledProgress()) {
 					// solving stops

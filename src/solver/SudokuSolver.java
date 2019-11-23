@@ -412,16 +412,21 @@ public class SudokuSolver {
 	 * @return
 	 */
 	public SolutionStep getHint(Sudoku2 sudoku, boolean singlesOnly) {
+		
 		Sudoku2 save = this.sudoku;
 		DifficultyLevel oldMaxLevel = maxLevel;
 		DifficultyLevel oldLevel = level;
 		maxLevel = Options.getInstance().getDifficultyLevel(DifficultyType.EXTREME.ordinal());
 		level = Options.getInstance().getDifficultyLevel(DifficultyType.EASY.ordinal());
+		
 		setSudoku(sudoku);
+		
 		SolutionStep step = getHint(singlesOnly);
 		maxLevel = oldMaxLevel;
 		level = oldLevel;
+		
 		setSudoku(save);
+		
 		return step;
 	}
 
@@ -506,13 +511,12 @@ public class SudokuSolver {
 	}
 
 	public void doStep(Sudoku2 sudoku, SolutionStep step) {
-		// we mustnt call setSudoku() here or all internal
+		
+		// we must not call setSudoku() here or all internal
 		// data structures get changed -> just set the field itself
 		Sudoku2 oldSudoku = getSudoku();
-		// setSudoku(sudoku);
 		getStepFinder().setSudoku(sudoku);
 		getStepFinder().doStep(step);
-		// setSudoku(oldSudoku);
 		getStepFinder().setSudoku(oldSudoku);
 	}
 

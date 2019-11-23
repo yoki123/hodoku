@@ -1,3 +1,8 @@
+Crash:
+
+Load this puzzle into Hodoku and press "Solve up to"
+600270490009080030730006002047308065300400079900007000003000907072560300004702050
+
 20191117:
 
 I dislike having candidate highlight when pressing LCtrl to select cells. There should be an option to disable it.
