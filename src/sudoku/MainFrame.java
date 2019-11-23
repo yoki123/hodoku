@@ -1757,7 +1757,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		puzzleMenu.add(solutionStepMenuItem);
 		puzzleMenu.add(new javax.swing.JPopupMenu.Separator());
 
-		solvePuzzleMenuItem.setText("Solve Puzzle");
+		solvePuzzleMenuItem.setText(bundle.getString("MainFrame.solvePuzzleMenuItem.text"));
 		solvePuzzleMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				showPuzzleSolution();
