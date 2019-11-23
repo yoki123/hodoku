@@ -27,35 +27,33 @@ import sudoku.SolutionType;
  * @author hobiwan
  */
 public class GiveUpSolver extends AbstractSolver {
+    
+    /** Creates a new instance of GiveUpSolver
+     * @param finder 
+     */
+    public GiveUpSolver(SudokuStepFinder finder) {
+        super(finder);
+    }
 
-	/**
-	 * Creates a new instance of GiveUpSolver
-	 * 
-	 * @param finder
-	 */
-	public GiveUpSolver(SudokuStepFinder finder) {
-		super(finder);
-	}
+    @Override
+    protected SolutionStep getStep(SolutionType type) {
+        if (type == SolutionType.GIVE_UP) {
+            return new SolutionStep(SolutionType.GIVE_UP);
+        }
+        return null;
+    }
 
-	@Override
-	protected SolutionStep getStep(SolutionType type) {
-		if (type == SolutionType.GIVE_UP) {
-			return new SolutionStep(SolutionType.GIVE_UP);
-		}
-		return null;
-	}
-
-	@Override
-	protected boolean doStep(SolutionStep step) {
-		boolean handled = false;
-		switch (step.getType()) {
-		case GIVE_UP:
-			handled = true;
-			break;
-		default:
-			handled = false;
-		}
-		return handled;
-	}
-
+    @Override
+    protected boolean doStep(SolutionStep step) {
+        boolean handled = false;
+        switch (step.getType()) {
+            case GIVE_UP:
+                handled = true;
+                break;
+            default:
+                handled = false;
+        }
+        return handled;
+    }
+    
 }

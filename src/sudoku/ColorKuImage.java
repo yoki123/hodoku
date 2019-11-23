@@ -14,55 +14,53 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
- * A <code>ColorKuImage</code> is a <code>BufferedImage</code> that has a
- * specific color and has an overlay applied to it.<br>
- * <br>
+ * A <code>ColorKuImage</code> is a <code>BufferedImage</code> that
+ * has a specific color and has an overlay applied to it.<br><br>
  * 
  * Overlays are in the package <code>overlay</code> and named
  * <code>ovnnn.png</code>, where "nnn" stands for a number between
- * {@link #IMG_MIN} and {@link #IMG_MAX} (both inclusive) with an increment of
- * {@link #IMG_FACTOR}.<br>
- * <br>
+ * {@link #IMG_MIN} and {@link #IMG_MAX} (both inclusive) with an increment
+ * of {@link #IMG_FACTOR}.<br><br>
  * 
- * When creating a ColoKuImage, the best matched overlay is taken and centered
- * within the image.
+ * When creating a ColoKuImage, the best matched overlay is taken and
+ * centered within the image.
  * 
  * @author hobiwan
  */
 public class ColorKuImage extends BufferedImage {
 
-	/** Size of smallest overlay in pixel */
-	public static final int IMG_MIN = 10;
-	/** Size of largest overlay in pixel */
-	public static final int IMG_MAX = 98;
-	/** Increment for overlay sizes in pixel */
-	public static final int IMG_FACTOR = 4;
-	/** The overlay source */
-	private static BufferedImage sourceOverlay = null;
-	/** The latest overlay loaded, for caching */
-	private static BufferedImage lastOverlay = null;
-	/** The color of the image */
-	private Color color = null;
+    /** Size of smallest overlay in pixel */
+    public static final int IMG_MIN = 10;
+    /** Size of largest overlay in pixel */
+    public static final int IMG_MAX = 98;
+    /** Increment for overlay sizes in pixel */
+    public static final int IMG_FACTOR = 4;
+    /** The overlay source */
+    private static BufferedImage sourceOverlay = null;
+    /** The latest overlay loaded, for caching */
+    private static BufferedImage lastOverlay = null;
+    /** The color of the image */
+    private Color color = null;
 
-	public ColorKuImage(int size, Color color) {
-		super(size, size, BufferedImage.TYPE_4BYTE_ABGR);
-		this.color = color;
-		createImage();
-	}
+    public ColorKuImage(int size, Color color) {
+        super(size, size, BufferedImage.TYPE_4BYTE_ABGR);
+        this.color = color;
+        createImage();
+    }
 
-	/**
-	 * Get the overlay that fits best and load it into {@link #lastOverlay} if
-	 * necessary. Then paint a filled circle using <code>color</code> centered on
-	 * the image and apply the pattern from <code>lastOverlay</code>.<br>
-	 * <br>
-	 * 
-	 * Pixels, that are white in <code>lastOverlay</code>, become completely
-	 * transparent in <code>this</code>.
-	 */
-	private void createImage() {
-		// get the overlay that fits best
-		long ticks = System.nanoTime();
-		int sizeR = getWidth();
+    /**
+     * Get the overlay that fits best and load it into
+     * {@link #lastOverlay} if necessary. Then paint a
+     * filled circle using <code>color</code> centered
+     * on the image and apply the pattern from <code>lastOverlay</code>.<br><br>
+     * 
+     * Pixels, that are white in <code>lastOverlay</code>, become
+     * completely transparent in <code>this</code>.
+     */
+    private void createImage() {
+        // get the overlay that fits best
+        long ticks = System.nanoTime();
+        int sizeR = getWidth();
 //        int sizeR = ((getWidth() - IMG_MIN) / IMG_FACTOR) * IMG_FACTOR + IMG_MIN;
 //        if (sizeR < IMG_MIN) {
 //            sizeR = IMG_MIN;
@@ -70,33 +68,33 @@ public class ColorKuImage extends BufferedImage {
 //        if (sizeR > IMG_MAX) {
 //            sizeR = IMG_MAX;
 //        }
-		if (sourceOverlay == null) {
-			// not loaded -> do it
-			try {
-				sourceOverlay = ImageIO.read(getClass().getResource("/img/ov078.png"));
-			} catch (IOException ex) {
-				Logger.getLogger(ColorKuImage.class.getName()).log(Level.SEVERE, null, ex);
-				return;
-			}
-		}
+        if (sourceOverlay == null) {
+            // not loaded -> do it
+            try {
+                sourceOverlay = ImageIO.read(getClass().getResource("/img/ov078.png"));
+            } catch (IOException ex) {
+                Logger.getLogger(ColorKuImage.class.getName()).log(Level.SEVERE, null, ex);
+                return;
+            }
+        }
 
-		// pattern already created?
-		if (lastOverlay == null || (lastOverlay != null && lastOverlay.getWidth() != sizeR)) {
-			// not created -> do it
-			lastOverlay = getScaledInstance(sourceOverlay, sizeR);
-		}
+        // pattern already created?
+        if (lastOverlay == null || (lastOverlay != null && lastOverlay.getWidth() != sizeR)) {
+            // not created -> do it
+            lastOverlay = getScaledInstance(sourceOverlay, sizeR);
+        }
 
-		Graphics2D g2 = createGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(color);
-		int delta = sizeR / 28;
-		g2.fillOval(delta, 0, sizeR - delta, sizeR - delta);
+        Graphics2D g2 = createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(color);
+        int delta = sizeR / 28;
+        g2.fillOval(delta, 0, sizeR - delta, sizeR - delta);
 //        g2.fillOval(0, 0, sizeR, sizeR);
-		g2.drawImage(lastOverlay, 0, 0, null);
+        g2.drawImage(lastOverlay, 0, 0, null);
 
-		ticks = System.nanoTime() - ticks;
+        ticks = System.nanoTime() - ticks;
 //        System.out.println("ColorKu.createImage(): " + (ticks / 1000000) + "ms");
-	}
+    }
 
 //    /**
 //     * Get the overlay that fits best and load it into
@@ -179,61 +177,64 @@ public class ColorKuImage extends BufferedImage {
 //        ticks = System.nanoTime() - ticks;
 ////        System.out.println("createImage(): " + (ticks / 1000000) + "ms");
 //    }
-	/**
-	 * Convenience method that returns a scaled instance of the provided
-	 * {@code BufferedImage}.<br>
-	 * <br>
-	 * 
-	 * This method will use a multi-step scaling technique that provides higher
-	 * quality than the usual one-step technique (only useful in downscaling cases,
-	 * where {@code targetSize} is smaller than the original dimensions, and
-	 * generally only when the {@code BILINEAR} hint is specified)
-	 *
-	 * @param img           the original image to be scaled
-	 * @param targetSize    the desired size of the scaled instance, in pixels
-	 * @param higherQuality if true,
-	 * @return a scaled version of the original {@code BufferedImage}
-	 */
-	private BufferedImage getScaledInstance(BufferedImage img, int targetSize) {
-		BufferedImage ret = img;
-		// Use multi-step technique: start with original size, then
-		// scale down in multiple passes with drawImage()
-		// until the target size is reached
-		int size = img.getWidth();
+    /**
+     * Convenience method that returns a scaled instance of the
+     * provided {@code BufferedImage}.<br><br>
+     * 
+     * This method will use a multi-step
+     * scaling technique that provides higher quality than the usual
+     * one-step technique (only useful in downscaling cases, where
+     * {@code targetSize} is
+     * smaller than the original dimensions, and generally only when
+     * the {@code BILINEAR} hint is specified)
+     *
+     * @param img the original image to be scaled
+     * @param targetSize the desired size of the scaled instance,
+     *    in pixels
+     * @param higherQuality if true, 
+     * @return a scaled version of the original {@code BufferedImage}
+     */
+    private BufferedImage getScaledInstance(BufferedImage img,
+            int targetSize) {
+        BufferedImage ret = img;
+        // Use multi-step technique: start with original size, then
+        // scale down in multiple passes with drawImage()
+        // until the target size is reached
+        int size = img.getWidth();
 
-		do {
-			if (size > targetSize) {
-				size /= 2;
-				if (size < targetSize) {
-					size = targetSize;
-				}
-			} else {
-				size = targetSize;
-			}
+        do {
+            if (size > targetSize) {
+                size /= 2;
+                if (size < targetSize) {
+                    size = targetSize;
+                }
+            } else {
+                size = targetSize;
+            }
 
-			BufferedImage tmp = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2 = tmp.createGraphics();
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			g2.drawImage(ret, 0, 0, size, size, null);
-			g2.dispose();
+            BufferedImage tmp = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = tmp.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g2.drawImage(ret, 0, 0, size, size, null);
+            g2.dispose();
 
-			ret = tmp;
-		} while (size != targetSize);
+            ret = tmp;
+        } while (size != targetSize);
 
-		return ret;
-	}
+        return ret;
+    }
 
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
+    /**
+     * @return the color
+     */
+    public Color getColor() {
+        return color;
+    }
 
-	/**
-	 * @param color the color to set
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
+    /**
+     * @param color the color to set
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

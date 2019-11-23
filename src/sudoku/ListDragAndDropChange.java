@@ -23,7 +23,7 @@ package sudoku;
  * @author hobiwan
  */
 public interface ListDragAndDropChange {
-	public void moveStep(int fromIndex, int toIndex);
-
-	public void setDropLocation(int index, StepConfig object);
+    public void moveStep(int fromIndex, int toIndex);
+    
+    public void setDropLocation(int index, StepConfig object);
 }
