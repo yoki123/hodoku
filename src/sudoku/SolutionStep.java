@@ -371,7 +371,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 			for (int j = 0; j < indices.size(); j++) {
 				int index = indices.get(j);
 				tmp.append(value);
-				tmp.append(Integer.toString(Sudoku2.getLine(index) + 1));
+				tmp.append(Integer.toString(Sudoku2.getRow(index) + 1));
 				tmp.append(Integer.toString(Sudoku2.getCol(index) + 1));
 				tmp.append(" ");
 			}
@@ -408,7 +408,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 			delPos.append(" ");
 			if (library) {
 				delPos.append(Integer.toString(cand.getValue()))
-						.append(Integer.toString(Sudoku2.getLine(cand.getIndex()) + 1))
+						.append(Integer.toString(Sudoku2.getRow(cand.getIndex()) + 1))
 						.append(Integer.toString(Sudoku2.getCol(cand.getIndex()) + 1));
 			}
 		}
@@ -453,9 +453,9 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 
 	public static String getCellPrint(int index, boolean withParen) {
 		if (withParen) {
-			return "[r" + (Sudoku2.getLine(index) + 1) + "c" + (Sudoku2.getCol(index) + 1) + "]";
+			return "[r" + (Sudoku2.getRow(index) + 1) + "c" + (Sudoku2.getCol(index) + 1) + "]";
 		} else {
-			return "r" + (Sudoku2.getLine(index) + 1) + "c" + (Sudoku2.getCol(index) + 1);
+			return "r" + (Sudoku2.getRow(index) + 1) + "c" + (Sudoku2.getCol(index) + 1);
 		}
 	}
 
@@ -497,7 +497,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 		boolean first = true;
 		while (tmpSet.size() > 0) {
 			int index = tmpSet.pollFirst();
-			int line = Sudoku2.getLine(index);
+			int line = Sudoku2.getRow(index);
 			int col = Sudoku2.getCol(index);
 			int anzLines = 1;
 			int anzCols = 1;
@@ -510,7 +510,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 			Iterator<Integer> it = tmpSet.iterator();
 			while (it.hasNext()) {
 				int i1 = it.next();
-				int l1 = Sudoku2.getLine(i1);
+				int l1 = Sudoku2.getRow(i1);
 				int c1 = Sudoku2.getCol(i1);
 				if (l1 == line && anzLines == 1) {
 					// Spalte hinzufügen
@@ -1686,7 +1686,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	}
 
 	public void setEntity(int entity) {
-		if (entity != Sudoku2.BLOCK && entity != Sudoku2.LINE && entity != Sudoku2.COL && entity != Sudoku2.CELL) {
+		if (entity != Sudoku2.BLOCK && entity != Sudoku2.ROW && entity != Sudoku2.COL && entity != Sudoku2.CELL) {
 			throw new RuntimeException(
 					java.util.ResourceBundle.getBundle("intl/SolutionStep").getString("SolutionStep.invalid_setEntity")
 							+ " (" + entity + java.util.ResourceBundle.getBundle("intl/SolutionStep").getString(")"));

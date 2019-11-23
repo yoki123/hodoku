@@ -1049,7 +1049,7 @@ public class ChainSolver extends AbstractSolver {
 								// must be bivalue
 								continue;
 							}
-							if (constr == 2 && (Sudoku2.getLine(cellIndex) == Sudoku2.getLine(indices[k])
+							if (constr == 2 && (Sudoku2.getRow(cellIndex) == Sudoku2.getRow(indices[k])
 									|| Sudoku2.getCol(cellIndex) == Sudoku2.getCol(indices[k]))) {
 								// link was already recorded in line/col
 								continue;

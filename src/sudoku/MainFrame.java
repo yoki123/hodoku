@@ -148,16 +148,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private double bildSize = 400;
 	private int bildAufloesung = 96;
 	private int bildEinheit = 2; // File/IO
-	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { new MyFileFilter(1), new MyFileFilter(2),
-			new MyFileFilter(3), new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6), new MyFileFilter(7),
-			new MyFileFilter(9) };
-	private MyFileFilter[] puzzleFileLoadFilters = new MyFileFilter[] { new MyFileFilter(1), new MyFileFilter(8),
-			new MyFileFilter(9) };
+	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { 
+		new MyFileFilter(1), new MyFileFilter(2), new MyFileFilter(3), 
+		new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6), 
+		new MyFileFilter(7), new MyFileFilter(9)
+	};
+	
+	private MyFileFilter[] puzzleFileLoadFilters = new MyFileFilter[] { 
+		new MyFileFilter(1), new MyFileFilter(8), new MyFileFilter(9)
+	};
+	
 	private MyFileFilter[] configFileFilters = new MyFileFilter[] { new MyFileFilter(0) };
 	private MyCaretListener caretListener = new MyCaretListener();
 	private boolean outerSplitPaneInitialized = false; // used to adjust divider bar at startup!
-	private int resetHDivLocLoc = -1; // when resetting windows, the divider location gets changed by some layout
-										// function
+	private int resetHDivLocLoc = -1; // when resetting windows, the divider location gets changed by some layout function
 	private boolean resetHDivLoc = false; // adjust DividerLocation after change
 	private long resetHDivLocTicks = 0; // only adjust within a second or so
 	private String configFileExt = java.util.ResourceBundle.getBundle("intl/MainFrame")
@@ -564,7 +568,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			toggleButtonIconsOrg[i] = toggleButtons[i].getIcon();
 			toggleButtonIcons[i] = toggleButtons[i].getIcon();
 			
-			if (i < 9) {
+			if (i < Sudoku2.UNITS) {
 				emptyToggleButtonIconsOrg[i] = new ImageIcon(getClass().getResource("/img/f_" + (i + 1) + "c_inactive.png"));
 			} else {
 				emptyToggleButtonIcons[i] = toggleButtons[i].getIcon();
@@ -3460,7 +3464,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				}
 			}
 			
-			if (index == 9) {
+			if (index == Sudoku2.UNITS) {
 				sudokuPanel.setShowHintCellValue(index + 1);
 			} else {
 				boolean isActive = sudokuPanel.getShowHintCellValues()[index + 1];
@@ -3622,7 +3626,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				// eliminated candidates
 				for (int i = 0; i < Sudoku2.LENGTH; i++) {
 					if (tmpSudoku.getValue(i) == 0) {
-						for (int j = 1; j <= 9; j++) {
+						for (int j = 1; j <= Sudoku2.UNITS; j++) {
 							if (tmpSudoku.isValidValue(i, j) && !tmpSudoku.isCandidate(i, j)) {
 								out.printf("E%02d%03d%n", i, j);
 							}
@@ -3718,7 +3722,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 */
 	public boolean ValidateImportLine(String line) {
 
-		if (line.length() != 81) {
+		if (line.length() != Sudoku2.LENGTH) {
 			ShowWarningMSG("Warning", "Import string must be 81 characters long.");
 			return false;
 		}
@@ -3761,8 +3765,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		sudokuPanel.saveState();
 		Sudoku2 sudoku = sudokuPanel.getSudoku();
 
-		for (int c = 0; c < 9; c++) {
-			for (int r = 0; r < 9; r++) {
+		for (int c = 0; c < Sudoku2.UNITS; c++) {
+			for (int r = 0; r < Sudoku2.UNITS; r++) {
 				int value = sudoku.getSolution(r, c);
 				sudoku.setCell(r, c, value);
 			}

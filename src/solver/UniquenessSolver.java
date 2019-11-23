@@ -380,7 +380,7 @@ public class UniquenessSolver extends AbstractSolver {
 		// candidates
 		// and is either in the same row or in the same column
 		// start the search with index11 to avoid double findings
-		int line11 = Sudoku2.getLine(index11);
+		int line11 = Sudoku2.getRow(index11);
 		int col11 = Sudoku2.getCol(index11);
 		int block11 = Sudoku2.getBlock(index11);
 		int cell11 = sudoku.getCell(index11);
@@ -394,7 +394,7 @@ public class UniquenessSolver extends AbstractSolver {
 				continue;
 			}
 			int index12 = blockIndices[i];
-			if (line11 != Sudoku2.getLine(index12) && col11 != Sudoku2.getCol(index12)) {
+			if (line11 != Sudoku2.getRow(index12) && col11 != Sudoku2.getCol(index12)) {
 				// not in the same row or col -> cannot become a rectangle
 				continue;
 			}
@@ -407,10 +407,10 @@ public class UniquenessSolver extends AbstractSolver {
 					cand2 = sudoku.getValue(index12);
 				}
 				// possible second endpoint: check for rectangles
-				boolean isLines = line11 == Sudoku2.getLine(index12);
+				boolean isLines = line11 == Sudoku2.getRow(index12);
 				// get the units that have to hold the opposite side of the rectangle
-				int[] unit11 = Sudoku2.ALL_UNITS[isLines ? Sudoku2.getCol(index11) + 9 : Sudoku2.getLine(index11)];
-				int[] unit12 = Sudoku2.ALL_UNITS[isLines ? Sudoku2.getCol(index12) + 9 : Sudoku2.getLine(index12)];
+				int[] unit11 = Sudoku2.ALL_UNITS[isLines ? Sudoku2.getCol(index11) + 9 : Sudoku2.getRow(index11)];
+				int[] unit12 = Sudoku2.ALL_UNITS[isLines ? Sudoku2.getCol(index12) + 9 : Sudoku2.getRow(index12)];
 				// check the units: two adequat cells at the same indices in a different block
 				for (int j = 0; j < unit11.length; j++) {
 					if (Sudoku2.getBlock(unit11[j]) == block11) {
@@ -547,7 +547,7 @@ public class UniquenessSolver extends AbstractSolver {
 					SolutionType type = SolutionType.UNIQUENESS_2;
 					int i1 = additionalCandidates.get(0);
 					int i2 = additionalCandidates.get(1);
-					if (additionalCandidates.size() == 3 || (Sudoku2.getLine(i1) != Sudoku2.getLine(i2)
+					if (additionalCandidates.size() == 3 || (Sudoku2.getRow(i1) != Sudoku2.getRow(i2)
 							&& Sudoku2.getCol(i1) != Sudoku2.getCol(i2))) {
 						type = SolutionType.UNIQUENESS_5;
 					}
@@ -586,8 +586,8 @@ public class UniquenessSolver extends AbstractSolver {
 			// check the houses
 			int i1 = additionalCandidates.get(0);
 			int i2 = additionalCandidates.get(1);
-			if (Sudoku2.getLine(i1) == Sudoku2.getLine(i2)) {
-				step = checkUniqueness3(Sudoku2.LINE, Sudoku2.LINES[Sudoku2.getLine(i1)], u3Cands, urMask, searchType,
+			if (Sudoku2.getRow(i1) == Sudoku2.getRow(i2)) {
+				step = checkUniqueness3(Sudoku2.ROW, Sudoku2.ROWS[Sudoku2.getRow(i1)], u3Cands, urMask, searchType,
 						onlyOne);
 				if (step != null && onlyOne) {
 					// if steps should be cached that was already done
@@ -620,7 +620,7 @@ public class UniquenessSolver extends AbstractSolver {
 //            System.out.println("check UR4 " + additionalCandidates + "/" + cand1 + "/" + cand2);
 			int i1 = additionalCandidates.get(0);
 			int i2 = additionalCandidates.get(1);
-			if ((Sudoku2.getLine(i1) == Sudoku2.getLine(i2)) || (Sudoku2.getCol(i1) == Sudoku2.getCol(i2))) {
+			if ((Sudoku2.getRow(i1) == Sudoku2.getRow(i2)) || (Sudoku2.getCol(i1) == Sudoku2.getCol(i2))) {
 				// get all cells that can see both cells with additional candidates
 				tmpSet.setAnd(Sudoku2.buddies[i1], Sudoku2.buddies[i2]);
 //                System.out.println("   " + tmpSet);
@@ -669,11 +669,11 @@ public class UniquenessSolver extends AbstractSolver {
 		if (twoSize == 2) {
 			int i1 = additionalCandidates.get(0);
 			int i2 = additionalCandidates.get(1);
-			if ((Sudoku2.getLine(i1) != Sudoku2.getLine(i2)) && (Sudoku2.getCol(i1) != Sudoku2.getCol(i2))) {
+			if ((Sudoku2.getRow(i1) != Sudoku2.getRow(i2)) && (Sudoku2.getCol(i1) != Sudoku2.getCol(i2))) {
 				// get all cells in both lines and cols but without the UR itself
-				tmpSet.set(Sudoku2.LINE_TEMPLATES[Sudoku2.getLine(i1)]);
+				tmpSet.set(Sudoku2.ROW_TEMPLATES[Sudoku2.getRow(i1)]);
 				tmpSet.or(Sudoku2.COL_TEMPLATES[Sudoku2.getCol(i1)]);
-				tmpSet.or(Sudoku2.LINE_TEMPLATES[Sudoku2.getLine(i2)]);
+				tmpSet.or(Sudoku2.ROW_TEMPLATES[Sudoku2.getRow(i2)]);
 				tmpSet.or(Sudoku2.COL_TEMPLATES[Sudoku2.getCol(i2)]);
 				tmpSet.andNot(additionalCandidates);
 				tmpSet.andNot(twoCandidates);
@@ -726,7 +726,7 @@ public class UniquenessSolver extends AbstractSolver {
 			boolean doCheck = true;
 			if (twoSize == 2) {
 				// must be aligned diagonally -> must not be in the same row or column
-				if (Sudoku2.getLine(i1) == Sudoku2.getLine(i2) || Sudoku2.getCol(i1) == Sudoku2.getCol(i2)) {
+				if (Sudoku2.getRow(i1) == Sudoku2.getRow(i2) || Sudoku2.getCol(i1) == Sudoku2.getCol(i2)) {
 					doCheck = false;
 				}
 			}
@@ -838,13 +838,13 @@ public class UniquenessSolver extends AbstractSolver {
 		// whether there is only one cell or two cells with two candidates,
 		// checking two additional cells is enough to get the line and col
 		// that have to be checked
-		int lineC = Sudoku2.getLine(cornerIndex);
+		int lineC = Sudoku2.getRow(cornerIndex);
 		int colC = Sudoku2.getCol(cornerIndex);
 		int i1 = additionalCandidates.get(0);
 		int i2 = additionalCandidates.get(1);
-		int line1 = Sudoku2.getLine(i1);
+		int line1 = Sudoku2.getRow(i1);
 		if (line1 == lineC) {
-			line1 = Sudoku2.getLine(i2);
+			line1 = Sudoku2.getRow(i2);
 		}
 		int col1 = Sudoku2.getCol(i1);
 		if (col1 == colC) {
@@ -880,7 +880,7 @@ public class UniquenessSolver extends AbstractSolver {
 //        System.out.println("check " + line + "/" + col + "/" + cand1 + "/" + cand2);
 		tmpSet1.setOr(twoCandidates, additionalCandidates);
 		tmpSet.set(finder.getCandidates()[cand1]);
-		tmpSet.and(Sudoku2.LINE_TEMPLATES[line]);
+		tmpSet.and(Sudoku2.ROW_TEMPLATES[line]);
 		tmpSet.andNot(tmpSet1);
 //        System.out.println(tmpSet);
 		if (!tmpSet.isEmpty()) {
@@ -1024,7 +1024,7 @@ public class UniquenessSolver extends AbstractSolver {
 //                            }
 //                        }
 						}
-						if (type == Sudoku2.LINE || type == Sudoku2.COL) {
+						if (type == Sudoku2.ROW || type == Sudoku2.COL) {
 							// could be Locked Subset
 							int block = getBlockForCheck3(aktIndices);
 							if (block != -1) {
@@ -1101,10 +1101,10 @@ public class UniquenessSolver extends AbstractSolver {
 		}
 		boolean sameLine = true;
 		boolean sameCol = true;
-		int line = Sudoku2.getLine(aktIndices.get(0));
+		int line = Sudoku2.getRow(aktIndices.get(0));
 		int col = Sudoku2.getCol(aktIndices.get(0));
 		for (int i = 1; i < aktIndices.size(); i++) {
-			if (Sudoku2.getLine(aktIndices.get(i)) != line) {
+			if (Sudoku2.getRow(aktIndices.get(i)) != line) {
 				sameLine = false;
 			}
 			if (Sudoku2.getCol(aktIndices.get(i)) != col) {

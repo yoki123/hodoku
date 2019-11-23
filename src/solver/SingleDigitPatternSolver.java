@@ -282,7 +282,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 					continue;
 				}
 				// now check the candidates in the lines
-				tmpSet.setAnd(blockCands, Sudoku2.LINE_TEMPLATES[erLines[i][j]]);
+				tmpSet.setAnd(blockCands, Sudoku2.ROW_TEMPLATES[erLines[i][j]]);
 				if (tmpSet.size() >= 2) {
 					notEnoughCandidates = false;
 				}
@@ -297,7 +297,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 				if (tmpSet.size() >= 2) {
 					notEnoughCandidates = false;
 				}
-				tmpSet.andNot(Sudoku2.LINE_TEMPLATES[erLines[i][j]]);
+				tmpSet.andNot(Sudoku2.ROW_TEMPLATES[erLines[i][j]]);
 				if (tmpSet.isEmpty()) {
 					// not valid!
 					continue;
@@ -310,13 +310,13 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 				// empty rectangle found: erLine and erCol hold the lineNumbers
 				// try all cells in indices erLine; if a cell that is not part of the ER holds
 				// a candidate, check whether it forms a conjugate pair in the respective col
-				SolutionStep step = checkEmptyRectangle(cand, i, blockCands, Sudoku2.LINES[erLine],
-						Sudoku2.LINE_TEMPLATES, Sudoku2.COL_TEMPLATES, erCol, false, onlyOne);
+				SolutionStep step = checkEmptyRectangle(cand, i, blockCands, Sudoku2.ROWS[erLine],
+						Sudoku2.ROW_TEMPLATES, Sudoku2.COL_TEMPLATES, erCol, false, onlyOne);
 				if (onlyOne && step != null && !Options.getInstance().isAllowDualsAndSiamese()) {
 					return step;
 				}
 				step = checkEmptyRectangle(cand, i, blockCands, Sudoku2.COLS[erCol], Sudoku2.COL_TEMPLATES,
-						Sudoku2.LINE_TEMPLATES, erLine, true, onlyOne);
+						Sudoku2.ROW_TEMPLATES, erLine, true, onlyOne);
 				if (onlyOne && step != null && !Options.getInstance().isAllowDualsAndSiamese()) {
 					return step;
 				}
@@ -365,7 +365,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 				tmpSet.set(finder.getCandidates()[cand]);
 				int actCol = Sudoku2.getCol(index);
 				if (lineColReversed) {
-					actCol = Sudoku2.getLine(index);
+					actCol = Sudoku2.getRow(index);
 				}
 				tmpSet.and(colTemplates[actCol]);
 				if (tmpSet.size() == 2) {
@@ -376,7 +376,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 					}
 					// now check, whether a candidate in the row of index2
 					// sees the col of the ER
-					int actLine = Sudoku2.getLine(index2);
+					int actLine = Sudoku2.getRow(index2);
 					if (lineColReversed) {
 						actLine = Sudoku2.getCol(index2);
 					}
@@ -390,7 +390,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 						}
 						int colDel = Sudoku2.getCol(indexDel);
 						if (lineColReversed) {
-							colDel = Sudoku2.getLine(indexDel);
+							colDel = Sudoku2.getRow(indexDel);
 						}
 						if (colDel == firstCol) {
 							// elimination found!
@@ -573,10 +573,10 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 						}
 					} else {
 						// must be in the same line
-						if (Sudoku2.getLine(only2Indices[i][0]) == Sudoku2.getLine(only2Indices[j][0])) {
+						if (Sudoku2.getRow(only2Indices[i][0]) == Sudoku2.getRow(only2Indices[j][0])) {
 							found = true;
 						}
-						if (!found && Sudoku2.getLine(only2Indices[i][1]) == Sudoku2.getLine(only2Indices[j][1])) {
+						if (!found && Sudoku2.getRow(only2Indices[i][1]) == Sudoku2.getRow(only2Indices[j][1])) {
 							found = true;
 							otherIndex = 0;
 						}
@@ -589,8 +589,8 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 					if (lines
 							&& Sudoku2.getCol(only2Indices[i][otherIndex]) == Sudoku2
 									.getCol(only2Indices[j][otherIndex])
-							|| !lines && Sudoku2.getLine(only2Indices[i][otherIndex]) == Sudoku2
-									.getLine(only2Indices[j][otherIndex])) {
+							|| !lines && Sudoku2.getRow(only2Indices[i][otherIndex]) == Sudoku2
+									.getRow(only2Indices[j][otherIndex])) {
 						// step is X-Wing -> ignore
 						continue;
 					}
@@ -740,7 +740,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 						continue;
 					}
 					// ok: two strong links, connected in a box; can anything be deleted?
-					int crossIndex = Sudoku2.getIndex(Sudoku2.getLine(only2Indices[j][1]),
+					int crossIndex = Sudoku2.getIndex(Sudoku2.getRow(only2Indices[j][1]),
 							Sudoku2.getCol(only2Indices[i][1]));
 					if (sudoku.isCandidate(crossIndex, cand)) {
 						// valid 2-String-Kite!

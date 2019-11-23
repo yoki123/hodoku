@@ -766,7 +766,7 @@ public class TablingSolver extends AbstractSolver {
 		// all possible solutions for chains originating
 		// in the same house.
 		checkAllChainsForHouse(null);
-		checkAllChainsForHouse(Sudoku2.LINE_TEMPLATES);
+		checkAllChainsForHouse(Sudoku2.ROW_TEMPLATES);
 		checkAllChainsForHouse(Sudoku2.COL_TEMPLATES);
 		checkAllChainsForHouse(Sudoku2.BLOCK_TEMPLATES);
 	}
@@ -1220,7 +1220,7 @@ public class TablingSolver extends AbstractSolver {
 			}
 		}
 		// one value set twice in one house
-		checkHouseSet(entry, Sudoku2.LINE_TEMPLATES, Sudoku2.LINE);
+		checkHouseSet(entry, Sudoku2.ROW_TEMPLATES, Sudoku2.ROW);
 		checkHouseSet(entry, Sudoku2.COL_TEMPLATES, Sudoku2.COL);
 		checkHouseSet(entry, Sudoku2.BLOCK_TEMPLATES, Sudoku2.BLOCK);
 
@@ -1268,7 +1268,7 @@ public class TablingSolver extends AbstractSolver {
 			}
 		}
 		// all instances of a candidate delete from a house -> assumption is false
-		checkHouseDel(entry, Sudoku2.LINE_TEMPLATES, Sudoku2.LINE);
+		checkHouseDel(entry, Sudoku2.ROW_TEMPLATES, Sudoku2.ROW);
 		checkHouseDel(entry, Sudoku2.COL_TEMPLATES, Sudoku2.COL);
 		checkHouseDel(entry, Sudoku2.BLOCK_TEMPLATES, Sudoku2.BLOCK);
 	}
@@ -2030,7 +2030,7 @@ public class TablingSolver extends AbstractSolver {
 				}
 				tmpSet1.set(tmpSet);
 				if (gn.line != -1) {
-					tmpSet1.and(Sudoku2.LINE_TEMPLATES[gn.line]);
+					tmpSet1.and(Sudoku2.ROW_TEMPLATES[gn.line]);
 				} else {
 					tmpSet1.and(Sudoku2.COL_TEMPLATES[gn.col]);
 				}
@@ -2104,7 +2104,7 @@ public class TablingSolver extends AbstractSolver {
 			// in that same house -> group node is turned on by off-entry
 			if (lineAnz == 1) {
 				gn2 = groupNodes.get(line1Index);
-				tmpSet.set(Sudoku2.LINE_TEMPLATES[gn.line]);
+				tmpSet.set(Sudoku2.ROW_TEMPLATES[gn.line]);
 				tmpSet.and(finder.getCandidates()[gn.cand]);
 				tmpSet.andNot(gn.indices);
 				tmpSet.andNot(gn2.indices);
@@ -2513,7 +2513,7 @@ public class TablingSolver extends AbstractSolver {
 		// get the house with the smallest number of original candidates (needed for ret
 		// indices,
 		// but must be done before the cell is set)
-		int entityType = Sudoku2.LINE;
+		int entityType = Sudoku2.ROW;
 		int entityNumberFree = sudoku.getFree()[Sudoku2.CONSTRAINTS[cellIndex][0]][cand];
 		int dummy = sudoku.getFree()[Sudoku2.CONSTRAINTS[cellIndex][1]][cand];
 		if (dummy < entityNumberFree) {
@@ -2550,8 +2550,8 @@ public class TablingSolver extends AbstractSolver {
 			} else {
 				// all other candidates in the house with the smallest number of original
 				// candidates
-				if (entityType == Sudoku2.LINE) {
-					getRetIndicesForHouse(cellIndex, cand, Sudoku2.LINE_TEMPLATES[Sudoku2.getLine(cellIndex)], entry);
+				if (entityType == Sudoku2.ROW) {
+					getRetIndicesForHouse(cellIndex, cand, Sudoku2.ROW_TEMPLATES[Sudoku2.getRow(cellIndex)], entry);
 				} else if (entityType == Sudoku2.COL) {
 					getRetIndicesForHouse(cellIndex, cand, Sudoku2.COL_TEMPLATES[Sudoku2.getCol(cellIndex)], entry);
 				} else {

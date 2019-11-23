@@ -459,9 +459,9 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 		
 		// coloring is active
 		if (color != -1) {
-			int aktLine = sudokuPanel.getActiveRow();
+			int aktRow = sudokuPanel.getActiveRow();
 			int aktCol = sudokuPanel.getActiveCol();
-			sudokuPanel.handleColoring(aktLine, aktCol, -1, color);
+			sudokuPanel.handleColoring(aktRow, aktCol, -1, color);
 			sudokuPanel.updateCellZoomPanel();
 			mainFrame.check();
 			repaint();
@@ -469,7 +469,7 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 	}
 	
 	/**
-	 * Brings up the popup menu for the cell at line/col. If the cell is already
+	 * Brings up the popup menu for the cell at row/col. If the cell is already
 	 * set, a different menu is displayed, that allowsto delete the value from the
 	 * cell. For every other cell the contents of the menu is restricted to sensible
 	 * actions.<br>
@@ -490,10 +490,10 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 		if (sudokuPanel.getSudoku().getValue(row, col) != 0 && sudokuPanel.getSelectedCells().isEmpty()) {
 			
 			// cell is already set -> delete value popup (not for givens!)
-			int aktLine = sudokuPanel.getActiveRow();
+			int aktRow = sudokuPanel.getActiveRow();
 			int aktCol = sudokuPanel.getActiveCol();
 			
-			if (!sudokuPanel.getSudoku().isFixed(aktLine, aktCol)) {
+			if (!sudokuPanel.getSudoku().isFixed(aktRow, aktCol)) {
 				deleteValuePopupMenu.show(this, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
 			}
 			
@@ -545,7 +545,7 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			}
 		}
 		
-		int aktLine = sudokuPanel.getActiveRow();
+		int aktRow = sudokuPanel.getActiveRow();
 		int aktCol = sudokuPanel.getActiveCol();
 		
 		if (candidate != -1) {
@@ -553,8 +553,8 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			sudokuPanel.pushUndo();
 			boolean changed = false;
 			if (sudokuPanel.getSelectedCells().isEmpty()) {
-				if (sudokuPanel.getSudoku().getValue(aktLine, aktCol) == 0) {
-					sudokuPanel.setCell(aktLine, aktCol, candidate);
+				if (sudokuPanel.getSudoku().getValue(aktRow, aktCol) == 0) {
+					sudokuPanel.setCell(aktRow, aktCol, candidate);
 					changed = true;
 				}
 			} else {
@@ -585,14 +585,13 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 	 */
 	public void popupDeleteValueFromCell() {
 		
-		// System.out.println("delete valuefrom " + aktLine+ "/"+aktCol);
 		sudokuPanel.pushUndo();
 		boolean changed = false;
-		int aktLine = sudokuPanel.getActiveRow();
+		int aktRow = sudokuPanel.getActiveRow();
 		int aktCol = sudokuPanel.getActiveCol();
 		
-		if (sudokuPanel.getSudoku().getValue(aktLine, aktCol) != 0 && !sudokuPanel.getSudoku().isFixed(aktLine, aktCol)) {
-			sudokuPanel.getSudoku().setCell(aktLine, aktCol, 0);
+		if (sudokuPanel.getSudoku().getValue(aktRow, aktCol) != 0 && !sudokuPanel.getSudoku().isFixed(aktRow, aktCol)) {
+			sudokuPanel.getSudoku().setCell(aktRow, aktCol, 0);
 			changed = true;
 		}
 		
@@ -642,7 +641,7 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 		}
 	}
 	
-	public void deleteValuePopup(int line, int col, int cellSize) {
-		deleteValuePopupMenu.show(this, sudokuPanel.getX(line, col) + cellSize, sudokuPanel.getY(line, col));
+	public void deleteValuePopup(int row, int col, int cellSize) {
+		deleteValuePopupMenu.show(this, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
 	}
 }
