@@ -5,9 +5,9 @@ Java Runtime Environment (JRE) version 1.8 or higher must be installed on your c
 before you can run HoDoKu. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-Available languages: English and German
-
 ![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_001.jpg)
+
+Available languages: English and German
 
 For all Windows versions hodoku.exe is the preferred program version. For all other
 operating systems Hodoku.jar has to be used. HoDoKu uses rather a lot of memory
