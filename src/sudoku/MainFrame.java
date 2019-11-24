@@ -142,12 +142,12 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private SolutionPanel solutionPanel = new SolutionPanel(this);
 	private AllStepsPanel allStepsPanel = new AllStepsPanel(this, null);
 	private CellZoomPanel cellZoomPanel = new CellZoomPanel(this);
-	private JTabbedPane tabPane = new JTabbedPane(); // Ausdruck
+	private JTabbedPane tabPane = new JTabbedPane();
 	private PageFormat pageFormat = null;
 	private PrinterJob job = null;
 	private double bildSize = 400;
 	private int bildAufloesung = 96;
-	private int bildEinheit = 2; // File/IO
+	private int bildEinheit = 2;
 	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { 
 		new MyFileFilter(1), new MyFileFilter(2), new MyFileFilter(3), 
 		new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6), 

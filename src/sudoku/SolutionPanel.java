@@ -341,24 +341,26 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void weiterButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		getActTab();
 		if (actSelectedIndex != -1) {
 			if (actList.getSelectedIndex() != actSelectedIndex) {
 				actList.setSelectedIndex(actSelectedIndex);
 				actList.ensureIndexIsVisible(actSelectedIndex);
-				// Step anzeigen
 				mainFrame.setSolutionStep(actSteps.get(actSelectedIndex), true);
 				return;
 			} else {
 				mainFrame.stepAusfuehren();
 			}
 		}
+		
 		if (actSelectedIndex < actSteps.size() - 1) {
 			setActSelectedIndex(actSelectedIndex + 1);
 			actList.setSelectedIndex(actSelectedIndex);
 			actList.ensureIndexIsVisible(actSelectedIndex);
 			mainFrame.setSolutionStep(actSteps.get(actSelectedIndex), true);
 		}
+		
 		mainFrame.fixFocus();
 	}
 

@@ -994,34 +994,50 @@ public final class Options {
 	}
 
 	public static void readOptions() {
+		
 		String tmp = System.getProperty("java.io.tmpdir");
 		String fileName = null;
+		
 		if (tmp.endsWith(File.separator)) {
 			fileName = tmp + FILE_NAME;
 		} else {
 			fileName = tmp + File.separator + FILE_NAME;
 		}
-//        readOptions(System.getProperty("java.io.tmpdir") + File.separator + FILE_NAME);
+
 		readOptions(fileName);
 	}
 
 	public static void readOptions(String fileName) {
+		
 		Logger.getLogger(Options.class.getName()).log(Level.INFO, "Reading options from {0}", fileName);
+		
+		File file = new File(fileName);
+		boolean isFileEmpty = file.length() == 0;
+		if (isFileEmpty) {
+			if (!file.delete()) {
+				System.out.println("Fatal error, unable to modify: " + fileName);
+			}
+		}
+		
 		try {
+			
 			XMLDecoder in = new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
 			instance = (Options) in.readObject();
 			in.close();
+			
 		} catch (FileNotFoundException ex) {
+			
 			Logger.getLogger(Options.class.getName()).log(Level.INFO, "No config file found");
-			// es gibt noch keine Options-Datei
+
 			instance = new Options();
+			
 			try {
-				// neue anlegen
 				instance.writeOptions();
 			} catch (FileNotFoundException exi) {
 				Logger.getLogger(Options.class.getName()).log(Level.SEVERE, "Error writing options", exi);
 			}
 		}
+		
 		// readObject() passt nur orgSolverSteps an,
 		// nicht aber solverSteps -> neu kopieren!
 		// the same for solverStepsProgress
@@ -1031,16 +1047,19 @@ public final class Options {
 		// reduction of standard scores in v 2.2 could lead to strange effects, if a
 		// user had
 		// changed the level scores manually (max scores could get out of order)
-		// we cant have this
+		// we can't have this
 		boolean changed = false;
 		int maxScore = instance.difficultyLevels[1].getMaxScore();
 		for (int i = 2; i < instance.difficultyLevels.length; i++) {
+			
 			if (instance.difficultyLevels[i].getMaxScore() <= maxScore) {
 				instance.difficultyLevels[i].setMaxScore(maxScore + 100);
 				changed = true;
 			}
+			
 			maxScore = instance.difficultyLevels[i].getMaxScore();
 		}
+		
 		if (changed) {
 			BackgroundGeneratorThread.getInstance().resetAll();
 		}
