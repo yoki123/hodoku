@@ -393,15 +393,29 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		clearDragSelection();
 
 		Integer index = Sudoku2.getIndex(lastPressedRow, lastPressedCol);
+		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
+		boolean rightClickOutsideSelection = !cellSelection.contains(Integer.valueOf(index)) && isRightClick;
 		
-		if (!cellSelection.contains(Integer.valueOf(index)) && isRightClick) {
-			clearDragSelection();
-			cellSelection.clear();
+		if (rightClickOutsideSelection) {
+			
 			activeRow = lastPressedRow;
 			activeCol = lastPressedCol;
-			repaint();
+			cellSelection.clear();
+			clearDragSelection();
+			
+		} else if (isLeftClick && !isCtrlDown) {
+			
+			activeRow = lastPressedRow;
+			activeCol = lastPressedCol;
+			cellSelection.clear();
+			clearDragSelection();
+			
+			dragCellSelection[index.intValue()] = true;
+			cellSelection.add(index);
 		}
+		
+		repaint();
 	}
 
 	private void handleMouseReleased(java.awt.event.MouseEvent evt) {
@@ -523,13 +537,17 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						} else {
 							
 							int showHintCellValue = getShowHintCellValue();
-							if ((candidate == -1 || !sudoku.isCandidate(row, col, candidate, !showCandidates)) && showHintCellValue != 0) {
+							if ((candidate == -1 || 
+								!sudoku.isCandidate(row, col, candidate, !showCandidates)) && 
+								showHintCellValue != 0) {
+								
 								// if the candidate is not present, but part of the solution and
 								// show deviations is set, it is displayed, although technically
 								// not present: it should be toggled, even if it is not the
 								// hint value
-								if (showDeviations && sudoku.isSolutionSet()
-										&& candidate == sudoku.getSolution(activeRow, activeCol)) {
+								if (showDeviations && 
+									sudoku.isSolutionSet() && 
+									candidate == sudoku.getSolution(activeRow, activeCol)) {
 									toggleCandidateInCell(activeRow, activeCol, candidate);
 								} else {
 									toggleCandidateInCell(activeRow, activeCol, showHintCellValue);
@@ -3169,10 +3187,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		undoStack.push(sudoku.clone());
 		GameMode gm = Options.getInstance().getGameMode();
 		
-		actStep = solver.getHint(sudoku, false);		
-		while (actStep != null) {
+		while ((actStep = solver.getHint(sudoku, false)) != null) {
 			
-			if (gm == GameMode.PLAYING) {
+			if (actStep.isGiveUp()) {
+				// should display a message saying it failed, but I don;t know where the log UI is located.
+				break;
+			} else if (gm == GameMode.PLAYING) {
 				if (!actStep.getType().getStepConfig().isEnabledProgress()) {
 					// solving stops
 					break;
@@ -3188,6 +3208,17 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			getSolver().doStep(sudoku, actStep);
 			changed = true;
 		}
+			
+		/*
+		if (actStep.isGiveUp()) {
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.dont_know"),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
+			break;
+		}*/
 		
 		if (changed) {
 			redoStack.clear();

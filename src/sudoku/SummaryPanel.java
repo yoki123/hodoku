@@ -106,8 +106,8 @@ public class SummaryPanel extends javax.swing.JPanel {
 		titleLabel.setBackground(new java.awt.Color(51, 51, 255));
 		titleLabel.setForeground(new java.awt.Color(255, 255, 255));
 		titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SummaryPanel"); // NOI18N
-		titleLabel.setText(bundle.getString("SummaryPanel.titleLabel.text")); // NOI18N
+		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SummaryPanel");
+		titleLabel.setText(bundle.getString("SummaryPanel.titleLabel.text"));
 		titleLabel.setOpaque(true);
 		add(titleLabel, java.awt.BorderLayout.PAGE_START);
 	}// </editor-fold>//GEN-END:initComponents
@@ -126,14 +126,19 @@ public class SummaryPanel extends javax.swing.JPanel {
 	}
 
 	class SummaryTableModel extends AbstractTableModel {
+		
 		private static final long serialVersionUID = 1L;
+		
 		String[] columnNames = {
-				java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.count"),
-				java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.technique"),
-				java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.score") };
+			java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.count"),
+			java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.technique"),
+			java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.score")
+		};
+		
 		Object[][] content = { { "", "", "", null } };
 
 		public void initialize(SudokuSolver solver) {
+			
 			if (solver != null) {
 				content = new Object[solver.getAnzUsedSteps() + 1][4];
 				int[] anzSteps = solver.getAnzSteps();
@@ -143,23 +148,24 @@ public class SummaryPanel extends javax.swing.JPanel {
 						StepConfig config = Options.getInstance().solverSteps[i];
 						content[index][0] = Integer.toString(anzSteps[i]);
 						content[index][1] = config.getType().getStepName();
-						content[index][2] = Integer
-								.toString(anzSteps[i] * config.getBaseScore() + config.getAdminScore());
-						content[index][3] = Options.getInstance().getDifficultyLevels()[config.getLevel()]
-								.getBackgroundColor();
+						content[index][2] = Integer.toString(anzSteps[i] * config.getBaseScore() + config.getAdminScore());
+						content[index][3] = Options.getInstance().getDifficultyLevels()[config.getLevel()].getBackgroundColor();
 						index++;
 					}
 				}
-				content[index][1] = java.util.ResourceBundle.getBundle("intl/SummaryPanel")
-						.getString("SummaryPanel.sum");
+				
+				content[index][1] = java.util.ResourceBundle.getBundle("intl/SummaryPanel").getString("SummaryPanel.sum");
 				content[index][2] = Integer.toString(solver.getScore());
+				
 			} else {
+				
 				content = new Object[1][4];
 				content[0][0] = "";
 				content[0][1] = "";
 				content[0][2] = "";
-				content[0][3] = null;
+				content[0][3] = null;				
 			}
+			
 			fireTableDataChanged();
 		}
 
@@ -186,6 +192,7 @@ public class SummaryPanel extends javax.swing.JPanel {
 	}
 
 	class SummaryTableRenderer extends JLabel implements TableCellRenderer {
+		
 		private static final long serialVersionUID = 1L;
 		private Color backColor;
 
@@ -195,13 +202,20 @@ public class SummaryPanel extends javax.swing.JPanel {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-				int row, int column) {
+		public Component getTableCellRendererComponent(
+				JTable table, 
+				Object value, 
+				boolean isSelected, 
+				boolean hasFocus,
+				int row, 
+				int column) {
+			
 			if (model.content[row][3] != null) {
 				setBackground((Color) model.content[row][3]);
 			} else {
 				setBackground(backColor);
 			}
+			
 			String text = (value != null) ? value.toString() : "";
 			if (column == 0 || column == 2) {
 				setHorizontalAlignment(SwingConstants.RIGHT);
@@ -210,27 +224,13 @@ public class SummaryPanel extends javax.swing.JPanel {
 				setHorizontalAlignment(SwingConstants.LEFT);
 				text = " " + text;
 			}
+			
 			setText(text);
 			return this;
 		}
-
-//        @Override
-//        public int getHeight() {
-//            int height = super.getHeight();
-//            if (newHeight == -1) {
-//                FontMetrics metrics = getGraphics().getFontMetrics();
-//                newHeight = metrics.getHeight();
-//            }
-//            System.out.println("h: " + height + "/" + newHeight);
-//            return newHeight;
-//        }
-
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JTable summaryTable;
 	private javax.swing.JLabel titleLabel;
-	// End of variables declaration//GEN-END:variables
-
 }

@@ -129,7 +129,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private Icon emptyToggleButtonIconOrgColorKu = new ImageIcon(
 			new ColorKuImage(TOGGLE_BUTTON_ICON_SIZE, Color.WHITE));
 	/** One empty icon for disabled filter buttons */
-	// private Icon emptyToggleButtonIcon = emptyToggleButtonIconOrg;
 	private JRadioButtonMenuItem[] levelMenuItems = new JRadioButtonMenuItem[5];
 	private JRadioButtonMenuItem[] modeMenuItems;
 	private boolean oldShowDeviations = true;
@@ -3004,26 +3003,35 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 		
 		if (!sudokuPanel.isShowCandidates()) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.not_available"),
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.hint"),
-					JOptionPane.INFORMATION_MESSAGE);
+			
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.not_available"),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.hint"),
+				JOptionPane.INFORMATION_MESSAGE
+			);
+			
 			return;
 		}
 		
 		if (sudokuPanel.getSudoku().checkSudoku() == false) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/MainFrame")
-							.getString("MainFrame.invalid_values_or_candidates"),
-					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.hint"),
-					JOptionPane.INFORMATION_MESSAGE);
+			
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.invalid_values_or_candidates"),
+				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.hint"),
+				JOptionPane.INFORMATION_MESSAGE
+			);
+			
 			return;
 		}
 		
 		SolutionStep step = sudokuPanel.getNextStep(false);
 		if (mode == 0 || mode == 1) {
+			
 			sudokuPanel.abortStep();
 			fixFocus();
+			
 			if (step != null) {
 				
 				int strMode = 0;
@@ -3042,6 +3050,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				);
 				
 			} else {
+				
 				JOptionPane.showMessageDialog(
 					this,
 					java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.dont_know"),
@@ -3092,11 +3101,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			
 			String techniques = Options.getInstance().getTrainingStepsString(true);
 			if (techniques.isEmpty()) {
-				JOptionPane.showMessageDialog(this,
-						ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.notechniques"),
-						ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
-						JOptionPane.ERROR_MESSAGE);
+				
+				JOptionPane.showMessageDialog(
+					this,
+					ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.notechniques"),
+					ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
+					JOptionPane.ERROR_MESSAGE
+				);
+				
 				Options.getInstance().setGameMode(GameMode.PLAYING);
+				
 			} else {
 				Options.getInstance().setGameMode(newMode);
 			}
@@ -3162,10 +3176,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	/**
 	 * Old GuiStates remain in memory as long as they are not overwritten. Since
-	 * that can comsume quite a lot of memory, they should be nulled out before
+	 * that can consume quite a lot of memory, they should be nulled out before
 	 * clearing the list.
 	 */
 	private void clearSavePoints() {
+		
 		for (int i = 0; i < savePoints.size(); i++) {
 			savePoints.set(i, null);
 		}
@@ -3187,20 +3202,26 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public void coloringPanelClicked(int colorNumber) {
+		
 		if (colorNumber == -1 || colorNumber == -2) {
+			
 			statusPanelColorResult.setBackground(Options.getInstance().getDefaultCellColor());
 			sudokuPanel.setActiveColor(-1);
+			
 			if (colorNumber == -2) {
 				sudokuPanel.clearColoring();
 				repaint();
 			}
+			
 		} else {
+			
 			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[colorNumber]);
 			sudokuPanel.setActiveColor(colorNumber);
 		}
 	}
 
 	private void tabPaneMouseClicked(java.awt.event.MouseEvent evt) {
+		
 		if (evt.getButton() == MouseEvent.BUTTON1) {
 			switch (tabPane.getSelectedIndex()) {
 			case 0:
@@ -3220,18 +3241,21 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void saveWindowStateInOptions() {
+		
 		// save the complete window state
 		Options o = Options.getInstance();
 		o.setInitialXPos(getX());
 		o.setInitialYPos(getY());
 		o.setInitialHeight(getHeight());
 		o.setInitialWidth(getWidth());
-		// the horizontal divider pos mustnt be saved if the panel is not visible!
+		
+		// the horizontal divider position must not be saved if the panel is not visible!
 		if (o.isShowHintPanel()) {
 			o.setInitialHorzDividerLoc(outerSplitPane.getDividerLocation());
 		}
 		
-		o.setInitialDisplayMode(0); // sudoku only
+		// sudoku only
+		o.setInitialDisplayMode(0);
 		if (summaryMenuItem.isSelected()) {
 			o.setInitialDisplayMode(1);
 		}

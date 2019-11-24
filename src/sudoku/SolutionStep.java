@@ -703,6 +703,10 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	public String toString() {
 		return toString(2);
 	}
+	
+	public boolean isGiveUp() {
+		return type == SolutionType.GIVE_UP;
+	}
 
 	/**
 	 * art == 0: Kurzform art == 1: Mittellang art == 2: ausführlich
@@ -711,9 +715,11 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	 * @return
 	 */
 	public String toString(int art) {
+		
 		String str = null;
 		int index = 0;
 		StringBuffer tmp;
+		
 		switch (type) {
 		case FULL_HOUSE:
 		case HIDDEN_SINGLE:
@@ -1290,7 +1296,8 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 			tmp.append(getStepName());
 			if (art >= 1) {
 				tmp.append(": ").append(
-						java.util.ResourceBundle.getBundle("intl/SolutionStep").getString("SolutionStep.dont_know"));
+					java.util.ResourceBundle.getBundle("intl/SolutionStep").getString("SolutionStep.dont_know")
+				);
 			}
 			str = tmp.toString();
 			break;

@@ -120,8 +120,8 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		deleteFromHereMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.deleteFromHereMenuItem.mnemonic").charAt(0));
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SolutionPanel"); // NOI18N
-		deleteFromHereMenuItem.setText(bundle.getString("SolutionPanel.deleteFromHereMenuItem.text")); // NOI18N
+		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/SolutionPanel");
+		deleteFromHereMenuItem.setText(bundle.getString("SolutionPanel.deleteFromHereMenuItem.text"));
 		deleteFromHereMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				deleteFromHereMenuItemActionPerformed(evt);
@@ -132,7 +132,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		toStepMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.toStepMenuItem.mnemonic").charAt(0));
-		toStepMenuItem.setText(bundle.getString("SolutionPanel.toStepMenuItem.text")); // NOI18N
+		toStepMenuItem.setText(bundle.getString("SolutionPanel.toStepMenuItem.text"));
 		toStepMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				toStepMenuItemActionPerformed(evt);
@@ -142,7 +142,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		solveFromHereMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.solveFromHereMenuItem.mnemonic").charAt(0));
-		solveFromHereMenuItem.setText(bundle.getString("SolutionPanel.solveFromHereMenuItem.text")); // NOI18N
+		solveFromHereMenuItem.setText(bundle.getString("SolutionPanel.solveFromHereMenuItem.text"));
 		solveFromHereMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				solveFromHereMenuItemActionPerformed(evt);
@@ -152,7 +152,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		tabNewMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.tabNewMenuItem.mnemonic").charAt(0));
-		tabNewMenuItem.setText(bundle.getString("SolutionPanel.tabNewMenuItem.text")); // NOI18N
+		tabNewMenuItem.setText(bundle.getString("SolutionPanel.tabNewMenuItem.text"));
 		tabNewMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tabNewMenuItemActionPerformed(evt);
@@ -163,7 +163,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		tabNewNameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.tabNewNameMenuItem.mnemonic").charAt(0));
-		tabNewNameMenuItem.setText(bundle.getString("SolutionPanel.tabNewNameMenuItem.text")); // NOI18N
+		tabNewNameMenuItem.setText(bundle.getString("SolutionPanel.tabNewNameMenuItem.text"));
 		tabNewNameMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tabNewNameMenuItemActionPerformed(evt);
@@ -173,8 +173,8 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		tabDeleteMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.tabDeleteMenuItem.mnemonic").charAt(0));
-		tabDeleteMenuItem.setText(bundle.getString("SolutionPanel.tabDeleteMenuItem.text")); // NOI18N
-		tabDeleteMenuItem.setToolTipText(""); // NOI18N
+		tabDeleteMenuItem.setText(bundle.getString("SolutionPanel.tabDeleteMenuItem.text"));
+		tabDeleteMenuItem.setToolTipText("");
 		tabDeleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tabDeleteMenuItemActionPerformed(evt);
@@ -185,7 +185,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		tabPrintMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.tabPrintMenuItem.mnemonic").charAt(0));
-		tabPrintMenuItem.setText(bundle.getString("SolutionPanel.tabPrintMenuItem.text")); // NOI18N
+		tabPrintMenuItem.setText(bundle.getString("SolutionPanel.tabPrintMenuItem.text"));
 		tabPrintMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tabPrintMenuItemActionPerformed(evt);
@@ -198,7 +198,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 		titleLabel.setBackground(new java.awt.Color(0, 51, 255));
 		titleLabel.setForeground(new java.awt.Color(255, 255, 255));
 		titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		titleLabel.setText(bundle.getString("SolutionPanel.titleLabel.text")); // NOI18N
+		titleLabel.setText(bundle.getString("SolutionPanel.titleLabel.text"));
 		titleLabel.setOpaque(true);
 		add(titleLabel, java.awt.BorderLayout.PAGE_START);
 
@@ -206,8 +206,8 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		weiterButton.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.weiterButton.mnemonic").charAt(0));
-		weiterButton.setText(bundle.getString("SolutionPanel.weiterButton.text")); // NOI18N
-		weiterButton.setToolTipText(bundle.getString("SolutionPanel.weiterButton.toolTipText")); // NOI18N
+		weiterButton.setText(bundle.getString("SolutionPanel.weiterButton.text"));
+		weiterButton.setToolTipText(bundle.getString("SolutionPanel.weiterButton.toolTipText"));
 		weiterButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				weiterButtonActionPerformed(evt);
@@ -216,8 +216,8 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 		alleEinfachenButton.setMnemonic(java.util.ResourceBundle.getBundle("intl/SolutionPanel")
 				.getString("SolutionPanel.alleEinfachenButton.mnemonic").charAt(0));
-		alleEinfachenButton.setText(bundle.getString("SolutionPanel.alleEinfachenButton.text")); // NOI18N
-		alleEinfachenButton.setToolTipText(bundle.getString("SolutionPanel.alleEinfachenButton.toolTipText")); // NOI18N
+		alleEinfachenButton.setText(bundle.getString("SolutionPanel.alleEinfachenButton.text"));
+		alleEinfachenButton.setToolTipText(bundle.getString("SolutionPanel.alleEinfachenButton.toolTipText"));
 		alleEinfachenButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alleEinfachenButtonActionPerformed(evt);
@@ -256,7 +256,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 			}
 		});
 		add(solutionTabbedPane, java.awt.BorderLayout.CENTER);
-	}// </editor-fold>//GEN-END:initComponents
+	}
 
 	private void toStepMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		getActTab();
@@ -289,11 +289,12 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void solutionListMouseClicked(java.awt.event.MouseEvent evt) {
+		
 		getActTab();
-		// System.out.println("solutionListMouseClicked: " + evt.getButton() + "/" +
-		// evt.getClickCount());
+		
 		// Element in der Liste ausgewählt
 		if (evt.getButton() == 1) {
+			
 			int index = solutionList.getSelectedIndex();
 			if (index != -1) {
 				if (evt.getClickCount() == 2) {
@@ -303,6 +304,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 				mainFrame.setSolutionStep(actSteps.get(index), true);
 			}
 		} else if (evt.getButton() == 3) {
+			
 			rightMouseClickedIndex = solutionList.locationToIndex(evt.getPoint());
 			if (actSteps.get(rightMouseClickedIndex).getType() == SolutionType.INCOMPLETE) {
 				deleteFromHereMenuItem.setEnabled(false);
@@ -313,8 +315,10 @@ public class SolutionPanel extends javax.swing.JPanel {
 				toStepMenuItem.setEnabled(true);
 				solveFromHereMenuItem.setEnabled(false);
 			}
+			
 			solutionPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
 		}
+		
 		mainFrame.fixFocus();
 	}
 
@@ -365,20 +369,23 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void solutionTabbedPaneMouseClicked(java.awt.event.MouseEvent evt) {
-		// System.out.println("solutionTabbedPaneMouseClicked: " + evt.getButton() + "/"
-		// + evt.getClickCount());
+
 		if (evt.getButton() != 3) {
 			return;
 		}
+		
 		for (int i = 0; i < solutionTabbedPane.getTabCount(); i++) {
+			
 			Rectangle rect = solutionTabbedPane.getBoundsAt(i);
 			if (rect == null || !rect.contains(evt.getPoint())) {
 				continue;
 			}
+			
 			getActTab();
 			if (actSteps == null || actSteps.isEmpty()) {
 				return;
 			}
+			
 			tabPopupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
 			return;
 		}
@@ -386,16 +393,19 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void tabNewNameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		int index = solutionTabbedPane.getSelectedIndex();
 		if (index == -1) {
 			return;
 		}
+		
 		String init = titels.get(index);
-		String newTitel = JOptionPane.showInputDialog(
-				java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.new_name"), init);
+		String newTitel = JOptionPane.showInputDialog(java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.new_name"), init);
+		
 		if (newTitel != null) {
 			setNewTabTitle(index, newTitel);
 		}
+		
 		mainFrame.fixFocus();
 	}
 
@@ -416,6 +426,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 			// nichts tun, sonst gibts Chaos
 			return;
 		}
+		
 		getActTab();
 		if (actList != null && actSteps != null) {
 			int index = actList.getSelectedIndex();
@@ -428,12 +439,15 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void tabPrintMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (actSteps != null) {
+			
 			String initialState = mainFrame.getSudokuPanel().getSudoku().getInitialState();
+			
 			if (initialState == null) {
 				initialState = mainFrame.getSudokuPanel().getSudoku().getSudoku(ClipboardMode.CLUES_ONLY);
 			}
-//        new PrintSolutionDialog(mainFrame, true, actSteps, mainFrame.getSudokuPanel().getSudoku().getSudoku(ClipboardMode.LIBRARY)).setVisible(true);
+
 			new PrintSolutionDialog(mainFrame, true, actSteps, initialState).setVisible(true);
 			mainFrame.fixFocus();
 		}
@@ -445,6 +459,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	public void initialize(List<SolutionStep> newSteps) {
+		
 		// first reset to one Tab
 		inTabbedPaneRemoveAll = true;
 		solutionTabbedPane.removeAll();
@@ -472,11 +487,13 @@ public class SolutionPanel extends javax.swing.JPanel {
 	 * @param solutions The lists with SolutionSteps for all solutions
 	 */
 	public void initialize(List<String> titels, List<List<SolutionStep>> solutions) {
+		
 		if (titels.size() != solutions.size()) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE,
 					"SolutionPanel.initialize(): titels and solutions don''t have the same length " + "({0}/{1})",
 					new Object[] { titels.size(), solutions.size() });
 		}
+		
 		int size = titels.size();
 		if (solutions.size() < size) {
 			size = solutions.size();
@@ -493,12 +510,16 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	public void addStep(SolutionStep step) {
+		
 		getActTab();
+		
 		if (actSteps.get(actSteps.size() - 1).getType() != SolutionType.INCOMPLETE) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.cant_add_step"),
-					java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.cant_add_step"),
+				java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
 			return;
 		}
 		actSteps.add(actSteps.size() - 1, step);
@@ -506,12 +527,15 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void resetSudokuToIndex(int index) {
+		
 		getActTab();
 		Sudoku2 sudoku = mainFrame.getSudokuPanel().getSudoku();
 		sudoku.resetSudoku();
+		
 		for (int i = 0; i < index; i++) {
 			solver.doStep(sudoku, actSteps.get(i));
 		}
+		
 		setActSelectedIndex(index);
 		mainFrame.getSudokuPanel().clearUndoRedo();
 		mainFrame.getSudokuPanel().clearColoring();
@@ -519,6 +543,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void processDoubleClick(int index) {
+		
 		// bei Doppelklick wird das Sudoku2 neu geladen, dann werden alle Schritte bis
 		// zum
 		// geklickten ausgeführt
@@ -542,6 +567,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 	@SuppressWarnings("unchecked")
 	private void setStepsInList() {
+		
 		getActTab();
 		String[] data = new String[actSteps.size()];
 		actStepBackgroundColors = new Color[actSteps.size()];
@@ -551,26 +577,20 @@ public class SolutionPanel extends javax.swing.JPanel {
 		stepForegroundColors.remove(tmpIndex);
 		stepBackgroundColors.add(tmpIndex, actStepBackgroundColors);
 		stepForegroundColors.add(tmpIndex, actStepForegroundColors);
+		
 		for (int i = 0; i < actSteps.size(); i++) {
-			// data[i] = steps.get(i).toString(1);
-//            System.out.println("setStepsInList(): " + actSteps.get(i));
 			data[i] = actSteps.get(i).toString(2);
-//            System.out.println("setStepsInList(): " + data[i]);
-//            System.out.println("   type: " + actSteps.get(i).getType());
-//            System.out.println("   config: " + SolutionType.getStepConfig(actSteps.get(i).getType()));
-//            System.out.println("   level: " + SolutionType.getStepConfig(actSteps.get(i).getType()).getLevel());
-//            System.out.println("   level2: " + Options.getInstance().getDifficultyLevels()[SolutionType.getStepConfig(actSteps.get(i).getType()).getLevel()]);
-//            System.out.println("   background: " + Options.getInstance().getDifficultyLevels()[SolutionType.getStepConfig(actSteps.get(i).getType()).getLevel()].getBackgroundColor());
-//            System.out.println("   foreground: " + Options.getInstance().getDifficultyLevels()[SolutionType.getStepConfig(actSteps.get(i).getType()).getLevel()].getForegroundColor());
 			actStepBackgroundColors[i] = Options.getInstance().getDifficultyLevels()[SolutionType
 					.getStepConfig(actSteps.get(i).getType()).getLevel()].getBackgroundColor();
 			actStepForegroundColors[i] = Options.getInstance().getDifficultyLevels()[SolutionType
 					.getStepConfig(actSteps.get(i).getType()).getLevel()].getForegroundColor();
 		}
+		
 		actList.setListData(data);
 	}
 
 	private void stepListMouseClicked(java.awt.event.MouseEvent evt) {
+		
 		// Element in der Liste ausgewählt
 		getActTab();
 		if (evt.getButton() == 1) {
@@ -599,6 +619,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 				}
 			}
 		}
+		
 		mainFrame.fixFocus();
 	}
 
@@ -614,6 +635,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void addTabPane(List<SolutionStep> steps, String titel) {
+		
 		JList tmpList = new JList();
 		tmpList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		// tmpList.setCellRenderer(listRenderer);
@@ -636,6 +658,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 		selectedIndices.add(-1);
 		stepBackgroundColors.add(null); // will be replaced in setStepsInList()
 		stepForegroundColors.add(null); // will be replaced in setStepsInList()
+		
 		if (steps != null) {
 			List<SolutionStep> newSteps = new ArrayList<SolutionStep>();
 			for (SolutionStep step : steps) {
@@ -651,18 +674,22 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void deleteTabPane() {
+		
 		if (solutionTabbedPane.getTabCount() <= 1) {
-			JOptionPane.showMessageDialog(this,
-					java.util.ResourceBundle.getBundle("intl/SolutionPanel")
-							.getString("SolutionPanel.cant_delete_step"),
-					java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.error"),
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(
+				this,
+				java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.cant_delete_step"),
+				java.util.ResourceBundle.getBundle("intl/SolutionPanel").getString("SolutionPanel.error"),
+				JOptionPane.ERROR_MESSAGE
+			);
 			return;
 		}
+		
 		int index = solutionTabbedPane.getSelectedIndex();
 		if (index == -1) {
 			return;
 		}
+		
 		solutionTabbedPane.remove(index);
 		titels.remove(index);
 		tabSteps.remove(index);
@@ -673,10 +700,12 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void getActTab() {
+		
 		int index = solutionTabbedPane.getSelectedIndex();
 		if (index == -1) {
 			index = 0;
 		}
+		
 		if (lists.size() > index) {
 			actList = lists.get(index);
 			actSteps = tabSteps.get(index);
@@ -693,29 +722,31 @@ public class SolutionPanel extends javax.swing.JPanel {
 	}
 
 	private void setActSelectedIndex(int selectedIndex) {
+		
 		int index = solutionTabbedPane.getSelectedIndex();
 		if (index == -1) {
-			// System.out.println("setActSelectedIndex():
-			// solutionTabbedPane.getSelectedIndex() == -1!");
 			index = 0;
 		}
+		
 		selectedIndices.remove(index);
 		selectedIndices.add(index, selectedIndex);
 		actSelectedIndex = selectedIndex;
 	}
 
 	private void setActSteps(List<SolutionStep> steps) {
+		
 		int index = solutionTabbedPane.getSelectedIndex();
 		if (index == -1) {
-			// System.out.println("setActSteps(): solutionTabbedPane.getSelectedIndex() ==
-			// -1!");
 			index = 0;
 		}
+		
 		tabSteps.remove(index);
 		List<SolutionStep> tmpSteps = new ArrayList<SolutionStep>(steps.size());
+		
 		for (SolutionStep step : steps) {
 			tmpSteps.add(step);
 		}
+		
 		tabSteps.add(index, tmpSteps);
 		actSteps = steps;
 	}
@@ -744,6 +775,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void getState(GuiState state, boolean copy) {
+		
 		if (copy) {
 			state.setTitels((List<String>) ((ArrayList<String>) titels).clone());
 			state.setTabSteps((List<List<SolutionStep>>) ((ArrayList<List<SolutionStep>>) tabSteps).clone());
@@ -765,6 +797,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 
 	@SuppressWarnings("rawtypes")
 	class SolutionListRenderer extends JLabel implements ListCellRenderer {
+		
 		private static final long serialVersionUID = 1L;
 
 		SolutionListRenderer() {
@@ -772,28 +805,36 @@ public class SolutionPanel extends javax.swing.JPanel {
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+		public Component getListCellRendererComponent(
+				JList list, 
+				Object value, 
+				int index, 
+				boolean isSelected,
 				boolean cellHasFocus) {
+			
 			setBackground(Color.WHITE);
 			if (actStepBackgroundColors != null) {
 				setBackground(actStepBackgroundColors[index]);
 			}
+			
 			setForeground(Color.BLACK);
 			if (actStepForegroundColors != null) {
 				setForeground(actStepForegroundColors[index]);
 			}
+			
 			if (isSelected) {
 				setBackground(actList.getSelectionBackground());
 				setForeground(actList.getSelectionForeground());
 			}
+			
 			String text = (value != null) ? value.toString() : "";
 			setText("  " + text);
+			
 			return this;
 		}
 
 	}
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton alleEinfachenButton;
 	private javax.swing.JMenuItem deleteFromHereMenuItem;
 	private javax.swing.JSeparator jSeparator1;
@@ -814,6 +855,4 @@ public class SolutionPanel extends javax.swing.JPanel {
 	private javax.swing.JLabel titleLabel;
 	private javax.swing.JMenuItem toStepMenuItem;
 	private javax.swing.JButton weiterButton;
-	// End of variables declaration//GEN-END:variables
-
 }
