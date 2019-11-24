@@ -282,6 +282,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				if (isCtrlDown) {
 
 					if (cellSelection.isEmpty()) {
+						activeRow = row;
+						activeCol = col;
 						cellSelection.add(Integer.valueOf(Sudoku2.getIndex(activeRow, activeCol)));
 					}
 				}
@@ -298,6 +300,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						}
 					} else {
 						cellSelection.add(Integer.valueOf(index));
+						activeRow = Sudoku2.getRow(index);
+						activeCol = Sudoku2.getCol(index);
 					}
 
 					repaint();
@@ -2047,18 +2051,19 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				boolean isSelected = 
 						(cellSelection.isEmpty() && row == activeRow && col == activeCol) || 
 						cellSelection.contains(Integer.valueOf(cellIndex));
-				// the cell doesn't count as selected, if the last change of the cursor has been
-				// a while
+				
+				// the cell doesn't count as selected, if the last change of the cursor has been a while
 				if (isSelected && cellSelection.isEmpty() && Options.getInstance().isDeleteCursorDisplay()) {
 					if ((System.currentTimeMillis() - lastCursorChanged) > Options.getInstance().getDeleteCursorDisplayLength()) {
 						isSelected = false;
 					}
 				}
-				// don't paint the whole cell yellow, just a small frame, if onlySmallCursors is
-				// set
+				
+				// don't paint the whole cell yellow, just a small frame, if onlySmallCursors is set
 				if (isSelected && !isPrint && !Options.getInstance().isOnlySmallCursors()) {
 					setColor(g2, allBlack, Options.getInstance().getAktCellColor());
 				}
+				
 				// check if the candidate denoted by showHintCellValue is a valid candidate; if
 				// showCandidates == true,
 				// this can be done by SudokuCell.isCandidateValid(); if it is false, candidates
@@ -2093,19 +2098,24 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					setColor(g2, allBlack, Options.getInstance().getColoringColors()[coloringMap.get(cellIndex)]);
 				}
 
-				g2.fillRect(getX(row, col), getY(row, col), cellSize, cellSize);
+				// draw cell selection
+				int cellX = getX(row, col);
+				int cellY = getY(row, col);
+				g2.fillRect(cellX, cellY, cellSize, cellSize);
 				if (isSelected && !isPrint && g2.getColor() != Options.getInstance().getAktCellColor()) {
 					
 					setColor(g2, allBlack, Options.getInstance().getAktCellColor());
 					
 					int frameSize = (int) (cellSize * Options.getInstance().getCursorFrameSize());
-					int cx = getX(row, col);
-					int cy = getY(row, col);
 					
-					g2.fillRect(cx, cy, cellSize, frameSize);
-					g2.fillRect(cx, cy, frameSize, cellSize);
-					g2.fillRect(cx + cellSize - frameSize, cy, frameSize, cellSize);
-					g2.fillRect(cx, cy + cellSize - frameSize, cellSize, frameSize);
+					if (row != activeRow || col != activeCol) {
+						frameSize = frameSize / 2 + 1;
+					}
+					
+					g2.fillRect(cellX, cellY, cellSize, frameSize);
+					g2.fillRect(cellX, cellY, frameSize, cellSize);
+					g2.fillRect(cellX + cellSize - frameSize, cellY, frameSize, cellSize);
+					g2.fillRect(cellX, cellY + cellSize - frameSize, cellSize, frameSize);
 				}
 
 				if (showCandidateHighlight()) {

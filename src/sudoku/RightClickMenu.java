@@ -272,6 +272,8 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			e.getSource() == make7MenuItem || e.getSource() == make8MenuItem ||
 			e.getSource() == make9MenuItem) {
 			popupSetCell((JMenuItem) e.getSource());
+			this.setVisible(false);
+			this.sudokuPanel.repaint();
 			return;
 		}
 		
@@ -281,11 +283,15 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			e.getSource() == exclude7MenuItem || e.getSource() == exclude8MenuItem ||
 			e.getSource() == exclude9MenuItem) {
 			popupExcludeCandidate((JMenuItem) e.getSource());
+			this.setVisible(false);
+			this.sudokuPanel.repaint();
 			return;
 		}
 		
 		if (e.getSource() == excludeSeveralMenuItem) {
 			excludeSeveralMenuItemActionPerformed(e);
+			this.setVisible(false);
+			this.sudokuPanel.repaint();
 			return;
 		}
 		
@@ -295,11 +301,14 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			e.getSource() == color4aMenuItem || e.getSource() == color4bMenuItem ||
 			e.getSource() == color5aMenuItem || e.getSource() == color5bMenuItem) {
 			popupToggleColor((JMenuItem) e.getSource());
+			this.sudokuPanel.repaint();
 			return;
 		}
 		
 		if (e.getSource() == deleteValueMenuItem) {
 			popupDeleteValueFromCell();
+			this.setVisible(false);
+			this.sudokuPanel.repaint();
 			return;
 		}
 	}
