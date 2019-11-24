@@ -37,7 +37,7 @@ Bug Fixes:
 
   - Active cell selector position now updates correctly on mouse drag.
 
-  - "Solve up to" had a bug where it would go in an endless loop on a puzle where the engine gives-up.
+  - "Solve up to" had a bug where it would go in an endless loop on a puzzle where the engine gives-up.
 
   - Cell selection bug when removing existing selection from previous selection.
 
