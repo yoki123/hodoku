@@ -61,8 +61,7 @@ public class Main {
 	public static String OS_NAME = "";
 
 	/** Creates a new instance of Main */
-	public Main() {
-	}
+	public Main() {}
 
 	public String getSrcDir() {
 

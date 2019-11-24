@@ -282,7 +282,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				if (isCtrlDown) {
 
 					if (cellSelection.isEmpty()) {
-						cellSelection.add(Sudoku2.getIndex(activeRow, activeCol));
+						cellSelection.add(Integer.valueOf(Sudoku2.getIndex(activeRow, activeCol)));
 					}
 				}
 
@@ -290,14 +290,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 					dragCellSelection[index] = true;
 
-					if (cellSelection.contains(index)) {
-						cellSelection.remove(index);
+					if (cellSelection.contains(Integer.valueOf(index))) {
+						cellSelection.remove(Integer.valueOf(index));
 						if (cellSelection.isEmpty()) {
 							activeRow = Sudoku2.getRow(index);
 							activeCol = Sudoku2.getCol(index);
 						}
 					} else {
-						cellSelection.add(index);
+						cellSelection.add(Integer.valueOf(index));
 					}
 
 					repaint();
@@ -395,7 +395,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		Integer index = Sudoku2.getIndex(lastPressedRow, lastPressedCol);
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
 		
-		if (!cellSelection.contains(index) && isRightClick) {
+		if (!cellSelection.contains(Integer.valueOf(index)) && isRightClick) {
 			clearDragSelection();
 			cellSelection.clear();
 			activeRow = lastPressedRow;
@@ -503,7 +503,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				if (Options.getInstance().isSingleClickMode()) {
 					
 					// toggle candidate in cell(s) (three state mode)
-					if (cellSelection.contains(Sudoku2.getIndex(row, col))) {
+					if (cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col)))) {
 						
 						// a region select exists and the cells lies within: toggle candidate
 						if (candidate != -1) {
@@ -631,16 +631,16 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							// select additional cell
 							if (cellSelection.size() == 0) {
 								// the last selected cell is not yet in the set
-								cellSelection.add(Sudoku2.getIndex(activeRow, activeCol));
-								cellSelection.add(Sudoku2.getIndex(row, col));
+								cellSelection.add(Integer.valueOf(Sudoku2.getIndex(activeRow, activeCol)));
+								cellSelection.add(Integer.valueOf(Sudoku2.getIndex(row, col)));
 								setAktRowCol(row, col);
 							} else {
 								
 								int index2 = Sudoku2.getIndex(row, col);
-								if (cellSelection.contains(index2)) {
-									cellSelection.remove(index2);
+								if (cellSelection.contains(Integer.valueOf(index2))) {
+									cellSelection.remove(Integer.valueOf(index2));
 								} else {
-									cellSelection.add(Sudoku2.getIndex(row, col));
+									cellSelection.add(Integer.valueOf(Sudoku2.getIndex(row, col)));
 								}
 								
 								setAktRowCol(row, col);
@@ -672,7 +672,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							// selected, if the cell is outside a selected region
 							if (Options.getInstance().isSingleClickMode() == false ||
 								(Options.getInstance().isSingleClickMode() == true &&
-								cellSelection.contains(Sudoku2.getIndex(row, col)) == false)) {
+								cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col))) == false)) {
 								setAktRowCol(row, col);
 								clearRegion();
 							}
@@ -1443,7 +1443,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			int lStart = row < activeRow ? row : activeRow;
 			for (int i = cStart; i <= cStart + Math.abs(col - activeCol); i++) {
 				for (int j = lStart; j <= lStart + Math.abs(row - activeRow); j++) {
-					cellSelection.add(Sudoku2.getIndex(j, i));
+					cellSelection.add(Integer.valueOf(Sudoku2.getIndex(j, i)));
 				}
 			}
 		}
@@ -2028,7 +2028,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				int cellIndex = Sudoku2.getIndex(row, col);
 				boolean isSelected = 
 						(cellSelection.isEmpty() && row == activeRow && col == activeCol) || 
-						cellSelection.contains(cellIndex);
+						cellSelection.contains(Integer.valueOf(cellIndex));
 				// the cell doesn't count as selected, if the last change of the cursor has been
 				// a while
 				if (isSelected && cellSelection.isEmpty() && Options.getInstance().isDeleteCursorDisplay()) {
