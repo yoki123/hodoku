@@ -1525,7 +1525,7 @@ public class Sudoku2 implements Cloneable {
 	 * @param index
 	 * @return
 	 */
-	public int getValue(int index) {
+	public int getValue(int index) {		
 		return values[index];
 	}
 

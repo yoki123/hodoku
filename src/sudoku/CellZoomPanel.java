@@ -836,13 +836,20 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}// GEN-LAST:event_chooseCellColor0PanelMouseClicked
 
 	private void handleCandidateChange(JButton button) {
+		
 		int candidate = -1;
+		
+		if (sudokuPanel.getActiveRow() == -1 || sudokuPanel.getActiveCol() == -1) {
+			return;
+		}
+		
 		for (int i = 0; i < toggleCandidatesButtons.length; i++) {
 			if (button == toggleCandidatesButtons[i]) {
 				candidate = i + 1;
 				break;
 			}
 		}
+		
 		if (sudokuPanel != null && candidate != -1) {
 			if (aktColor == -1) {
 				sudokuPanel.toggleOrRemoveCandidateFromCellZoomPanel(candidate);
@@ -853,22 +860,31 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}
 
 	private void setValue(JButton button) {
+		
 		int number = -1;
+		
+		if (sudokuPanel.getActiveRow() == -1 || sudokuPanel.getActiveCol() == -1) {
+			return;
+		}
+		
 		for (int i = 0; i < setValueButtons.length; i++) {
 			if (button == setValueButtons[i]) {
 				number = i + 1;
 				break;
 			}
 		}
+		
 		if (sudokuPanel != null && number != -1) {
 			sudokuPanel.setCellFromCellZoomPanel(number);
 		}
 	}
 
 	private void handleColorChange(JPanel panel) {
+		
 		boolean found = false;
 		boolean isCell = false;
 		int colorNumber = -1;
+		
 		for (int i = 0; i < cellPanels.length; i++) {
 			if (panel == cellPanels[i]) {
 				colorNumber = i - 2; // adjust for -1 and -2
@@ -877,6 +893,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 				break;
 			}
 		}
+		
 		if (!found) {
 			for (int i = 0; i < candidatePanels.length; i++) {
 				if (panel == candidatePanels[i]) {
@@ -894,10 +911,12 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}
 
 	public final void calculateLayout() {
+		
 		if (defaultButtonHeight == -1) {
 			// not yet initialized!
 			return;
 		}
+		
 		int width = getWidth();
 		int height = getHeight();
 		int y = Y_OFFSET;
@@ -921,18 +940,22 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		if (colorPanelHeight > COLOR_PANEL_MAX_HEIGHT) {
 			colorPanelHeight = COLOR_PANEL_MAX_HEIGHT;
 		}
+		
 		if (buttonPanelHeight > (width - 2 * X_OFFSET)) {
 			buttonPanelHeight = width - 2 * X_OFFSET;
 		}
+		
 		if (buttonPanelHeight < 120) {
 			// adjust color panels
 			colorPanelHeight -= (120 - buttonPanelHeight);
 			buttonPanelHeight = 120;
 		}
+		
 		int colorPanelGesWidth = colorPanelHeight * 4;
 		if (colorPanelGesWidth > width - 2 * X_OFFSET) {
 			colorPanelHeight = (int) ((width - 2 * X_OFFSET) / 4.5);
 		}
+		
 		colorPanelGesWidth = colorPanelHeight * 4;
 		int newColorImageHeight = colorPanelHeight * 2 / 3;
 
@@ -1049,6 +1072,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	public void update(SudokuSet values, SudokuSet candidates, int aktColor, int index, boolean colorCellOrCandidate,
 			boolean singleCell, SortedMap<Integer, Integer> coloredCells,
 			SortedMap<Integer, Integer> coloredCandidates) {
+		
 		// reset all buttons
 		for (int i = 0; i < setValueButtons.length; i++) {
 			setValueButtons[i].setText("");
@@ -1062,6 +1086,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			toggleCandidatesButtons[i].setBackground(normButtonBackground);
 			toggleCandidatesButtons[i].setIcon(null);
 		}
+		
 		cellColorPanel.setBackground(Options.getInstance().getDefaultCellColor());
 		candidateColorPanel.setBackground(Options.getInstance().getDefaultCellColor());
 
@@ -1082,6 +1107,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 					setValueButtons[cand].setEnabled(true);
 				}
 			}
+			
 			for (int i = 0; i < candidates.size(); i++) {
 				int cand = candidates.get(i) - 1;
 				if (cand >= 0 && cand <= 8) {
@@ -1095,6 +1121,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 					toggleCandidatesButtons[cand].setEnabled(true);
 				}
 			}
+			
 			if (singleCell) {
 				toggleCandidatesLabel.setText(ResourceBundle.getBundle("intl/CellZoomPanel")
 						.getString("CellZoomPanel.toggleCandidatesLabel.text"));
@@ -1105,13 +1132,16 @@ public class CellZoomPanel extends javax.swing.JPanel {
 				toggleCandidatesLabel.setText(ResourceBundle.getBundle("intl/CellZoomPanel")
 						.getString("CellZoomPanel.toggleCandidatesLabel.text2"));
 			}
+			
 		} else {
+			
 			// coloring
 			if (colorCellOrCandidate) {
 				cellColorPanel.setBackground(Options.getInstance().getColoringColors()[aktColor]);
 			} else {
 				candidateColorPanel.setBackground(Options.getInstance().getColoringColors()[aktColor]);
 			}
+			
 			if (coloredCells != null) {
 				// single cell is colored: set colors in buttons
 //                if (coloredCells.containsKey(index)) {
@@ -1144,13 +1174,16 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}
 
 	private ImageIcon createImage(int size, int colorIndex, int cand) {
+		
 		if (size > 0) {
+			
 			Image img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = (Graphics2D) img.getGraphics();
 			Color color = Options.getInstance().getDefaultCellColor();
 			if (colorIndex < Options.getInstance().getColoringColors().length) {
 				color = Options.getInstance().getColoringColors()[colorIndex];
 			}
+			
 			g.setColor(color);
 			g.fillRect(0, 0, size, size);
 			if (cand > 0) {
@@ -1168,6 +1201,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 					g.drawString(String.valueOf(cand), (size - strWidth) / 2, (size + strHeight - 2) / 2);
 				}
 			}
+			
 			return new ImageIcon(img);
 		} else {
 			return null;
