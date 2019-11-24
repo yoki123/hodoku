@@ -22,6 +22,33 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.7 (2019-11-23)
+--------------------------
+
+Features:
+
+  - The active cell selector has been made larger then the rest of the cell selection to distinguish it.
+
+  - Cell selection is more responsive. Immediate selection on down event.
+  
+  - German translation support has been added.
+  
+Bug Fixes:
+
+  - Active cell selector position now updates correctly on mouse drag.
+
+  - "Solve up to" had a bug where it would go in an endless loop on a puzle where the engine gives-up.
+
+  - Cell selection bug when removing existing selection from previous selection.
+
+  - Solve Puzzle now throws an appropriate message when the puzzle has multiple solutions.
+
+  - Right click no longer clears the selection.
+
+  - An empty config file is deleted and re-generated.
+  
+  - Internal code redesigning and refactoring.
+
 Version 2.2.6 (2019-11-22)
 --------------------------
 

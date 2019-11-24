@@ -76,20 +76,22 @@ public class Main {
 	}
 
 	void searchForType(List<StepType> typeList, DifficultyLevel level, String outFile) {
-		// Logger.getLogger(getClass().getName()).log(Level.INFO, "Starting search for "
-		// + type.getStepName());
+
 		System.out.println("Starting search for:");
 		if (typeList.size() > 0) {
 			for (StepType tmpType : typeList) {
 				System.out.println("   " + tmpType);
 			}
 		}
+		
 		if (level != null) {
 			System.out.println("   " + level.getName());
 		}
+		
 		SearchForTypeThread thread = new SearchForTypeThread(typeList, level, outFile);
 		thread.start();
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
 		try {
 			// 20120112: Pressing <ctrl><c> makes readLine() return null
 			// which leads to a NullPointerException
@@ -100,31 +102,74 @@ public class Main {
 					break;
 				}
 			}
+			
 		} catch (IOException ex) {
 			System.out.println("Error reading from console");
 		}
+		
 		thread.interrupt();
+		
 		try {
 			thread.join();
 		} catch (InterruptedException ex) {
 			System.out.println("Interrupted waiting for search thread");
 		}
+		
 		System.out.println("Gesamt: " + thread.getAnz() + " Sudoku erzeugt (" + thread.getAnzFound() + " Treffer)");
 	}
 
-	public void batchSolve(String fileName, String puzzleString, boolean printSolution, boolean printSolutionPath,
-			boolean printStatistic, ClipboardMode cMode, Set<SolutionType> types, String outFile,
+	public void batchSolve(
+			String fileName, 
+			String puzzleString, 
+			boolean printSolution, 
+			boolean printSolutionPath,
+			boolean printStatistic, 
+			ClipboardMode cMode, 
+			Set<SolutionType> types, 
+			String outFile,
 			boolean findAllSteps) {
-		batchSolve(fileName, puzzleString, printSolution, printSolutionPath, printStatistic, cMode, types, outFile,
-				findAllSteps, false, null);
+		
+		batchSolve(
+			fileName, 
+			puzzleString, 
+			printSolution, 
+			printSolutionPath, 
+			printStatistic, 
+			cMode, 
+			types, 
+			outFile,
+			findAllSteps, 
+			false, 
+			null
+		);
 	}
 
-	public void batchSolve(String fileName, String puzzleString, boolean printSolution, boolean printSolutionPath,
-			boolean printStatistic, ClipboardMode cMode, Set<SolutionType> types, String outFile, boolean findAllSteps,
-			boolean bruteForceTest, List<SolutionType> testTypes) {
+	public void batchSolve(
+			String fileName, 
+			String puzzleString, 
+			boolean printSolution, 
+			boolean printSolutionPath,
+			boolean printStatistic, 
+			ClipboardMode cMode, 
+			Set<SolutionType> types, 
+			String outFile, 
+			boolean findAllSteps,
+			boolean bruteForceTest, 
+			List<SolutionType> testTypes) {
 
-		BatchSolveThread thread = new BatchSolveThread(fileName, puzzleString, printSolution, printSolutionPath,
-				printStatistic, cMode, types, outFile, findAllSteps, bruteForceTest, testTypes);
+		BatchSolveThread thread = new BatchSolveThread(
+			fileName, 
+			puzzleString, 
+			printSolution, 
+			printSolutionPath,
+			printStatistic, 
+			cMode, 
+			types, 
+			outFile, 
+			findAllSteps, 
+			bruteForceTest, 
+			testTypes
+		);
 
 		thread.start();
 		ShutDownThread st = new ShutDownThread(thread);
@@ -138,8 +183,7 @@ public class Main {
 
 		try {
 			Runtime.getRuntime().removeShutdownHook(st);
-		} catch (Exception ex) {
-		}
+		} catch (Exception ex) {}
 
 		int min = (int) (thread.getTicks() / 60000);
 		int sec = (int) (thread.getTicks() % 60000);
@@ -149,9 +193,13 @@ public class Main {
 		int hours = min / 60;
 		min -= (hours * 60);
 
-		System.out.printf("%d puzzles in %dms (%d:%02d:%02d.%03d)\r\n", thread.getCount(), thread.getTicks(), hours,
-				min, sec, ms);
-//        System.out.println(thread.getCount() + " puzzles in " + thread.getTicks() + "ms (" + hours + ":" + min + ":" + sec + "." + ms + ")");
+		System.out.printf(
+			"%d puzzles in %dms (%d:%02d:%02d.%03d)\r\n", 
+			thread.getCount(), 
+			thread.getTicks(), 
+			hours, min, sec, ms
+		);
+
 		System.out.printf("%.03f ms per puzzle\r\n", (thread.getTicks() / (double) thread.getCount()));
 		System.out.println(thread.getBruteForceAnz() + " puzzles require guessing!");
 		System.out.println(thread.getTemplateAnz() + " puzzles require templates!");
@@ -164,69 +212,86 @@ public class Main {
 		}
 
 		if (printStatistic) {
+			
 			System.out.println();
+			
 			try {
 				thread.printStatistic(null, false);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
+			
 			SudokuSolverFactory.getDefaultSolverInstance().getStepFinder().printStatistics();
 		}
 	}
 
 	void sortPuzzleFile(String fileName, List<StepType> typeList, String outFileName) {
+		
 		try {
+			
 			if (typeList.size() > 0) {
 				System.out.println("Filter:");
 				for (StepType tmpType : typeList) {
 					System.out.println("   " + tmpType);
 				}
 			}
+			
 			BufferedReader in = new BufferedReader(new FileReader(fileName));
 			BufferedWriter out = null;
+			
 			if (outFileName == null) {
 				outFileName = fileName + ".out.txt";
 			}
+			
 			if (!outFileName.equals("stdout")) {
 				out = new BufferedWriter(new FileWriter(outFileName));
 			}
+			
 			List<String> puzzleList = new ArrayList<String>();
 			String line = null;
+			
 			int gesAnz = 0;
 			while ((line = in.readLine()) != null) {
+				
 				gesAnz++;
 				boolean includePuzzle = true;
 				if (line.contains("#") && typeList.size() > 0) {
+					
 					includePuzzle = false;
 					// determine puzzle type
 					String inputStr = line.substring(line.indexOf('#') + 1).trim();
 					int puzzleType = 3;
 					String[] types = inputStr.split(" ");
+					
 					for (int i = 0; i < types.length; i++) {
 						if (types[i].equals("x")) {
 							puzzleType = 0;
 							break;
 						}
 					}
-//                    if (inputStr.contains("x")) {
-//                        puzzleType = 0;
+
 					if (puzzleType == 3) {
+						
 						if (inputStr.startsWith("ssts")) {
 							puzzleType = 2;
 						}
+						
 						if (inputStr.endsWith("ssts")) {
 							puzzleType = 1;
 						}
 					}
+					
 					String typeStr = null;
 					int compAnz = 0;
 					String[] parts = inputStr.split(" ");
+					
 					if (parts.length > 1) {
 						typeStr = parts[1];
 					} else {
 						// invalid type in input -> nothing to apply
 						continue;
 					}
+					
 					int index1 = typeStr.indexOf('(');
 					int index2 = typeStr.indexOf(')');
 					String orgTypeStr = typeStr;
@@ -239,6 +304,7 @@ public class Main {
 							}
 						}
 					}
+					
 					// apply filter
 					for (StepType actType : typeList) {
 						if (typeStr.equals(actType.type.getArgName()) && puzzleType >= actType.puzzleType) {
@@ -264,23 +330,28 @@ public class Main {
 								break;
 							}
 						}
+						
 						if (includePuzzle) {
 							break;
 						}
 					}
 				}
+				
 				if (includePuzzle) {
 					puzzleList.add(line);
 				}
 			}
+			
 			in.close();
 			int anz = puzzleList.size();
 			Collections.sort(puzzleList, new Comparator<String>() {
 
 				@Override
 				public int compare(String s1, String s2) {
+					
 					int index1 = s1.indexOf('#');
 					int index2 = s2.indexOf('#');
+					
 					if (index1 == -1 && index2 == -1) {
 						return s1.compareTo(s2);
 					} else if (index1 == -1 && index2 != -1) {
@@ -292,6 +363,7 @@ public class Main {
 					}
 				}
 			});
+			
 			for (String key : puzzleList) {
 				if (out != null) {
 					out.write(key);
@@ -300,10 +372,13 @@ public class Main {
 					System.out.println(key);
 				}
 			}
+			
 			if (out != null) {
 				out.close();
 			}
+			
 			System.out.println(anz + " puzzles sorted (" + gesAnz + ")!");
+			
 		} catch (Exception ex) {
 			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error sorting puzzle file", ex);
 		}
