@@ -7,6 +7,8 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 Available languages: English and German
 
+![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_001.jpg)
+
 For all Windows versions hodoku.exe is the preferred program version. For all other
 operating systems Hodoku.jar has to be used. HoDoKu uses rather a lot of memory
 (especially if you use the "Find all available steps" feature). The recommended way
