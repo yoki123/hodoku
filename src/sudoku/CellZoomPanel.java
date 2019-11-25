@@ -575,7 +575,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			}
 		}
 		
-		if (found && mainFrame != null) {			
+		if (found && mainFrame != null) {
 			if (isCtrlDown) {
 				if (isCell) {
 					sudokuPanel.clearCellColor(colorNumber);

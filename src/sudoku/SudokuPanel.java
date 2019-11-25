@@ -3832,7 +3832,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				SudokuSetBase.EMPTY_SET,
 				aktColorIndex,
 				0,
-				false,
+				this.colorCells,
 				true,
 				null,
 				null
