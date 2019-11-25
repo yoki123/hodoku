@@ -78,6 +78,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
@@ -283,11 +284,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.ButtonGroup modeButtonGroup;
 	private javax.swing.JMenu modeMenu;
 	private javax.swing.JMenuItem newMenuItem;
+	private javax.swing.JMenuItem newEmptyMenuItem;
 	private javax.swing.JButton newNoteButton;
 	private javax.swing.JButton newGameToolButton;
 	private javax.swing.JMenu optionMenu;
 	private javax.swing.JSplitPane outerSplitPane;
 	private javax.swing.JMenuItem pasteMenuItem;
+	private javax.swing.JMenuItem fixDigitsMenuItem;
+	private javax.swing.JMenuItem unfixDigitsMenuItem;
 	private javax.swing.JRadioButtonMenuItem playingMenuItem;
 	private javax.swing.JRadioButtonMenuItem practisingMenuItem;
 	private javax.swing.JLabel progressLabel;
@@ -690,6 +694,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		jMenuBar1 = new javax.swing.JMenuBar();
 		fileMenu = new javax.swing.JMenu();
 		newMenuItem = new javax.swing.JMenuItem();
+		newEmptyMenuItem = new javax.swing.JMenuItem();
 		loadPuzzleMenuItem = new javax.swing.JMenuItem();
 		savePuzzleMenuItem = new javax.swing.JMenuItem();
 		savePuzzleAsMenuItem = new javax.swing.JMenuItem();
@@ -715,6 +720,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		copyLibraryMenuItem = new javax.swing.JMenuItem();
 		copySSMenuItem = new javax.swing.JMenuItem();
 		pasteMenuItem = new javax.swing.JMenuItem();
+		fixDigitsMenuItem = new javax.swing.JMenuItem();
+		unfixDigitsMenuItem = new javax.swing.JMenuItem();
 		restartSpielMenuItem = new javax.swing.JMenuItem();
 		resetSpielMenuItem = new javax.swing.JMenuItem();
 		configMenuItem = new javax.swing.JMenuItem();
@@ -1227,6 +1234,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 		fileMenu.add(newMenuItem);
+		
+		newEmptyMenuItem.setText(bundle.getString("MainFrame.newEmptyMenuItem.text"));
+		newEmptyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				newEmptyMenuItemActionPerformed(evt);
+			}
+		});
+		fileMenu.add(newEmptyMenuItem);
 		fileMenu.add(new javax.swing.JPopupMenu.Separator());
 
 		loadPuzzleMenuItem.setAccelerator(
@@ -1506,6 +1521,24 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 		editMenu.add(pasteMenuItem);
+		editMenu.add(new javax.swing.JPopupMenu.Separator());
+		
+		fixDigitsMenuItem.setText(bundle.getString("MainFrame.fixDigitsMenuItem.text"));
+		fixDigitsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				fixDigitsActionPeformed(evt);
+			}
+		});
+		editMenu.add(fixDigitsMenuItem);
+		
+		unfixDigitsMenuItem.setText(bundle.getString("MainFrame.unfixDigitsMenuItem.text"));
+		unfixDigitsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				unfixDigitsActionPeformed(evt);
+			}
+		});
+		editMenu.add(unfixDigitsMenuItem);
+		
 		editMenu.add(new javax.swing.JPopupMenu.Separator());
 
 		restartSpielMenuItem.setAccelerator(
@@ -2416,6 +2449,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private void neuMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		newGameToolButtonActionPerformed(null);
 	}
+	
+	private void newEmptyMenuItemActionPerformed(java.awt.event.ActionEvent e) {
+		
+		Sudoku2 sudoku = sudokuPanel.getSudoku();
+		sudoku.clearSudoku();
+		
+		clearSavePoints();
+		sudokuFileName = null;
+		setTitleWithFile();
+		check();
+		setSpielen(true);
+		fixFocus();
+		repaint();
+	}
 
 	private void copyCluesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		copyToClipboard(ClipboardMode.CLUES_ONLY, false);
@@ -2538,6 +2585,30 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		
 		check();
 		fixFocus();
+	}
+	
+	private void fixDigitsActionPeformed(java.awt.event.ActionEvent e) {
+		
+		Sudoku2 sudoku = sudokuPanel.getSudoku();
+		for (int i = 0; i < Sudoku2.LENGTH; i++) {
+			if (sudoku.getValue(i) > 0) {
+				sudoku.setIsFixed(i, true);	
+			}
+		}
+		
+		repaint();
+	}
+	
+	private void unfixDigitsActionPeformed(java.awt.event.ActionEvent e) {
+		
+		Sudoku2 sudoku = sudokuPanel.getSudoku();
+		for (int i = 0; i < Sudoku2.LENGTH; i++) {
+			if (sudoku.getValue(i) > 0) {
+				sudoku.setIsFixed(i, false);	
+			}
+		}
+		
+		repaint();
 	}
 
 	private void outerSplitPanePropertyChange(java.beans.PropertyChangeEvent evt) {
