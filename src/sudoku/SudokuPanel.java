@@ -270,6 +270,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				int row = getRow(e.getPoint());
 				int col = getCol(e.getPoint());
 				int index = Sudoku2.getIndex(row, col);
+				boolean isColoring = aktColorIndex != -1;
 
 				updateCandidateMouseHighlight(e.getPoint());
 
@@ -278,6 +279,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				}
 				
 				if (!Sudoku2.isValidIndex(row, col)) {
+					return;
+				}
+				
+				if (isColoring) {
+					activeRow = -1;
+					activeCol = -1;
 					return;
 				}
 
@@ -463,6 +470,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
 		boolean rightClickOutsideSelection = !cellSelection.contains(Integer.valueOf(index)) && isRightClick;
+		boolean isColoring = aktColorIndex != -1;
 		boolean onGrid = isOnGrid(evt.getPoint());
 		
 		if (!onGrid) {
@@ -473,10 +481,18 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			clearDragSelection();
 			updateCellZoomPanel();
 			
-		} else if (rightClickOutsideSelection) {
+		} else if (rightClickOutsideSelection || isColoring) {
 			
-			activeRow = lastPressedRow;
-			activeCol = lastPressedCol;
+			if (rightClickOutsideSelection) {
+				activeRow = lastPressedRow;
+				activeCol = lastPressedCol;	
+			}
+			
+			if (isColoring) {
+				activeRow = -1;
+				activeCol = -1;
+			}
+			
 			cellSelection.clear();
 			clearDragSelection();
 			
@@ -512,9 +528,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		int row = getRow(evt.getPoint());
 		int col = getCol(evt.getPoint());
 		int cand = getCandidate(evt.getPoint(), row, col);
-
 		boolean onGrid = isOnGrid(evt.getPoint());
-		
 		boolean isCandidateClicked = 
 			row == lastPressedRow && 
 			col == lastPressedCol && 
@@ -534,8 +548,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			
 		} else if (isCandidateClicked) {
 			
-			// RELEASED on same candidate as PRESSED -> this is a click
-			// is it a double click?
 			long ticks = System.currentTimeMillis();
 
 			boolean isDoubleClick = 
@@ -546,11 +558,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				cand == lastClickedCandidate;
 
 			if (isDoubleClick) {
-				// this is a double click
 				handleMouseClicked(evt, true);
 				lastClickedTime = -1;
 			} else {
-				// normal click
 				handleMouseClicked(evt, false);
 				lastClickedTime = ticks;
 			}
@@ -612,6 +622,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
 		boolean isMiddleClick = evt.getButton() == MouseEvent.BUTTON2;
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
+		boolean isColoring = aktColorIndex != -1;
 
 		if (isValidCellIndex) {
 			if (isRightClick) {
@@ -670,7 +681,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				
 			} else {
 				
-				if (aktColorIndex != -1) {
+				if (isColoring) {
 					
 					// coloring is active
 					int colorNumber = aktColorIndex;
@@ -692,8 +703,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						}
 					}
 					
-					// we do adjust the selected cell (ranges are not allowed in coloring)
-					setAktRowCol(row, col);
+					activeRow = -1;
+					activeCol = -1;
 					
 				} else if (isLeftClick) {
 					
@@ -1740,9 +1751,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 */
 	public void handleColoring(int candidate) {
 		handleColoring(activeRow, activeCol, candidate, aktColorIndex);
-		repaint();
 		updateCellZoomPanel();
 		mainFrame.fixFocus();
+		repaint();
 	}
 
 	/**
@@ -2049,6 +2060,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		gridRegion = calculateGridRegion(new Rectangle(0, 0, totalWidth, totalHeight), isPrint, withBorder);
 
 		int colorKuCellSize = (int) (cellSize * 0.9);
+		boolean isColoring = aktColorIndex != -1;
 
 		// get the fonts every time the size of the grid changes or
 		// the user selects a different font in the preferences dialog
@@ -2181,7 +2193,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				int cellX = getX(row, col);
 				int cellY = getY(row, col);
 				g2.fillRect(cellX, cellY, cellSize, cellSize);
-				if (isSelected && !isPrint && g2.getColor() != Options.getInstance().getAktCellColor()) {
+				if (isSelected && !isPrint && g2.getColor() != Options.getInstance().getAktCellColor() && !isColoring) {
 					
 					setColor(g2, allBlack, Options.getInstance().getAktCellColor());
 					
@@ -3811,12 +3823,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 	public void updateCellZoomPanel() {
 		
-		if (activeRow == -1 || activeCol == -1) {
+		boolean isColoring = aktColorIndex != -1;
+		
+		if (activeRow == -1 || activeCol == -1 || isColoring) {
 			
 			cellZoomPanel.update(
 				SudokuSetBase.EMPTY_SET,
 				SudokuSetBase.EMPTY_SET,
-				-1,
+				aktColorIndex,
 				0,
 				false,
 				true,

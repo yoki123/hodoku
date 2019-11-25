@@ -3195,6 +3195,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param isCell
 	 */
 	public void setColoring(int colorNumber, boolean isCell) {
+		
 		sudokuPanel.setColorCells(isCell);
 		coloringPanelClicked(colorNumber);
 		check();
