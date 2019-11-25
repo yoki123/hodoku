@@ -509,10 +509,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		
 		int candidate = -1;
 		
-		if (sudokuPanel.getActiveRow() == -1 || sudokuPanel.getActiveCol() == -1) {
-			return;
-		}
-		
 		for (int i = 0; i < toggleCandidatesButtons.length; i++) {
 			if (button == toggleCandidatesButtons[i]) {
 				candidate = i + 1;
@@ -532,10 +528,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private void setValue(JButton button) {
 		
 		int number = -1;
-		
-		if (sudokuPanel.getActiveRow() == -1 || sudokuPanel.getActiveCol() == -1) {
-			return;
-		}
 		
 		for (int i = 0; i < setValueButtons.length; i++) {
 			if (button == setValueButtons[i]) {

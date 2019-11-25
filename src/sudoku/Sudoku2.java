@@ -2433,7 +2433,7 @@ public class Sudoku2 implements Cloneable {
 		Sudoku2 act = new Sudoku2();
 		act.set(this);
 		SudokuGenerator generator = SudokuGeneratorFactory.getDefaultGeneratorInstance();
-		int anzSol = generator.getNumberOfSolutions(act);
+		int anzSol = generator.getNumberOfSolutions(act, 1);
 		setStatusGivens(anzSol);
 	}
 

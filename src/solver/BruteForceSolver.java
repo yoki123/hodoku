@@ -42,8 +42,10 @@ public class BruteForceSolver extends AbstractSolver {
 
 	@Override
 	protected SolutionStep getStep(SolutionType type) {
+		
 		SolutionStep result = null;
 		sudoku = finder.getSudoku();
+		
 		switch (type) {
 		case BRUTE_FORCE:
 			result = getBruteForce();
@@ -51,13 +53,16 @@ public class BruteForceSolver extends AbstractSolver {
 		default:
 			break;
 		}
+		
 		return result;
 	}
 
 	@Override
 	protected boolean doStep(SolutionStep step) {
+		
 		boolean handled = true;
 		sudoku = finder.getSudoku();
+		
 		switch (step.getType()) {
 		case BRUTE_FORCE:
 			int value = step.getValues().get(0);
@@ -68,6 +73,7 @@ public class BruteForceSolver extends AbstractSolver {
 		default:
 			handled = false;
 		}
+		
 		return handled;
 	}
 
@@ -77,11 +83,10 @@ public class BruteForceSolver extends AbstractSolver {
 	 * If the sudoku is invalid, no result is returned.
 	 */
 	private SolutionStep getBruteForce() {
-//        System.out.println("Brute Force: " + Arrays.toString(sudoku.getValues()));
+
+		// can happen, when command line mode is used (no brute force solving is done)
+		// sets the solution in the sudoku
 		if (!sudoku.isSolutionSet()) {
-			// can happen, when command line mode is used (no brute force solving is done)
-			// sets the solution in the sudoku
-//            System.out.println("   no solution set");
 			boolean isValid = SudokuGeneratorFactory.getDefaultGeneratorInstance().validSolution(sudoku);
 			if (!isValid) {
 				return null;
@@ -92,14 +97,12 @@ public class BruteForceSolver extends AbstractSolver {
 		SudokuSet unsolved = new SudokuSet();
 		for (int i = 0; i < Sudoku2.LENGTH; i++) {
 			if (sudoku.getValue(i) == 0) {
-//                System.out.println("   adding: " + i);
 				unsolved.add(i);
 			}
 		}
 
 		// jetzt die mittlere Zelle aussuchen
 		int index = unsolved.size() / 2;
-//        System.out.println("   index = " + index);
 		index = unsolved.get(index);
 
 		// Step zusammenbauen

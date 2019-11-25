@@ -19,6 +19,8 @@
 package sudoku;
 
 import generator.BackgroundGeneratorThread;
+import generator.SudokuGenerator;
+import generator.SudokuGeneratorFactory;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -147,6 +149,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private double bildSize = 400;
 	private int bildAufloesung = 96;
 	private int bildEinheit = 2;
+	
 	private MyFileFilter[] puzzleFileSaveFilters = new MyFileFilter[] { 
 		new MyFileFilter(1), new MyFileFilter(2), new MyFileFilter(3), 
 		new MyFileFilter(4), new MyFileFilter(5), new MyFileFilter(6), 
@@ -276,6 +279,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JMenuItem solutionStepMenuItem;
 	private javax.swing.JMenuItem mediumHintMenuItem;
 	private javax.swing.JMenuItem solvePuzzleMenuItem;
+	private javax.swing.JMenuItem solutionCountMenuItem;
 	private javax.swing.ButtonGroup modeButtonGroup;
 	private javax.swing.JMenu modeMenu;
 	private javax.swing.JMenuItem newMenuItem;
@@ -736,6 +740,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		vagueHintMenuItem = new javax.swing.JMenuItem();
 		mediumHintMenuItem = new javax.swing.JMenuItem();
 		solvePuzzleMenuItem = new javax.swing.JMenuItem();
+		solutionCountMenuItem = new javax.swing.JMenuItem();
 		solutionStepMenuItem = new javax.swing.JMenuItem();
 		backdoorSearchMenuItem = new javax.swing.JMenuItem();
 		historyMenuItem = new javax.swing.JMenuItem();
@@ -1763,6 +1768,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 		puzzleMenu.add(solvePuzzleMenuItem);
+		
+		solutionCountMenuItem.setText(bundle.getString("MainFrame.solutionCountMenuItem.text"));
+		solutionCountMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				showSolutionCount();
+			}
+		});
+		puzzleMenu.add(solutionCountMenuItem);
 		puzzleMenu.add(new JSeparator());
 
 		backdoorSearchMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
@@ -3832,6 +3845,42 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 
 		repaint();
+	}
+	
+	public void showSolutionCount() {
+		
+		ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/MainFrame");
+		String msg1 = bundle.getString("MainFrame.solutionCountMenuItem.msg1");
+		String msg2 = bundle.getString("MainFrame.solutionCountMenuItem.msg2");
+		String msg3 = bundle.getString("MainFrame.solutionCountMenuItem.msg3");
+		String msg4 = bundle.getString("MainFrame.solutionCountMenuItem.msg4");
+		String msg5 = bundle.getString("MainFrame.solutionCountMenuItem.msg5");
+		
+		Sudoku2 sudoku = sudokuPanel.getSudoku().clone();
+		SudokuGenerator generator = SudokuGeneratorFactory.getDefaultGeneratorInstance();
+		int solutionCount = generator.getNumberOfSolutions(sudoku, 999);
+		
+		if (solutionCount == 0) {
+			JOptionPane.showMessageDialog(
+				this,
+				msg3
+			);
+		} else if (solutionCount == 1) {
+			JOptionPane.showMessageDialog(
+				this,
+				msg1 + " " + solutionCount + " " + msg4
+			);
+		} else if (solutionCount <= 999) {
+			JOptionPane.showMessageDialog(
+				this,
+				msg1 + " " + solutionCount + " " + msg5
+			);
+		} else {
+			JOptionPane.showMessageDialog(
+				this,
+				msg2 + " " + solutionCount + " " + msg5
+			);
+		}
 	}
 
 	/**
