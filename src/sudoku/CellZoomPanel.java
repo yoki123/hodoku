@@ -68,19 +68,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private javax.swing.JPanel candidateColorPanel;
 	private javax.swing.JLabel cellColorLabel;
 	private javax.swing.JPanel cellColorPanel;
-	private javax.swing.JPanel chooseCandidateColor0Panel;
-	private javax.swing.JPanel chooseCandidateColor1Panel;
-	private javax.swing.JPanel chooseCandidateColor2Panel;
-	private javax.swing.JPanel chooseCandidateColor3Panel;
-	private javax.swing.JPanel chooseCandidateColor4Panel;
-	private javax.swing.JPanel chooseCandidateColor5Panel;
-	private javax.swing.JPanel chooseCandidateColor6Panel;
-	private javax.swing.JPanel chooseCandidateColor7Panel;
-	private javax.swing.JPanel chooseCandidateColor8Panel;
-	private javax.swing.JPanel chooseCandidateColor9Panel;
 	private javax.swing.JLabel chooseCandidateColorLabel;
-	private javax.swing.JPanel chooseCandidateColorM1Panel;
-	private javax.swing.JPanel chooseCandidateColorM2Panel;
 	private javax.swing.JPanel chooseCandidateColorPanel;
 	private javax.swing.JPanel chooseCellColorPanel;
 	private javax.swing.JButton jFontButton;
@@ -119,6 +107,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		this.mainFrame = mainFrame;
 		
 		cellPanels = new JPanel[colorButtonCount];
+		candidatePanels = new JPanel[colorButtonCount];
 		
 		initComponents();
 
@@ -136,13 +125,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		
 		normButtonForeground = setValueButton1.getForeground();
 		normButtonBackground = setValueButton1.getBackground();
-
-		candidatePanels = new JPanel[] { 
-			chooseCandidateColorM2Panel, chooseCandidateColorM1Panel, chooseCandidateColor0Panel, 
-			chooseCandidateColor1Panel, chooseCandidateColor2Panel, chooseCandidateColor3Panel, 
-			chooseCandidateColor4Panel, chooseCandidateColor5Panel, chooseCandidateColor6Panel, 
-			chooseCandidateColor7Panel, chooseCandidateColor8Panel, chooseCandidateColor9Panel 
-		};
 
 		jFontButton.setVisible(false);
 		buttonFont = jFontButton.getFont();
@@ -172,10 +154,27 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			}
 		});
 
-		javax.swing.GroupLayout chooseCellColor0PanelLayout = new javax.swing.GroupLayout(panel);
-		panel.setLayout(chooseCellColor0PanelLayout);
-		chooseCellColor0PanelLayout.setHorizontalGroup(chooseCellColor0PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCellColor0PanelLayout.setVerticalGroup(chooseCellColor0PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 1, Short.MAX_VALUE));
+		javax.swing.GroupLayout group = new javax.swing.GroupLayout(panel);
+		panel.setLayout(group);
+		group.setHorizontalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
+		group.setVerticalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 1, Short.MAX_VALUE));
+
+		return panel;
+	}
+	
+	private JPanel createCandidateColorButtonPanel(int id) {
+		
+		JPanel panel = new StatusColorPanel(id);
+		panel.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mousePressed(java.awt.event.MouseEvent evt) {
+				chooseCellColor0PanelMouseClicked(evt);
+			}
+		});
+
+		javax.swing.GroupLayout group = new javax.swing.GroupLayout(panel);
+		panel.setLayout(group);
+		group.setHorizontalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
+		group.setVerticalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
 
 		return panel;
 	}
@@ -212,18 +211,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		chooseCandidateColorLabel = new javax.swing.JLabel();
 		candidateColorPanel = new javax.swing.JPanel();
 		chooseCandidateColorPanel = new javax.swing.JPanel();
-		chooseCandidateColor0Panel = new StatusColorPanel(0);
-		chooseCandidateColor2Panel = new StatusColorPanel(2);
-		chooseCandidateColor4Panel = new StatusColorPanel(4);
-		chooseCandidateColor6Panel = new StatusColorPanel(6);
-		chooseCandidateColor8Panel = new StatusColorPanel(8);
-		chooseCandidateColorM1Panel = new StatusColorPanel(-1);
-		chooseCandidateColor1Panel = new StatusColorPanel(1);
-		chooseCandidateColor3Panel = new StatusColorPanel(3);
-		chooseCandidateColor5Panel = new StatusColorPanel(5);
-		chooseCandidateColor7Panel = new StatusColorPanel(7);
-		chooseCandidateColor9Panel = new StatusColorPanel(9);
-		chooseCandidateColorM2Panel = new StatusColorPanel(-2);
 		jFontButton = new javax.swing.JButton();
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -430,8 +417,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		add(cellColorPanel);
 		cellColorPanel.setBounds(0, 0, 45, 4);
 
-		chooseCellColorPanel.setLayout(new java.awt.GridLayout(2, 6, 1, 1));
-		
+		chooseCellColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
 		
 		{			
 			for (int i = 0; i < colorButtonCount; i++) {
@@ -473,199 +459,25 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		add(candidateColorPanel);
 		candidateColorPanel.setBounds(0, 0, 45, 44);
 
-		chooseCandidateColorPanel.setLayout(new java.awt.GridLayout(2, 5, 1, 1));
+		chooseCandidateColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
 
-		chooseCandidateColor0Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
+		{
+			for (int i = 0; i < colorButtonCount; i++) {
+				candidatePanels[i] = createCandidateColorButtonPanel(-2 + i);
 			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor0PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor0Panel);
-		chooseCandidateColor0Panel.setLayout(chooseCandidateColor0PanelLayout);
-		chooseCandidateColor0PanelLayout.setHorizontalGroup(chooseCandidateColor0PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor0PanelLayout.setVerticalGroup(chooseCandidateColor0PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor0Panel);
-
-		chooseCandidateColor2Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
+			
+			for (int i = 2; i < colorButtonCount; i += 2) {
+				chooseCandidateColorPanel.add(candidatePanels[i]);
 			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor2PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor2Panel);
-		chooseCandidateColor2Panel.setLayout(chooseCandidateColor2PanelLayout);
-		chooseCandidateColor2PanelLayout.setHorizontalGroup(chooseCandidateColor2PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor2PanelLayout.setVerticalGroup(chooseCandidateColor2PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor2Panel);
-
-		chooseCandidateColor4Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
+			
+			chooseCandidateColorPanel.add(candidatePanels[0]);
+			
+			for (int i = 3; i < colorButtonCount; i += 2) {
+				chooseCandidateColorPanel.add(candidatePanels[i]);
 			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor4PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor4Panel);
-		chooseCandidateColor4Panel.setLayout(chooseCandidateColor4PanelLayout);
-		chooseCandidateColor4PanelLayout.setHorizontalGroup(chooseCandidateColor4PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor4PanelLayout.setVerticalGroup(chooseCandidateColor4PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor4Panel);
-
-		chooseCandidateColor6Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor6PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor6Panel);
-		chooseCandidateColor6Panel.setLayout(chooseCandidateColor6PanelLayout);
-		chooseCandidateColor6PanelLayout.setHorizontalGroup(chooseCandidateColor6PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor6PanelLayout.setVerticalGroup(chooseCandidateColor6PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor6Panel);
-
-		chooseCandidateColor8Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor8PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor8Panel);
-		chooseCandidateColor8Panel.setLayout(chooseCandidateColor8PanelLayout);
-		chooseCandidateColor8PanelLayout.setHorizontalGroup(chooseCandidateColor8PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor8PanelLayout.setVerticalGroup(chooseCandidateColor8PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor8Panel);
-
-		chooseCandidateColorM1Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColorM1PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColorM1Panel);
-		chooseCandidateColorM1Panel.setLayout(chooseCandidateColorM1PanelLayout);
-		chooseCandidateColorM1PanelLayout.setHorizontalGroup(chooseCandidateColorM1PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColorM1PanelLayout.setVerticalGroup(chooseCandidateColorM1PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColorM1Panel);
-
-		chooseCandidateColor1Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor1PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor1Panel);
-		chooseCandidateColor1Panel.setLayout(chooseCandidateColor1PanelLayout);
-		chooseCandidateColor1PanelLayout.setHorizontalGroup(chooseCandidateColor1PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor1PanelLayout.setVerticalGroup(chooseCandidateColor1PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor1Panel);
-
-		chooseCandidateColor3Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor3PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor3Panel);
-		chooseCandidateColor3Panel.setLayout(chooseCandidateColor3PanelLayout);
-		chooseCandidateColor3PanelLayout.setHorizontalGroup(chooseCandidateColor3PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor3PanelLayout.setVerticalGroup(chooseCandidateColor3PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor3Panel);
-
-		chooseCandidateColor5Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor5PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor5Panel);
-		chooseCandidateColor5Panel.setLayout(chooseCandidateColor5PanelLayout);
-		chooseCandidateColor5PanelLayout.setHorizontalGroup(chooseCandidateColor5PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor5PanelLayout.setVerticalGroup(chooseCandidateColor5PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor5Panel);
-
-		chooseCandidateColor7Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor7PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor7Panel);
-		chooseCandidateColor7Panel.setLayout(chooseCandidateColor7PanelLayout);
-		chooseCandidateColor7PanelLayout.setHorizontalGroup(chooseCandidateColor7PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor7PanelLayout.setVerticalGroup(chooseCandidateColor7PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor7Panel);
-
-		chooseCandidateColor9Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColor9PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColor9Panel);
-		chooseCandidateColor9Panel.setLayout(chooseCandidateColor9PanelLayout);
-		chooseCandidateColor9PanelLayout.setHorizontalGroup(chooseCandidateColor9PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColor9PanelLayout.setVerticalGroup(chooseCandidateColor9PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColor9Panel);
-
-		chooseCandidateColorM2Panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout chooseCandidateColorM2PanelLayout = new javax.swing.GroupLayout(
-				chooseCandidateColorM2Panel);
-		chooseCandidateColorM2Panel.setLayout(chooseCandidateColorM2PanelLayout);
-		chooseCandidateColorM2PanelLayout.setHorizontalGroup(chooseCandidateColorM2PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		chooseCandidateColorM2PanelLayout.setVerticalGroup(chooseCandidateColorM2PanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
-
-		chooseCandidateColorPanel.add(chooseCandidateColorM2Panel);
+			
+			chooseCandidateColorPanel.add(candidatePanels[1]);
+		}
 
 		add(chooseCandidateColorPanel);
 		chooseCandidateColorPanel.setBounds(0, 0, 113, 43);
@@ -677,7 +489,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}
 
 	private void formComponentResized(java.awt.event.ComponentEvent evt) {
-		// System.out.println("CellZoomPanel resized!");
 		calculateLayout();
 		printSize();
 	}
@@ -691,7 +502,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	}
 
 	private void chooseCellColor0PanelMouseClicked(java.awt.event.MouseEvent evt) {
-		handleColorChange((JPanel) evt.getSource());
+		handleColorChange((JPanel) evt.getSource(), evt.isControlDown());
 	}
 
 	private void handleCandidateChange(JButton button) {
@@ -738,7 +549,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		}
 	}
 
-	private void handleColorChange(JPanel panel) {
+	private void handleColorChange(JPanel panel, boolean isCtrlDown) {
 		
 		boolean found = false;
 		boolean isCell = false;
@@ -765,7 +576,16 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		}
 		
 		if (found && mainFrame != null) {
-			mainFrame.setColoring(colorNumber, isCell);
+			
+			if (isCtrlDown) {
+				if (isCell) {
+					sudokuPanel.clearCellColor(colorNumber);
+				} else {
+					sudokuPanel.clearCandidateColor(colorNumber);
+				}
+			} else {
+				mainFrame.setColoring(colorNumber, isCell);	
+			}
 		}
 	}
 
@@ -806,12 +626,12 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			buttonPanelHeight = 120;
 		}
 		
-		int colorPanelGesWidth = colorPanelHeight * 4;
+		int colorPanelGesWidth = colorPanelHeight * 6;
 		if (colorPanelGesWidth > width - 2 * X_OFFSET) {
 			colorPanelHeight = (int) ((width - 2 * X_OFFSET) / 4.5);
 		}
 		
-		colorPanelGesWidth = colorPanelHeight * 4;
+		colorPanelGesWidth = colorPanelHeight * 6;
 		int newColorImageHeight = colorPanelHeight * 2 / 3;
 
 		// ok, do the layout
@@ -842,7 +662,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		cellColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
 		cellColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
 		cellColorPanel.doLayout();
-		chooseCellColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
+		chooseCellColorPanel.setSize((5 * colorPanelHeight), colorPanelHeight);
 		chooseCellColorPanel.setLocation(cpx + colorPanelHeight, y);
 		chooseCellColorPanel.doLayout();
 		y += colorPanelHeight;
@@ -854,7 +674,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		candidateColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
 		candidateColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
 		candidateColorPanel.doLayout();
-		chooseCandidateColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
+		chooseCandidateColorPanel.setSize((5 * colorPanelHeight), colorPanelHeight);
 		chooseCandidateColorPanel.setLocation(cpx + colorPanelHeight, y);
 		chooseCandidateColorPanel.doLayout();
 

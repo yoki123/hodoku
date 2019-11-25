@@ -3779,6 +3779,35 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	public void setCellZoomPanel(CellZoomPanel cellZoomPanel) {
 		this.cellZoomPanel = cellZoomPanel;
 	}
+	
+	public void clearCellColor(int colorNumber) {
+		
+		for (int i = 0; i < Sudoku2.LENGTH; i++) {			
+			SortedMap<Integer, Integer> map = coloringMap;			
+			if (map.containsKey(i) && map.get(i) == colorNumber) {
+				map.remove(i);
+			}
+		}
+
+		updateCellZoomPanel();
+		repaint();
+	}
+	
+	public void clearCandidateColor(int colorNumber) {
+
+		SortedMap<Integer, Integer> map = coloringCandidateMap;
+		for (int index = 0; index < Sudoku2.LENGTH; index++) {
+			for (int candidate = 1; candidate <= Sudoku2.UNITS; candidate++) {
+				int key = index * 10 + candidate;				
+				if (map.containsKey(key) && map.get(key) == colorNumber) {
+					map.remove(key);
+				}		
+			}
+		}
+		
+		updateCellZoomPanel();
+		repaint();
+	}
 
 	public void updateCellZoomPanel() {
 		
