@@ -24,6 +24,29 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.8 (2019-11-25)
+--------------------------
+
+Features:
+
+  - Puzzle -> Solution Count
+    - It counts how many solutions a puzzle has with a cutoff limit of 1000.
+		
+  - File -> New Empty
+    - It generates an empty board. This replaces File -> New Givens. This new layout is more conventional with other programs.
+
+  - 3 new colors added to the color palette in the Active Cell panel.
+	
+  - Clear an entire color chanelle in either Cells or Candidates. This is done in the Active Cell panel by Ctrl + Left Click on a color in the color palette. Only this color will be cleared from the board.
+
+  - Mouse click while coloring no longer selects a cell. I found it distracting, sometimes the selector color overlay made the cell's colors look off. It can still be moved with the arrow keys. Maybe I should re-enable it, but add a toggle feature to automatically hide the selector when entering coloring mode.
+	
+Bug Fixes:
+
+  - Active Cell color would dissapear when clicking outside the grid to hide the cursor selector.
+	
+  - Active Color preview defaulted to cell color preview.
+
 Version 2.2.7 (2019-11-23)
 --------------------------
 

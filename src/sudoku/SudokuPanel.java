@@ -281,50 +281,23 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				if (!Sudoku2.isValidIndex(row, col)) {
 					return;
 				}
-				
-				// paint the board with the active color
-				// mouse only feature, at the mouse, not the selector
-				// selector can stay stationary
+
 				if (isColoring) {
 					return;
-				}
-
-				if (isCtrlDown) {
-
-					if (cellSelection.isEmpty()) {
-						
-						activeRow = row;
-						activeCol = col;
-						
-						cellSelection.add(Integer.valueOf(Sudoku2.getIndex(row, col)));
-					}
 				}
 
 				if (!dragCellSelection[index]) {
 
 					dragCellSelection[index] = true;
-					if (cellSelection.contains(Integer.valueOf(index))) {
-						
-						cellSelection.remove(Integer.valueOf(index));
-						
-						if (cellSelection.isEmpty()) {
-							activeRow = row;
-							activeCol = col;
-						}
-						
-					} else {
-						
+					if (cellSelection.contains(Integer.valueOf(index))) {						
+						cellSelection.remove(Integer.valueOf(index));						
+					} else {						
 						cellSelection.add(Integer.valueOf(index));
-						activeRow = row;
-						activeCol = col;
 					}
-					
-				} else {
-					
-					activeRow = row;
-					activeCol = col;
 				}
 				
+				activeRow = row;
+				activeCol = col;
 				repaint();
 			}
 
@@ -504,7 +477,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				if (cellSelection.size() == 1) {
 					if (cellSelection.get(0).intValue() == index.intValue()) {
 						cellSelection.clear();
-						clearDragSelection();	
+						clearDragSelection();
 					}
 				}
 			}
@@ -746,20 +719,19 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					} else if (!doubleClick) {
 						
 						if (ctrlPressed) {
+							
 							// select additional cell
 							if (cellSelection.size() == 0) {
-								// the last selected cell is not yet in the set
 								
-								cellSelection.add(Integer.valueOf(Sudoku2.getIndex(row, col)));
+								cellSelection.add(Integer.valueOf(index));
 								setAktRowCol(row, col);
 							
 							} else {
 								
-								int index2 = Sudoku2.getIndex(row, col);
-								if (cellSelection.contains(Integer.valueOf(index2))) {
-									cellSelection.remove(Integer.valueOf(index2));
+								if (cellSelection.contains(Integer.valueOf(index))) {
+									cellSelection.remove(Integer.valueOf(index));
 								} else {
-									cellSelection.add(Integer.valueOf(Sudoku2.getIndex(row, col)));
+									cellSelection.add(Integer.valueOf(index));
 								}
 								
 								setAktRowCol(row, col);
@@ -839,8 +811,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 												}
 											}
 											
-											for (int selIndex : cells) {
-												setCell(Sudoku2.getRow(selIndex), Sudoku2.getCol(selIndex), candidate);
+											for (int cellIndex : cells) {
+												setCell(Sudoku2.getRow(cellIndex), Sudoku2.getCol(cellIndex), candidate);
 											}
 										}
 									}
@@ -848,6 +820,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 									// clear selection
 									setAktRowCol(row, col);
 									clearRegion();
+									
 								}
 								
 								changed = true;
@@ -1543,9 +1516,15 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * Clears a selected region of cells
 	 */
 	private void clearRegion() {
+		
 		cellSelection.clear();
 		shiftRow = -1;
 		shiftCol = -1;
+		
+		Integer index = Integer.valueOf(Sudoku2.getIndex(activeRow, activeCol));
+		if (!cellSelection.contains(index)) {
+			cellSelection.add(index);
+		}
 	}
 
 	/**
@@ -2110,7 +2089,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 				int cellIndex = Sudoku2.getIndex(row, col);
 				boolean isSelected = 
-						(cellSelection.isEmpty() && row == activeRow && col == activeCol) || 
+						(row == activeRow && col == activeCol) || 
 						cellSelection.contains(Integer.valueOf(cellIndex));
 				
 				// the cell doesn't count as selected, if the last change of the cursor has been a while

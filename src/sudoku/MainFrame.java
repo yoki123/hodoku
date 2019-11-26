@@ -78,7 +78,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
@@ -101,7 +100,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private static final long serialVersionUID = 1L;
-	public static final String VERSION = "HoDoKu - v2.2.7";
+	public static final String VERSION = "HoDoKu - v2.2.8";
 
 	// public static final String BUILD = "Build 16";
 	public static final String BUILD;
@@ -138,7 +137,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	/** only set, when the givens are changed */
 	private boolean oldShowDeviationsValid = false;
 	/** true if new givens are being entered */
-	private boolean eingabeModus = false;
+	private boolean gameMode = false;
 	private SplitPanel splitPanel = new SplitPanel();
 	private SummaryPanel summaryPanel = new SummaryPanel(this);
 	private SolutionPanel solutionPanel = new SolutionPanel(this);
@@ -325,7 +324,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JMenuItem solvingGuideMenuItem;
 	private javax.swing.JMenuItem saveAsPictureMenuItem;
 	private javax.swing.JMenuItem editGameMenuItem;
-	private javax.swing.JMenuItem enterGameMenuItem;
 	private javax.swing.JMenuItem playGameMenuItem;
 	private javax.swing.JLabel statusLabelCellCandidate;
 	private javax.swing.JLabel statusLabelLevel;
@@ -706,7 +704,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		printMenuItem = new javax.swing.JMenuItem();
 		extendedPrintMenuItem = new javax.swing.JMenuItem();
 		saveAsPictureMenuItem = new javax.swing.JMenuItem();
-		enterGameMenuItem = new javax.swing.JMenuItem();
 		editGameMenuItem = new javax.swing.JMenuItem();
 		playGameMenuItem = new javax.swing.JMenuItem();
 		exitMenuItem = new javax.swing.JMenuItem();
@@ -1238,7 +1235,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		newEmptyMenuItem.setText(bundle.getString("MainFrame.newEmptyMenuItem.text"));
 		newEmptyMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				newEmptyMenuItemActionPerformed(evt);
+				//newEmptyMenuItemActionPerformed(evt);
+				newEmptyGameMenuItemActionPerformed(evt);
 			}
 		});
 		fileMenu.add(newEmptyMenuItem);
@@ -1368,16 +1366,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		});
 		fileMenu.add(saveAsPictureMenuItem);
 		fileMenu.add(new javax.swing.JPopupMenu.Separator());
-
-		enterGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
-				.getString("MainFrame.spielEingebenMenuItemMnemonic").charAt(0));
-		enterGameMenuItem.setText(bundle.getString("MainFrame.spielEingebenMenuItem.text"));
-		enterGameMenuItem.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				spielEingebenMenuItemActionPerformed(evt);
-			}
-		});
-		fileMenu.add(enterGameMenuItem);
 
 		editGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("spielEditierenMenuItemMnemonic").charAt(0));
@@ -1802,6 +1790,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		});
 		puzzleMenu.add(solvePuzzleMenuItem);
 		
+		//solutionCountMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
+		
+		solutionCountMenuItem.setAccelerator(
+			javax.swing.KeyStroke.getKeyStroke(
+				java.awt.event.KeyEvent.VK_M, 
+				java.awt.event.InputEvent.CTRL_MASK
+			)
+		);
 		solutionCountMenuItem.setText(bundle.getString("MainFrame.solutionCountMenuItem.text"));
 		solutionCountMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2237,7 +2233,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 			initializeResultPanels();
 			repaint();
-			setSpielen(true);
+			setPlay(true);
 			check();
 			fixFocus();
 		}
@@ -2316,6 +2312,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 		
 		if (tmpSudoku != null) {
+			
 			sudokuPanel.setSudoku(tmpSudoku, true);
 			allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 			initializeResultPanels();
@@ -2323,6 +2320,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			sudokuPanel.clearColoring();
 			sudokuPanel.setShowHintCellValue(0);
 			sudokuPanel.setShowInvalidOrPossibleCells(false);
+			
 			if (Options.getInstance().getGameMode() == GameMode.LEARNING) {
 				// solve the sudoku up until the first trainingStep
 				Sudoku2 trainingSudoku = sudokuPanel.getSudoku();
@@ -2342,7 +2340,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			check();
 		}
 		
-		setSpielen(true);
+		setPlay(true);
 		fixFocus();
 	}
 
@@ -2448,20 +2446,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private void neuMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		newGameToolButtonActionPerformed(null);
-	}
-	
-	private void newEmptyMenuItemActionPerformed(java.awt.event.ActionEvent e) {
-		
-		Sudoku2 sudoku = sudokuPanel.getSudoku();
-		sudoku.clearSudoku();
-		
-		clearSavePoints();
-		sudokuFileName = null;
-		setTitleWithFile();
-		check();
-		setSpielen(true);
-		fixFocus();
-		repaint();
 	}
 
 	private void copyCluesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2596,6 +2580,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		}
 		
+		/*
+		allStepsPanel.setSudoku(sudokuPanel.getSudoku());
+		resetResultPanels();
+		initializeResultPanels();
+		sudokuPanel.clearColoring();
+		sudokuPanel.setShowHintCellValue(0);
+		sudokuPanel.setShowInvalidOrPossibleCells(false);
+		setPlay(true);
+		check();*/
+		
 		repaint();
 	}
 	
@@ -2689,7 +2683,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		outerSplitPanePropertyChange(null);
 	}
 
-	private void spielEingebenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+	private void newEmptyGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		
 		if (sudokuPanel.getSolvedCellsAnz() != 0) {
 			int antwort = JOptionPane.showConfirmDialog(
 				this,
@@ -2710,7 +2705,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		resetResultPanels();
 		sudokuPanel.setNoClues();
 		hinweisAbbrechenButtonActionPerformed(null);
-		setSpielen(false);
+		setPlay(false);
 	}
 
 	private void spielEditierenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2719,7 +2714,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		sudokuPanel.checkProgress();
 		sudokuPanel.resetShowHintCellValues();
 		hinweisAbbrechenButtonActionPerformed(null);
-		setSpielen(false);
+		setPlay(false);
 	}
 
 	private void spielSpielenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2730,7 +2725,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			initializeResultPanels();
 		}
 		
-		setSpielen(true);
+		setPlay(true);
 	}
 
 	private void resetSpielMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2747,7 +2742,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			allStepsPanel.resetPanel();
 			
 			repaint();
-			setSpielen(true);
+			setPlay(true);
 			check();
 			fixFocus();
 		}
@@ -3223,7 +3218,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		sudokuPanel.clearColoring();
 		sudokuPanel.setShowHintCellValue(0);
 		sudokuPanel.setShowInvalidOrPossibleCells(false);
-		setSpielen(true);
+		setPlay(true);
 		check();
 		repaint();
 	}
@@ -3241,7 +3236,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 		allStepsPanel.resetPanel();
 		setSolutionStep(state.getStep(), true);
-		setSpielen(true);
+		setPlay(true);
 		check();
 		repaint();
 	}
@@ -3471,11 +3466,11 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		tabPane.setSelectedComponent(panel);
 	}
 
-	private void setSpielen(boolean isSpielen) {
+	private void setPlay(boolean isPlaying) {
 		
-		eingabeModus = !isSpielen;
+		gameMode = !isPlaying;
 		
-		if (isSpielen) {
+		if (isPlaying) {
 			if (oldShowDeviationsValid) {
 				showDeviationsMenuItem.setSelected(oldShowDeviations);
 				oldShowDeviationsValid = false;
@@ -3488,15 +3483,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		
 		showDeviationsMenuItemActionPerformed(null);
 
-		vagueHintMenuItem.setEnabled(isSpielen);
-		mediumHintMenuItem.setEnabled(isSpielen);
-		solutionStepMenuItem.setEnabled(isSpielen);
-		alleHiddenSinglesSetzenMenuItem.setEnabled(isSpielen);
-		showDeviationsMenuItem.setEnabled(isSpielen);
-		showColorKuMenuItem.setEnabled(isSpielen);
+		vagueHintMenuItem.setEnabled(isPlaying);
+		mediumHintMenuItem.setEnabled(isPlaying);
+		solutionStepMenuItem.setEnabled(isPlaying);
+		alleHiddenSinglesSetzenMenuItem.setEnabled(isPlaying);
+		showDeviationsMenuItem.setEnabled(isPlaying);
+		showColorKuMenuItem.setEnabled(isPlaying);
 
-		playGameMenuItem.setEnabled(!isSpielen);
-		editGameMenuItem.setEnabled(isSpielen);
+		playGameMenuItem.setEnabled(!isPlaying);
+		editGameMenuItem.setEnabled(isPlaying);
 	}
 
 	public void setSolutionStep(SolutionStep step, boolean setInSudokuPanel) {
@@ -4598,7 +4593,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	public boolean isEingabeModus() {
-		return eingabeModus;
+		return gameMode;
 	}
 
 	class MyFileFilter extends FileFilter {
