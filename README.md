@@ -31,16 +31,24 @@ Features:
 
   - Puzzle -> Solution Count
     - It counts how many solutions a puzzle has with a cutoff limit of 1000.
-		
-  - File -> New Empty
-    - It generates an empty board. This replaces File -> New Givens. This new layout is more conventional with other programs.
 
   - 3 new colors added to the color palette in the Active Cell panel.
 	
   - Clear an entire color chanelle in either Cells or Candidates. This is done in the Active Cell panel by Ctrl + Left Click on a color in the color palette. Only this color will be cleared from the board.
 
   - Mouse click while coloring no longer selects a cell. I found it distracting, sometimes the selector color overlay made the cell's colors look off. It can still be moved with the arrow keys. Maybe I should re-enable it, but add a toggle feature to automatically hide the selector when entering coloring mode.
-	
+
+Minor:
+
+  - File -> New Empty
+    - It generates an empty board. This replaces File -> New Givens. This new layout is more conventional with other programs.
+
+  - Edit -> Edit Givens
+    - Renamed and relocated File -> New Givens. It did not make sense being under the File menu. Now it is more clear what it does.
+		
+  - Edit -> Play Game
+    - Relocated from File -> Play Game. This belongs with Edit Givens since you use it to leave editor mode.
+
 Bug Fixes:
 
   - Active Cell color would dissapear when clicking outside the grid to hide the cursor selector.
