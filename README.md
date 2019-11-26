@@ -24,7 +24,7 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.8 (2019-11-25)
+Version 2.2.8 (2019-11-26)
 --------------------------
 
 Features:
@@ -44,7 +44,7 @@ Minor:
     - It generates an empty board. This replaces File -> New Givens. This new layout is more conventional with other programs.
 
   - Edit -> Edit Givens
-    - Renamed and relocated File -> New Givens. It did not make sense being under the File menu. Now it is more clear what it does.
+    - Renamed and relocated File -> Modify Givens. It did not make sense being under the File menu. Now it is more clear what it does.
 		
   - Edit -> Play Game
     - Relocated from File -> Play Game. This belongs with Edit Givens since you use it to leave editor mode.
