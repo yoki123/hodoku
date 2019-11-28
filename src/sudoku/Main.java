@@ -383,6 +383,15 @@ public class Main {
 			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error sorting puzzle file", ex);
 		}
 	}
+	
+	private static void test1() {
+		String line = "5.2.8..4.93..64.........93.....7.6.9..6....58.....62...7..9....4....38....3.5...7";
+		SudokuSolver solver = new SudokuSolver();
+		Sudoku2 sudoku = new Sudoku2();
+		sudoku.setSudoku(line);
+		solver.setSudoku(sudoku);
+		solver.solve();
+	}
 
 	/**
 	 * @param args the command line arguments
@@ -397,6 +406,8 @@ public class Main {
 		rootLogger.addHandler(fh);
 		rootLogger.setLevel(Level.CONFIG);
 //        rootLogger.setLevel(Level.ALL);
+		
+		//test1();
 
 		Handler[] handlers = rootLogger.getHandlers();
 		for (Handler handler : handlers) {
@@ -1521,8 +1532,19 @@ class BatchSolveThread extends Thread {
 	private StepStatistic[] singleStepStatistics;
 	private FindAllSteps findAllStepsInstance = null;
 
-	BatchSolveThread(String fn, String pStr, boolean ps, boolean pp, boolean pst, ClipboardMode cm, Set<SolutionType> t,
-			String ofn, boolean fas, boolean bft, List<SolutionType> tt) {
+	BatchSolveThread(
+			String fn, 
+			String pStr, 
+			boolean ps, 
+			boolean pp, 
+			boolean pst, 
+			ClipboardMode cm, 
+			Set<SolutionType> t,
+			String ofn, 
+			boolean fas, 
+			boolean bft, 
+			List<SolutionType> tt) {
+		
 		fileName = fn;
 		puzzleString = pStr;
 		printSolution = ps;
@@ -1530,13 +1552,16 @@ class BatchSolveThread extends Thread {
 		printStatistic = pst;
 		clipboardMode = cm;
 		types = t;
+		
 		if (clipboardMode != null && types != null) {
 			outputGrid = true;
 		}
+		
 		outFileName = ofn;
 		findAllSteps = fas;
 		bruteForceTest = bft;
 		testTypes = tt;
+		
 		if (bruteForceTest) {
 			findAllStepsInstance = new FindAllSteps();
 		}
@@ -1719,20 +1744,25 @@ class BatchSolveThread extends Thread {
 			}
 
 			long outTicks = 0;
-			while (!isInterrupted() && (inFile != null && (line = inFile.readLine()) != null)
-					|| (puzzleString != null)) {
+			while (!isInterrupted() && 
+					(inFile != null && 
+					(line = inFile.readLine()) != null)	|| 
+					(puzzleString != null)) {
 
 				if (puzzleString != null) {
 					line = puzzleString;
 					puzzleString = null;
 				}
+				
 //                System.out.println("solving: " + line);
 				line = line.trim();
 				if (line.length() == 0) {
 					continue;
 				}
+				
 //                System.out.println(line);
 				sudoku.setSudoku(line);
+				
 //                System.out.println("Sudoku: " + sudoku.getSudoku(ClipboardMode.VALUES_ONLY));
 				if (outputGrid || bruteForceTest) {
 					tmpSudoku = sudoku.clone();
@@ -1764,6 +1794,7 @@ class BatchSolveThread extends Thread {
 //                    System.out.println("solved: " + sudoku.getSudoku(ClipboardMode.VALUES_ONLY));
 					steps = solver.getSteps();
 					for (int i = 0; i < steps.size(); i++) {
+						
 //                        System.out.println("      " + steps.get(i).toString(2));
 						if (steps.get(i).getType() == SolutionType.BRUTE_FORCE && !needsGuessing) {
 							needsGuessing = true;

@@ -71,8 +71,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	private SudokuSet potentialCannibalisticEliminations = new SudokuSet(); // for fish only
 	private SudokuSet potentialEliminations = new SudokuSet(); // for fish only
 
-	public SolutionStep() {
-	}
+	public SolutionStep() {}
 
 	/**
 	 * Creates a new instance of SolutionStep
@@ -108,10 +107,8 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 			newStep.coverEntities = (List<Entity>) ((ArrayList<Entity>) coverEntities).clone();
 			newStep.chains = (List<Chain>) ((ArrayList<Chain>) chains).clone();
 			newStep.alses = (List<AlsInSolutionStep>) ((ArrayList<AlsInSolutionStep>) alses).clone();
-			newStep.colorCandidates = (SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) getColorCandidates())
-					.clone();
-			newStep.restrictedCommons = (List<RestrictedCommon>) ((ArrayList<RestrictedCommon>) restrictedCommons)
-					.clone();
+			newStep.colorCandidates = (SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) getColorCandidates()).clone();
+			newStep.restrictedCommons = (List<RestrictedCommon>) ((ArrayList<RestrictedCommon>) restrictedCommons).clone();
 			newStep.potentialCannibalisticEliminations = potentialCannibalisticEliminations.clone();
 			newStep.potentialEliminations = potentialEliminations.clone();
 		} catch (CloneNotSupportedException ex) {
@@ -1957,17 +1954,21 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	 * @return
 	 */
 	public boolean isEquivalent(SolutionStep s) {
+		
 		// Special steps first:
 //        if (getType() != s.getType() && (!SolutionType.isFish(getType()) ||
 //                !SolutionType.isFish(s.getType()))) {
 //            return false;
 //        }
+		
 		if (type.isFish() && s.getType().isFish()) {
 			return true;
 		}
+		
 		if (type.isKrakenFish() && s.getType().isKrakenFish()) {
 			return true;
 		}
+		
 		if (getType() != s.getType()) {
 			return false;
 		}
@@ -1975,6 +1976,7 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 		if (candidatesToDelete.size() > 0) {
 			return isEqualCandidate(candidatesToDelete, s.candidatesToDelete);
 		}
+		
 		return isEqualInteger(indices, s.indices);
 	}
 
@@ -2033,7 +2035,9 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	 */
 	@Override
 	public int compareTo(SolutionStep o) {
-		int sum1 = 0, sum2 = 0;
+		
+		int sum1 = 0;
+		int sum2 = 0;
 
 		// Steps, die einen Kandidaten setzen, immer zuerst
 		if (isSingle(type) && !isSingle(o.type)) {
@@ -2050,18 +2054,22 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 
 		// nach Äquivalenz (gleiche zu löschende Kandidaten)
 		if (!isEquivalent(o)) {
-//            // change 20110512: short chains first!
-//            int chainDiff = compareChainLengths(o);
-//            if (chainDiff != 0) {
-//                return chainDiff;
-//            }
+            // change 20110512: short chains first!
+			// change 2019-11-28, this was commented out, but without it, the comparator would crash when
+			// trying to solve this example edge case: 
+			// 5.2.8..4.93..64.........93.....7.6.9..6....58.....62...7..9....4....38....3.5...7
+            int chainDiff = compareChainLengths(o);
+            if (chainDiff != 0) {
+                return chainDiff;
+            }
 
-			// nicht äquivalent: nach Indexsumme der zu löschenden Kandidaten
-			sum1 = getIndexSumme(candidatesToDelete);
-			sum2 = getIndexSumme(o.candidatesToDelete);
+			// not equivalent: by the index sum of the candidates to be deleted
+			sum1 = getIndexSumme(candidatesToDelete); // 23
+			sum2 = getIndexSumme(o.candidatesToDelete); // 40
 			// BUG 20110512: Sort order is intransitiv - doesnt work with Java7 anymore
 //            return sum1 == sum2 ? 1 : sum1 - sum2;
-			return (sum1 - sum2);
+			// 
+			return (sum1 - sum2); // 23 - 40
 		}
 
 		// SPECIAL STEPS
@@ -2166,13 +2174,17 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 	}
 
 	private boolean isEqualInteger(List<Integer> l1, List<Integer> l2) {
+		
 		if (l1.size() != l2.size()) {
 			return false;
 		}
+		
 		int anz = l1.size();
 		for (int i = 0; i < anz; i++) {
+			
 			int i1 = l1.get(i);
 			boolean found = false;
+			
 			for (int j = 0; j < anz; j++) {
 				int i2 = l2.get(j);
 				if (i1 == i2) {
@@ -2180,10 +2192,12 @@ public class SolutionStep implements Comparable<SolutionStep>, Cloneable {
 					break;
 				}
 			}
+			
 			if (!found) {
 				return false;
 			}
 		}
+		
 		return true;
 	}
 

@@ -2153,12 +2153,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						frameSize = frameSize / 2 + 1;
 					}
 					
+					/*
 					if (row == activeRow && col == activeCol) {
 						g2.setColor(new Color(0.1f, 0.3f, 0.7f, 0.1f));
 						g2.fillRect(cellX, cellY, cellSize, cellSize);
 						g2.setColor(new Color(0.1f, 0.3f, 0.7f, 0.5f));
 						frameSize = 1;
-					}
+					}*/
 				
 					((Graphics)g2).fillRect(cellX, cellY, cellSize, frameSize+1);
 					((Graphics)g2).fillRect(cellX, cellY, frameSize+1, cellSize);
