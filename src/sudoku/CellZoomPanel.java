@@ -46,6 +46,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private static final int COLOR_PANEL_MAX_HEIGHT = 50;
 	private static final int DIFF_SIZE = 1;
 	private static final String[] NUMBERS = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+	private static final int COLOR_BUTTON_COUNT = 12;
 	
 	private MainFrame mainFrame;
 	private Font buttonFont = null;
@@ -63,7 +64,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private SudokuPanel sudokuPanel;
 	private int colorImageHeight = -1;
 	private Icon[] colorKuIcons = new Icon[9];
-	private int colorButtonCount = 18;
 	
 	private javax.swing.JPanel candidateColorPanel;
 	private javax.swing.JLabel cellColorLabel;
@@ -106,8 +106,8 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		
 		this.mainFrame = mainFrame;
 		
-		cellPanels = new JPanel[colorButtonCount];
-		candidatePanels = new JPanel[colorButtonCount];
+		cellPanels = new JPanel[COLOR_BUTTON_COUNT];
+		candidatePanels = new JPanel[COLOR_BUTTON_COUNT];
 		
 		initComponents();
 
@@ -420,17 +420,17 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		chooseCellColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
 		
 		{			
-			for (int i = 0; i < colorButtonCount; i++) {
+			for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
 				cellPanels[i] = createCellColorButtonPanel(-2 + i);
 			}
 			
-			for (int i = 2; i < colorButtonCount; i += 2) {
+			for (int i = 2; i < COLOR_BUTTON_COUNT; i += 2) {
 				chooseCellColorPanel.add(cellPanels[i]);
 			}
 			
 			chooseCellColorPanel.add(cellPanels[0]);
 			
-			for (int i = 3; i < colorButtonCount; i += 2) {
+			for (int i = 3; i < COLOR_BUTTON_COUNT; i += 2) {
 				chooseCellColorPanel.add(cellPanels[i]);
 			}
 			
@@ -462,17 +462,17 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		chooseCandidateColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
 
 		{
-			for (int i = 0; i < colorButtonCount; i++) {
+			for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
 				candidatePanels[i] = createCandidateColorButtonPanel(-2 + i);
 			}
 			
-			for (int i = 2; i < colorButtonCount; i += 2) {
+			for (int i = 2; i < COLOR_BUTTON_COUNT; i += 2) {
 				chooseCandidateColorPanel.add(candidatePanels[i]);
 			}
 			
 			chooseCandidateColorPanel.add(candidatePanels[0]);
 			
-			for (int i = 3; i < colorButtonCount; i += 2) {
+			for (int i = 3; i < COLOR_BUTTON_COUNT; i += 2) {
 				chooseCandidateColorPanel.add(candidatePanels[i]);
 			}
 			
@@ -619,12 +619,12 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			buttonPanelHeight = 120;
 		}
 		
-		int colorPanelGesWidth = colorPanelHeight * 6;
+		int colorPanelGesWidth = colorPanelHeight * 4;
 		if (colorPanelGesWidth > width - 2 * X_OFFSET) {
 			colorPanelHeight = (int) ((width - 2 * X_OFFSET) / 4.5);
 		}
 		
-		colorPanelGesWidth = colorPanelHeight * 6;
+		colorPanelGesWidth = colorPanelHeight * 4;
 		int newColorImageHeight = colorPanelHeight * 2 / 3;
 
 		// ok, do the layout
@@ -655,7 +655,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		cellColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
 		cellColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
 		cellColorPanel.doLayout();
-		chooseCellColorPanel.setSize((5 * colorPanelHeight), colorPanelHeight);
+		chooseCellColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
 		chooseCellColorPanel.setLocation(cpx + colorPanelHeight, y);
 		chooseCellColorPanel.doLayout();
 		y += colorPanelHeight;
@@ -667,7 +667,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		candidateColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
 		candidateColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
 		candidateColorPanel.doLayout();
-		chooseCandidateColorPanel.setSize((5 * colorPanelHeight), colorPanelHeight);
+		chooseCandidateColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
 		chooseCandidateColorPanel.setLocation(cpx + colorPanelHeight, y);
 		chooseCandidateColorPanel.doLayout();
 

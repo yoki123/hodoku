@@ -382,13 +382,7 @@ public final class Options {
 			new Color(134, 232, 208), // 'd' - first color of fourth color pair
 			new Color(206, 251, 237), // 'D' - second color of fourth color pair
 			new Color(134, 242, 128), // 'e' - first color of fifth color pair
-			new Color(215, 255, 215), // 'E' - second color of fifth color pair
-			new Color(200, 66, 164), // '' - first color of sixth color pair
-			new Color(220, 159, 205), // '' - second color of sixth color pair
-			new Color(236, 101, 44), // '' - first color of seventh color pair
-			new Color(190, 130, 104), // '' - second color of seventh color pair
-			new Color(59, 67, 215), // '' - first color of eigth color pair
-			new Color(104, 108, 190) // '' - second color of eigth color pair
+			new Color(215, 255, 215) // 'E' - second color of fifth color pair
 			// new Color(140, 198, 255), // 'a' - first color of first color pair
 			// new Color(205, 171, 255), // 'A' - second color of first color pair
 			// new Color(255, 164, 119), // 'b' - first color of second color pair

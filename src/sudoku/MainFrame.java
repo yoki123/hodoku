@@ -600,6 +600,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		if (launchFile != null && launchFile.endsWith("." + solutionFileExt)) {
 			loadFromFile(launchFile, 1);
 		}
+		
 		if (launchFile != null && launchFile.endsWith("." + textFileExt)) {
 			loadFromFile(launchFile, 8);
 		}

@@ -383,15 +383,6 @@ public class Main {
 			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error sorting puzzle file", ex);
 		}
 	}
-	
-	private static void test1() {
-		String line = "5.2.8..4.93..64.........93.....7.6.9..6....58.....62...7..9....4....38....3.5...7";
-		SudokuSolver solver = new SudokuSolver();
-		Sudoku2 sudoku = new Sudoku2();
-		sudoku.setSudoku(line);
-		solver.setSudoku(sudoku);
-		solver.solve();
-	}
 
 	/**
 	 * @param args the command line arguments
@@ -406,8 +397,6 @@ public class Main {
 		rootLogger.addHandler(fh);
 		rootLogger.setLevel(Level.CONFIG);
 //        rootLogger.setLevel(Level.ALL);
-		
-		//test1();
 
 		Handler[] handlers = rootLogger.getHandlers();
 		for (Handler handler : handlers) {

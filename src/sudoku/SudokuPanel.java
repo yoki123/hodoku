@@ -290,7 +290,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 					dragCellSelection[index] = true;
 					if (cellSelection.contains(Integer.valueOf(index))) {						
-						cellSelection.remove(Integer.valueOf(index));						
+						cellSelection.remove(Integer.valueOf(index));					
 					} else {						
 						cellSelection.add(Integer.valueOf(index));
 					}
@@ -728,10 +728,12 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							
 							} else {
 								
-								if (cellSelection.contains(Integer.valueOf(index))) {
-									cellSelection.remove(Integer.valueOf(index));
-								} else {
-									cellSelection.add(Integer.valueOf(index));
+								if (!dragCellSelection[index]) {
+									if (cellSelection.contains(Integer.valueOf(index))) {
+										cellSelection.remove(Integer.valueOf(index));
+									} else {
+										cellSelection.add(Integer.valueOf(index));
+									}	
 								}
 								
 								setAktRowCol(row, col);
