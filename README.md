@@ -32,7 +32,7 @@ Features:
   - Puzzle -> Solution Count
     - It counts how many solutions a puzzle has with a cutoff limit of 1000.
 	
-  - Clear an entire color chanelle in either Cells or Candidates. This is done in the Active Cell panel by Ctrl + Left Click on a color in the color palette. Only this color will be cleared from the board.
+  - Clear an entire color channel in either Cells or Candidates. This is done in the Active Cell panel by Ctrl + Left Click on a color in the color palette. Only this color will be cleared from the board.
 
   - Mouse click while coloring no longer selects a cell. I found it distracting, sometimes the selector color overlay made the cell's colors look off. It can still be moved with the arrow keys. Maybe I should re-enable it, but add a toggle feature to automatically hide the selector when entering coloring mode.
 
@@ -49,11 +49,11 @@ Minor:
 
 Bug Fixes:
 
-  - Active Cell color would dissapear when clicking outside the grid to hide the cursor selector.
+  - Active Cell color would disappear when clicking outside the grid to hide the cursor selector.
 	
   - Active Color preview defaulted to cell color preview.
   
-  - Faulty trasition from drag to click while Ctrl down leading to a cell being deselected.
+  - Faulty transition from drag to click while Ctrl down leading to a cell being deselected.
 
 Version 2.2.7 (2019-11-23)
 --------------------------
