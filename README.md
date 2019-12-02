@@ -54,6 +54,8 @@ Bug Fixes:
   - Active Color preview defaulted to cell color preview.
   
   - Faulty transition from drag to click while Ctrl down leading to a cell being deselected.
+  
+  - Batch generate would sometimes crash due to a comparator bug in the XY-Chains.
 
 Version 2.2.7 (2019-11-23)
 --------------------------
