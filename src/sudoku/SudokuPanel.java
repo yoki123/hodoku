@@ -508,8 +508,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			lastPressedRow = -1;
 			lastPressedCol = -1;
 			lastPressedCandidate = -1;
-			return;
-			
+			return;			
 		}
 		
 		boolean isCellClicked = 
@@ -771,9 +770,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							// select single cell, delete old markings if available
 							// in the alternative mouse mode a single cell is only
 							// selected, if the cell is outside a selected region
-							if (Options.getInstance().isSingleClickMode() == false ||
-								(Options.getInstance().isSingleClickMode() == true &&
-								cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col))) == false)) {
+							if ((Options.getInstance().isSingleClickMode() == false && 
+								cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col))) == false) ||
+								Options.getInstance().isSingleClickMode() == true) {
 								setAktRowCol(row, col);
 								clearRegion();
 							}
@@ -1333,15 +1332,25 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						}
 					}
 				} else {
+					
 					// set value only in cells where the candidate is still present
 					// problem: setting the first removes all other candidates in the
 					// corresponding blocks so we have to collect the applicable cells first
+					
+					/*
 					List<Integer> cells = new ArrayList<Integer>();
 					for (int index : cellSelection) {
-						//if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, number, !showCandidates)) {
+						if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, number, !showCandidates)) {
 							cells.add(index);
-						//}
+						}
+					}*/
+					
+					List<Integer> cells = new ArrayList<Integer>(cellSelection);
+					Integer activeIndex = new Integer(Sudoku2.getIndex(activeRow, activeCol));
+					if (!cells.contains(activeIndex)) {
+						cells.add(activeIndex);
 					}
+					
 					
 					for (int index : cells) {
 						setCell(Sudoku2.getRow(index), Sudoku2.getCol(index), number);
