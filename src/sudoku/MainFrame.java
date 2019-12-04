@@ -100,7 +100,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private static final long serialVersionUID = 1L;
-	public static final String VERSION = "HoDoKu - v2.2.8";
+	public static final String VERSION = "HoDoKu - v2.2.9";
 
 	// public static final String BUILD = "Build 16";
 	public static final String BUILD;
@@ -1487,6 +1487,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		editGivensMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("editGivensMenuItemMnemonic").charAt(0));
 		editGivensMenuItem.setText(bundle.getString("MainFrame.editGivensMenuItem.text"));
+		editGivensMenuItem.setEnabled(false);
 		editGivensMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				spielEditierenMenuItemActionPerformed(evt);
@@ -1497,7 +1498,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		playGameMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("MainFrame.spielenMenuItemMnemonic").charAt(0));
 		playGameMenuItem.setText(bundle.getString("MainFrame.playGameMenuItem.text"));
-		playGameMenuItem.setEnabled(false);
+		playGameMenuItem.setEnabled(true);
 		playGameMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				spielSpielenMenuItemActionPerformed(evt);
@@ -4535,7 +4536,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 	}
 
-	public boolean isEingabeModus() {
+	public boolean isInputMode() {
 		return gameMode;
 	}
 

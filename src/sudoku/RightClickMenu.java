@@ -495,15 +495,17 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			return;
 		}
 		
+		boolean isSingleCell = 
+				sudokuPanel.getSelectedCells().isEmpty() ||
+				sudokuPanel.getSelectedCells().size() == 1 &&
+				sudokuPanel.getSelectedCells().get(0).intValue() == Sudoku2.getIndex(row, col);
+		
 		jSeparator2.setVisible(true);
-		if (sudokuPanel.getSudoku().getValue(row, col) != 0 && sudokuPanel.getSelectedCells().isEmpty()) {
+		if (sudokuPanel.getSudoku().getValue(row, col) != 0 && isSingleCell) {
 			
-			// cell is already set -> delete value popup (not for givens!)
-			int aktRow = sudokuPanel.getActiveRow();
-			int aktCol = sudokuPanel.getActiveCol();
-			
-			if (!sudokuPanel.getSudoku().isFixed(aktRow, aktCol)) {
-				deleteValuePopupMenu.show(this, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
+			// cell is already set -> delete value popup (not for givens!)			
+			if (!sudokuPanel.getSudoku().isFixed(row, col)) {
+				deleteValuePopupMenu.show(sudokuPanel, sudokuPanel.getX(row, col) + cellSize, sudokuPanel.getY(row, col));
 			}
 			
 			return;

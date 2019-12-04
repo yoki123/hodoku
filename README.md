@@ -24,6 +24,19 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.9 (2019-12-04)
+--------------------------
+
+Bug Fixes:
+
+  - Input digit on a cell with a user input value now overwrites it.
+
+  - The Modify Givens button is not active when the program loads, and Play Game is not clickable.
+
+  - Right click a user input cell shows the right click menu with the option to delete value.
+
+  - Cells now color even if you drag and release on the same cell.
+
 Version 2.2.8 (2019-12-01)
 --------------------------
 

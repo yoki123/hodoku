@@ -156,7 +156,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private SortedMap<Integer, Integer> coloringMap = new TreeMap<Integer, Integer>();
 	private SortedMap<Integer, Integer> coloringCandidateMap = new TreeMap<Integer, Integer>();
 	private int aktColorIndex = -1;
-	private boolean colorCells = Options.getInstance().isColorCells();
+	private boolean isColoringCells = Options.getInstance().isColorCells();
 	private Cursor colorCursor = null;
 	private Cursor colorCursorShift = null;
 	private Cursor oldCursor = null;
@@ -165,7 +165,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private ProgressChecker progressChecker = null;
 	private Timer deleteCursorTimer = new Timer(Options.getInstance().getDeleteCursorDisplayLength(), null);
 	private long lastCursorChanged = -1;
-	private RightClickMenu rightClickMenu;
+	private RightClickMenu rightClickMenu = null;
 	private boolean[] remainingCandidates = new boolean[Sudoku2.UNITS];
 	
 	// event meta data
@@ -201,6 +201,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		clearDragSelection();
 		initComponents();
 		
+		rightClickMenu = new RightClickMenu(mf, this);
 		rightClickMenu.setColorIconsInPopupMenu();
 		updateCellZoomPanel();
 		calculateGridRegion(getBounds(), false, false);
@@ -494,11 +495,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		int col = getCol(evt.getPoint());
 		int cand = getCandidate(evt.getPoint(), row, col);
 		boolean onGrid = isOnGrid(evt.getPoint());
-		boolean isCandidateClicked = 
-			row == lastPressedRow && 
-			col == lastPressedCol && 
-			cand == lastPressedCandidate &&
-			onGrid;
 
 		if (!onGrid) {
 
@@ -509,33 +505,41 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			clearDragSelection();
 			updateCellZoomPanel();
 			
-		} else if (isCandidateClicked) {
+			lastPressedRow = -1;
+			lastPressedCol = -1;
+			lastPressedCandidate = -1;
+			return;
 			
-			long ticks = System.currentTimeMillis();
+		}
+		
+		boolean isCellClicked = 
+				onGrid &&
+				row == lastPressedRow && 
+				col == lastPressedCol;
+		boolean isCandidateClicked = 
+				isCellClicked &&
+				cand == lastPressedCandidate;
+			
+		long ticks = System.currentTimeMillis();
 
-			boolean isDoubleClick = 
-				lastClickedTime != -1 && 
-				(ticks - lastClickedTime) <= doubleClickSpeed && 
-				row == lastClickedRow && 
-				col == lastClickedCol && 
-				cand == lastClickedCandidate;
+		boolean isDoubleClick = 
+			lastClickedTime != -1 && 
+			(ticks - lastClickedTime) <= doubleClickSpeed && 
+			row == lastClickedRow && 
+			col == lastClickedCol && 
+			cand == lastClickedCandidate;
 
-			if (isDoubleClick) {
-				handleMouseClicked(evt, true);
-				lastClickedTime = -1;
-			} else {
-				handleMouseClicked(evt, false);
-				lastClickedTime = ticks;
-			}
-
-			lastClickedRow = row;
-			lastClickedCol = col;
-			lastClickedCandidate = cand;
+		if (isDoubleClick) {
+			handleMouseClicked(evt, true, isCellClicked, isCandidateClicked);
+			lastClickedTime = -1;
+		} else {
+			handleMouseClicked(evt, false, isCellClicked, isCandidateClicked);
+			lastClickedTime = ticks;
 		}
 
-		lastPressedRow = -1;
-		lastPressedCol = -1;
-		lastPressedCandidate = -1;
+		lastClickedRow = row;
+		lastClickedCol = col;
+		lastClickedCandidate = cand;
 	}
 
 	/**
@@ -552,7 +556,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * </ul>
 	 * If {@link #aktColorIndex} is set (ne -1), coloring mode is in effect and the
 	 * mouse behaviour changes completely (whether a cell or a candidate should be
-	 * colored is decided by {@link #colorCells}):
+	 * colored is decided by {@link #isColoringCells}):
 	 * <ul>
 	 * <li>left click on a cell/candidate toggles the color on the
 	 * cell/candidate</li>
@@ -571,7 +575,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 *
 	 * @param evt
 	 */
-	private void handleMouseClicked(MouseEvent evt, boolean doubleClick) {
+	private void handleMouseClicked(MouseEvent evt, boolean doubleClick, boolean isCellClicked, boolean isCandidateClicked) {
 
 		undoStack.push(sudoku.clone());
 		boolean changed = false;
@@ -656,13 +660,17 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						}
 					}
 
-					if (colorCells) {
+					if (isColoringCells) {
 						// coloring for cells
-						handleColoring(row, col, -1, colorNumber);
+						if (isCellClicked) {
+							handleColoring(row, col, -1, colorNumber);	
+						}
 					} else {
 						// coloring for candidates
 						if (candidate != -1) {
-							handleColoring(row, col, candidate, colorNumber);
+							if (isCandidateClicked) {
+								handleColoring(row, col, candidate, colorNumber);
+							}
 						}
 					}
 					
@@ -1316,7 +1324,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if ((modifiers & KeyEvent.CTRL_DOWN_MASK) == 0) {
 				if (cellSelection.isEmpty()) {
 					setCell(activeRow, activeCol, number);
-					if (mainFrame.isEingabeModus() && Options.getInstance().isEditModeAutoAdvance()) {
+					if (mainFrame.isInputMode() && Options.getInstance().isEditModeAutoAdvance()) {
 						// automatically advance to the next cell
 						if (activeCol < 8) {
 							setAktRowCol(activeRow, activeCol + 1);
@@ -1330,9 +1338,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					// corresponding blocks so we have to collect the applicable cells first
 					List<Integer> cells = new ArrayList<Integer>();
 					for (int index : cellSelection) {
-						if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, number, !showCandidates)) {
+						//if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, number, !showCandidates)) {
 							cells.add(index);
-						}
+						//}
 					}
 					
 					for (int index : cells) {
@@ -1366,7 +1374,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					changed = true;
 				}
 				
-				if (mainFrame.isEingabeModus() && Options.getInstance().isEditModeAutoAdvance()) {
+				if (mainFrame.isInputMode() && Options.getInstance().isEditModeAutoAdvance()) {
 					// automatically advance to the next cell
 					if (activeCol < 8) {
 						setAktRowCol(activeRow, activeCol + 1);
@@ -3526,14 +3534,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @return the colorCells
 	 */
 	public boolean isColorCells() {
-		return colorCells;
+		return isColoringCells;
 	}
 
 	/**
 	 * @param colorCells the colorCells to set
 	 */
 	public void setColorCells(boolean colorCells) {
-		this.colorCells = colorCells;
+		this.isColoringCells = colorCells;
 		Options.getInstance().setColorCells(colorCells);
 		updateCellZoomPanel();
 	}
@@ -3784,7 +3792,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				SudokuSetBase.EMPTY_SET,
 				aktColorIndex,
 				0,
-				this.colorCells,
+				this.isColoringCells,
 				true,
 				null,
 				null
@@ -3839,7 +3847,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						SudokuSetBase.EMPTY_SET,
 						aktColorIndex,
 						index,
-						colorCells,
+						isColoringCells,
 						singleCell,
 						null,
 						null
@@ -3855,7 +3863,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						candSet, 
 						aktColorIndex,
 						index,
-						colorCells,
+						isColoringCells,
 						singleCell,
 						coloringMap,
 						coloringCandidateMap
