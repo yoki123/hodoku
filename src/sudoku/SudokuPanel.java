@@ -155,7 +155,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private Stack<Sudoku2> redoStack = new Stack<Sudoku2>();
 	private SortedMap<Integer, Integer> coloringMap = new TreeMap<Integer, Integer>();
 	private SortedMap<Integer, Integer> coloringCandidateMap = new TreeMap<Integer, Integer>();
-	private int aktColorIndex = -1;
+	public int aktColorIndex = -1;
 	private boolean isColoringCells = Options.getInstance().isColorCells();
 	private Cursor colorCursor = null;
 	private Cursor colorCursorShift = null;
@@ -169,9 +169,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private boolean[] remainingCandidates = new boolean[Sudoku2.UNITS];
 	
 	// event meta data
-	private int lastPressedRow = -1;
-	private int lastPressedCol = -1;
-	private int lastPressedCandidate = -1;
+	public int lastPressedRow = -1;
+	public int lastPressedCol = -1;
+	public int lastPressedCandidate = -1;
 	private int lastClickedRow = -1;
 	private int lastClickedCol = -1;
 	private int lastClickedCandidate = -1;
@@ -493,7 +493,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 		int row = getRow(evt.getPoint());
 		int col = getCol(evt.getPoint());
-		int cand = getCandidate(evt.getPoint(), row, col);
+		int candidate = getCandidate(evt.getPoint(), row, col);
 		boolean onGrid = isOnGrid(evt.getPoint());
 
 		if (!onGrid) {
@@ -510,14 +510,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			lastPressedCandidate = -1;
 			return;			
 		}
-		
-		boolean isCellClicked = 
-				onGrid &&
-				row == lastPressedRow && 
-				col == lastPressedCol;
-		boolean isCandidateClicked = 
-				isCellClicked &&
-				cand == lastPressedCandidate;
 			
 		long ticks = System.currentTimeMillis();
 
@@ -526,21 +518,327 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			(ticks - lastClickedTime) <= doubleClickSpeed && 
 			row == lastClickedRow && 
 			col == lastClickedCol && 
-			cand == lastClickedCandidate;
+			candidate == lastClickedCandidate;
 
 		if (isDoubleClick) {
-			handleMouseClicked(evt, true, isCellClicked, isCandidateClicked);
+			handleMouseClicked(evt, true);
 			lastClickedTime = -1;
 		} else {
-			handleMouseClicked(evt, false, isCellClicked, isCandidateClicked);
+			handleMouseClicked(evt, false);
 			lastClickedTime = ticks;
 		}
 
 		lastClickedRow = row;
 		lastClickedCol = col;
-		lastClickedCandidate = cand;
+		lastClickedCandidate = candidate;
 	}
 
+	boolean onRightClick(MouseClickDTO dto) {
+		
+		boolean change = false;
+		
+		if (Options.getInstance().isSingleClickMode()) {
+			
+			// toggle candidate in cell(s) (three state mode)
+			if (cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(dto.row, dto.col)))) {
+				
+				// a region select exists and the cells lies within: toggle candidate
+				if (dto.candidate != -1) {
+					change = toggleCandidateInAktCells(dto.candidate);
+				}
+				
+			} else {
+				
+				// no region or cell outside region -> change focus and toggle candidate
+				setAktRowCol(dto.row, dto.col);
+				clearRegion();
+				
+				if (sudoku.getValue(dto.row, dto.col) != 0 && !sudoku.isFixed(dto.row, dto.col)) {
+					
+					rightClickMenu.deleteValuePopup(dto.row, dto.col, cellSize);
+					
+				} else {
+					
+					int showHintCellValue = getShowHintCellValue();
+					if ((dto.candidate == -1 || 
+						!sudoku.isCandidate(dto.row, dto.col, dto.candidate, !showCandidates)) && 
+						showHintCellValue != 0) {
+						
+						// if the candidate is not present, but part of the solution and
+						// show deviations is set, it is displayed, although technically
+						// not present: it should be toggled, even if it is not the
+						// hint value
+						if (showDeviations && 
+							sudoku.isSolutionSet() && 
+							dto.candidate == sudoku.getSolution(activeRow, activeCol)) {
+							toggleCandidateInCell(activeRow, activeCol, dto.candidate);
+						} else {
+							toggleCandidateInCell(activeRow, activeCol, showHintCellValue);
+						}
+						
+					} else if (dto.candidate != -1) {
+						toggleCandidateInCell(activeRow, activeCol, dto.candidate);
+					}
+					
+					change = true;
+				}
+			}
+			
+		} else {
+			// bring up popup menu
+			rightClickMenu.showPopupMenu(dto.row, dto.col, cellSize);
+		}
+		
+		return change;
+	}
+	
+	boolean onSingleLeftClick(MouseClickDTO dto, int index) {
+		
+		if (dto.ctrlPressed) {
+			
+			// select additional cell
+			if (cellSelection.size() == 0) {
+				
+				cellSelection.add(Integer.valueOf(index));
+				setAktRowCol(dto.row, dto.col);
+			
+			} else {
+				
+				if (!dragCellSelection[index]) {
+					if (cellSelection.contains(Integer.valueOf(index))) {
+						cellSelection.remove(Integer.valueOf(index));
+					} else {
+						cellSelection.add(Integer.valueOf(index));
+					}	
+				}
+				
+				setAktRowCol(dto.row, dto.col);
+			}
+			
+			return false;			
+		}
+		
+		if (dto.shiftPressed) {
+			
+			if (Options.getInstance().isUseShiftForRegionSelect()) {
+				// select range of cells
+				selectRegion(dto.row, dto.col);
+			} else {
+				if (dto.candidate != -1) {
+					// toggle candidate
+					if (sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
+						sudoku.setCandidate(index, dto.candidate, false, !showCandidates);
+					} else {
+						sudoku.setCandidate(index, dto.candidate, true, !showCandidates);
+					}
+					
+					clearRegion();
+					return true;
+				}
+			}
+			
+			return false;			
+		}
+		
+		// select single cell, delete old markings if available
+		// in the alternative mouse mode a single cell is only
+		// selected, if the cell is outside a selected region
+		if ((Options.getInstance().isSingleClickMode() == false && 
+			cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(dto.row, dto.col))) == false) ||
+			Options.getInstance().isSingleClickMode() == true) {
+			setAktRowCol(dto.row, dto.col);
+			clearRegion();
+		}
+		
+		if (Options.getInstance().isSingleClickMode()) {
+			
+			// the selected cell(s) must be set to cand
+			if (sudoku.getValue(index) == 0) {
+				if (cellSelection.isEmpty()) {
+					
+					int showHintCellValue = getShowHintCellValue();
+					if (sudoku.getAnzCandidates(index, !showCandidates) == 1) {
+						// Naked single -> set it!
+						int actCand = sudoku.getAllCandidates(index, !showCandidates)[0];
+						setCell(dto.row, dto.col, actCand);
+						return true;
+					} else if (showHintCellValue != 0 && isHiddenSingle(showHintCellValue, dto.row, dto.col)) {
+						// Hidden Single -> it
+						setCell(dto.row, dto.col, showHintCellValue);
+						return true;
+					} else if (dto.candidate != -1) {
+						// set candidate
+						// (only if that candidate is still set in the cell)
+						if (sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
+							setCell(dto.row, dto.col, dto.candidate);
+						}
+						
+						return true;
+					}
+					
+				} else {
+					
+					if (dto.candidate == -1 || !sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
+						// an empty space was clicked in the cell -> clear region
+						setAktRowCol(dto.row, dto.col);
+						clearRegion();
+					} else if (dto.candidate != -1) {
+						// an actual candidate was clicked -> set value in all cells where it is
+						// still possible (collect cells first to avoid side effects!)
+						List<Integer> cells = new ArrayList<Integer>();
+						for (int selIndex : cellSelection) {
+							if (sudoku.getValue(selIndex) == 0 && 
+								sudoku.isCandidate(selIndex, dto.candidate, !showCandidates)) {
+								cells.add(selIndex);
+							}
+						}
+						
+						for (int cellIndex : cells) {
+							setCell(Sudoku2.getRow(cellIndex), Sudoku2.getCol(cellIndex), dto.candidate);
+						}
+					}
+				}
+			} else {
+				// clear selection
+				setAktRowCol(dto.row, dto.col);
+				clearRegion();				
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	boolean onDoubleLeftClick(MouseClickDTO dto, int index) {
+		
+		if (dto.ctrlPressed) {
+			if (dto.candidate != -1) {
+				
+				// toggle candidate
+				if (sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
+					sudoku.setCandidate(index, dto.candidate, false, !showCandidates);
+				} else {
+					sudoku.setCandidate(index, dto.candidate, true, !showCandidates);
+				}
+				
+				clearRegion();
+				return true;
+			}
+			
+		} else {
+			
+			if (sudoku.getValue(index) == 0) {
+				
+				int showHintCellValue = getShowHintCellValue();
+				if (sudoku.getAnzCandidates(index, !showCandidates) == 1) {
+					// Naked single -> set it!
+					int actCand = sudoku.getAllCandidates(index, !showCandidates)[0];
+					setCell(dto.row, dto.col, actCand);
+					return true;
+				} else if (showHintCellValue != 0 && isHiddenSingle(showHintCellValue, dto.row, dto.col)) {
+					// Hidden Single -> it
+					setCell(dto.row, dto.col, showHintCellValue);
+					return true;
+				} else if (dto.candidate != -1) {
+					// candidate double clicked -> set it
+					// (only if that candidate is still set in the cell)
+					if (sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
+						setCell(dto.row, dto.col, dto.candidate);
+					}
+					
+					return true;
+				}
+				
+			} else if (!sudoku.isFixed(index)) {
+				// double clicking a user input value removes it
+				setCell(dto.row, dto.col, 0);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	boolean onLeftClick(MouseClickDTO dto) {
+		
+		boolean change = false;
+				
+		// in normal mode we only react to the left mouse button
+		int index = Sudoku2.getIndex(dto.row, dto.col);
+		if (dto.isDoubleClick) {
+			change = onDoubleLeftClick(dto, index);			
+		} else {			
+			change = onSingleLeftClick(dto, index);
+		}
+		
+		return change;
+	}
+	
+	void onColoring(MouseClickDTO dto) {
+		
+		// coloring is active
+		int colorNumber = aktColorIndex;
+		if (dto.shiftPressed || dto.isMiddleClick) {
+			if (colorNumber % 2 == 0) {
+				colorNumber++;
+			} else {
+				colorNumber--;
+			}
+		}
+		
+		if (isColoringCells) {
+			// coloring for cells
+			if (dto.isCellClicked) {
+				handleColoring(dto.row, dto.col, -1, colorNumber);	
+			}
+		} else {
+			// coloring for candidates
+			if (dto.candidate != -1) {
+				if (dto.isCandidateClicked) {
+					handleColoring(dto.row, dto.col, dto.candidate, colorNumber);
+				}
+			}
+		}
+	}
+	
+	class MouseClickDTO {
+		
+		public int row;
+		public int col;
+		public int candidate;
+		public boolean ctrlPressed;
+		public boolean shiftPressed;
+		public boolean isValidCellIndex;
+		public boolean isLeftClick;
+		public boolean isMiddleClick;
+		public boolean isRightClick;
+		public boolean isColoring;
+		public boolean isCellClicked;
+		public boolean isCandidateClicked;
+		public boolean isDoubleClick;
+		
+		MouseClickDTO(MouseEvent e, SudokuPanel panel, boolean isDoubleClick) {
+			this.row = panel.getRow(e.getPoint());
+			this.col = panel.getCol(e.getPoint());
+			this.candidate = panel.getCandidate(e.getPoint(), row, col);
+			this.ctrlPressed = (e.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
+			this.shiftPressed = (e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0;
+			this.isValidCellIndex = Sudoku2.isValidIndex(row, col);
+			this.isLeftClick = e.getButton() == MouseEvent.BUTTON1;
+			this.isMiddleClick = e.getButton() == MouseEvent.BUTTON2;
+			this.isRightClick = e.getButton() == MouseEvent.BUTTON3;
+			this.isColoring = panel.aktColorIndex != -1;
+			this.isCellClicked = 
+				this.row == panel.lastPressedRow && 
+				this.col == panel.lastPressedCol;
+			this.isCandidateClicked = 
+				this.isCellClicked &&
+				this.candidate == panel.lastPressedCandidate;
+			this.isDoubleClick = isDoubleClick;
+		}
+	}
+	
 	/**
 	 * New mouse control for version 2.0:
 	 * <ul>
@@ -574,269 +872,22 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 *
 	 * @param evt
 	 */
-	private void handleMouseClicked(MouseEvent evt, boolean doubleClick, boolean isCellClicked, boolean isCandidateClicked) {
-
-		undoStack.push(sudoku.clone());
+	private void handleMouseClicked(MouseEvent evt, boolean isDoubleClick) {
+		
+		MouseClickDTO dto = new MouseClickDTO(evt, this, isDoubleClick);
 		boolean changed = false;
-
-		int row = getRow(evt.getPoint());
-		int col = getCol(evt.getPoint());
-		int candidate = getCandidate(evt.getPoint(), row, col);
-		boolean ctrlPressed = (evt.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) != 0;
-		boolean shiftPressed = (evt.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0;
-		boolean isValidCellIndex = Sudoku2.isValidIndex(row, col);
-		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
-		boolean isMiddleClick = evt.getButton() == MouseEvent.BUTTON2;
-		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
-		boolean isColoring = aktColorIndex != -1;
-
-		if (isValidCellIndex) {
-			if (isRightClick) {
-				
-				if (Options.getInstance().isSingleClickMode()) {
-					
-					// toggle candidate in cell(s) (three state mode)
-					if (cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col)))) {
-						
-						// a region select exists and the cells lies within: toggle candidate
-						if (candidate != -1) {
-							changed = toggleCandidateInAktCells(candidate);
-						}
-						
-					} else {
-						
-						// no region or cell outside region -> change focus and toggle candidate
-						setAktRowCol(row, col);
-						clearRegion();
-						
-						if (sudoku.getValue(row, col) != 0 && !sudoku.isFixed(row, col)) {
-							
-							rightClickMenu.deleteValuePopup(row, col, cellSize);
-							
-						} else {
-							
-							int showHintCellValue = getShowHintCellValue();
-							if ((candidate == -1 || 
-								!sudoku.isCandidate(row, col, candidate, !showCandidates)) && 
-								showHintCellValue != 0) {
-								
-								// if the candidate is not present, but part of the solution and
-								// show deviations is set, it is displayed, although technically
-								// not present: it should be toggled, even if it is not the
-								// hint value
-								if (showDeviations && 
-									sudoku.isSolutionSet() && 
-									candidate == sudoku.getSolution(activeRow, activeCol)) {
-									toggleCandidateInCell(activeRow, activeCol, candidate);
-								} else {
-									toggleCandidateInCell(activeRow, activeCol, showHintCellValue);
-								}
-								
-							} else if (candidate != -1) {
-								toggleCandidateInCell(activeRow, activeCol, candidate);
-							}
-							
-							changed = true;
-						}
-					}
-					
-				} else {
-					// bring up popup menu
-					rightClickMenu.showPopupMenu(row, col, cellSize);
-				}
-				
+		
+		undoStack.push(sudoku.clone());
+		
+		if (dto.isValidCellIndex) {
+			if (dto.isRightClick) {				
+				changed = onRightClick(dto);				
 			} else {
-				
-				if (isColoring) {
-					
-					// coloring is active
-					int colorNumber = aktColorIndex;
-					if (shiftPressed || isMiddleClick) {
-						if (colorNumber % 2 == 0) {
-							colorNumber++;
-						} else {
-							colorNumber--;
-						}
-					}
-
-					if (isColoringCells) {
-						// coloring for cells
-						if (isCellClicked) {
-							handleColoring(row, col, -1, colorNumber);	
-						}
-					} else {
-						// coloring for candidates
-						if (candidate != -1) {
-							if (isCandidateClicked) {
-								handleColoring(row, col, candidate, colorNumber);
-							}
-						}
-					}
-					
-				} else if (isLeftClick) {
-					
-					// in normal mode we only react to the left mouse button
-					int index = Sudoku2.getIndex(row, col);
-					if (doubleClick) {
-						if (ctrlPressed) {
-							if (candidate != -1) {
-								
-								// toggle candidate
-								if (sudoku.isCandidate(index, candidate, !showCandidates)) {
-									sudoku.setCandidate(index, candidate, false, !showCandidates);
-								} else {
-									sudoku.setCandidate(index, candidate, true, !showCandidates);
-								}
-								
-								clearRegion();
-								changed = true;
-							}
-							
-						} else {
-							
-							if (sudoku.getValue(index) == 0) {
-								
-								int showHintCellValue = getShowHintCellValue();
-								if (sudoku.getAnzCandidates(index, !showCandidates) == 1) {
-									// Naked single -> set it!
-									int actCand = sudoku.getAllCandidates(index, !showCandidates)[0];
-									setCell(row, col, actCand);
-									changed = true;
-								} else if (showHintCellValue != 0 && isHiddenSingle(showHintCellValue, row, col)) {
-									// Hidden Single -> it
-									setCell(row, col, showHintCellValue);
-									changed = true;
-								} else if (candidate != -1) {
-									// candidate double clicked -> set it
-									// (only if that candidate is still set in the cell)
-									if (sudoku.isCandidate(index, candidate, !showCandidates)) {
-										setCell(row, col, candidate);
-									}
-									
-									changed = true;
-								}
-								
-							} else if (!sudoku.isFixed(index)) {
-								// double clicking a user input value removes it
-								setCell(row, col, 0);
-								changed = true;
-							}
-						}
-						
-					} else if (!doubleClick) {
-						
-						if (ctrlPressed) {
-							
-							// select additional cell
-							if (cellSelection.size() == 0) {
-								
-								cellSelection.add(Integer.valueOf(index));
-								setAktRowCol(row, col);
-							
-							} else {
-								
-								if (!dragCellSelection[index]) {
-									if (cellSelection.contains(Integer.valueOf(index))) {
-										cellSelection.remove(Integer.valueOf(index));
-									} else {
-										cellSelection.add(Integer.valueOf(index));
-									}	
-								}
-								
-								setAktRowCol(row, col);
-							}
-							
-						} else if (shiftPressed) {
-							
-							if (Options.getInstance().isUseShiftForRegionSelect()) {
-								// select range of cells
-								selectRegion(row, col);
-							} else {
-								if (candidate != -1) {
-									// toggle candidate
-									if (sudoku.isCandidate(index, candidate, !showCandidates)) {
-										sudoku.setCandidate(index, candidate, false, !showCandidates);
-									} else {
-										sudoku.setCandidate(index, candidate, true, !showCandidates);
-									}
-									
-									clearRegion();
-									changed = true;
-								}
-							}
-							
-						} else {
-							
-							// select single cell, delete old markings if available
-							// in the alternative mouse mode a single cell is only
-							// selected, if the cell is outside a selected region
-							if ((Options.getInstance().isSingleClickMode() == false && 
-								cellSelection.contains(Integer.valueOf(Sudoku2.getIndex(row, col))) == false) ||
-								Options.getInstance().isSingleClickMode() == true) {
-								setAktRowCol(row, col);
-								clearRegion();
-							}
-							
-							if (Options.getInstance().isSingleClickMode()) {
-								
-								// the selected cell(s) must be set to cand
-								if (sudoku.getValue(index) == 0) {
-									if (cellSelection.isEmpty()) {
-										
-										int showHintCellValue = getShowHintCellValue();
-										if (sudoku.getAnzCandidates(index, !showCandidates) == 1) {
-											// Naked single -> set it!
-											int actCand = sudoku.getAllCandidates(index, !showCandidates)[0];
-											setCell(row, col, actCand);
-											changed = true;
-										} else if (showHintCellValue != 0 && isHiddenSingle(showHintCellValue, row, col)) {
-											// Hidden Single -> it
-											setCell(row, col, showHintCellValue);
-											changed = true;
-										} else if (candidate != -1) {
-											// set candidate
-											// (only if that candidate is still set in the cell)
-											if (sudoku.isCandidate(index, candidate, !showCandidates)) {
-												setCell(row, col, candidate);
-											}
-											
-											changed = true;
-										}
-										
-									} else {
-										
-										if (candidate == -1 || !sudoku.isCandidate(index, candidate, !showCandidates)) {
-											// an empty space was clicked in the cell -> clear region
-											setAktRowCol(row, col);
-											clearRegion();
-										} else if (candidate != -1) {
-											// an actual candiate was clicked -> set value in all cells where it is
-											// still possible (collect cells first to avoid side effects!)
-											List<Integer> cells = new ArrayList<Integer>();
-											for (int selIndex : cellSelection) {
-												if (sudoku.getValue(selIndex) == 0
-														&& sudoku.isCandidate(selIndex, candidate, !showCandidates)) {
-													cells.add(selIndex);
-												}
-											}
-											
-											for (int cellIndex : cells) {
-												setCell(Sudoku2.getRow(cellIndex), Sudoku2.getCol(cellIndex), candidate);
-											}
-										}
-									}
-								} else {
-									// clear selection
-									setAktRowCol(row, col);
-									clearRegion();
-									
-								}
-								
-								changed = true;
-							}
-						}
-					}
-				}
+				if (dto.isColoring) {
+					onColoring(dto);		
+				} else if (dto.isLeftClick) {
+					changed = onLeftClick(dto);	
+				}				
 			}
 			
 			if (changed) {
@@ -2984,7 +3035,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param col  The column, in which p lies (may be -1 for "invalid")
 	 * @return The number of a candidate, if a click could be confirmed, or else -1
 	 */
-	private int getCandidate(Point p, int row, int col) {
+	public int getCandidate(Point p, int row, int col) {
 		
 		// check if a cell was clicked
 		if (row < 0 || col < 0) {
