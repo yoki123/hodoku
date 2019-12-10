@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 PseudoFish
+ * Copyright (C) 2019-20 PseudoFish
  * 
  * This is the menu that is displayed when the user right
  * clicks on a cell. Originally, Bernhard Hobiger embedded this

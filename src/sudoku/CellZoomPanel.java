@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2019-20  PseudoFish
  * Copyright (C) 2008-12  Bernhard Hobiger
  *
  * This file is part of HoDoKu.

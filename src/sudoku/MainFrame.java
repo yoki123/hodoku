@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2019-20  PseudoFish
  * Copyright (C) 2008-12  Bernhard Hobiger
  *
  * This file is part of HoDoKu.
@@ -100,7 +101,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private static final long serialVersionUID = 1L;
-	public static final String VERSION = "HoDoKu - v2.2.9";
+	public static final String VERSION = "Hodoku - v2.2.9";
 
 	// public static final String BUILD = "Build 16";
 	public static final String BUILD;
