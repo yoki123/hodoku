@@ -147,7 +147,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private JTabbedPane tabPane = new JTabbedPane();
 	private PageFormat pageFormat = null;
 	private PrinterJob job = null;
-	private double bildSize = 400;
+	private double saveImageDefaultSize = 800;
 	private int bildAufloesung = 96;
 	private int bildEinheit = 2;
 	
@@ -2088,8 +2088,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		new ConfigDialog(this, true, -1).setVisible(true);
 		sudokuPanel.resetActiveColor();
 		
-		if (sudokuPanel.getActiveColor() != -1) {
-			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[sudokuPanel.getActiveColor()]);
+		if (cellZoomPanel.isColoring()) {
+			statusPanelColorResult.setBackground(sudokuPanel.getActiveColor());
 		}
 		
 		sudokuPanel.setColorIconsInPopupMenu();
@@ -2100,7 +2100,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void statusLabelCellCandidateMouseClicked(java.awt.event.MouseEvent evt) {
-		sudokuPanel.setColorCells(!sudokuPanel.isColorCells());
+		sudokuPanel.updateCellZoomPanel();
 		check();
 		fixFocus();
 	}
@@ -2134,23 +2134,23 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void speichernAlsBildMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		WriteAsPNGDialog dlg = new WriteAsPNGDialog(this, true, bildSize, bildAufloesung, bildEinheit);
+		WriteAsPNGDialog dlg = new WriteAsPNGDialog(this, true, saveImageDefaultSize, bildAufloesung, bildEinheit);
 		dlg.setVisible(true);
 		if (dlg.isOk()) {
 			File bildFile = dlg.getBildFile();
 			bildAufloesung = dlg.getAufloesung();
-			bildSize = dlg.getBildSize();
+			saveImageDefaultSize = dlg.getBildSize();
 			bildEinheit = dlg.getEinheit();
 			int size = 0;
 			switch (bildEinheit) {
 			case 0:
-				size = (int) (bildSize / 25.4 * bildAufloesung);
+				size = (int) (saveImageDefaultSize / 25.4 * bildAufloesung);
 				break;
 			case 1:
-				size = (int) (bildSize * bildAufloesung);
+				size = (int) (saveImageDefaultSize * bildAufloesung);
 				break;
 			case 2:
-				size = (int) bildSize;
+				size = (int) saveImageDefaultSize;
 				break;
 			}
 			if (bildFile.exists()) {
@@ -2694,41 +2694,45 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void statusPanelColor1MouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(0);
+		coloringPanelClicked(Options.getInstance().getColoringColors()[0]);
 	}
 
 	private void statusPanelColor2MouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(2);
+		coloringPanelClicked(Options.getInstance().getColoringColors()[2]);
 	}
 
 	private void statusPanelColor3MouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(4);
+		coloringPanelClicked(Options.getInstance().getColoringColors()[4]);
 	}
 
 	private void statusPanelColor4MouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(6);
+		coloringPanelClicked(Options.getInstance().getColoringColors()[6]);
 	}
 
 	private void statusPanelColor5MouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(8);
+		coloringPanelClicked(Options.getInstance().getColoringColors()[8]);
 	}
 
 	private void statusPanelColorClearMouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(-1);
+		coloringPanelClicked(null);
 	}
 
 	private void statusPanelColorResetMouseClicked(java.awt.event.MouseEvent evt) {
-		coloringPanelClicked(-2);
+		coloringPanelClicked(null);
 	}
 
 	private void colorCellsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		sudokuPanel.setColorCells(true);
+		//sudokuPanel.setColorCells(true);
+		cellZoomPanel.setColorCells(true);
+		sudokuPanel.updateCellZoomPanel();
 		check();
 		fixFocus();
 	}
 
 	private void colorCandidatesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		sudokuPanel.setColorCells(false);
+		//sudokuPanel.setColorCells(false);
+		cellZoomPanel.setColorCandidates(true);
+		sudokuPanel.updateCellZoomPanel();
 		check();
 		fixFocus();
 	}
@@ -3218,30 +3222,36 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param colorNumber
 	 * @param isCell
 	 */
-	public void setColoring(int colorNumber, boolean isCell) {
+	public void setColoring(Color color, boolean isCell) {
 		
-		sudokuPanel.setColorCells(isCell);
-		coloringPanelClicked(colorNumber);
+		//sudokuPanel.setColorCells(isCell);
+		if (isCell) {
+			cellZoomPanel.setColorCells(true);
+		} else {
+			cellZoomPanel.setColorCandidates(true);
+		}
+		
+		coloringPanelClicked(color);
 		check();
 		fixFocus();
 	}
 
-	public void coloringPanelClicked(int colorNumber) {
+	public void coloringPanelClicked(Color color) {
 		
-		if (colorNumber == -1 || colorNumber == -2) {
+		if (color == null) {
 			
 			statusPanelColorResult.setBackground(Options.getInstance().getDefaultCellColor());
-			sudokuPanel.setActiveColor(-1);
-			
+			sudokuPanel.setActiveColor(null);
+			/*
 			if (colorNumber == -2) {
 				sudokuPanel.clearColoring();
 				repaint();
-			}
+			}*/
 			
 		} else {
 			
-			statusPanelColorResult.setBackground(Options.getInstance().getColoringColors()[colorNumber]);
-			sudokuPanel.setActiveColor(colorNumber);
+			statusPanelColorResult.setBackground(color);
+			sudokuPanel.setActiveColor(color);
 		}
 	}
 
@@ -4207,12 +4217,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				// no puzzle loaded
 				statusLabelLevel.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.statusLabelLevel.text"));
 			}
-			if (sudokuPanel.isColorCells()) {
+			
+			if (cellZoomPanel.isColoringCells()) {
 				colorCellsMenuItem.setSelected(true);
 				statusLabelCellCandidate.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.statusLabelCellCandidate.text.cell"));
-			} else {
+			} else if (cellZoomPanel.isColoringCandidates()) {
 				colorCandidatesMenuItem.setSelected(true);
 				statusLabelCellCandidate.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.statusLabelCellCandidate.text.candidate"));
+			} else if (cellZoomPanel.isDefaultMouse()) {
+				statusLabelCellCandidate.setText(ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.statusLabelCellCandidate.text.default"));
 			}
 			
 			fixFocus();

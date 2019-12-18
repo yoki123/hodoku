@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class WriteAsPNGDialog extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = 1L;
+	
 	private File bildFile;
 	private int aufloesung;
 	private double bildSize;

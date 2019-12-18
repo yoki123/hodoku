@@ -24,14 +24,32 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.9 (2019-12-04)
+Version 2.2.9 (2019-12-18)
 --------------------------
+
+Features:
+
+  - Color Palette
+
+    - Instead of having 2 color palettes, one for cells, one for candidates, we now only have 1. Radio buttons have been added to determine if we are using the default mouse mode, coloring cells or coloring candidates.
+
+    - We now have a primary and secondary color. Their order can be switched by using the arrow button between both colors.
+
+    - Clicking on a color from the color palette will set the primary color to this value.
+
+    - Clicking on the primary or secondary color will spawn a color selection window for further customization of colors than what is provided by Hodoku's default color palette.
+
+    - The 'R' button at the bottom left of the primary and secondary color resets the colors on the board. If Color Cells is selected, only cell colors will be cleared. If Color Candidates is selected, only candidate colors will be cleared. If Default Mouse is selected, all colors will be cleared.
+
+    - Colors are no longer switched with Shift is held down. Pressing once on 'X' will switch the color. You no longer have to hold it down.
 
 Minor:
 
   - Input digit on a cell with a user input value now overwrites it.
 
   - Cells now color even if you drag and release on the same cell.
+  
+  - Save Image default size changed from 400px to 800px
 
 Bug Fixes:
 

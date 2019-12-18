@@ -154,10 +154,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private int shiftCol = -1;
 	private Stack<Sudoku2> undoStack = new Stack<Sudoku2>();
 	private Stack<Sudoku2> redoStack = new Stack<Sudoku2>();
-	private SortedMap<Integer, Integer> coloringMap = new TreeMap<Integer, Integer>();
-	private SortedMap<Integer, Integer> coloringCandidateMap = new TreeMap<Integer, Integer>();
-	public int aktColorIndex = -1;
-	private boolean isColoringCells = Options.getInstance().isColorCells();
+	private SortedMap<Integer, Color> coloringMap = new TreeMap<Integer, Color>();
+	private SortedMap<Integer, Color> coloringCandidateMap = new TreeMap<Integer, Color>();
 	private Cursor colorCursor = null;
 	private Cursor colorCursorShift = null;
 	private Cursor oldCursor = null;
@@ -272,7 +270,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				int row = getRow(e.getPoint());
 				int col = getCol(e.getPoint());
 				int index = Sudoku2.getIndex(row, col);
-				boolean isColoring = aktColorIndex != -1;
 
 				updateCandidateMouseHighlight(e.getPoint());
 
@@ -284,7 +281,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					return;
 				}
 
-				if (isColoring) {
+				if (cellZoomPanel.isColoring()) {
 					return;
 				}
 
@@ -419,7 +416,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		int keyCode = evt.getKeyCode();
 		switch (keyCode) {
 		case KeyEvent.VK_ESCAPE:
-			mainFrame.coloringPanelClicked(-1);
+			mainFrame.coloringPanelClicked(null);
 			clearRegion();
 			if (step != null) {
 				mainFrame.abortStep();
@@ -446,7 +443,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		boolean isLeftClick = evt.getButton() == MouseEvent.BUTTON1;
 		boolean isRightClick = evt.getButton() == MouseEvent.BUTTON3;
 		boolean rightClickOutsideSelection = !cellSelection.contains(Integer.valueOf(index)) && isRightClick;
-		boolean isColoring = aktColorIndex != -1;
 		boolean onGrid = isOnGrid(evt.getPoint());
 		
 		if (!onGrid) {
@@ -455,7 +451,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			clearDragSelection();
 			updateCellZoomPanel();
 			
-		} else if (rightClickOutsideSelection || isColoring) {
+		} else if (rightClickOutsideSelection || cellZoomPanel.isColoring()) {
 			
 			if (rightClickOutsideSelection) {
 				activeRow = lastPressedRow;
@@ -779,25 +775,25 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	void onColoring(MouseClickDTO dto) {
 		
 		// coloring is active
-		int colorNumber = aktColorIndex;
+		/*int colorNumber = aktColorIndex;
 		if (dto.shiftPressed || dto.isMiddleClick) {
 			if (colorNumber % 2 == 0) {
 				colorNumber++;
 			} else {
 				colorNumber--;
 			}
-		}
+		}*/
 		
-		if (isColoringCells) {
+		if (cellZoomPanel.isColoringCells()) {
 			// coloring for cells
 			if (dto.isCellClicked) {
-				handleColoring(dto.row, dto.col, -1, colorNumber);	
+				handleColoring(dto.row, dto.col, -1, cellZoomPanel.getPrimaryColor());	
 			}
-		} else {
+		} else if (cellZoomPanel.isColoringCandidates()) {
 			// coloring for candidates
 			if (dto.candidate != -1) {
 				if (dto.isCandidateClicked) {
-					handleColoring(dto.row, dto.col, dto.candidate, colorNumber);
+					handleColoring(dto.row, dto.col, dto.candidate, cellZoomPanel.getPrimaryColor());
 				}
 			}
 		}
@@ -814,7 +810,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		public boolean isLeftClick;
 		public boolean isMiddleClick;
 		public boolean isRightClick;
-		public boolean isColoring;
 		public boolean isCellClicked;
 		public boolean isCandidateClicked;
 		public boolean isDoubleClick;
@@ -829,7 +824,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			this.isLeftClick = e.getButton() == MouseEvent.BUTTON1;
 			this.isMiddleClick = e.getButton() == MouseEvent.BUTTON2;
 			this.isRightClick = e.getButton() == MouseEvent.BUTTON3;
-			this.isColoring = panel.aktColorIndex != -1;
 			this.isCellClicked = 
 				this.row == panel.lastPressedRow && 
 				this.col == panel.lastPressedCol;
@@ -884,7 +878,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if (dto.isRightClick) {				
 				changed = onRightClick(dto);				
 			} else {
-				if (dto.isColoring) {
+				if (cellZoomPanel.isColoring()) {
 					onColoring(dto);		
 				} else if (dto.isLeftClick) {
 					changed = onLeftClick(dto);	
@@ -984,9 +978,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		// items that must be copied anyway
 		state.setUndoStack((Stack<Sudoku2>) undoStack.clone());
 		state.setRedoStack((Stack<Sudoku2>) redoStack.clone());
-		state.setColoringMap((SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) coloringMap).clone());
-		state.setColoringCandidateMap(
-				(SortedMap<Integer, Integer>) ((TreeMap<Integer, Integer>) coloringCandidateMap).clone());
+		state.setColoringMap((SortedMap<Integer, Color>) ((TreeMap<Integer, Color>) coloringMap).clone());
+		state.setColoringCandidateMap((SortedMap<Integer, Color>) ((TreeMap<Integer, Color>) coloringCandidateMap).clone());
 		// items that might be null (and therefore wont be copied)
 		state.setSudoku(sudoku);
 		state.setStep(step);
@@ -1094,7 +1087,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 		checkShowAllCandidates(modifiers, keyCode);
 
-		if (aktColorIndex >= 0) {
+		if (cellZoomPanel.isColoring()) {
 			if (getCursor() == colorCursorShift) {
 				setCursor(colorCursor);
 			}
@@ -1116,7 +1109,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			updateCandidateMouseHighlight(lastMousePosition);
 		}
 
-		if (aktColorIndex >= 0) {
+		if (cellZoomPanel.isColoring()) {
 			if ((modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0) {
 				if (getCursor() == colorCursor) {
 					setCursor(colorCursorShift);
@@ -1489,6 +1482,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				changed = toggleCandidateInAktCells(candidate);
 			}
 			break;
+		case KeyEvent.VK_X:
+			cellZoomPanel.swapColors();
+			break;
 		case KeyEvent.VK_E:
 			number++;
 		case KeyEvent.VK_D:
@@ -1507,13 +1503,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				// do nothing!
 				break;
 			}
+			
 			// calculate index in coloringColors[]
 			number *= 2;
 			if ((modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0) {
 				number++;
 			}
 			
-			handleColoring(-1, number);
+			handleColoring(-1, Options.getInstance().getColoringColors()[number]);
 			
 			break;
 		case KeyEvent.VK_R:
@@ -1735,6 +1732,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		}
 		return index;
 	}
+	
+	public void clearCandidateColors() {
+		coloringCandidateMap.clear();
+		coloringCandidateMap.clear();
+		updateCellZoomPanel();
+		mainFrame.check();
+	}
+	
+	public void clearCellColors() {
+		coloringMap.clear();
+		coloringMap.clear();
+		updateCellZoomPanel();
+		mainFrame.check();
+	}
 
 	/**
 	 * Removes all coloring info
@@ -1742,7 +1753,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	public void clearColoring() {
 		coloringMap.clear();
 		coloringCandidateMap.clear();
-		setActiveColor(-1);
 		updateCellZoomPanel();
 		mainFrame.check();
 	}
@@ -1754,16 +1764,25 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 * @param colorNumber
 	 */
-	public void handleColoring(int candidate, int colorNumber) {
+	public void handleColoring(int candidate, Color color) {
 		if (cellSelection.isEmpty()) {
-			handleColoring(activeRow, activeCol, candidate, colorNumber);
+			handleColoring(activeRow, activeCol, candidate, color);
 		} else {
 			for (int index : cellSelection) {
-				handleColoring(Sudoku2.getRow(index), Sudoku2.getCol(index), candidate, colorNumber);
+				handleColoring(Sudoku2.getRow(index), Sudoku2.getCol(index), candidate, color);
 			}
 		}
 	}
 
+	public Color getActiveColor() {
+		
+		if (cellZoomPanel.isDefaultMouse()) {
+			return null;
+		}
+		
+		return cellZoomPanel.getPrimaryColor();
+	}
+	
 	/**
 	 * Toggles Color for candidate in active cell; only called from
 	 * {@link CellZoomPanel}.
@@ -1771,7 +1790,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 */
 	public void handleColoring(int candidate) {
-		handleColoring(activeRow, activeCol, candidate, aktColorIndex);
+		handleColoring(activeRow, activeCol, candidate, cellZoomPanel.getPrimaryColor());
 		updateCellZoomPanel();
 		mainFrame.fixFocus();
 		repaint();
@@ -1790,25 +1809,25 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 * @param colorNumber
 	 */
-	public void handleColoring(int row, int col, int candidate, int colorNumber) {
+	public void handleColoring(int row, int col, int candidate, Color color) {
 		
 		if (!Options.getInstance().isColorValues() && sudoku.getValue(row, col) != 0) {
 			return;
 		}
 		
-		SortedMap<Integer, Integer> map = coloringMap;
+		SortedMap<Integer, Color> map = coloringMap;
 		int key = Sudoku2.getIndex(row, col);
 		if (candidate != -1) {
 			key = key * 10 + candidate;
 			map = coloringCandidateMap;
 		}
 		
-		if (map.containsKey(key) && map.get(key) == colorNumber) {
+		if (map.containsKey(key) && map.get(key) == color) {
 			// pressing the same key on the same cell twice removes the coloring
 			map.remove(key);
 		} else {
 			// either newly colored cell or change of cell color
-			map.put(key, colorNumber);
+			map.put(key, color);
 		}
 		
 		updateCellZoomPanel();
@@ -2206,7 +2225,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					(sudoku.getValue(cellIndex) == 0 || 
 					Options.getInstance().isColorValues())) {
 					// coloring
-					setColor(g2, allBlack, Options.getInstance().getColoringColors()[coloringMap.get(cellIndex)]);
+					setColor(g2, allBlack, coloringMap.get(cellIndex));
 				}
 
 				// draw cell selection
@@ -2493,7 +2512,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 							// Coloring
 							Color coloringColor = null;
 							if (coloringCandidateMap.containsKey(cellIndex * 10 + i)) {
-								coloringColor = Options.getInstance().getColoringColors()[coloringCandidateMap.get(cellIndex * 10 + i)];
+								coloringColor = coloringCandidateMap.get(cellIndex * 10 + i);
 							}
 
 							if (coloringColor != null) {
@@ -3086,10 +3105,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		return -1;
 	}
 
-	public void setActiveColor(int colorNumber) {
+	public void setActiveColor(Color color) {
 		
-		aktColorIndex = colorNumber;
-		if (aktColorIndex < 0) {
+		if (color == null) {
 			
 			// reset everything to normal
 			if (oldCursor != null) {
@@ -3114,13 +3132,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		updateCellZoomPanel();
 	}
 
-	public int getActiveColor() {
-		return aktColorIndex;
-	}
-
 	public void resetActiveColor() {
-		int temp = aktColorIndex;
-		setActiveColor(-1);
+		Color temp = getActiveColor();
+		setActiveColor(null);
 		setActiveColor(temp);
 	}
 
@@ -3592,19 +3606,18 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	}
 
 	/**
-	 * @return the colorCells
-	 */
-	public boolean isColorCells() {
-		return isColoringCells;
-	}
-
-	/**
 	 * @param colorCells the colorCells to set
 	 */
+	/*
 	public void setColorCells(boolean colorCells) {
 		this.isColoringCells = colorCells;
 		Options.getInstance().setColorCells(colorCells);
 		updateCellZoomPanel();
+	}*/
+	
+	public void updateColorCursor() {
+		createColorCursors();
+		setCursor(colorCursor);
 	}
 
 	/**
@@ -3619,18 +3632,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			Point cursorHotSpot = new Point(2, 4);
 			BufferedImage img1 = ImageIO.read(getClass().getResource("/img/c_color.png"));
 			Graphics2D gImg1 = (Graphics2D) img1.getGraphics();
-			gImg1.setColor(Options.getInstance().getColoringColors()[aktColorIndex]);
+			gImg1.setColor(cellZoomPanel.getPrimaryColor());
 			gImg1.fillRect(19, 18, 12, 12);
 
 			colorCursor = Toolkit.getDefaultToolkit().createCustomCursor(img1, cursorHotSpot, "c_strong");
 
 			BufferedImage img2 = ImageIO.read(getClass().getResource("/img/c_color.png"));
 			Graphics2D gImg2 = (Graphics2D) img2.getGraphics();
-			if (aktColorIndex % 2 == 0) {
-				gImg2.setColor(Options.getInstance().getColoringColors()[aktColorIndex + 1]);
-			} else {
-				gImg2.setColor(Options.getInstance().getColoringColors()[aktColorIndex - 1]);
-			}
+			gImg2.setColor(cellZoomPanel.getPrimaryColor());
 
 			gImg2.fillRect(19, 18, 12, 12);
 			colorCursorShift = Toolkit.getDefaultToolkit().createCustomCursor(img2, cursorHotSpot, "c_weak");
@@ -3813,10 +3822,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		this.cellZoomPanel = cellZoomPanel;
 	}
 	
-	public void clearCellColor(int colorNumber) {
+	public void clearCellColor(Color colorNumber) {
 		
 		for (int i = 0; i < Sudoku2.LENGTH; i++) {			
-			SortedMap<Integer, Integer> map = coloringMap;			
+			SortedMap<Integer, Color> map = coloringMap;			
 			if (map.containsKey(i) && map.get(i) == colorNumber) {
 				map.remove(i);
 			}
@@ -3826,9 +3835,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		repaint();
 	}
 	
-	public void clearCandidateColor(int colorNumber) {
+	
+	public void clearCandidateColor(Color colorNumber) {
 
-		SortedMap<Integer, Integer> map = coloringCandidateMap;
+		SortedMap<Integer, Color> map = coloringCandidateMap;
 		for (int index = 0; index < Sudoku2.LENGTH; index++) {
 			for (int candidate = 1; candidate <= Sudoku2.UNITS; candidate++) {
 				int key = index * 10 + candidate;				
@@ -3844,16 +3854,16 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 	public void updateCellZoomPanel() {
 		
-		boolean isColoring = aktColorIndex != -1;
+		if (cellZoomPanel == null) {
+			return;
+		}
 		
-		if (isColoring) {
+		if (cellZoomPanel.isColoring()) {
 			
 			cellZoomPanel.update(
 				SudokuSetBase.EMPTY_SET,
 				SudokuSetBase.EMPTY_SET,
-				aktColorIndex,
 				0,
-				this.isColoringCells,
 				true,
 				null,
 				null
@@ -3862,74 +3872,63 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			return;
 		}
 		
-		if (cellZoomPanel != null) {
-			
-			int index = Sudoku2.getIndex(activeRow, activeCol);
-			boolean singleCell = cellSelection.isEmpty() && sudoku.getValue(index) == 0;
-			
-			if (aktColorIndex == -1) {
-				// normal operation -> collect candidates for selected cell(s)
-				if (sudoku.getValue(index) != 0 && cellSelection.isEmpty()) {
-					// cell is already set -> nothing can be selected
-					cellZoomPanel.update(
-						SudokuSetBase.EMPTY_SET,
-						SudokuSetBase.EMPTY_SET,
-						-1,
-						index,
-						false,
-						singleCell,
-						null,
-						null
-					);
-					
-				} else {
-					
-					SudokuSet valueSet = collectCandidates(true);
-					SudokuSet candSet = collectCandidates(false);
-					
-					cellZoomPanel.update(
-						valueSet, 
-						candSet, 
-						-1, 
-						index, 
-						false, 
-						singleCell, 
-						null, 
-						null
-					);
-				}
+		int index = Sudoku2.getIndex(activeRow, activeCol);
+		boolean singleCell = cellSelection.isEmpty() && sudoku.getValue(index) == 0;
+		
+		if (cellZoomPanel.isDefaultMouse()) {
+			// normal operation -> collect candidates for selected cell(s)
+			if (sudoku.getValue(index) != 0 && cellSelection.isEmpty()) {
+				// cell is already set -> nothing can be selected
+				cellZoomPanel.update(
+					SudokuSetBase.EMPTY_SET,
+					SudokuSetBase.EMPTY_SET,
+					index,
+					singleCell,
+					null,
+					null
+				);
 				
 			} else {
 				
-				if (!cellSelection.isEmpty() || (cellSelection.isEmpty() && sudoku.getValue(index) != 0)) {
-					// no coloring, when set of cells is selected
-					cellZoomPanel.update(
-						SudokuSetBase.EMPTY_SET,
-						SudokuSetBase.EMPTY_SET,
-						aktColorIndex,
-						index,
-						isColoringCells,
-						singleCell,
-						null,
-						null
-					);
-					
-				} else {
-					
-					SudokuSet valueSet = collectCandidates(true);
-					SudokuSet candSet = collectCandidates(false);
-					
-					cellZoomPanel.update(
-						valueSet, 
-						candSet, 
-						aktColorIndex,
-						index,
-						isColoringCells,
-						singleCell,
-						coloringMap,
-						coloringCandidateMap
-					);
-				}
+				SudokuSet valueSet = collectCandidates(true);
+				SudokuSet candSet = collectCandidates(false);
+				
+				cellZoomPanel.update(
+					valueSet, 
+					candSet, 
+					index, 
+					singleCell, 
+					null, 
+					null
+				);
+			}
+			
+		} else {
+			
+			if (!cellSelection.isEmpty() || (cellSelection.isEmpty() && sudoku.getValue(index) != 0)) {
+				// no coloring, when set of cells is selected
+				cellZoomPanel.update(
+					SudokuSetBase.EMPTY_SET,
+					SudokuSetBase.EMPTY_SET,
+					index,
+					singleCell,
+					null,
+					null
+				);
+				
+			} else {
+				
+				SudokuSet valueSet = collectCandidates(true);
+				SudokuSet candSet = collectCandidates(false);
+				
+				cellZoomPanel.update(
+					valueSet, 
+					candSet, 
+					index,
+					singleCell,
+					coloringMap,
+					coloringCandidateMap
+				);
 			}
 		}
 	}

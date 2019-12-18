@@ -1,7 +1,3 @@
-Bugs:
-
-	Single Click Mode right click commits without showing menu
-
 20191116:
 
 	Cell selection acts funny when a key is pressed.

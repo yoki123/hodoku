@@ -23,22 +23,28 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ResourceBundle;
 import java.util.SortedMap;
+
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 /**
  *
  * @author hobiwan
  */
 @SuppressWarnings("serial")
-public class CellZoomPanel extends javax.swing.JPanel {
+public class CellZoomPanel extends JPanel implements ActionListener {
 
 	private static final int X_OFFSET = 10;
 	private static final int Y_OFFSET = 33;
@@ -47,7 +53,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private static final int COLOR_PANEL_MAX_HEIGHT = 50;
 	private static final int DIFF_SIZE = 1;
 	private static final String[] NUMBERS = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-	private static final int COLOR_BUTTON_COUNT = 12;
+	private static final int COLOR_BUTTON_COUNT = 10;
 	
 	private MainFrame mainFrame;
 	private Font buttonFont = null;
@@ -58,20 +64,13 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private JButton[] setValueButtons = null;
 	private JButton[] toggleCandidatesButtons = null;
 	private JPanel[] cellPanels = null;
-	private JPanel[] candidatePanels = null;
 	private Color normButtonForeground = null;
 	private Color normButtonBackground = null;
-	private int aktColor = -1;
 	private SudokuPanel sudokuPanel;
 	private int colorImageHeight = -1;
 	private Icon[] colorKuIcons = new Icon[9];
 	
-	private javax.swing.JPanel candidateColorPanel;
-	private javax.swing.JLabel cellColorLabel;
-	private javax.swing.JPanel cellColorPanel;
-	private javax.swing.JLabel chooseCandidateColorLabel;
-	private javax.swing.JPanel chooseCandidateColorPanel;
-	private javax.swing.JPanel chooseCellColorPanel;
+	private javax.swing.JPanel chooseColorPanel;
 	private javax.swing.JButton jFontButton;
 	private javax.swing.JPanel jPanel1;
 	private javax.swing.JButton setValueButton1;
@@ -97,6 +96,12 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private javax.swing.JButton toggleCandidatesButton9;
 	private javax.swing.JLabel toggleCandidatesLabel;
 	private javax.swing.JPanel toggleCandidatesPanel;
+	private JPanel radioButtonPanel;
+	private ButtonGroup radioButtonGroup;
+	private JRadioButton radioButtonDefault;
+	private JRadioButton radioButtonColorCells;
+	private JRadioButton radioButtonColorCandidates;
+	private UIColorPalette colorPalette;
 
 	/**
 	 * Creates new form CellZoomPanel
@@ -108,7 +113,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		this.mainFrame = mainFrame;
 		
 		cellPanels = new JPanel[COLOR_BUTTON_COUNT];
-		candidatePanels = new JPanel[COLOR_BUTTON_COUNT];
 		
 		initComponents();
 
@@ -145,7 +149,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		calculateLayout();
 	}
 	
-	private JPanel createCellColorButtonPanel(int id) {
+	private JPanel createColorButtonPanel(int id) {
 		
 		JPanel panel = new StatusColorPanel(id);
 		
@@ -159,23 +163,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		panel.setLayout(group);
 		group.setHorizontalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
 		group.setVerticalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 1, Short.MAX_VALUE));
-
-		return panel;
-	}
-	
-	private JPanel createCandidateColorButtonPanel(int id) {
-		
-		JPanel panel = new StatusColorPanel(id);
-		panel.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
-			}
-		});
-
-		javax.swing.GroupLayout group = new javax.swing.GroupLayout(panel);
-		panel.setLayout(group);
-		group.setHorizontalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 18, Short.MAX_VALUE));
-		group.setVerticalGroup(group.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 21, Short.MAX_VALUE));
 
 		return panel;
 	}
@@ -206,13 +193,33 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		toggleCandidatesButton7 = new javax.swing.JButton();
 		toggleCandidatesButton8 = new javax.swing.JButton();
 		toggleCandidatesButton9 = new javax.swing.JButton();
-		cellColorLabel = new javax.swing.JLabel();
-		cellColorPanel = new javax.swing.JPanel();
-		chooseCellColorPanel = new javax.swing.JPanel();
-		chooseCandidateColorLabel = new javax.swing.JLabel();
-		candidateColorPanel = new javax.swing.JPanel();
-		chooseCandidateColorPanel = new javax.swing.JPanel();
+		chooseColorPanel = new javax.swing.JPanel();
 		jFontButton = new javax.swing.JButton();
+		
+		colorPalette = new UIColorPalette(this);
+		add(colorPalette);
+		
+		String defaultText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonDefault.text");
+		String colorCandidatesText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonColorCandidates.text");
+		String colorCellsText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonColorCells.text");
+		
+		radioButtonPanel = new JPanel(new GridLayout(3, 1));
+		radioButtonPanel.setSize(130, colorPalette.getHeight());
+		radioButtonGroup = new ButtonGroup();
+		radioButtonDefault = new JRadioButton(defaultText);
+		radioButtonDefault.setSelected(true);
+		radioButtonColorCandidates = new JRadioButton(colorCandidatesText);
+		radioButtonColorCells = new JRadioButton(colorCellsText);
+		radioButtonDefault.addActionListener(this);
+		radioButtonColorCells.addActionListener(this);
+		radioButtonColorCandidates.addActionListener(this);
+		radioButtonGroup.add(radioButtonDefault);
+		radioButtonGroup.add(radioButtonColorCandidates);
+		radioButtonGroup.add(radioButtonColorCells);
+		radioButtonPanel.add(radioButtonDefault);
+		radioButtonPanel.add(radioButtonColorCandidates);
+		radioButtonPanel.add(radioButtonColorCells);
+		add(radioButtonPanel);
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -400,88 +407,20 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		add(toggleCandidatesPanel);
 		toggleCandidatesPanel.setBounds(0, 0, 117, 69);
 
-		cellColorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		cellColorLabel.setText(bundle.getString("CellZoomPanel.colorCellsLabel.text"));
-		add(cellColorLabel);
-		cellColorLabel.setBounds(0, 0, 105, 14);
-
-		cellColorPanel.setBackground(new java.awt.Color(255, 255, 255));
-		cellColorPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-		javax.swing.GroupLayout cellColorPanelLayout = new javax.swing.GroupLayout(cellColorPanel);
-		cellColorPanel.setLayout(cellColorPanelLayout);
-		cellColorPanelLayout.setHorizontalGroup(cellColorPanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 41, Short.MAX_VALUE));
-		cellColorPanelLayout.setVerticalGroup(cellColorPanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 0, Short.MAX_VALUE));
-
-		add(cellColorPanel);
-		cellColorPanel.setBounds(0, 0, 45, 4);
-
-		chooseCellColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
+		chooseColorPanel.setLayout(new java.awt.GridLayout(2, 8, 1, 1));
 		
-		{			
-			for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
-				cellPanels[i] = createCellColorButtonPanel(-2 + i);
-			}
-			
-			for (int i = 2; i < COLOR_BUTTON_COUNT; i += 2) {
-				chooseCellColorPanel.add(cellPanels[i]);
-			}
-			
-			chooseCellColorPanel.add(cellPanels[0]);
-			
-			for (int i = 3; i < COLOR_BUTTON_COUNT; i += 2) {
-				chooseCellColorPanel.add(cellPanels[i]);
-			}
-			
-			chooseCellColorPanel.add(cellPanels[1]);
+		for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
+			cellPanels[i] = createColorButtonPanel(i);
+		}		
+		for (int i = 0; i < COLOR_BUTTON_COUNT; i += 2) {
+			chooseColorPanel.add(cellPanels[i]);
+		}		
+		for (int i = 1; i < COLOR_BUTTON_COUNT; i += 2) {
+			chooseColorPanel.add(cellPanels[i]);
 		}
 
-		add(chooseCellColorPanel);
-		chooseCellColorPanel.setBounds(0, 0, 113, 3);
-
-		chooseCandidateColorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		chooseCandidateColorLabel.setText(bundle.getString("CellZoomPanel.chooseCandidateColorLabel.text"));
-		add(chooseCandidateColorLabel);
-		chooseCandidateColorLabel.setBounds(0, 0, 142, 14);
-
-		candidateColorPanel.setBackground(new java.awt.Color(255, 255, 255));
-		candidateColorPanel
-				.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-
-		javax.swing.GroupLayout candidateColorPanelLayout = new javax.swing.GroupLayout(candidateColorPanel);
-		candidateColorPanel.setLayout(candidateColorPanelLayout);
-		candidateColorPanelLayout.setHorizontalGroup(candidateColorPanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 41, Short.MAX_VALUE));
-		candidateColorPanelLayout.setVerticalGroup(candidateColorPanelLayout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 40, Short.MAX_VALUE));
-
-		add(candidateColorPanel);
-		candidateColorPanel.setBounds(0, 0, 45, 44);
-
-		chooseCandidateColorPanel.setLayout(new java.awt.GridLayout(2, 9, 1, 1));
-
-		{
-			for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
-				candidatePanels[i] = createCandidateColorButtonPanel(-2 + i);
-			}
-			
-			for (int i = 2; i < COLOR_BUTTON_COUNT; i += 2) {
-				chooseCandidateColorPanel.add(candidatePanels[i]);
-			}
-			
-			chooseCandidateColorPanel.add(candidatePanels[0]);
-			
-			for (int i = 3; i < COLOR_BUTTON_COUNT; i += 2) {
-				chooseCandidateColorPanel.add(candidatePanels[i]);
-			}
-			
-			chooseCandidateColorPanel.add(candidatePanels[1]);
-		}
-
-		add(chooseCandidateColorPanel);
-		chooseCandidateColorPanel.setBounds(0, 0, 113, 43);
+		add(chooseColorPanel);
+		chooseColorPanel.setBounds(0, 0, 113, 3);
 
 		jFontButton.setText("FontButton");
 		jFontButton.setEnabled(false);
@@ -518,7 +457,7 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		}
 		
 		if (sudokuPanel != null && candidate != -1) {
-			if (aktColor == -1) {
+			if (isDefaultMouse()) {
 				sudokuPanel.toggleOrRemoveCandidateFromCellZoomPanel(candidate);
 			} else {
 				sudokuPanel.handleColoring(candidate);
@@ -545,38 +484,36 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	private void handleColorChange(JPanel panel, boolean isCtrlDown) {
 		
 		boolean found = false;
-		boolean isCell = false;
 		int colorNumber = -1;
 		
 		for (int i = 0; i < cellPanels.length; i++) {
 			if (panel == cellPanels[i]) {
-				colorNumber = i - 2; // adjust for -1 and -2
-				isCell = true;
+				colorNumber = i;
 				found = true;
 				break;
 			}
 		}
 		
-		if (!found) {
-			for (int i = 0; i < candidatePanels.length; i++) {
-				if (panel == candidatePanels[i]) {
-					colorNumber = i - 2; // adjust for -1 and -2
-					isCell = false;
-					found = true;
-					break;
-				}
-			}
+		if (colorNumber >= 0 && !isCtrlDown) {
+			Color color = Options.getInstance().getColoringColors()[colorNumber];
+			colorPalette.setPrimaryColor(color);
 		}
 		
 		if (found && mainFrame != null) {
-			if (isCtrlDown) {
-				if (isCell) {
-					sudokuPanel.clearCellColor(colorNumber);
-				} else {
-					sudokuPanel.clearCandidateColor(colorNumber);
+			if (isCtrlDown && colorNumber > 0) {
+				if (isColoringCells()) {
+					sudokuPanel.clearCellColor(Options.getInstance().getColoringColors()[colorNumber]);
+				} else if (isColoringCandidates()) {
+					sudokuPanel.clearCandidateColor(Options.getInstance().getColoringColors()[colorNumber]);
 				}
 			} else {
-				mainFrame.setColoring(colorNumber, isCell);	
+				if (isColoring()) {
+					if (isColoringCells()) {
+						mainFrame.setColoring(colorPalette.getPrimaryColor(), true);
+					} else if (isColoringCandidates()) {
+						mainFrame.setColoring(colorPalette.getPrimaryColor(), false);
+					}
+				}
 			}
 		}
 		
@@ -628,7 +565,6 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		colorPanelGesWidth = colorPanelHeight * 4;
 		int newColorImageHeight = colorPanelHeight * 2 / 3;
 
-		// ok, do the layout
 		titleLabel.setSize(width, textHeight);
 		setValueLabel.setSize(width - 2 * X_OFFSET, textHeight);
 		setValueLabel.setLocation(X_OFFSET, y);
@@ -647,30 +583,19 @@ public class CellZoomPanel extends javax.swing.JPanel {
 		toggleCandidatesPanel.setLocation((width - buttonPanelHeight) / 2, y);
 		toggleCandidatesPanel.doLayout();
 
-		int cpx = (width - colorPanelGesWidth) / 2;
-		y = height - 2 * (SMALL_GAP + LARGE_GAP) - textHeight - textHeight - 2 * colorPanelHeight;
-		cellColorLabel.setSize(width - 2 * X_OFFSET, textHeight);
-		cellColorLabel.setLocation(X_OFFSET, y);
-		y += textHeight;
-		y += SMALL_GAP;
-		cellColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
-		cellColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
-		cellColorPanel.doLayout();
-		chooseCellColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
-		chooseCellColorPanel.setLocation(cpx + colorPanelHeight, y);
-		chooseCellColorPanel.doLayout();
+		y += toggleCandidatesPanel.getHeight();
+		y += LARGE_GAP + SMALL_GAP;
+
+		colorPalette.setLocation(setValuePanel.getX(), y);
+		radioButtonPanel.setLocation(colorPalette.getX() + colorPalette.getWidth() + 10, colorPalette.getY());
+		y += colorPalette.getHeight();
+		y += LARGE_GAP;
+		
+		chooseColorPanel.setSize(colorPanelHeight/2*5, colorPanelHeight);
+		chooseColorPanel.setLocation(setValuePanel.getX(), y);
+		chooseColorPanel.doLayout();
 		y += colorPanelHeight;
 		y += LARGE_GAP;
-		chooseCandidateColorLabel.setSize(width - 2 * X_OFFSET, textHeight);
-		chooseCandidateColorLabel.setLocation(X_OFFSET, y);
-		y += textHeight;
-		y += SMALL_GAP;
-		candidateColorPanel.setSize(colorPanelHeight * 2 / 3, colorPanelHeight * 2 / 3);
-		candidateColorPanel.setLocation(cpx, y + colorPanelHeight / 6);
-		candidateColorPanel.doLayout();
-		chooseCandidateColorPanel.setSize((3 * colorPanelHeight), colorPanelHeight);
-		chooseCandidateColorPanel.setLocation(cpx + colorPanelHeight, y);
-		chooseCandidateColorPanel.doLayout();
 
 		// set correct font size for buttons
 		int newFontSize = defaultButtonFontSize * buttonPanelHeight / (defaultButtonHeight * 4);
@@ -731,12 +656,10 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	public void update(
 			SudokuSet values, 
 			SudokuSet candidates, 
-			int aktColor, 
 			int index, 
-			boolean colorCellOrCandidate,
 			boolean singleCell, 
-			SortedMap<Integer, Integer> coloredCells,
-			SortedMap<Integer, Integer> coloredCandidates) {
+			SortedMap<Integer, Color> coloredCells,
+			SortedMap<Integer, Color> coloredCandidates) {
 		
 		// reset all buttons
 		for (int i = 0; i < setValueButtons.length; i++) {
@@ -751,13 +674,9 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			toggleCandidatesButtons[i].setBackground(normButtonBackground);
 			toggleCandidatesButtons[i].setIcon(null);
 		}
-		
-		cellColorPanel.setBackground(Options.getInstance().getDefaultCellColor());
-		candidateColorPanel.setBackground(Options.getInstance().getDefaultCellColor());
 
 		// now set accordingly
-		this.aktColor = aktColor;
-		if (aktColor == -1) {
+		if (isDefaultMouse()) {
 			// no coloring -> buttons are available
 			for (int i = 0; i < values.size(); i++) {
 				int cand = values.get(i) - 1;
@@ -800,24 +719,16 @@ public class CellZoomPanel extends javax.swing.JPanel {
 			
 		} else {
 			
-			// coloring
-			if (colorCellOrCandidate) {
-				cellColorPanel.setBackground(Options.getInstance().getColoringColors()[aktColor]);
-			} else {
-				candidateColorPanel.setBackground(Options.getInstance().getColoringColors()[aktColor]);
-			}
-			
+			// coloring			
 			if (coloredCells != null) {
 
-				if (colorCellOrCandidate == false) {
+				if (isColoringCells()) {
 					for (int i = 0; i < candidates.size(); i++) {
 						int cand = candidates.get(i);
 						if (coloredCandidates.containsKey(index * 10 + cand)) {
-							int candIndex = coloredCandidates.get(index * 10 + cand);
-							Color candColor = Options.getInstance().getColoringColors()[candIndex];
-							toggleCandidatesButtons[cand - 1].setForeground(candColor);
-							toggleCandidatesButtons[cand - 1].setBackground(candColor);
-							toggleCandidatesButtons[cand - 1].setIcon(createImage(colorImageHeight, candIndex, cand));
+							toggleCandidatesButtons[cand - 1].setForeground(getPrimaryColor());
+							toggleCandidatesButtons[cand - 1].setBackground(getPrimaryColor());
+							toggleCandidatesButtons[cand - 1].setIcon(createImage(colorImageHeight, getPrimaryColor(), cand));
 							toggleCandidatesButtons[cand - 1].setEnabled(true);
 						} else {
 							toggleCandidatesButtons[cand - 1].setText(NUMBERS[cand - 1]);
@@ -827,18 +738,17 @@ public class CellZoomPanel extends javax.swing.JPanel {
 				}
 			}
 		}
-
 	}
 
-	private ImageIcon createImage(int size, int colorIndex, int cand) {
+	private ImageIcon createImage(int size, Color color, int cand) {
 		
 		if (size > 0) {
 			
 			Image img = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g = (Graphics2D) img.getGraphics();
-			Color color = Options.getInstance().getDefaultCellColor();
-			if (colorIndex < Options.getInstance().getColoringColors().length) {
-				color = Options.getInstance().getColoringColors()[colorIndex];
+			
+			if (color == null) {
+				color = Options.getInstance().getDefaultCellColor();
 			}
 			
 			g.setColor(color);
@@ -877,5 +787,72 @@ public class CellZoomPanel extends javax.swing.JPanel {
 	 */
 	public void setSudokuPanel(SudokuPanel sudokuPanel) {
 		this.sudokuPanel = sudokuPanel;
+		this.colorPalette.setSudokuPanel(sudokuPanel);
+	}
+	
+	public void swapColors() {
+		colorPalette.swap();
+		repaint();
+	}
+	
+	public boolean isDefaultMouse() {
+		return radioButtonDefault.isSelected();
+	}
+	
+	public boolean isColoringCells() {
+		return radioButtonColorCells.isSelected();
+	}
+	
+	public boolean isColoringCandidates() {
+		return radioButtonColorCandidates.isSelected();
+	}
+	
+	public boolean isColoring() {
+		return isColoringCells() || isColoringCandidates();
+	}
+	
+	public void setDefaultMouse(boolean enable) {
+		if (!radioButtonDefault.isSelected() && enable) {
+			radioButtonDefault.setSelected(true);
+		}
+	}
+	
+	public void setColorCells(boolean enable) {
+		if (radioButtonColorCells.isSelected() && !enable) {
+			radioButtonDefault.setSelected(true);
+		} else if (!radioButtonColorCells.isSelected()) {
+			radioButtonDefault.setSelected(true);
+		}
+	}
+	
+	public void setColorCandidates(boolean enable) {
+		if (radioButtonColorCandidates.isSelected() && !enable) {
+			radioButtonDefault.setSelected(true);
+		} else if (!radioButtonColorCandidates.isSelected()) {
+			radioButtonDefault.setSelected(true);
+		}
+	}
+	
+	public Color getPrimaryColor() {
+		return colorPalette.getPrimaryColor();
+	}
+	
+	public Color getSecondaryColor() {
+		return colorPalette.getSecondaryColor();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == radioButtonDefault) {
+			mainFrame.setColoring(null, false);
+		} else if (e.getSource() == radioButtonColorCells) {
+			mainFrame.setColoring(getPrimaryColor(), true);
+		} else if (e.getSource() == radioButtonColorCandidates) {
+			mainFrame.setColoring(getPrimaryColor(), false);
+		}
+		
+		mainFrame.check();		
+		mainFrame.repaint();
 	}
 }

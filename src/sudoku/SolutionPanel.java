@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2019-20  PseudoFish
  * Copyright (C) 2008-12  Bernhard Hobiger
  *
  * This file is part of HoDoKu.
@@ -67,6 +68,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 	 * @param mainFrame
 	 */
 	public SolutionPanel(MainFrame mainFrame) {
+		
 		this.mainFrame = mainFrame;
 
 		initComponents();
@@ -75,6 +77,7 @@ public class SolutionPanel extends javax.swing.JPanel {
 		if (getFont().getSize() > 12) {
 			fontSize = getFont().getSize();
 		}
+		
 		Font font = titleLabel.getFont();
 		titleLabel.setFont(new Font(font.getName(), Font.BOLD, fontSize));
 

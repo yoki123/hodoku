@@ -372,6 +372,8 @@ public final class Options {
 	private boolean allStepsAlsChainForwardOnly = ALL_STEPS_ALS_CHAIN_FORWARD_ONLY;
 	// SudokuPanel
 	// Coloring Solver
+	public static final Color DEFAULT_PRIMARY_COLOR = new Color(134, 242, 128);
+	public static final Color DEFAULT_SECONDARY_COLOR = new Color(247, 165, 167);
 	public static final Color[] COLORING_COLORS = { 
 			
 			new Color(255, 192, 89), // 'a' - first color of first color pair

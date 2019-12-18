@@ -28,7 +28,9 @@ import javax.swing.JPanel;
  * @author hobiwan
  */
 public class SplitPanel extends javax.swing.JPanel {
+	
 	private static final long serialVersionUID = 1L;
+	
 	private SudokuPanel sudokuPanel;
 	@SuppressWarnings("unused")
 	private Component rightComponent;
@@ -128,10 +130,11 @@ public class SplitPanel extends javax.swing.JPanel {
 	private void adjustDividerBar() {
 		// if (sudokuPanel != null && rightComponent != null) {
 		if (sudokuPanel != null) {
+			
 			int height = sudokuPanel.getHeight();
 			int maxWidth = (int) (getWidth() * 0.8);
-			int pos = 0;
-			pos = height > maxWidth ? maxWidth : height;
+			int pos = height > maxWidth ? maxWidth : height;
+			
 			splitPane.setDividerLocation(pos);
 		}
 	}

@@ -458,16 +458,16 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 	 */
 	public void popupToggleColor(JMenuItem menuItem) {
 		
-		int color = -1;
+		Color color = null;
 		for (int i = 0; i < toggleColorItems.length; i++) {
 			if (toggleColorItems[i] == menuItem) {
-				color = i;
+				color = Options.getInstance().getColoringColors()[i];
 				break;
 			}
 		}
 		
 		// coloring is active
-		if (color != -1) {
+		if (color != null) {
 			int aktRow = sudokuPanel.getActiveRow();
 			int aktCol = sudokuPanel.getActiveCol();
 			sudokuPanel.handleColoring(aktRow, aktCol, -1, color);
