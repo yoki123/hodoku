@@ -30,6 +30,8 @@ Version 2.2.10 (2019-12-19)
 Minor:
 
   - Color palette 'R' button now clears all colors regardless of radio button selection.
+  - Added tooltips for the color chooser component.
+  - Added German translation for those new components.
   
 Bug Fix:
 
