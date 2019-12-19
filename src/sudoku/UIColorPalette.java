@@ -126,13 +126,13 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 	
 	private void clearAllColors() {
 		
-		if (cellZoomPanel.isColoringCells()) {
-			sudokuPanel.clearCellColors();
-		} else if (cellZoomPanel.isColoringCandidates()) {
-			sudokuPanel.clearCandidateColors();
-		} else {
+		//if (cellZoomPanel.isColoringCells()) {
+		//	sudokuPanel.clearCellColors();
+		//} else if (cellZoomPanel.isColoringCandidates()) {
+		//	sudokuPanel.clearCandidateColors();
+		//} else {
 			sudokuPanel.clearColoring();
-		}
+		//}
 		
 		sudokuPanel.repaint();
 	}

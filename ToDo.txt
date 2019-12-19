@@ -1,14 +1,4 @@
-20191116:
-
-	Cell selection acts funny when a key is pressed.
-		Delete should remove given cell values
-
 20191115:
-	
-	Redesign the color palette
-		Ability to clear a given color from the board.
-	
-	Export Line: I want it to export user input cells too.
 	
 	Grouped Discontinuous Nice Loops is confusing:
 		Why do eliminations have arrows going to them?
@@ -19,8 +9,6 @@
 	Redesign highlighting in the toolbar to have a dropbown panel with a 3x3 grid of toggle buttons. More compact.
 	
 	Create Savepoint should have an optional field for Description.
-	
-	Add translation support for the new features I have created.
 
 	Ability to hide selector. Maybe an option to make it less bulky.
 

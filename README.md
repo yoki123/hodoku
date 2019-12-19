@@ -24,6 +24,13 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.10 (2019-12-19)
+---------------------------
+
+Minor:
+
+  - Color palette 'R' button now clears all colors regardless of radio button selection.
+
 Version 2.2.9 (2019-12-18)
 --------------------------
 
