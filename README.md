@@ -30,6 +30,10 @@ Version 2.2.10 (2019-12-19)
 Minor:
 
   - Color palette 'R' button now clears all colors regardless of radio button selection.
+  
+Bug Fix:
+
+  - Primary color now updates correctly when setting its color to a custom value.
 
 Version 2.2.9 (2019-12-18)
 --------------------------

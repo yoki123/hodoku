@@ -199,6 +199,7 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 				clearColor(primaryColor.getBackground());
 			} else {
 				primaryColor.setBackground(showColorChooserDialog(primaryColor.getBackground()));
+				sudokuPanel.updateColorCursor();
 			}
 			
 			repaint();
@@ -208,7 +209,8 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 			if (e.isControlDown()) {
 				clearColor(secondaryColor.getBackground());
 			} else {
-				secondaryColor.setBackground(showColorChooserDialog(secondaryColor.getBackground()));	
+				secondaryColor.setBackground(showColorChooserDialog(secondaryColor.getBackground()));
+				sudokuPanel.updateColorCursor();
 			}
 			
 			repaint();
