@@ -199,9 +199,10 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		colorPalette = new UIColorPalette(this);
 		add(colorPalette);
 		
-		String defaultText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonDefault.text");
-		String colorCandidatesText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonColorCandidates.text");
-		String colorCellsText = java.util.ResourceBundle.getBundle("intl/CellZoomPanel").getString("CellZoomPanel.radioButtonColorCells.text");
+		ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/CellZoomPanel");
+		String defaultText = bundle.getString("CellZoomPanel.radioButtonDefault.text");
+		String colorCandidatesText = bundle.getString("CellZoomPanel.radioButtonColorCandidates.text");
+		String colorCellsText = bundle.getString("CellZoomPanel.radioButtonColorCells.text");
 		
 		radioButtonPanel = new JPanel(new GridLayout(3, 1));
 		radioButtonPanel.setSize(130, colorPalette.getHeight());
@@ -237,7 +238,6 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		titleLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
 		titleLabel.setForeground(new java.awt.Color(255, 255, 255));
 		titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/CellZoomPanel");
 		titleLabel.setText(bundle.getString("CellZoomPanel.titleLabel.text"));
 		titleLabel.setOpaque(true);
 		add(titleLabel);

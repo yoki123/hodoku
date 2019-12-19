@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,7 +30,7 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 	private UIBorderedImagePanel primaryColor;
 	private UIBorderedImagePanel secondaryColor;
 	private UIBorderedImagePanel switchColor;
-	private UIBorderedImagePanel rButton;
+	private UIBorderedImagePanel resetButton;
 	private JDialog dialog;
 	private JButton dialogButtonOK;
 	private JButton dialogButtonCancel;
@@ -49,10 +50,12 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 		
 		this.cellZoomPanel = cellZoomPanel;
 		
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/UIColorPalette");
+		
 		dialog = null;
-		dialogButtonOK = new JButton("OK");
-		dialogButtonCancel = new JButton("Cancel");
-		dialogButtonReset = new JButton("Reset");
+		dialogButtonOK = new JButton(bundle.getString("dialogButtonOK.text"));
+		dialogButtonCancel = new JButton(bundle.getString("dialogButtonCancel.text"));
+		dialogButtonReset = new JButton(bundle.getString("dialogButtonReset.text"));
 		initialColor = Color.white;
 		selectedColor = Color.white;
 		colorChooser = new JColorChooser(initialColor);
@@ -65,6 +68,7 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 		primaryColor.setBackground(Options.DEFAULT_PRIMARY_COLOR);
 		primaryColor.setSize(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE);
 		primaryColor.setLocation(0, 0);
+		primaryColor.setToolTipText(bundle.getString("primaryColor.tooltip"));
 		primaryColor.addMouseListener(this);
 		add(primaryColor);
 		
@@ -72,6 +76,7 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 		secondaryColor.setBackground(Options.DEFAULT_SECONDARY_COLOR);
 		secondaryColor.setSize(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE);
 		secondaryColor.setLocation(DEFAULT_BUTTON_SIZE/2, DEFAULT_BUTTON_SIZE/2);
+		secondaryColor.setToolTipText(bundle.getString("secondaryColor.tooltip"));
 		secondaryColor.addMouseListener(this);
 		add(secondaryColor);
 		
@@ -81,14 +86,16 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 		
 		switchColor = new UIBorderedImagePanel(switchImage);
 		switchColor.setLocation(offset, 0);
+		switchColor.setToolTipText(bundle.getString("switchColor.tooltip"));
 		switchColor.addMouseListener(this);
 		add(switchColor);
 		
-		rButton = new UIBorderedImagePanel(resetImage);
-		rButton.setLocation(0, offset);
-		rButton.setBorderVisible(true);
-		rButton.addMouseListener(this);
-		add(rButton);
+		resetButton = new UIBorderedImagePanel(resetImage);
+		resetButton.setLocation(0, offset);
+		resetButton.setBorderVisible(true);
+		resetButton.setToolTipText(bundle.getString("resetButton.tooltip"));
+		resetButton.addMouseListener(this);
+		add(resetButton);
 	}
 	
 	public void setPrimaryColor(Color color) {
@@ -157,7 +164,8 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 		optionPane.setInitialValue(buttons[0]);
 		optionPane.setInitialSelectionValue(dialogButtonOK);
 		
-		dialog = optionPane.createDialog("Color Chooser");
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/UIColorPalette");
+		dialog = optionPane.createDialog(bundle.getString("optionPane.title"));
 		dialog.setVisible(true);
 		
 		return selectedColor;
@@ -217,7 +225,7 @@ public class UIColorPalette extends JPanel implements MouseListener, ActionListe
 			
 		} else if (e.getSource() == switchColor) {
 			swap();
-		} else if (e.getSource() == rButton) {
+		} else if (e.getSource() == resetButton) {
 			clearAllColors();
 		}
 	}
