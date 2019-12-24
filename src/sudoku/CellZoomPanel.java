@@ -53,7 +53,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 	private static final int COLOR_PANEL_MAX_HEIGHT = 50;
 	private static final int DIFF_SIZE = 1;
 	private static final String[] NUMBERS = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-	private static final int COLOR_BUTTON_COUNT = 10;
+	private static final int COLOR_BUTTON_COUNT = 12;
 	
 	private MainFrame mainFrame;
 	private Font buttonFont = null;
@@ -407,7 +407,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		add(toggleCandidatesPanel);
 		toggleCandidatesPanel.setBounds(0, 0, 117, 69);
 
-		chooseColorPanel.setLayout(new java.awt.GridLayout(2, 8, 1, 1));
+		chooseColorPanel.setLayout(new java.awt.GridLayout(2, 6, 1, 1));
 		
 		for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
 			cellPanels[i] = createColorButtonPanel(i);
@@ -591,7 +591,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		y += colorPalette.getHeight();
 		y += LARGE_GAP;
 		
-		chooseColorPanel.setSize(colorPanelHeight/2*5, colorPanelHeight);
+		chooseColorPanel.setSize(colorPanelHeight/2*COLOR_BUTTON_COUNT/2, colorPanelHeight);
 		chooseColorPanel.setLocation(setValuePanel.getX(), y);
 		chooseColorPanel.doLayout();
 		y += colorPanelHeight;

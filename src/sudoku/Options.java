@@ -376,7 +376,7 @@ public final class Options {
 	public static final Color DEFAULT_SECONDARY_COLOR = new Color(247, 165, 167);
 	public static final Color[] COLORING_COLORS = { 
 			
-			new Color(255, 192, 89), // 'a' - first color of first color pair
+			new Color(255, 192, 89),  // 'a' - first color of first color pair
 			new Color(247, 222, 143), // 'A' - second color of first color pair
 			new Color(177, 165, 243), // 'b' - first color of second color pair
 			new Color(220, 212, 252), // 'B' - second color of second color pair
@@ -385,17 +385,9 @@ public final class Options {
 			new Color(134, 232, 208), // 'd' - first color of fourth color pair
 			new Color(206, 251, 237), // 'D' - second color of fourth color pair
 			new Color(134, 242, 128), // 'e' - first color of fifth color pair
-			new Color(215, 255, 215) // 'E' - second color of fifth color pair
-			// new Color(140, 198, 255), // 'a' - first color of first color pair
-			// new Color(205, 171, 255), // 'A' - second color of first color pair
-			// new Color(255, 164, 119), // 'b' - first color of second color pair
-			// new Color(190, 124, 124), // 'B' - second color of second color pair
-			// new Color(130, 130, 130), // 'c' - first color of third color pair
-			// new Color(130, 30, 130), // 'C' - second color of third color pair
-			// new Color(140, 140, 140), // 'd' - first color of fourth color pair
-			// new Color(140, 40, 140), // 'D' - second color of fourth color pair
-			// new Color(168, 255, 168), // 'e' - first color of fifth color pair
-			// new Color(215, 255, 215) // 'E' - second color of fifth color pair		
+			new Color(215, 255, 215), // 'E' - second color of fifth color pair
+			new Color(51, 204, 255),  // first color of sixth color pair
+			new Color(255, 255, 0)    // second color of sixth color pair
 	};
 	
 	public static final boolean COLOR_VALUES = true;

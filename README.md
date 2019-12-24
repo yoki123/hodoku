@@ -32,6 +32,7 @@ Minor:
   - Color palette 'R' button now clears all colors regardless of radio button selection.
   - Added tooltips for the color chooser component.
   - Added German translation for those new components.
+  - Added 2 colors to the color palette (Cyan and Yellow) which is often used for AICs.
   - Selection head is now part of the cell selection.
   
 Bug Fix:
