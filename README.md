@@ -24,7 +24,7 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.10 (2019-12-19)
+Version 2.2.10 (2019-12-24)
 ---------------------------
 
 Minor:
@@ -32,10 +32,12 @@ Minor:
   - Color palette 'R' button now clears all colors regardless of radio button selection.
   - Added tooltips for the color chooser component.
   - Added German translation for those new components.
+  - Selection head is now part of the cell selection.
   
 Bug Fix:
 
   - Primary color now updates correctly when setting its color to a custom value.
+  - Clear variable state when resetting/loading new puzzles.
 
 Version 2.2.9 (2019-12-18)
 --------------------------

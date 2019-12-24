@@ -1,5 +1,4 @@
-20191115:
-	
+
 	Grouped Discontinuous Nice Loops is confusing:
 		Why do eliminations have arrows going to them?
 		Make it clear where the chain begins, and where it ends.
@@ -11,6 +10,8 @@
 	Create Savepoint should have an optional field for Description.
 
 	Ability to hide selector. Maybe an option to make it less bulky.
+	
+	Multiple requests to implement a Single Click mode.
 
 20110806:
 
