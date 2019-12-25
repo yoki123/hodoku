@@ -24,6 +24,12 @@ heap size at startup.
 Change log
 ==========
 
+Version 2.2.11 (2019-12-25)
+---------------------------
+
+Bug Fix:
+  - Selecting a primary color in Default Mouse Mode no longer generates a colored mouse.
+
 Version 2.2.10 (2019-12-24)
 ---------------------------
 
