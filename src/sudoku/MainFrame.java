@@ -101,7 +101,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private static final long serialVersionUID = 1L;
-	public static final String VERSION = "Hodoku - v2.2.10";
+	public static final String VERSION = "Hodoku - v2.2.11";
 
 	// public static final String BUILD = "Build 16";
 	public static final String BUILD;
