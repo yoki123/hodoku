@@ -24,8 +24,14 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.11 (2019-12-25)
+Version 2.2.11 (2019-12-30)
 ---------------------------
+
+Features:
+
+  - Show Filters on Givens. When this option is enabled, givens/set cell values will also be highlighted. This feature is off by default but can be turned on in preferences->General->Show filter on givens.
+
+  - Auto highlight. When a given/set cell is selected, like candidates/cells will be highlighted. This feature can be enabled in preferences->General->Auto highlight.
 
 Bug Fix:
   - Selecting a primary color in Default Mouse Mode no longer generates a colored mouse.

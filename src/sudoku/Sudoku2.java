@@ -1677,12 +1677,15 @@ public class Sudoku2 implements Cloneable {
 	 * @return
 	 */
 	public boolean areCandidatesValid(int index, boolean[] candidates, boolean user) {
+		
 		if (values[index] != 0) {
 			return false;
 		}
+		
 		if (candidates[candidates.length - 1] == true) {
 			return getAnzCandidates(index) == 2;
 		}
+		
 		if (!Options.getInstance().isUseOrInsteadOfAndForFilter()) {
 			for (int i = 1; i < candidates.length - 1; i++) {
 				if (candidates[i] && !isCandidate(index, i, user)) {

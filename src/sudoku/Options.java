@@ -442,6 +442,9 @@ public final class Options {
 	public static final boolean SHOW_SUDOKU_SOLVED = false;
 	public static final boolean EDIT_MODE_AUTO_ADVANCE = false;
 	public static final boolean SINGLE_CLICK_MODE = false;
+	public static final boolean AUTO_HIGHLIGHTING = false;
+	public static final boolean COLORS_VISIBLE = true;
+	public static final boolean HIGHLIGHT_GIVENS = false;
 	private boolean showCandidates = SHOW_CANDIDATES;
 	private boolean showCandidateHighlight = SHOW_CANDIDATE_HIGHLIGHT;
 	private boolean showWrongValues = SHOW_WRONG_VALUES;
@@ -473,6 +476,9 @@ public final class Options {
 	private boolean showSudokuSolved = SHOW_SUDOKU_SOLVED;
 	private boolean editModeAutoAdvance = EDIT_MODE_AUTO_ADVANCE;
 	private boolean isSingleClickMode = SINGLE_CLICK_MODE;
+	private boolean isAutoHighlighting = AUTO_HIGHLIGHTING;
+	private boolean isColoringVisible = COLORS_VISIBLE;
+	private boolean isHighlightingGivens = HIGHLIGHT_GIVENS;
 	// Clipboard
 	public static final boolean USE_ZERO_INSTEAD_OF_DOT = false; // as the name says...
 	private boolean useZeroInsteadOfDot = USE_ZERO_INSTEAD_OF_DOT;
@@ -1063,6 +1069,7 @@ public final class Options {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		Options options = new Options();
 		try {
@@ -1086,7 +1093,7 @@ public final class Options {
 		for (int i = 0; i < options.solverSteps.length; i++) {
 			System.out.println(i + ": " + options.solverSteps[i]);
 		}
-	}
+	}*/
 
 	/**
 	 * @return the historyOfCreatedPuzzles
@@ -2437,7 +2444,7 @@ public final class Options {
 	public boolean isEditModeAutoAdvance() {
 		return editModeAutoAdvance;
 	}
-
+	
 	/**
 	 * @return set click mode
 	 */
@@ -2457,6 +2464,30 @@ public final class Options {
 	 */
 	public void setEditModeAutoAdvance(boolean editModeAutoAdvance) {
 		this.editModeAutoAdvance = editModeAutoAdvance;
+	}
+	
+	public void setAutoHighlighting(boolean autoHighlight) {
+		this.isAutoHighlighting = autoHighlight;
+	}
+	
+	public void setColoringVisible(boolean visible) {
+		this.isColoringVisible = visible;
+	}
+	
+	public void setHighlightingGivens(boolean highlightGivens) {
+		this.isHighlightingGivens = highlightGivens;
+	}
+	
+	public boolean isAutoHighlighting() {
+		return isAutoHighlighting;
+	}
+	
+	public boolean isColoringVisible() {
+		return isColoringVisible;
+	}
+	
+	public boolean isHighlightingGivens() {
+		return isHighlightingGivens;
 	}
 
 	/**
