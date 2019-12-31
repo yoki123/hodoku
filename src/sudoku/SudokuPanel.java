@@ -876,9 +876,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if (value != 0) {
 				setShowHintCellValue(value);
 				setShowInvalidOrPossibleCells(true);
-				lastHighlightedDigit = value;	
-			} else {				
+				lastHighlightedDigit = value;
+			} else {
 				resetShowHintCellValues();
+				setShowInvalidOrPossibleCells(false);
 				lastHighlightedDigit = 0;
 				mainFrame.repaint();
 			}
@@ -1541,6 +1542,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				
 				if (sudoku.getValue(getActiveRow(), getActiveCol()) != 0 && !sudoku.isFixed(getActiveRow(), getActiveCol())) {
 					sudoku.setCell(getActiveRow(), getActiveCol(), 0);
+					setCandidateFilterByGiven(getActiveRow(), getActiveCol());
 					changed = true;
 				}
 				
@@ -3694,6 +3696,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					showHintCellValues[i] = false;
 				}
 			}
+			showHintCellValues[candidate] = true;
 		}
 	}
 
