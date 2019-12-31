@@ -35,6 +35,7 @@ Features:
 
 Bug Fix:
   - Selecting a primary color in Default Mouse Mode no longer generates a colored mouse.
+  - Filter/Highlight bivalue cells did not work when Show filter on candidate was enabled.
 
 Version 2.2.10 (2019-12-24)
 ---------------------------

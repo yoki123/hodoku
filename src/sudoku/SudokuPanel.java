@@ -2319,15 +2319,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					if (showCandidates) {
 						candidateValid = sudoku.areCandidatesValid(cellIndex, showHintCellValues, false);
 					}
-				}				
-
+				}
+				
+				boolean isHighlightingBivalue = showHintCellValues[10];
+				boolean isCellBivalue = sudoku.getAllCandidates(cellIndex).length == 2;
+				
 				// highlight (filter)
 				if (isShowInvalidOrPossibleCells()) {
 					
 					// highlighting
-					if (!isInvalidCells()) {
+					if (!isInvalidCells() || isHighlightingBivalue) {
 						
-						if (sudoku.getValue(cellIndex) == 0 && candidateValid && !Options.getInstance().isOnlySmallFilters()) {
+						if (sudoku.getValue(cellIndex) == 0 && 
+							candidateValid && 
+							!Options.getInstance().isOnlySmallFilters()) {
 							setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
 						} else if (Options.getInstance().isHighlightingGivens() && 
 								   sudoku.getValue(cellIndex) != 0 &&
@@ -2621,13 +2626,28 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 								offCand = 11;
 								candColor = Options.getInstance().getDeviationColor();
 							}
+							
+							boolean isFilteringCandidates = 
+									isShowInvalidOrPossibleCells() && 
+									!isInvalidCells() && 
+									showHintCellValues[i] && 
+									Options.getInstance().isOnlySmallFilters();
+							
+							boolean isFilteringBivalueCandidates = 
+									sudoku.getValue(cellIndex) == 0 && 
+								    Options.getInstance().isOnlySmallFilters() &&
+								    isHighlightingBivalue &&
+								    isCellBivalue;
 
 							// filters on candidates instead of cells
-							if (isShowInvalidOrPossibleCells() && 
-								!isInvalidCells() && 
-								showHintCellValues[i] && 
-								Options.getInstance().isOnlySmallFilters()) {
-								setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
+							if (candidateValid && (isFilteringCandidates || isFilteringBivalueCandidates)) {
+							
+								if (isFilteringCandidates) {
+									setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
+								} else if (isFilteringBivalueCandidates) {
+									setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
+								}
+								
 								g2.fillRect(
 									(int) Math.round(startX + shiftX + third / 2.0 - ddy / 2.0),
 									(int) Math.round(startY + shiftY + third / 2.0 - ddy / 2.0),
