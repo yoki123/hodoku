@@ -841,16 +841,19 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					// Naked single -> set it!
 					int actCand = sudoku.getAllCandidates(index, !showCandidates)[0];
 					setCell(dto.row, dto.col, actCand);
+					setCandidateFilterByGiven(dto.row, dto.col);
 					return true;
 				} else if (showHintCellValue != 0 && isHiddenSingle(showHintCellValue, dto.row, dto.col)) {
 					// Hidden Single -> it
 					setCell(dto.row, dto.col, showHintCellValue);
+					setCandidateFilterByGiven(dto.row, dto.col);
 					return true;
 				} else if (dto.candidate != -1) {
 					// candidate double clicked -> set it
 					// (only if that candidate is still set in the cell)
 					if (sudoku.isCandidate(index, dto.candidate, !showCandidates)) {
 						setCell(dto.row, dto.col, dto.candidate);
+						setCandidateFilterByGiven(dto.row, dto.col);
 					}
 					
 					return true;
@@ -859,11 +862,27 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			} else if (!sudoku.isFixed(index)) {
 				// double clicking a user input value removes it
 				setCell(dto.row, dto.col, 0);
+				setCandidateFilterByGiven(dto.row, dto.col);
 				return true;
 			}
 		}
 		
 		return false;
+	}
+	
+	void setCandidateFilterByGiven(int row, int col) {
+		if (Options.getInstance().isAutoHighlighting()) {
+			int value = sudoku.getValue(row, col);
+			if (value != 0) {
+				setShowHintCellValue(value);
+				setShowInvalidOrPossibleCells(true);
+				lastHighlightedDigit = value;	
+			} else {				
+				resetShowHintCellValues();
+				lastHighlightedDigit = 0;
+				mainFrame.repaint();
+			}
+		}
 	}
 	
 	boolean onLeftClick(MouseClickDTO dto) {
@@ -1460,6 +1479,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if ((modifiers & KeyEvent.CTRL_DOWN_MASK) == 0) {
 				if (cellSelection.isEmpty()) {
 					setCell(getActiveRow(), getActiveCol(), number);
+					setCandidateFilterByGiven(getActiveRow(), getActiveCol());
 					if (mainFrame.isInputMode() && Options.getInstance().isEditModeAutoAdvance()) {
 						// automatically advance to the next cell
 						if (getActiveCol() < 8) {
@@ -1488,9 +1508,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						cells.add(activeIndex);
 					}
 					
-					
-					for (int index : cells) {
-						setCell(Sudoku2.getRow(index), Sudoku2.getCol(index), number);
+					if (cells.size() == 1) {
+						setCell(getActiveRow(), getActiveCol(), number);
+						setCandidateFilterByGiven(getActiveRow(), getActiveCol());
+					} else {
+						for (int index : cells) {
+							setCell(Sudoku2.getRow(index), Sudoku2.getCol(index), number);
+						}	
 					}
 				}
 				
