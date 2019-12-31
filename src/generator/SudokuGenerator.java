@@ -81,9 +81,13 @@ public class SudokuGenerator {
 	private int anzTries = 0;
 	private int anzNS = 0;
 	private int anzHS = 0;
+	@SuppressWarnings("unused")
 	private int anzTriesGen = 0;
+	@SuppressWarnings("unused")
 	private int anzClues = 0;
+	@SuppressWarnings("unused")
 	private long nanos = 0;
+	@SuppressWarnings("unused")
 	private long setNanos = 0;
 	// private long actSetNanos = 0;
 
@@ -169,7 +173,7 @@ public class SudokuGenerator {
 		stack[0].sudoku.set(EMPTY_GRID);
 		stack[0].candidates = null;
 		stack[0].candIndex = 0;
-
+		
 		// set up the sudoku
 		for (int i = 0; i < sudokuString.length() && i < Sudoku2.LENGTH; i++) {
 			int value = sudokuString.charAt(i) - '0';
@@ -262,16 +266,26 @@ public class SudokuGenerator {
 		int level = 0;
 		while (true) {
 			
+			// a sanity check to avoid infinite loops.
+			if (anzTries >= MAX_TRIES) {
+				System.out.println("Exceeded tries");
+				break;
+			}
+			
+			//System.out.println("Infinite While Loop");
+			
 			// get the next unsolved cells with the fewest number of candidates
 			if (stack[level].sudoku.getUnsolvedCellsAnz() == 0) {
 				
 				// sudoku is solved
 				solutionCount++;
+				
 				// count the solutions
 				if (solutionCount == 1) {
 					// first solution is recorded
 					solution = Arrays.copyOf(stack[level].sudoku.getValues(), Sudoku2.LENGTH);
 				} else if (solutionCount > maxSolutionCount) {
+					
 					if (DEBUG) {
 						System.out.println("  puzzle has more than one solution (" + solutionCount + ")!");
 					}
@@ -339,7 +353,7 @@ public class SudokuGenerator {
 				// invalid -> try next candidate
 				if (!stack[level].sudoku.setCell(stack[level].index, nextCand, false, false)) {
 					continue;
-				}
+				}				
 				
 				// valid move, break from the inner loop to advance to the next level
 				if (setAllExposedSingles(stack[level].sudoku)) {
@@ -712,6 +726,7 @@ public class SudokuGenerator {
 		return "anzTries: " + anzTries + ", anzNS: " + anzNS + ", anzHS: " + anzHS;
 	}
 
+	/*
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		System.out.println("Sudoku2!");
@@ -792,5 +807,5 @@ public class SudokuGenerator {
 		System.out.println("Time: " + ((double) ticks / anzRuns) + "ms " + (bs.anzTriesGen / anzRuns) + "/"
 				+ (bs.anzClues / anzRuns) + "/" + nanos + "/" + setNanos + "/" + (nanos - setNanos));
 		System.out.println(bs.printStat());
-	}
+	}*/
 }

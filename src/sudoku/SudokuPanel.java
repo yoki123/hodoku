@@ -504,10 +504,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				setShowHintCellValue(value);
 				setShowInvalidOrPossibleCells(true);
 				lastHighlightedDigit = value;
-			} else {
+			} else {/*
 				resetShowHintCellValues();
 				setShowInvalidOrPossibleCells(false);
-				lastHighlightedDigit = 0;
+				lastHighlightedDigit = 0;*/
 			}
 		}
 	}
@@ -4125,15 +4125,18 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			sudoku.setStatus(SudokuStatus.INVALID);
 			sudoku.setStatusGivens(SudokuStatus.INVALID);
 		} else {
-			// we have to check!
-			int anzSol = generator.getNumberOfSolutions(sudoku, 1);
-			sudoku.setStatus(anzSol);
-			// the status of the givens is not changed here; it only changes
-			// when the givens themselved are changed
-			// sudoku.setStatusGivens(anzSol);
-			if (anzSol == 1) {
-				// the sudoku is valid -> check the progress
-				progressChecker.startCheck(sudoku);
+			
+			if (sudoku.checkSudoku()) {				
+				// we have to check!
+				int anzSol = generator.getNumberOfSolutions(sudoku, 1000);
+				sudoku.setStatus(anzSol);
+				// the status of the givens is not changed here; it only changes
+				// when the givens themselved are changed
+				// sudoku.setStatusGivens(anzSol);
+				if (anzSol == 1) {
+					// the sudoku is valid -> check the progress
+					progressChecker.startCheck(sudoku);
+				}	
 			}
 		}
 	}

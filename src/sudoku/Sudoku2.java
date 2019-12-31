@@ -1104,8 +1104,10 @@ public class Sudoku2 implements Cloneable {
 	 * @return
 	 */
 	public boolean checkSudoku() {
+		
 		// rebuild the internal data
 		rebuildInternalData();
+		
 		// now check all cells
 		for (int index = 0; index < values.length; index++) {
 			if (values[index] != 0) {

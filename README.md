@@ -24,7 +24,7 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.11 (2019-12-30)
+Version 2.2.11 (2019-12-31)
 ---------------------------
 
 Features:
@@ -36,7 +36,8 @@ Features:
 Bug Fix:
   - Selecting a primary color in Default Mouse Mode no longer generates a colored mouse.
   - Filter/Highlight bivalue cells did not work when Show filter on candidate was enabled.
-
+  - Fixed an infinite loop bug related to inputting digits on a multi solution puzzle.
+  
 Version 2.2.10 (2019-12-24)
 ---------------------------
 
