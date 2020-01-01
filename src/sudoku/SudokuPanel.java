@@ -179,6 +179,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	private boolean isCtrlDown;
 	private Point lastMousePosition = new Point();
 	private int lastHighlightedDigit = 0;
+	private boolean isColoringVisible = true;
 
 	/**
 	 * Creates new form SudokuPanel
@@ -876,6 +877,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			if (value != 0) {
 				setShowHintCellValue(value);
 				setShowInvalidOrPossibleCells(true);
+				showHintCellValues[value] = true;
 				lastHighlightedDigit = value;
 			} else {
 				resetShowHintCellValues();
@@ -1586,6 +1588,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					// no bivalue cells!
 					showHintCellValues[10] = false;
 				} else {
+					
 					if ((modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0) {
 						invalidCells = !invalidCells;
 					}
@@ -2378,7 +2381,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				// coloring
 				if (coloringMap.containsKey(cellIndex) && 
 					(sudoku.getValue(cellIndex) == 0 || 
-					Options.getInstance().isColorValues())) {
+					Options.getInstance().isColorValues()) &&
+					isColoringVisible) {
 					setColor(g2, allBlack, coloringMap.get(cellIndex));
 				}
 				
@@ -2665,7 +2669,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 								    isHighlightingBivalue &&
 								    isCellBivalue;
 
-							// filters on candidates instead of cells
+							// highlight/filters candidates instead of cells
 							if (candidateValid && (isFilteringCandidates || isFilteringBivalueCandidates)) {
 							
 								if (isFilteringCandidates) {
@@ -2683,7 +2687,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 							// Coloring
 							Color coloringColor = null;
-							if (coloringCandidateMap.containsKey(cellIndex * 10 + i)) {
+							if (isColoringVisible && coloringCandidateMap.containsKey(cellIndex * 10 + i)) {
 								coloringColor = coloringCandidateMap.get(cellIndex * 10 + i);
 							}
 
@@ -3428,6 +3432,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		shiftRow = -1;
 		shiftCol = -1;
 		lastHighlightedDigit = 0;
+		isColoringVisible = true;
 
 		if (init == null || init.length() == 0) {
 			sudoku = new Sudoku2();
@@ -3696,7 +3701,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					showHintCellValues[i] = false;
 				}
 			}
-			showHintCellValues[candidate] = true;
 		}
 	}
 
@@ -4210,6 +4214,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		cellZoomPanel.calculateLayout();
 		updateCellZoomPanel();
 		repaint();
+	}
+	
+	public void setColorsVisible(boolean isVisible) {
+		isColoringVisible = isVisible;
 	}
 
 	public void resetColorKuImages() {

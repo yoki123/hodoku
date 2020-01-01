@@ -102,6 +102,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 	private JRadioButton radioButtonColorCells;
 	private JRadioButton radioButtonColorCandidates;
 	private UIColorPalette colorPalette;
+	private UIColorTools colorTools;
 
 	/**
 	 * Creates new form CellZoomPanel
@@ -198,6 +199,9 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		
 		colorPalette = new UIColorPalette(this);
 		add(colorPalette);
+		
+		colorTools = new UIColorTools();
+		add(colorTools);
 		
 		ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/CellZoomPanel");
 		String defaultText = bundle.getString("CellZoomPanel.radioButtonDefault.text");
@@ -594,6 +598,10 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		chooseColorPanel.setSize(colorPanelHeight/2*COLOR_BUTTON_COUNT/2, colorPanelHeight);
 		chooseColorPanel.setLocation(setValuePanel.getX(), y);
 		chooseColorPanel.doLayout();
+		chooseColorPanel.setSize(colorPanelHeight/2*COLOR_BUTTON_COUNT/2, colorPanelHeight);
+		colorTools.setSize(colorPanelHeight, colorPanelHeight);
+		colorTools.setLocation(chooseColorPanel.getX() + chooseColorPanel.getWidth(), y);
+		colorTools.doLayout();
 		y += colorPanelHeight;
 		y += LARGE_GAP;
 
@@ -788,6 +796,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 	public void setSudokuPanel(SudokuPanel sudokuPanel) {
 		this.sudokuPanel = sudokuPanel;
 		this.colorPalette.setSudokuPanel(sudokuPanel);
+		this.colorTools.setSudokuPanel(sudokuPanel);
 	}
 	
 	public void swapColors() {
