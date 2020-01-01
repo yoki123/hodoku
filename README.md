@@ -29,6 +29,8 @@ Version 2.2.11 (2019-12-31)
 
 Features:
 
+  - Toggle color visibility. Now you can hide colors without clearing it to see filtering/highlighting!
+
   - Show Filters on Givens. When this option is enabled, givens/set cell values will also be highlighted. This feature is off by default but can be turned on in preferences->General->Show filter on givens.
 
   - Auto highlight. When a given/set cell is selected, like candidates/cells will be highlighted. This feature can be enabled in preferences->General->Auto highlight.
