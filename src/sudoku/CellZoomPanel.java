@@ -599,7 +599,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		chooseColorPanel.setLocation(setValuePanel.getX(), y);
 		chooseColorPanel.doLayout();
 		chooseColorPanel.setSize(colorPanelHeight/2*COLOR_BUTTON_COUNT/2, colorPanelHeight);
-		colorTools.setSize(colorPanelHeight, colorPanelHeight);
+		colorTools.setSize(colorPanelHeight/2, colorPanelHeight/2);
 		colorTools.setLocation(chooseColorPanel.getX() + chooseColorPanel.getWidth(), y);
 		colorTools.doLayout();
 		y += colorPanelHeight;
