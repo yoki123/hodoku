@@ -5,7 +5,7 @@ Java Runtime Environment (JRE) version 1.8 or higher must be installed on your c
 before you can run HoDoKu. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_001.jpg)
+![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_002.jpg)
 
 Available languages: English and German
 
@@ -24,7 +24,7 @@ heap size at startup.
 Change log
 ==========
 
-Version 2.2.11 (2019-12-31)
+Version 2.2.11 (2020-01-01)
 ---------------------------
 
 Features:
