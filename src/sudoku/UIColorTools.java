@@ -7,6 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -32,10 +33,13 @@ public class UIColorTools extends JPanel implements MouseListener, ActionListene
 		Image imgVisibleOn = new ImageIcon(getClass().getResource("/img/visibility_on_64x64_cc0.png")).getImage();
 		Image imgVisibleOff = new ImageIcon(getClass().getResource("/img/visibility_off_64x64_cc0.png")).getImage();
 		
+		ResourceBundle bundle = ResourceBundle.getBundle("intl/UIColorTools");
+		
 		btnColorVisible = new UIToggleButton(imgVisibleOn, imgVisibleOff);
 		btnColorVisible.addMouseListener(this);
 		btnColorVisible.setLocation(0, 0);
 		btnColorVisible.setSize(DEFAULT_BUTTON_SIZE, DEFAULT_BUTTON_SIZE);
+		btnColorVisible.setToolTipText(bundle.getString("btnColorVisible.tooltip"));
 		add(btnColorVisible);
 	}
 	
