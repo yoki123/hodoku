@@ -4088,6 +4088,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		
 		try {
@@ -4102,7 +4103,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				new MainFrame(null).setVisible(true);
 			}
 		});
-	}
+	}*/
 
 	private void setTitleWithFile() {
 		

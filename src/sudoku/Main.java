@@ -397,7 +397,7 @@ public class Main {
 		Logger rootLogger = Logger.getLogger("");
 		rootLogger.addHandler(fh);
 		rootLogger.setLevel(Level.CONFIG);
-//        rootLogger.setLevel(Level.ALL);
+		// rootLogger.setLevel(Level.ALL);
 
 		Handler[] handlers = rootLogger.getHandlers();
 		for (Handler handler : handlers) {
