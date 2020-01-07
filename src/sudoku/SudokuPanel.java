@@ -197,7 +197,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		solver.solve();
 		progressChecker = new ProgressChecker(mainFrame);
 		isCtrlDown = false;
-		cellSelection.add(new Integer(Sudoku2.getIndex(4, 4)));
+		setActiveCell(4, 4);
+		//cellSelection.add(new Integer(Sudoku2.getIndex(4, 4)));
 		
 		clearDragSelection();
 		initComponents();
@@ -283,6 +284,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		
 		Integer intObj = new Integer(index);
 
+        if (Options.getInstance().isDeleteCursorDisplay()) {
+            deleteCursorTimer.stop();
+            lastCursorChanged = System.currentTimeMillis();
+            deleteCursorTimer.setDelay(Options.getInstance().getDeleteCursorDisplayLength());
+            deleteCursorTimer.setInitialDelay(Options.getInstance().getDeleteCursorDisplayLength());
+            deleteCursorTimer.start();
+        }
+
 		if (cellSelection.contains(intObj)) {
 			cellSelection.remove(intObj);
 		}
@@ -296,7 +305,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	
 	public void clearSelection(int lastCell) {
 		cellSelection.clear();
-		cellSelection.add(new Integer(lastCell));
+		//cellSelection.add(new Integer(lastCell));
+		setActiveCell(lastCell);
 	}
 	
 	public void clearSelection(int row, int col) {
@@ -311,7 +321,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		
 		Integer lastCell = cellSelection.get(cellSelection.size()-1);
 		cellSelection.clear();
-		cellSelection.add(lastCell);
+		//cellSelection.add(lastCell);
+		setActiveCell(lastCell);
 	}
 	
 	public void resetKeyState() {
@@ -1712,7 +1723,8 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		
 		Integer index = Integer.valueOf(Sudoku2.getIndex(getActiveRow(), getActiveCol()));
 		if (!cellSelection.contains(index)) {
-			cellSelection.add(index);
+			//cellSelection.add(index);
+			setActiveCell(index);
 		}
 	}
 
@@ -1753,12 +1765,14 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			}
 			
 			// fix the end index (just in case)
+			setActiveCell(endIndex);
+			/*
 			if (!cellSelection.contains(endIndex)) {
 				cellSelection.add(endIndex);
 			} else {
 				cellSelection.remove(endIndex);
 				cellSelection.add(endIndex);
-			}
+			}*/
 		}
 	}
 
@@ -2322,11 +2336,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 
 				int cellIndex = Sudoku2.getIndex(row, col);
 				boolean isSelected = 
-						(row == getActiveRow() && col == getActiveCol()) || 
-						cellSelection.contains(Integer.valueOf(cellIndex));
+					(row == getActiveRow() && col == getActiveCol()) || 
+					cellSelection.contains(Integer.valueOf(cellIndex));
 				
 				// the cell doesn't count as selected, if the last change of the cursor has been a while
-				if (isSelected && cellSelection.isEmpty() && Options.getInstance().isDeleteCursorDisplay()) {
+				if (isSelected && cellSelection.size() == 1 && Options.getInstance().isDeleteCursorDisplay()) {
 					if ((System.currentTimeMillis() - lastCursorChanged) > Options.getInstance().getDeleteCursorDisplayLength()) {
 						isSelected = false;
 					}
