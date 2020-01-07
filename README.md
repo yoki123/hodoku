@@ -2,7 +2,7 @@ Hodoku is a solver/generator/trainer/analyzer for standard sudoku. It is written
 Java/Swing and should therefore run on any platform supported by Java (tested
 on Windows and Linux - Ubuntu/GTK+-LAF). Since it is written in Java the
 Java Runtime Environment (JRE) version 1.8 or higher must be installed on your computer
-before you can run HoDoKu. The JRE am be downloaded from 
+before you can run Hodoku. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 ![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_002.jpg)
@@ -10,9 +10,9 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 Available languages: English and German
 
 For all Windows versions hodoku.exe is the preferred program version. For all other
-operating systems Hodoku.jar has to be used. HoDoKu uses rather a lot of memory
+operating systems Hodoku.jar has to be used. Hodoku uses rather a lot of memory
 (especially if you use the "Find all available steps" feature). The recommended way
-to run HoDoKu is:
+to run Hodoku is:
 
 	java -Xmx512m -jar Hodoku.jar
 
@@ -20,9 +20,20 @@ Note: the parameter "-Xmx" is specific to the JRE provided by Oracle. If you use
 different JRE, please look up the correct parameter for setting the maximum 
 heap size at startup.
 
+Hodoku was created by Bernhard Hobiger who unfortunately passed away. I have taken 
+it upon myself to create a fork of the main project so that I could maintain Hodoku 
+and add new features which I felt were lacking. My apologies for the bad German 
+translation, I use Google translate since I don't speak German, but I try to retain 
+international support.
 
 Change log
 ==========
+
+Version 2.3.0 (2020-01-06)
+--------------------------
+
+Bug Fixes:
+  - Fixed active cell selection hide on delayed interval.
 
 Version 2.2.11 (2020-01-01)
 ---------------------------
@@ -30,12 +41,11 @@ Version 2.2.11 (2020-01-01)
 Features:
 
   - Toggle color visibility. Now you can hide colors without clearing it to see filtering/highlighting!
-
   - Show Filters on Givens. When this option is enabled, givens/set cell values will also be highlighted. This feature is off by default but can be turned on in preferences->General->Show filter on givens.
-
   - Auto highlight. When a given/set cell is selected, like candidates/cells will be highlighted. This feature can be enabled in preferences->General->Auto highlight.
 
 Bug Fix:
+
   - Selecting a primary color in Default Mouse Mode no longer generates a colored mouse.
   - Filter/Highlight bivalue cells did not work when Show filter on candidate was enabled.
   - Fixed an infinite loop bug related to inputting digits on a multi solution puzzle.
@@ -62,31 +72,22 @@ Version 2.2.9 (2019-12-18)
 Features:
 
   - Color Palette
-
     - Instead of having 2 color palettes, one for cells, one for candidates, we now only have 1. Radio buttons have been added to determine if we are using the default mouse mode, coloring cells or coloring candidates.
-
     - We now have a primary and secondary color. Their order can be switched by using the arrow button between both colors.
-
     - Clicking on a color from the color palette will set the primary color to this value.
-
     - Clicking on the primary or secondary color will spawn a color selection window for further customization of colors than what is provided by Hodoku's default color palette.
-
     - The 'R' button at the bottom left of the primary and secondary color resets the colors on the board. If Color Cells is selected, only cell colors will be cleared. If Color Candidates is selected, only candidate colors will be cleared. If Default Mouse is selected, all colors will be cleared.
-
     - Colors are no longer switched with Shift is held down. Pressing once on 'X' will switch the color. You no longer have to hold it down.
 
 Minor:
 
   - Input digit on a cell with a user input value now overwrites it.
-
   - Cells now color even if you drag and release on the same cell.
-  
   - Save Image default size changed from 400px to 800px
 
 Bug Fixes:
 
   - The Modify Givens button is not active when the program loads, and Play Game is not clickable.
-
   - Right click a user input cell shows the right click menu with the option to delete value.
 
 Version 2.2.8 (2019-12-01)
@@ -96,30 +97,23 @@ Features:
 
   - Puzzle -> Solution Count
     - It counts how many solutions a puzzle has with a cutoff limit of 1000.
-	
   - Clear an entire color channel in either Cells or Candidates. This is done in the Active Cell panel by Ctrl + Left Click on a color in the color palette. Only this color will be cleared from the board.
-
   - Mouse click while coloring no longer selects a cell. I found it distracting, sometimes the selector color overlay made the cell's colors look off. It can still be moved with the arrow keys. Maybe I should re-enable it, but add a toggle feature to automatically hide the selector when entering coloring mode.
 
 Minor:
 
   - File -> New Empty
     - It generates an empty board. This replaces File -> New Givens. This new layout is more conventional with other programs.
-
   - Edit -> Edit Givens
     - Renamed and relocated File -> Modify Givens. It did not make sense being under the File menu. Now it is more clear what it does.
-		
   - Edit -> Play Game
     - Relocated from File -> Play Game. This belongs with Edit Givens since you use it to leave editor mode.
 
 Bug Fixes:
 
   - Active Cell color would disappear when clicking outside the grid to hide the cursor selector.
-	
   - Active Color preview defaulted to cell color preview.
-  
   - Faulty transition from drag to click while Ctrl down leading to a cell being deselected.
-  
   - Batch generate would sometimes crash due to a comparator bug in the XY-Chains.
 
 Version 2.2.7 (2019-11-23)
@@ -128,25 +122,17 @@ Version 2.2.7 (2019-11-23)
 Features:
 
   - The active cell selector has been made larger then the rest of the cell selection to distinguish it.
-
   - Cell selection is more responsive. Immediate selection on down event.
-  
   - German translation support has been added.
   
 Bug Fixes:
 
   - Active cell selector position now updates correctly on mouse drag.
-
   - "Solve up to" had a bug where it would go in an endless loop on a puzzle where the engine gives-up.
-
   - Cell selection bug when removing existing selection from previous selection.
-
   - Solve Puzzle now throws an appropriate message when the puzzle has multiple solutions.
-
   - Right click no longer clears the selection.
-
   - An empty config file is deleted and re-generated.
-  
   - Internal code redesigning and refactoring.
 
 Version 2.2.6 (2019-11-22)
@@ -159,9 +145,7 @@ Features:
 Bug Fixes:
 
   - The Active Cell panel color selection has been made more responsive.
-
   - Disabled candidate highlight on LCtrl down because it was currently doing too many things. Until I find a better way to edit candidates and append cells selection, this feature will only be toggleable via the Options -> Show Candidate Highlight.
-  
   - Right click menu does not clear the selection anymore, unless right clicking outside of the selection.
 
 
@@ -172,11 +156,8 @@ Features:
 
   - Single Click Mode has replaced Alternative Mouse Mode from: 
     - edit -> preferences -> General -> Appearance/Behaviour -> Single click mode
-
   - Single Click Mode is off by default.
-
   - Single Click Mode cannot toggle a missing candidate in a single click because this would break the multi-selection behaviour. For this reason, toggling empty candidates must remain a double click.
-
   - Candidate Highlight Mode is toggled when LCtrl is held down. This makes it more clear that candidates are interactable when LCtrl is held down, and more obvious what you are editing.
 
 Version 2.2.4 (2019-11-16)
