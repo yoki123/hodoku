@@ -1783,7 +1783,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				showSolutionCount();
 			}
 		});
-		puzzleMenu.add(solutionCountMenuItem);
+		puzzleMenu.add(solutionCountMenuItem);		
 		puzzleMenu.add(new JSeparator());
 
 		backdoorSearchMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")

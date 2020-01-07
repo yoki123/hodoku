@@ -29,8 +29,8 @@ international support.
 Change log
 ==========
 
-Version 2.3.0 (2020-01-06)
---------------------------
+Version 2.3.0 (WIP)
+-------------------
 
 Bug Fixes:
   - Fixed active cell selection hide on delayed interval.

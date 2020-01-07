@@ -3174,6 +3174,7 @@ public class TablingSolver extends AbstractSolver {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		SudokuStepFinder finder = new SudokuStepFinder();
 		TablingSolver.DEBUG = true;
@@ -3258,5 +3259,5 @@ public class TablingSolver extends AbstractSolver {
 			// System.out.println(steps.get(i).getCandidateString());
 			System.out.println(steps.get(i).toString(2));
 		}
-	}
+	}*/
 }
