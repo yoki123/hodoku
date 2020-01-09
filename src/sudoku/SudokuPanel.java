@@ -251,6 +251,10 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		return Sudoku2.getCol(index);
 	}
 	
+	public int getCellSelectionSize() {
+		return cellSelection.size();
+	}
+	
 	public int getActiveRow() {
 		
 		if (cellSelection.isEmpty()) {
@@ -297,6 +301,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		}
 		
 		cellSelection.add(intObj);
+		mainFrame.updateCellSelectionStatus();
 	}
 	
 	public void setActiveCell(int row, int col) {		

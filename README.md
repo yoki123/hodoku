@@ -36,6 +36,7 @@ Features:
 
   - Reset Candidates under the Puzzle menu
   - Digit filter/highlight now has a distinguished color with customization in config.
+  - Bottom window status now shows selector location as RyCx notation.
   
 Minor:
   - Added color option to customize the new colors in the color palette.

@@ -261,6 +261,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JSeparator jSeparator12;
 	private javax.swing.JSeparator jSeparator13;
 	private javax.swing.JSeparator jSeparator24;
+	private javax.swing.JSeparator jSeparator25;
 	private javax.swing.JSeparator jSeparator8;
 	private javax.swing.JSeparator jSeparator9;
 	private javax.swing.JToolBar jToolBar1;
@@ -327,6 +328,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JLabel statusLabelCellCandidate;
 	private javax.swing.JLabel statusLabelLevel;
 	private javax.swing.JLabel statusLabelModus;
+	private javax.swing.JLabel statusLabelCellSelection;
 	private javax.swing.JPanel statusLinePanel;
 	private javax.swing.JPanel statusPanelColor1;
 	private javax.swing.JPanel statusPanelColor2;
@@ -404,6 +406,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		statusLabelCellCandidate.setFont(font);
 		statusLabelLevel.setFont(font);
 		statusLabelModus.setFont(font);
+		statusLabelCellSelection.setFont(font);
 		progressLabel.setFont(font);
 
 		// get the current difficulty level (is overriden when levels are added
@@ -618,6 +621,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 
+		updateCellSelectionStatus();
 		exportWindow = new UIExportLine(sudokuPanel);
 		importWindow = new UIImportLine(this);
 	}
@@ -637,6 +641,25 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		}
 	}
 
+	public void updateCellSelectionStatus() {
+		
+		if (sudokuPanel == null) {
+			return;
+		}
+		
+		int size = sudokuPanel.getCellSelectionSize();
+		int r = sudokuPanel.getActiveRow() + 1;
+		int c = sudokuPanel.getActiveCol() + 1;
+		
+		if (size == 1) {
+			statusLabelCellSelection.setText("R"+r+"C"+c);
+		} else {
+			statusLabelCellSelection.setText("");
+		}
+		
+		statusLabelCellSelection.repaint();
+	}
+	
 	private void initComponents() {
 
 		levelButtonGroup = new javax.swing.ButtonGroup();
@@ -659,7 +682,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		jSeparator8 = new javax.swing.JSeparator();
 		progressLabel = new javax.swing.JLabel();
 		jSeparator24 = new javax.swing.JSeparator();
+		jSeparator25 = new javax.swing.JSeparator();
 		statusLabelModus = new javax.swing.JLabel();
+		statusLabelCellSelection = new javax.swing.JLabel();
 		jToolBar1 = new javax.swing.JToolBar();
 		undoToolButton = new javax.swing.JButton();
 		redoToolButton = new javax.swing.JButton();
@@ -951,6 +976,13 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		statusLabelModus.setText(bundle.getString("MainFrame.statusLabelModus.textPlay"));
 		statusLabelModus.setToolTipText(bundle.getString("MainFrame.statusLabelModus.toolTipText"));
 		statusLinePanel.add(statusLabelModus);
+
+		jSeparator25.setOrientation(javax.swing.SwingConstants.VERTICAL);
+		jSeparator25.setPreferredSize(new java.awt.Dimension(2, 17));
+		statusLinePanel.add(jSeparator25);
+		
+		statusLabelCellSelection.setText("");
+		statusLinePanel.add(statusLabelCellSelection);
 
 		getContentPane().add(statusLinePanel, java.awt.BorderLayout.SOUTH);
 
@@ -2073,7 +2105,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		setJMenuBar(jMenuBar1);
 
 		pack();
-	}// </editor-fold>//GEN-END:initComponents
+	}
 
 	private void savePuzzleAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		saveToFile(true);
