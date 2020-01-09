@@ -1233,7 +1233,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		newEmptyMenuItem.setText(bundle.getString("MainFrame.newEmptyMenuItem.text"));
 		newEmptyMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				//newEmptyMenuItemActionPerformed(evt);
 				newEmptyGameMenuItemActionPerformed(evt);
 			}
 		});
@@ -2329,6 +2328,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			check();
 		}
 		
+		cellZoomPanel.setDefaultMouse(true);		
 		setPlay(true);
 		fixFocus();
 	}
@@ -2641,6 +2641,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private void newEmptyGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		
 		if (sudokuPanel.getSolvedCellsAnz() != 0) {
+			
 			int antwort = JOptionPane.showConfirmDialog(
 				this,
 				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.delete_sudoku"),
@@ -2648,8 +2649,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				JOptionPane.YES_NO_OPTION
 			);
 			
+			// do nothing
 			if (antwort != JOptionPane.YES_OPTION) {
-				// do nothing!
 				return;
 			}
 		}
@@ -2659,6 +2660,8 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		allStepsPanel.setSudoku(sudokuPanel.getSudoku());
 		resetResultPanels();
 		sudokuPanel.setNoClues();
+		cellZoomPanel.setDefaultMouse(true);
+		sudokuPanel.clearColoring();
 		hinweisAbbrechenButtonActionPerformed(null);
 		setPlay(false);
 	}
@@ -2684,7 +2687,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	}
 
 	private void resetSpielMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		
+
 		if (JOptionPane.showConfirmDialog(
 				this,
 				java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.reset_game"),

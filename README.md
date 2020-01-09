@@ -35,13 +35,15 @@ Version 2.3.0 (WIP)
 Features:
 
   - Reset Candidates under the Puzzle menu
-  - Digit highlight/filter has a distinguished color with customization in config.
+  - Digit filter/highlight now has a distinguished color with customization in config.
   
 Minor:
   - Added color option to customize the new colors in the color palette.
+  - New Puzzle automatically sets mouse back to Default mouse mode.
 
 Bug Fixes:
   - Fixed active cell selection hide on delayed interval.
+  - Fixed the JAR entry point, console commands should work again.
 
 Version 2.2.11 (2020-01-01)
 ---------------------------
