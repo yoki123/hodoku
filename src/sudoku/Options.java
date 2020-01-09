@@ -56,6 +56,7 @@ public final class Options {
 
 	public static final String FILE_NAME = "hodoku.hcfg";
 	private static final ProgressComparator progressComparator = new ProgressComparator();
+	
 	// Schwierigkeitsstufen
 	public static final DifficultyLevel[] DEFAULT_DIFFICULTY_LEVELS = {
 			new DifficultyLevel(DifficultyType.INCOMPLETE, 0,
@@ -375,19 +376,18 @@ public final class Options {
 	public static final Color DEFAULT_PRIMARY_COLOR = new Color(134, 242, 128);
 	public static final Color DEFAULT_SECONDARY_COLOR = new Color(247, 165, 167);
 	public static final Color[] COLORING_COLORS = { 
-			
-			new Color(255, 192, 89),  // 'a' - first color of first color pair
-			new Color(247, 222, 143), // 'A' - second color of first color pair
-			new Color(177, 165, 243), // 'b' - first color of second color pair
-			new Color(220, 212, 252), // 'B' - second color of second color pair
-			new Color(247, 165, 167), // 'c' - first color of third color pair
-			new Color(255, 210, 210), // 'C' - second color of third color pair
-			new Color(134, 232, 208), // 'd' - first color of fourth color pair
-			new Color(206, 251, 237), // 'D' - second color of fourth color pair
-			new Color(134, 242, 128), // 'e' - first color of fifth color pair
-			new Color(215, 255, 215), // 'E' - second color of fifth color pair
-			new Color(51, 204, 255),  // first color of sixth color pair
-			new Color(255, 255, 0)    // second color of sixth color pair
+		new Color(255, 192, 89),  // 'a' - first color of first color pair
+		new Color(247, 222, 143), // 'A' - second color of first color pair
+		new Color(177, 165, 243), // 'b' - first color of second color pair
+		new Color(220, 212, 252), // 'B' - second color of second color pair
+		new Color(247, 165, 167), // 'c' - first color of third color pair
+		new Color(255, 210, 210), // 'C' - second color of third color pair
+		new Color(134, 232, 208), // 'd' - first color of fourth color pair
+		new Color(206, 251, 237), // 'D' - second color of fourth color pair
+		new Color(134, 242, 128), // 'e' - first color of fifth color pair
+		new Color(215, 255, 215), // 'E' - second color of fifth color pair
+		new Color(51, 204, 255),  // first color of sixth color pair
+		new Color(255, 255, 0)    // second color of sixth color pair
 	};
 	
 	public static final boolean COLOR_VALUES = true;
@@ -494,8 +494,9 @@ public final class Options {
 	public static final Color DEFAULT_CELL_COLOR = Color.WHITE; // Hintergrund normale Zelle
 	public static final Color ALTERNATE_CELL_COLOR = Color.WHITE; // Hintergrund normale Zelle in jedem zweiten Block
 	public static final Color AKT_CELL_COLOR = new Color(255, 255, 150); // Hintergrund aktuell markierte Zelle
-	public static final Color INVALID_CELL_COLOR = new Color(255, 185, 185); // Hintergrund Zelle mit ungültigen Wert
-	public static final Color POSSIBLE_CELL_COLOR = new Color(185, 255, 185); // Hintergrund Zelle mit möglichem Wert
+	public static final Color INVERSE_FILTER_COLOR = new Color(255, 185, 185); // Hintergrund Zelle mit ungültigen Wert
+	public static final Color FILTER_COLOR = new Color(185, 255, 185); // Hintergrund Zelle mit möglichem Wert
+	public static final Color FILTER_GIVEN_CELL_COLOR = new Color(108, 216, 108);
 	public static final Color HINT_CANDIDATE_BACK_COLOR = new Color(63, 218, 101); // Hintergrund Kandidat in Hinweis
 	public static final Color HINT_CANDIDATE_DELETE_BACK_COLOR = new Color(255, 118, 132); // Hintergrund für zu
 																							// löschende Kandidaten
@@ -554,8 +555,9 @@ public final class Options {
 	private Color defaultCellColor = DEFAULT_CELL_COLOR;
 	private Color alternateCellColor = ALTERNATE_CELL_COLOR;
 	private Color aktCellColor = AKT_CELL_COLOR;
-	private Color invalidCellColor = INVALID_CELL_COLOR;
-	private Color possibleCellColor = POSSIBLE_CELL_COLOR;
+	private Color invalidCellColor = INVERSE_FILTER_COLOR;
+	private Color possibleCellColor = FILTER_COLOR;
+	private Color possibleFixedCellColor = FILTER_GIVEN_CELL_COLOR;
 	private Color hintCandidateBackColor = HINT_CANDIDATE_BACK_COLOR;
 	private Color hintCandidateDeleteBackColor = HINT_CANDIDATE_DELETE_BACK_COLOR;
 	private Color hintCandidateCannibalisticBackColor = HINT_CANDIDATE_CANNIBALISTIC_BACK_COLOR;
@@ -1798,6 +1800,14 @@ public final class Options {
 
 	public void setPossibleCellColor(Color possibleCellColor) {
 		this.possibleCellColor = possibleCellColor;
+	}
+	
+	public Color getPossibleFixedCellColor() {
+		return possibleFixedCellColor;
+	}
+
+	public void setPossibleFixedCellColor(Color possibleFixedCellColor) {
+		this.possibleFixedCellColor = possibleFixedCellColor;
 	}
 
 	public Color getHintCandidateBackColor() {

@@ -2380,7 +2380,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 						} else if (Options.getInstance().isHighlightingGivens() && 
 								   sudoku.getValue(cellIndex) != 0 &&
 								   showHintCellValues[sudoku.getValue(cellIndex)]) {
-							setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
+							setColor(g2, allBlack, Options.getInstance().getPossibleFixedCellColor());
 						}
 					}
 					

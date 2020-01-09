@@ -32,23 +32,105 @@ import javax.swing.UIManager;
  * @author hobiwan
  */
 public class ConfigColorPanel extends javax.swing.JPanel {
+	
 	private static final long serialVersionUID = 1L;
 
 	private JButton[] buttons = null;
 	private Color[] colors = null;
+	
+	private javax.swing.JButton alsHintBGButton1;
+	private javax.swing.JButton alsHintBGButton2;
+	private javax.swing.JButton alsHintBGButton3;
+	private javax.swing.JButton alsHintBGButton4;
+	private javax.swing.JButton alsHintFGButton1;
+	private javax.swing.JButton alsHintFGButton2;
+	private javax.swing.JButton alsHintFGButton3;
+	private javax.swing.JButton alsHintFGButton4;
+	private javax.swing.JLabel alsLabel1;
+	private javax.swing.JLabel alsLabel2;
+	private javax.swing.JLabel alsLabel3;
+	private javax.swing.JLabel alsLabel4;
+	private javax.swing.JButton alternateBGButton;
+	private javax.swing.JLabel alternateBGLabel;
+	private javax.swing.JButton arrowButton;
+	private javax.swing.JLabel arrowLabel;
+	private javax.swing.JPanel backGroundPanel;
+	private javax.swing.JButton candidatesButton;
+	private javax.swing.JLabel candidatesLabel;
+	private javax.swing.JButton cannibalisticHintBGButton;
+	private javax.swing.JLabel cannibalisticHintBGLabel;
+	private javax.swing.JButton cannibalisticHintFGButton;
+	private javax.swing.JButton cluesButton;
+	private javax.swing.JLabel cluesLabel;
+	private javax.swing.JPanel coloringPanel;
+	private javax.swing.JButton cursorBGButton;
+	private javax.swing.JLabel cursorBGLabel;
+	private javax.swing.JButton delHintBGButton;
+	private javax.swing.JLabel delHintBGLabel;
+	private javax.swing.JButton delHintFGButton;
+	private javax.swing.JButton endoFinsHintBGButton;
+	private javax.swing.JLabel endoFinsHintBGLabel;
+	private javax.swing.JButton endoFinsHintFGButton;
+	private javax.swing.JButton finsHintBGButton;
+	private javax.swing.JLabel finsHintBGLabel;
+	private javax.swing.JButton finsHintFGButton;
+	private javax.swing.JPanel frameAndDigitsPanel;
+	private javax.swing.JLabel frameLabel;
+	private javax.swing.JButton frameStrongButton;
+	private javax.swing.JButton frameWeakButton;
+	private javax.swing.JPanel hintPanel;
+	private javax.swing.JButton invalidBGButton;
+	private javax.swing.JLabel invalidBGLabel;
+	private javax.swing.JButton invalidFGButton;
+	private javax.swing.JLabel invalidFGLabel;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JLabel normHintBGLabel;
+	private javax.swing.JButton normalBGButton;
+	private javax.swing.JLabel normalBGLabel;
+	private javax.swing.JButton normalHintBGButton;
+	private javax.swing.JButton normalHintFGButton;
+	private javax.swing.JButton resetButton;
+	private javax.swing.JButton stiftButtonA;
+	private javax.swing.JButton stiftButtonB;
+	private javax.swing.JButton stiftButtonC;
+	private javax.swing.JButton stiftButtonD;
+	private javax.swing.JButton stiftButtonE;
+	private javax.swing.JButton stiftButtonF;
+	private javax.swing.JButton stiftButtona;
+	private javax.swing.JButton stiftButtonb;
+	private javax.swing.JButton stiftButtonc;
+	private javax.swing.JButton stiftButtond;
+	private javax.swing.JButton stiftButtone;
+	private javax.swing.JButton stiftButtonf;
+	private javax.swing.JLabel stiftLabelA;
+	private javax.swing.JLabel stiftLabelB;
+	private javax.swing.JLabel stiftLabelC;
+	private javax.swing.JLabel stiftLabelD;
+	private javax.swing.JLabel stiftLabelE;
+	private javax.swing.JLabel stiftLabelF;
+	private javax.swing.JButton validBGButton;
+	private javax.swing.JLabel validBGLabel;
+	private javax.swing.JButton valuesButton;
+	private javax.swing.JLabel valuesLabel;
+	private javax.swing.JButton wrongButton;
+	private javax.swing.JLabel wrongLabel;
 
 	/** Creates new form ConfigColorPanel */
 	public ConfigColorPanel() {
+		
 		initComponents();
 
-		buttons = new JButton[] { frameStrongButton, frameWeakButton, cluesButton, valuesButton, candidatesButton,
-				invalidFGButton, wrongButton, normalBGButton, cursorBGButton, invalidBGButton, validBGButton,
-				normalHintFGButton, normalHintBGButton, delHintFGButton, delHintBGButton, finsHintFGButton,
-				finsHintBGButton, endoFinsHintFGButton, endoFinsHintBGButton, cannibalisticHintFGButton,
-				cannibalisticHintBGButton, arrowButton, alsHintFGButton1, alsHintBGButton1, alsHintFGButton2,
-				alsHintBGButton2, alsHintFGButton3, alsHintBGButton3, alsHintFGButton4, alsHintBGButton4, stiftButtona,
-				stiftButtonA, stiftButtonb, stiftButtonB, stiftButtonc, stiftButtonC, stiftButtond, stiftButtonD,
-				stiftButtone, stiftButtonE, alternateBGButton };
+		buttons = new JButton[] { 
+			frameStrongButton, frameWeakButton, cluesButton, valuesButton, candidatesButton,
+			invalidFGButton, wrongButton, normalBGButton, cursorBGButton, invalidBGButton, validBGButton,
+			normalHintFGButton, normalHintBGButton, delHintFGButton, delHintBGButton, finsHintFGButton,
+			finsHintBGButton, endoFinsHintFGButton, endoFinsHintBGButton, cannibalisticHintFGButton,
+			cannibalisticHintBGButton, arrowButton, alsHintFGButton1, alsHintBGButton1, alsHintFGButton2,
+			alsHintBGButton2, alsHintFGButton3, alsHintBGButton3, alsHintFGButton4, alsHintBGButton4, stiftButtona,
+			stiftButtonA, stiftButtonb, stiftButtonB, stiftButtonc, stiftButtonC, stiftButtond, stiftButtonD,
+			stiftButtone, stiftButtonE, alternateBGButton, stiftButtonf, stiftButtonF
+		};
 
 		initAll(false);
 	}
@@ -58,8 +140,6 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 	 * WARNING: Do NOT modify this code. The content of this method is always
 	 * regenerated by the Form Editor.
 	 */
-	// <editor-fold defaultstate="collapsed" desc="Generated
-	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		jPanel1 = new javax.swing.JPanel();
@@ -133,69 +213,72 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 		stiftButtond = new javax.swing.JButton();
 		stiftLabelD = new javax.swing.JLabel();
 		stiftLabelE = new javax.swing.JLabel();
+		stiftLabelF = new javax.swing.JLabel();
 		stiftButtone = new javax.swing.JButton();
+		stiftButtonf = new javax.swing.JButton();
 		stiftButtonE = new javax.swing.JButton();
+		stiftButtonF = new javax.swing.JButton();
 		resetButton = new javax.swing.JButton();
 
-		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/ConfigColorPanel"); // NOI18N
+		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/ConfigColorPanel");
 		frameAndDigitsPanel.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(bundle.getString("ConfigColorPanel.frameAndDigitsPanel.border.title"))); // NOI18N
+				.createTitledBorder(bundle.getString("ConfigColorPanel.frameAndDigitsPanel.border.title")));
 
-		frameLabel.setText(bundle.getString("ConfigColorPanel.frameLabel.text")); // NOI18N
+		frameLabel.setText(bundle.getString("ConfigColorPanel.frameLabel.text"));
 
-		cluesLabel.setText(bundle.getString("ConfigColorPanel.cluesLabel.text")); // NOI18N
+		cluesLabel.setText(bundle.getString("ConfigColorPanel.cluesLabel.text"));
 
-		valuesLabel.setText(bundle.getString("ConfigColorPanel.valuesLabel.text")); // NOI18N
+		valuesLabel.setText(bundle.getString("ConfigColorPanel.valuesLabel.text"));
 
-		candidatesLabel.setText(bundle.getString("ConfigColorPanel.candidatesLabel.text")); // NOI18N
+		candidatesLabel.setText(bundle.getString("ConfigColorPanel.candidatesLabel.text"));
 
-		invalidFGLabel.setText(bundle.getString("ConfigColorPanel.invalidFGLabel.text")); // NOI18N
+		invalidFGLabel.setText(bundle.getString("ConfigColorPanel.invalidFGLabel.text"));
 
-		wrongLabel.setText(bundle.getString("ConfigColorPanel.wrongLabel.text")); // NOI18N
+		wrongLabel.setText(bundle.getString("ConfigColorPanel.wrongLabel.text"));
 
-		frameStrongButton.setText("..."); // NOI18N
+		frameStrongButton.setText("...");
 		frameStrongButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				frameStrongButtonActionPerformed(evt);
 			}
 		});
 
-		frameWeakButton.setText("..."); // NOI18N
+		frameWeakButton.setText("...");
 		frameWeakButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				frameWeakButtonActionPerformed(evt);
 			}
 		});
 
-		cluesButton.setText("..."); // NOI18N
+		cluesButton.setText("...");
 		cluesButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cluesButtonActionPerformed(evt);
 			}
 		});
 
-		valuesButton.setText("..."); // NOI18N
+		valuesButton.setText("...");
 		valuesButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				valuesButtonActionPerformed(evt);
 			}
 		});
 
-		candidatesButton.setText("..."); // NOI18N
+		candidatesButton.setText("...");
 		candidatesButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				candidatesButtonActionPerformed(evt);
 			}
 		});
 
-		invalidFGButton.setText("..."); // NOI18N
+		invalidFGButton.setText("...");
 		invalidFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				invalidFGButtonActionPerformed(evt);
 			}
 		});
 
-		wrongButton.setText("..."); // NOI18N
+		wrongButton.setText("...");
 		wrongButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				wrongButtonActionPerformed(evt);
@@ -278,111 +361,111 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 								.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		backGroundPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
-				bundle.getString("ConfigColorPanel.backGroundPanel.border.title"))); // NOI18N
+				bundle.getString("ConfigColorPanel.backGroundPanel.border.title")));
+		
+		normalBGLabel.setText(bundle.getString("ConfigColorPanel.normalBGLabel.text"));
 
-		normalBGLabel.setText(bundle.getString("ConfigColorPanel.normalBGLabel.text")); // NOI18N
+		cursorBGLabel.setText(bundle.getString("ConfigColorPanel.cursorBGLabel.text"));
 
-		cursorBGLabel.setText(bundle.getString("ConfigColorPanel.cursorBGLabel.text")); // NOI18N
+		invalidBGLabel.setText(bundle.getString("ConfigColorPanel.invalidBGLabel.text"));
 
-		invalidBGLabel.setText(bundle.getString("ConfigColorPanel.invalidBGLabel.text")); // NOI18N
+		validBGLabel.setText(bundle.getString("ConfigColorPanel.validBGLabel.text"));
 
-		validBGLabel.setText(bundle.getString("ConfigColorPanel.validBGLabel.text")); // NOI18N
-
-		normalBGButton.setText("..."); // NOI18N
+		normalBGButton.setText("...");
 		normalBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				normalBGButtonActionPerformed(evt);
 			}
 		});
 
-		cursorBGButton.setText("..."); // NOI18N
+		cursorBGButton.setText("...");
 		cursorBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cursorBGButtonActionPerformed(evt);
 			}
 		});
 
-		invalidBGButton.setText("..."); // NOI18N
+		invalidBGButton.setText("...");
 		invalidBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				invalidBGButtonActionPerformed(evt);
 			}
 		});
 
-		validBGButton.setText("..."); // NOI18N
+		validBGButton.setText("...");
 		validBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				validBGButtonActionPerformed(evt);
 			}
 		});
 
-		alsLabel4.setText(bundle.getString("ConfigColorPanel.alsLabel4.text")); // NOI18N
+		alsLabel4.setText(bundle.getString("ConfigColorPanel.alsLabel4.text"));
 
-		alsHintFGButton4.setText("..."); // NOI18N
+		alsHintFGButton4.setText("...");
 		alsHintFGButton4.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintFGButton4ActionPerformed(evt);
 			}
 		});
 
-		alsHintBGButton4.setText("..."); // NOI18N
+		alsHintBGButton4.setText("...");
 		alsHintBGButton4.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintBGButton4ActionPerformed(evt);
 			}
 		});
 
-		alsHintBGButton3.setText("..."); // NOI18N
+		alsHintBGButton3.setText("...");
 		alsHintBGButton3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintBGButton3ActionPerformed(evt);
 			}
 		});
 
-		alsHintFGButton3.setText("..."); // NOI18N
+		alsHintFGButton3.setText("...");
 		alsHintFGButton3.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintFGButton3ActionPerformed(evt);
 			}
 		});
 
-		alsLabel3.setText(bundle.getString("ConfigColorPanel.alsLabel3.text")); // NOI18N
+		alsLabel3.setText(bundle.getString("ConfigColorPanel.alsLabel3.text"));
 
-		alsLabel2.setText(bundle.getString("ConfigColorPanel.alsLabel2.text")); // NOI18N
+		alsLabel2.setText(bundle.getString("ConfigColorPanel.alsLabel2.text"));
 
-		alsHintFGButton2.setText("..."); // NOI18N
+		alsHintFGButton2.setText("...");
 		alsHintFGButton2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintFGButton2ActionPerformed(evt);
 			}
 		});
 
-		alsHintBGButton2.setText("..."); // NOI18N
+		alsHintBGButton2.setText("...");
 		alsHintBGButton2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintBGButton2ActionPerformed(evt);
 			}
 		});
 
-		alsHintBGButton1.setText("..."); // NOI18N
+		alsHintBGButton1.setText("...");
 		alsHintBGButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintBGButton1ActionPerformed(evt);
 			}
 		});
 
-		alsHintFGButton1.setText("..."); // NOI18N
+		alsHintFGButton1.setText("...");
 		alsHintFGButton1.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alsHintFGButton1ActionPerformed(evt);
 			}
 		});
 
-		alsLabel1.setText(bundle.getString("ConfigColorPanel.alsLabel1.text")); // NOI18N
+		alsLabel1.setText(bundle.getString("ConfigColorPanel.alsLabel1.text"));
 
-		alternateBGLabel.setText(bundle.getString("ConfigColorPanel.alternateBGLabel.text")); // NOI18N
+		alternateBGLabel.setText(bundle.getString("ConfigColorPanel.alternateBGLabel.text"));
 
-		alternateBGButton.setText("..."); // NOI18N
+		alternateBGButton.setText("...");
 		alternateBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				alternateBGButtonActionPerformed(evt);
@@ -540,94 +623,94 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(backGroundPanel, javax.swing.GroupLayout.PREFERRED_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(91, Short.MAX_VALUE)));
+						.addContainerGap(91, Short.MAX_VALUE)));		
 
 		hintPanel.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(bundle.getString("ConfigColorPanel.hintPanel.border.title"))); // NOI18N
+				.createTitledBorder(bundle.getString("ConfigColorPanel.hintPanel.border.title")));
 
-		normHintBGLabel.setText(bundle.getString("ConfigColorPanel.normHintBGLabel.text")); // NOI18N
+		normHintBGLabel.setText(bundle.getString("ConfigColorPanel.normHintBGLabel.text"));
 
-		delHintBGLabel.setText(bundle.getString("ConfigColorPanel.delHintBGLabel.text")); // NOI18N
+		delHintBGLabel.setText(bundle.getString("ConfigColorPanel.delHintBGLabel.text"));
 
-		finsHintBGLabel.setText(bundle.getString("ConfigColorPanel.finsHintBGLabel.text")); // NOI18N
+		finsHintBGLabel.setText(bundle.getString("ConfigColorPanel.finsHintBGLabel.text"));
 
-		endoFinsHintBGLabel.setText(bundle.getString("ConfigColorPanel.endoFinsHintBGLabel.text")); // NOI18N
+		endoFinsHintBGLabel.setText(bundle.getString("ConfigColorPanel.endoFinsHintBGLabel.text"));
 
-		cannibalisticHintBGLabel.setText(bundle.getString("ConfigColorPanel.cannibalisticHintBGLabel.text")); // NOI18N
+		cannibalisticHintBGLabel.setText(bundle.getString("ConfigColorPanel.cannibalisticHintBGLabel.text"));
 
-		arrowLabel.setText(bundle.getString("ConfigColorPanel.arrowLabel.text")); // NOI18N
+		arrowLabel.setText(bundle.getString("ConfigColorPanel.arrowLabel.text"));
 
-		normalHintFGButton.setText("..."); // NOI18N
+		normalHintFGButton.setText("...");
 		normalHintFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				normalHintFGButtonActionPerformed(evt);
 			}
 		});
 
-		delHintFGButton.setText("..."); // NOI18N
+		delHintFGButton.setText("...");
 		delHintFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				delHintFGButtonActionPerformed(evt);
 			}
 		});
 
-		finsHintFGButton.setText("..."); // NOI18N
+		finsHintFGButton.setText("...");
 		finsHintFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				finsHintFGButtonActionPerformed(evt);
 			}
 		});
 
-		endoFinsHintFGButton.setText("..."); // NOI18N
+		endoFinsHintFGButton.setText("...");
 		endoFinsHintFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				endoFinsHintFGButtonActionPerformed(evt);
 			}
 		});
 
-		cannibalisticHintFGButton.setText("..."); // NOI18N
+		cannibalisticHintFGButton.setText("...");
 		cannibalisticHintFGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cannibalisticHintFGButtonActionPerformed(evt);
 			}
 		});
 
-		arrowButton.setText("..."); // NOI18N
+		arrowButton.setText("...");
 		arrowButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				arrowButtonActionPerformed(evt);
 			}
 		});
 
-		normalHintBGButton.setText("..."); // NOI18N
+		normalHintBGButton.setText("...");
 		normalHintBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				normalHintBGButtonActionPerformed(evt);
 			}
 		});
 
-		delHintBGButton.setText("..."); // NOI18N
+		delHintBGButton.setText("...");
 		delHintBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				delHintBGButtonActionPerformed(evt);
 			}
 		});
 
-		finsHintBGButton.setText("..."); // NOI18N
+		finsHintBGButton.setText("...");
 		finsHintBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				finsHintBGButtonActionPerformed(evt);
 			}
 		});
 
-		endoFinsHintBGButton.setText("..."); // NOI18N
+		endoFinsHintBGButton.setText("...");
 		endoFinsHintBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				endoFinsHintBGButtonActionPerformed(evt);
 			}
 		});
 
-		cannibalisticHintBGButton.setText("..."); // NOI18N
+		cannibalisticHintBGButton.setText("...");
 		cannibalisticHintBGButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				cannibalisticHintBGButtonActionPerformed(evt);
@@ -721,85 +804,101 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		coloringPanel.setBorder(javax.swing.BorderFactory
-				.createTitledBorder(bundle.getString("ConfigColorPanel.coloringPanel.border.title"))); // NOI18N
+				.createTitledBorder(bundle.getString("ConfigColorPanel.coloringPanel.border.title")));
 
-		stiftLabelA.setText(bundle.getString("ConfigColorPanel.stiftLabelA.text")); // NOI18N
+		stiftLabelA.setText(bundle.getString("ConfigColorPanel.stiftLabelA.text"));
 
-		stiftButtona.setText("..."); // NOI18N
+		stiftButtona.setText("...");
 		stiftButtona.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonaActionPerformed(evt);
 			}
 		});
 
-		stiftButtonA.setText("..."); // NOI18N
+		stiftButtonA.setText("...");
 		stiftButtonA.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonAActionPerformed(evt);
 			}
 		});
 
-		stiftButtonB.setText("..."); // NOI18N
+		stiftButtonB.setText("...");
 		stiftButtonB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonBActionPerformed(evt);
 			}
 		});
 
-		stiftButtonb.setText("..."); // NOI18N
+		stiftButtonb.setText("...");
 		stiftButtonb.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonbActionPerformed(evt);
 			}
 		});
 
-		stiftLabelB.setText(bundle.getString("ConfigColorPanel.stiftLabelB.text")); // NOI18N
+		stiftLabelB.setText(bundle.getString("ConfigColorPanel.stiftLabelB.text"));
 
-		stiftLabelC.setText(bundle.getString("ConfigColorPanel.stiftLabelC.text")); // NOI18N
+		stiftLabelC.setText(bundle.getString("ConfigColorPanel.stiftLabelC.text"));
 
-		stiftButtonc.setText("..."); // NOI18N
+		stiftButtonc.setText("...");
 		stiftButtonc.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtoncActionPerformed(evt);
 			}
 		});
 
-		stiftButtonC.setText("..."); // NOI18N
+		stiftButtonC.setText("...");
 		stiftButtonC.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonCActionPerformed(evt);
 			}
 		});
 
-		stiftButtonD.setText("..."); // NOI18N
+		stiftButtonD.setText("...");
 		stiftButtonD.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonDActionPerformed(evt);
 			}
 		});
 
-		stiftButtond.setText("..."); // NOI18N
+		stiftButtond.setText("...");
 		stiftButtond.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtondActionPerformed(evt);
 			}
 		});
 
-		stiftLabelD.setText(bundle.getString("ConfigColorPanel.stiftLabelD.text")); // NOI18N
+		stiftLabelD.setText(bundle.getString("ConfigColorPanel.stiftLabelD.text"));
 
-		stiftLabelE.setText(bundle.getString("ConfigColorPanel.stiftLabelE.text")); // NOI18N
+		stiftLabelE.setText(bundle.getString("ConfigColorPanel.stiftLabelE.text"));
+		
+		stiftLabelF.setText(bundle.getString("ConfigColorPanel.stiftLabelF.text"));
 
-		stiftButtone.setText("..."); // NOI18N
+		stiftButtone.setText("...");
 		stiftButtone.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtoneActionPerformed(evt);
 			}
 		});
 
-		stiftButtonE.setText("..."); // NOI18N
+		stiftButtonE.setText("...");
 		stiftButtonE.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				stiftButtonEActionPerformed(evt);
+			}
+		});
+		
+		stiftButtonf.setText("...");
+		stiftButtonf.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				stiftButtonfActionPerformed(evt);
+			}
+		});
+
+		stiftButtonF.setText("...");
+		stiftButtonF.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				stiftButtonFActionPerformed(evt);
 			}
 		});
 
@@ -847,6 +946,13 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(stiftButtonE, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addGroup(coloringPanelLayout.createSequentialGroup().addComponent(stiftLabelF)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(stiftButtonf, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(stiftButtonF, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
 										javax.swing.GroupLayout.PREFERRED_SIZE)))
 						.addContainerGap(114, Short.MAX_VALUE)));
 		coloringPanelLayout.setVerticalGroup(coloringPanelLayout
@@ -887,11 +993,19 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(stiftButtonE, javax.swing.GroupLayout.PREFERRED_SIZE, 21,
 										javax.swing.GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+								javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(coloringPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(stiftLabelF)
+								.addComponent(stiftButtonf, javax.swing.GroupLayout.PREFERRED_SIZE, 21,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addComponent(stiftButtonF, javax.swing.GroupLayout.PREFERRED_SIZE, 21,
+										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addContainerGap()));
 
 		resetButton.setMnemonic(java.util.ResourceBundle.getBundle("intl/ConfigColorPanel")
 				.getString("ConfigColorPanel.resetButton.mnemonic").charAt(0));
-		resetButton.setText(bundle.getString("ConfigColorPanel.resetButton.text")); // NOI18N
+		resetButton.setText(bundle.getString("ConfigColorPanel.resetButton.text"));
 		resetButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				resetButtonActionPerformed(evt);
@@ -935,176 +1049,184 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 				.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
 						Short.MAX_VALUE)
 				.addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-						Short.MAX_VALUE));
-	}// </editor-fold>//GEN-END:initComponents
+						Short.MAX_VALUE));		
+	}
 
-	private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_resetButtonActionPerformed
+	private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		initAll(true);
-	}// GEN-LAST:event_resetButtonActionPerformed
+	}
 
-	private void alsHintBGButton4ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintBGButton4ActionPerformed
+	private void alsHintBGButton4ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(29);
-	}// GEN-LAST:event_alsHintBGButton4ActionPerformed
+	}
 
-	private void alsHintFGButton4ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintFGButton4ActionPerformed
+	private void alsHintFGButton4ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(28);
-	}// GEN-LAST:event_alsHintFGButton4ActionPerformed
+	}
 
-	private void alsHintBGButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintBGButton3ActionPerformed
+	private void alsHintBGButton3ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(27);
-	}// GEN-LAST:event_alsHintBGButton3ActionPerformed
+	}
 
-	private void alsHintFGButton3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintFGButton3ActionPerformed
+	private void alsHintFGButton3ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(26);
-	}// GEN-LAST:event_alsHintFGButton3ActionPerformed
+	}
 
-	private void alsHintBGButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintBGButton2ActionPerformed
+	private void alsHintBGButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(25);
-	}// GEN-LAST:event_alsHintBGButton2ActionPerformed
+	}
 
-	private void alsHintFGButton2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintFGButton2ActionPerformed
+	private void alsHintFGButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(24);
-	}// GEN-LAST:event_alsHintFGButton2ActionPerformed
+	}
 
-	private void alsHintBGButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintBGButton1ActionPerformed
+	private void alsHintBGButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(23);
-	}// GEN-LAST:event_alsHintBGButton1ActionPerformed
+	}
 
-	private void alsHintFGButton1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alsHintFGButton1ActionPerformed
+	private void alsHintFGButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(22);
-	}// GEN-LAST:event_alsHintFGButton1ActionPerformed
+	}
 
-	private void cannibalisticHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cannibalisticHintBGButtonActionPerformed
+	private void cannibalisticHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(20);
-	}// GEN-LAST:event_cannibalisticHintBGButtonActionPerformed
+	}
 
-	private void endoFinsHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_endoFinsHintBGButtonActionPerformed
+	private void endoFinsHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(18);
-	}// GEN-LAST:event_endoFinsHintBGButtonActionPerformed
+	}
 
-	private void finsHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_finsHintBGButtonActionPerformed
+	private void finsHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(16);
-	}// GEN-LAST:event_finsHintBGButtonActionPerformed
+	}
 
-	private void delHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_delHintBGButtonActionPerformed
+	private void delHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(14);
-	}// GEN-LAST:event_delHintBGButtonActionPerformed
+	}
 
-	private void normalHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_normalHintBGButtonActionPerformed
+	private void normalHintBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(12);
-	}// GEN-LAST:event_normalHintBGButtonActionPerformed
+	}
 
-	private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_arrowButtonActionPerformed
+	private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(21);
-	}// GEN-LAST:event_arrowButtonActionPerformed
+	}
 
-	private void cannibalisticHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cannibalisticHintFGButtonActionPerformed
+	private void cannibalisticHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(19);
-	}// GEN-LAST:event_cannibalisticHintFGButtonActionPerformed
+	}
 
-	private void endoFinsHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_endoFinsHintFGButtonActionPerformed
+	private void endoFinsHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(17);
-	}// GEN-LAST:event_endoFinsHintFGButtonActionPerformed
+	}
 
-	private void finsHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_finsHintFGButtonActionPerformed
+	private void finsHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(15);
-	}// GEN-LAST:event_finsHintFGButtonActionPerformed
+	}
 
-	private void delHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_delHintFGButtonActionPerformed
+	private void delHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(13);
-	}// GEN-LAST:event_delHintFGButtonActionPerformed
+	}
 
-	private void normalHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_normalHintFGButtonActionPerformed
+	private void normalHintFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(11);
-	}// GEN-LAST:event_normalHintFGButtonActionPerformed
+	}
 
-	private void validBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_validBGButtonActionPerformed
+	private void validBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(10);
-	}// GEN-LAST:event_validBGButtonActionPerformed
+	}
 
-	private void invalidBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_invalidBGButtonActionPerformed
+	private void invalidBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(9);
-	}// GEN-LAST:event_invalidBGButtonActionPerformed
+	}
 
-	private void cursorBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cursorBGButtonActionPerformed
+	private void cursorBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(8);
-	}// GEN-LAST:event_cursorBGButtonActionPerformed
+	}
 
-	private void normalBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_normalBGButtonActionPerformed
+	private void normalBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(7);
-	}// GEN-LAST:event_normalBGButtonActionPerformed
+	}
 
-	private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_wrongButtonActionPerformed
+	private void wrongButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(6);
-	}// GEN-LAST:event_wrongButtonActionPerformed
+	}
 
-	private void invalidFGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_invalidFGButtonActionPerformed
+	private void invalidFGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(5);
-	}// GEN-LAST:event_invalidFGButtonActionPerformed
+	}
 
-	private void candidatesButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_candidatesButtonActionPerformed
+	private void candidatesButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(4);
-	}// GEN-LAST:event_candidatesButtonActionPerformed
+	}
 
-	private void valuesButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_valuesButtonActionPerformed
+	private void valuesButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(3);
-	}// GEN-LAST:event_valuesButtonActionPerformed
+	}
 
-	private void cluesButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cluesButtonActionPerformed
+	private void cluesButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(2);
-	}// GEN-LAST:event_cluesButtonActionPerformed
+	}
 
-	private void frameWeakButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_frameWeakButtonActionPerformed
+	private void frameWeakButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(1);
-	}// GEN-LAST:event_frameWeakButtonActionPerformed
+	}
 
-	private void frameStrongButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_frameStrongButtonActionPerformed
+	private void frameStrongButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(0);
-	}// GEN-LAST:event_frameStrongButtonActionPerformed
+	}
 
-	private void stiftButtonaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonaActionPerformed
+	private void stiftButtonaActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(30);
-	}// GEN-LAST:event_stiftButtonaActionPerformed
+	}
 
-	private void stiftButtonAActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonAActionPerformed
+	private void stiftButtonAActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(31);
-	}// GEN-LAST:event_stiftButtonAActionPerformed
+	}
 
-	private void stiftButtonBActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonBActionPerformed
+	private void stiftButtonBActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(33);
-	}// GEN-LAST:event_stiftButtonBActionPerformed
+	}
 
-	private void stiftButtonbActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonbActionPerformed
+	private void stiftButtonbActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(32);
-	}// GEN-LAST:event_stiftButtonbActionPerformed
+	}
 
-	private void stiftButtoncActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtoncActionPerformed
+	private void stiftButtoncActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(34);
-	}// GEN-LAST:event_stiftButtoncActionPerformed
+	}
 
-	private void stiftButtonCActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonCActionPerformed
+	private void stiftButtonCActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(35);
-	}// GEN-LAST:event_stiftButtonCActionPerformed
+	}
 
-	private void stiftButtonDActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonDActionPerformed
+	private void stiftButtonDActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(37);
-	}// GEN-LAST:event_stiftButtonDActionPerformed
+	}
 
-	private void stiftButtondActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtondActionPerformed
+	private void stiftButtondActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(36);
-	}// GEN-LAST:event_stiftButtondActionPerformed
+	}
 
-	private void stiftButtoneActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtoneActionPerformed
+	private void stiftButtoneActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(38);
-	}// GEN-LAST:event_stiftButtoneActionPerformed
+	}
 
-	private void stiftButtonEActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_stiftButtonEActionPerformed
+	private void stiftButtonEActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(39);
-	}// GEN-LAST:event_stiftButtonEActionPerformed
+	}
+	
+	private void stiftButtonFActionPerformed(java.awt.event.ActionEvent evt) {
+		chooseColor(42);
+	}
+	
+	private void stiftButtonfActionPerformed(java.awt.event.ActionEvent evt) {
+		chooseColor(41);
+	}
 
-	private void alternateBGButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_alternateBGButtonActionPerformed
+	private void alternateBGButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chooseColor(40);
-	}// GEN-LAST:event_alternateBGButtonActionPerformed
+	}
 
 	private void chooseColor(int index) {
 		Color init = colors[index];
@@ -1118,6 +1240,7 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 	}
 
 	public void okPressed() {
+		
 		Options.getInstance().setGridColor(colors[0]);
 		Options.getInstance().setInnerGridColor(colors[1]);
 		Options.getInstance().setCellFixedValueColor(colors[2]);
@@ -1159,12 +1282,16 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 		Options.getInstance().getColoringColors()[8] = colors[38];
 		Options.getInstance().getColoringColors()[9] = colors[39];
 		Options.getInstance().setAlternateCellColor(colors[40]);
+		Options.getInstance().getColoringColors()[10] = colors[41];
+		Options.getInstance().getColoringColors()[11] = colors[42];
 	}
 
 	private void initAll(boolean setDefault) {
+		
 		if (colors == null) {
 			colors = new Color[buttons.length];
 		}
+		
 		if (setDefault) {
 			colors[0] = Options.GRID_COLOR;
 			colors[1] = Options.INNER_GRID_COLOR;
@@ -1175,8 +1302,8 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 			colors[6] = Options.DEVIATION_COLOR;
 			colors[7] = Options.DEFAULT_CELL_COLOR;
 			colors[8] = Options.AKT_CELL_COLOR;
-			colors[9] = Options.INVALID_CELL_COLOR;
-			colors[10] = Options.POSSIBLE_CELL_COLOR;
+			colors[9] = Options.INVERSE_FILTER_COLOR;
+			colors[10] = Options.FILTER_COLOR;
 			colors[11] = Options.HINT_CANDIDATE_COLOR;
 			colors[12] = Options.HINT_CANDIDATE_BACK_COLOR;
 			colors[13] = Options.HINT_CANDIDATE_DELETE_COLOR;
@@ -1207,6 +1334,8 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 			colors[38] = Options.COLORING_COLORS[8];
 			colors[39] = Options.COLORING_COLORS[9];
 			colors[40] = Options.ALTERNATE_CELL_COLOR;
+			colors[41] = Options.COLORING_COLORS[10];
+			colors[42] = Options.COLORING_COLORS[11];
 		} else {
 			colors[0] = Options.getInstance().getGridColor();
 			colors[1] = Options.getInstance().getInnerGridColor();
@@ -1249,6 +1378,8 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 			colors[38] = Options.getInstance().getColoringColors()[8];
 			colors[39] = Options.getInstance().getColoringColors()[9];
 			colors[40] = Options.getInstance().getAlternateCellColor();
+			colors[41] = Options.getInstance().getColoringColors()[10];
+			colors[42] = Options.getInstance().getColoringColors()[11];
 		}
 
 		for (int i = 0; i < buttons.length; i++) {
@@ -1267,81 +1398,4 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 			button.setBackground(color);
 		}
 	}
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-	private javax.swing.JButton alsHintBGButton1;
-	private javax.swing.JButton alsHintBGButton2;
-	private javax.swing.JButton alsHintBGButton3;
-	private javax.swing.JButton alsHintBGButton4;
-	private javax.swing.JButton alsHintFGButton1;
-	private javax.swing.JButton alsHintFGButton2;
-	private javax.swing.JButton alsHintFGButton3;
-	private javax.swing.JButton alsHintFGButton4;
-	private javax.swing.JLabel alsLabel1;
-	private javax.swing.JLabel alsLabel2;
-	private javax.swing.JLabel alsLabel3;
-	private javax.swing.JLabel alsLabel4;
-	private javax.swing.JButton alternateBGButton;
-	private javax.swing.JLabel alternateBGLabel;
-	private javax.swing.JButton arrowButton;
-	private javax.swing.JLabel arrowLabel;
-	private javax.swing.JPanel backGroundPanel;
-	private javax.swing.JButton candidatesButton;
-	private javax.swing.JLabel candidatesLabel;
-	private javax.swing.JButton cannibalisticHintBGButton;
-	private javax.swing.JLabel cannibalisticHintBGLabel;
-	private javax.swing.JButton cannibalisticHintFGButton;
-	private javax.swing.JButton cluesButton;
-	private javax.swing.JLabel cluesLabel;
-	private javax.swing.JPanel coloringPanel;
-	private javax.swing.JButton cursorBGButton;
-	private javax.swing.JLabel cursorBGLabel;
-	private javax.swing.JButton delHintBGButton;
-	private javax.swing.JLabel delHintBGLabel;
-	private javax.swing.JButton delHintFGButton;
-	private javax.swing.JButton endoFinsHintBGButton;
-	private javax.swing.JLabel endoFinsHintBGLabel;
-	private javax.swing.JButton endoFinsHintFGButton;
-	private javax.swing.JButton finsHintBGButton;
-	private javax.swing.JLabel finsHintBGLabel;
-	private javax.swing.JButton finsHintFGButton;
-	private javax.swing.JPanel frameAndDigitsPanel;
-	private javax.swing.JLabel frameLabel;
-	private javax.swing.JButton frameStrongButton;
-	private javax.swing.JButton frameWeakButton;
-	private javax.swing.JPanel hintPanel;
-	private javax.swing.JButton invalidBGButton;
-	private javax.swing.JLabel invalidBGLabel;
-	private javax.swing.JButton invalidFGButton;
-	private javax.swing.JLabel invalidFGLabel;
-	private javax.swing.JPanel jPanel1;
-	private javax.swing.JPanel jPanel2;
-	private javax.swing.JLabel normHintBGLabel;
-	private javax.swing.JButton normalBGButton;
-	private javax.swing.JLabel normalBGLabel;
-	private javax.swing.JButton normalHintBGButton;
-	private javax.swing.JButton normalHintFGButton;
-	private javax.swing.JButton resetButton;
-	private javax.swing.JButton stiftButtonA;
-	private javax.swing.JButton stiftButtonB;
-	private javax.swing.JButton stiftButtonC;
-	private javax.swing.JButton stiftButtonD;
-	private javax.swing.JButton stiftButtonE;
-	private javax.swing.JButton stiftButtona;
-	private javax.swing.JButton stiftButtonb;
-	private javax.swing.JButton stiftButtonc;
-	private javax.swing.JButton stiftButtond;
-	private javax.swing.JButton stiftButtone;
-	private javax.swing.JLabel stiftLabelA;
-	private javax.swing.JLabel stiftLabelB;
-	private javax.swing.JLabel stiftLabelC;
-	private javax.swing.JLabel stiftLabelD;
-	private javax.swing.JLabel stiftLabelE;
-	private javax.swing.JButton validBGButton;
-	private javax.swing.JLabel validBGLabel;
-	private javax.swing.JButton valuesButton;
-	private javax.swing.JLabel valuesLabel;
-	private javax.swing.JButton wrongButton;
-	private javax.swing.JLabel wrongLabel;
-	// End of variables declaration//GEN-END:variables
 }
