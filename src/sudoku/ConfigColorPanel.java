@@ -492,10 +492,12 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 				.addGroup(backGroundPanelLayout.createSequentialGroup()
 						.addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addComponent(normalBGLabel).addComponent(validBGLabel).addComponent(invalidBGLabel)
-								.addComponent(cursorBGLabel).addComponent(alternateBGLabel))
+								.addComponent(cursorBGLabel).addComponent(alternateBGLabel).addComponent(filterDigitBGButtonLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
 								javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(backGroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(filterDigitBGButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
+										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(alternateBGButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(validBGButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
@@ -574,6 +576,12 @@ public class ConfigColorPanel extends javax.swing.JPanel {
 										.addGroup(backGroundPanelLayout
 												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(validBGLabel).addComponent(validBGButton,
+														javax.swing.GroupLayout.PREFERRED_SIZE, 21,
+														javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(backGroundPanelLayout
+												.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(filterDigitBGButtonLabel).addComponent(filterDigitBGButton,
 														javax.swing.GroupLayout.PREFERRED_SIZE, 21,
 														javax.swing.GroupLayout.PREFERRED_SIZE)))
 								.addGroup(backGroundPanelLayout.createSequentialGroup()

@@ -35,6 +35,7 @@ Version 2.3.0 (WIP)
 Features:
 
   - Reset Candidates under the Puzzle menu
+  - Digit highlight/filter has a distinguished color with customization in config.
   
 Minor:
   - Added color option to customize the new colors in the color palette.
