@@ -33,6 +33,7 @@ import java.util.logging.Logger;
  * @author hobiwan
  */
 public class Sudoku2 implements Cloneable {
+	
 	/** conditional compilation */
 	private static final boolean DEBUG = false;
 
@@ -354,31 +355,49 @@ public class Sudoku2 implements Cloneable {
 		nsQueue.clear();
 		hsQueue.clear();
 	}
+	
+	/**
+	 * Clears all candidates in the grid.
+	 */
+	public final void resetCandidates() {
+
+		for (int i = 0; i < cells.length; i++) {
+			cells[i] = 0;
+			userCells[i] = 0;
+		}
+		
+		rebuildAllCandidates();
+	}
 
 	/**
 	 * Initialize the data structure to an empty grid (no values set, in all cells
 	 * all candidates are possible), the queues are deleted.
 	 */
 	public final void clearSudoku() {
+		
 		for (int i = 0; i < cells.length; i++) {
 			cells[i] = MAX_MASK;
 			userCells[i] = 0;
 		}
+		
 		for (int i = 0; i < free.length; i++) {
 			for (int j = 1; j < free[i].length; j++) {
 				free[i][j] = UNITS;
 			}
 		}
+		
 		for (int i = 0; i < values.length; i++) {
 			values[i] = 0;
 			solution[i] = 0;
 			fixed[i] = false;
 		}
+		
 		unsolvedCellsAnz = LENGTH;
 		initialState = null;
 		solutionSet = false;
 		status = SudokuStatus.EMPTY;
 		statusGivens = SudokuStatus.EMPTY;
+		
 		// dont change the score!
 		// score = 0;
 		// dont change the level!
@@ -424,7 +443,9 @@ public class Sudoku2 implements Cloneable {
 	 * @param saveInitialState
 	 */
 	public void setSudoku(String init, boolean saveInitialState) {
+		
 		clearSudoku();
+		
 		if (init == null) {
 			return;
 		}
@@ -2756,12 +2777,14 @@ public class Sudoku2 implements Cloneable {
 	 * been set. It is the responsibility of the caller to ensure that.
 	 */
 	public void switchToAllCandidates() {
+		
 		// first add necessary candidates (might not be necessary)
 		for (int i = 0; i < userCells.length; i++) {
 			if (values[i] == 0 && solution[i] != 0) {
 				userCells[i] |= MASKS[solution[i]];
 			}
 		}
+		
 		// now simply copy the user candidates over
 		System.arraycopy(userCells, 0, cells, 0, LENGTH);
 		// rebuild internal data
@@ -2772,6 +2795,7 @@ public class Sudoku2 implements Cloneable {
 	 * Reset {@link #cells} to all possible candidates.
 	 */
 	public void rebuildAllCandidates() {
+		
 		for (int i = 0; i < cells.length; i++) {
 			if (values[i] != 0) {
 				cells[i] = 0;
@@ -2783,6 +2807,7 @@ public class Sudoku2 implements Cloneable {
 				}
 			}
 		}
+		
 		// rebuild internal data
 		rebuildInternalData();
 	}

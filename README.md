@@ -32,6 +32,10 @@ Change log
 Version 2.3.0 (WIP)
 -------------------
 
+Features:
+
+  - Reset Candidates under the Puzzle menu
+
 Bug Fixes:
   - Fixed active cell selection hide on delayed interval.
 

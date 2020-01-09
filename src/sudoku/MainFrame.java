@@ -308,6 +308,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JMenuItem exportPuzzleMenuItem;
 	private javax.swing.JMenuItem savePuzzleMenuItem;
 	private javax.swing.JMenuItem printSetupMenuItem;
+	private javax.swing.JMenuItem resetCandidatesMenuItem;
 	private javax.swing.JMenuItem setGivensMenuItem;
 	private javax.swing.JCheckBoxMenuItem showCandidatesMenuItem;
 	private javax.swing.JCheckBoxMenuItem showCandidateHighlightMenuItem;
@@ -746,6 +747,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		historyMenuItem = new javax.swing.JMenuItem();
 		createSavePointMenuItem = new javax.swing.JMenuItem();
 		restoreSavePointMenuItem = new javax.swing.JMenuItem();
+		resetCandidatesMenuItem = new javax.swing.JMenuItem();
 		setGivensMenuItem = new javax.swing.JMenuItem();
 		setAllSinglesMenuItem = new javax.swing.JMenuItem();
 		viewMenu = new javax.swing.JMenu();
@@ -1826,6 +1828,14 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		});
 		puzzleMenu.add(restoreSavePointMenuItem);
 		puzzleMenu.add(new javax.swing.JPopupMenu.Separator());
+		
+		resetCandidatesMenuItem.setText(bundle.getString("MainFrame.resetCandidatesMenuItem.text"));
+		resetCandidatesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				resetCandidatesMenuItemActionPerformed(evt);
+			}
+		});
+		puzzleMenu.add(resetCandidatesMenuItem);		
 
 		setGivensMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("MainFrame.setGivensMenuItem.mnemonic").charAt(0));
@@ -2853,6 +2863,20 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private void backdoorSearchMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		new BackdoorSearchDialog(this, true, sudokuPanel).setVisible(true);
+	}
+	
+	private void resetCandidatesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+
+		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/MainFrame");
+		String msg = bundle.getString("MainFrame.resetCandidatesMenuItem.dialog");
+		
+		int input = JOptionPane.showConfirmDialog(null, msg);
+		if (input != 0) {
+			return;
+		}
+		
+		sudokuPanel.getSudoku().resetCandidates();
+		repaint();
 	}
 
 	private void setGivensMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
