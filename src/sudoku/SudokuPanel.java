@@ -1575,6 +1575,26 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			}
 			
 			break;
+		case KeyEvent.VK_F10:
+			if ((modifiers & KeyEvent.ALT_DOWN_MASK) == 0) {				
+				
+				if (showHintCellValues[10]) {
+					showHintCellValues[10] = false;
+					resetShowHintCellValues();
+				} else {
+					showHintCellValues[10] = true;
+					resetShowHintCellValues();
+					setShowHintCellValue(10);
+					checkIsShowInvalidOrPossibleCells();
+				}
+				
+				/*
+				showHintCellValues[10] = !showHintCellValues[10];
+				for (int i = 0; i < 10; i++) {
+					showHintCellValues[i] = false;
+				}*/
+			}
+			break;
 		case KeyEvent.VK_F9:
 			number++;
 		case KeyEvent.VK_F8:

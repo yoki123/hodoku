@@ -74,9 +74,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -794,7 +796,18 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		reportErrorMenuItem = new javax.swing.JMenuItem();
 		askQuestionMenuItem = new javax.swing.JMenuItem();
 		aboutMenuItem = new javax.swing.JMenuItem();
-
+		
+		// Swing uses F10 as a default menu selector to navigate with keyboard.
+		// When setting filters, I accidently hit F10 all the time which stalls the key events.
+		// For this reason, I am disabling this feature and making F10 highlight bivalue cells instead.
+		String key = "F10";
+		KeyStroke f10 = KeyStroke.getKeyStroke(key);
+		this.getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(f10, key);
+		this.getRootPane().getActionMap().put(key, new AbstractAction() {
+			private static final long serialVersionUID = 628736937855343558L;
+			public void actionPerformed(ActionEvent e) {/*do nothing*/}
+		});
+		
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("intl/MainFrame");
 		setTitle(bundle.getString("MainFrame.title"));
@@ -1142,7 +1155,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		fxyToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		fxyToggleButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				fxyToggleButtonf1ToggleButtonActionPerformed(evt);
+				fxyToggleButtonActionPerformed(evt);
 			}
 		});
 		jToolBar1.add(fxyToggleButton);
@@ -1801,8 +1814,6 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 		puzzleMenu.add(solvePuzzleMenuItem);
-		
-		//solutionCountMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
 		
 		solutionCountMenuItem.setAccelerator(
 			javax.swing.KeyStroke.getKeyStroke(
@@ -2973,7 +2984,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		jToolBar1.setVisible(showToolBarMenuItem.isSelected());
 	}
 
-	private void fxyToggleButtonf1ToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void fxyToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		setToggleButton((JToggleButton) evt.getSource(), false);
 	}
 

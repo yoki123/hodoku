@@ -41,6 +41,7 @@ Features:
 Minor:
   - Added color option to customize the new colors in the color palette.
   - New Puzzle automatically sets mouse back to Default mouse mode.
+  - Repurposed F10 to filter/highlight bivalue cells.
 
 Bug Fixes:
   - Fixed active cell selection hide on delayed interval.
