@@ -377,13 +377,14 @@ public class SudokuSetBase implements Cloneable, Serializable {
 		return tmp.toString();
 	}
 
+	/*
 	public static void main(String[] args) {
 		SudokuSetBase set = new SudokuSetBase();
 		for (int i = 0; i < 81; i++) {
 			set.add(i);
 		}
 		System.out.println(set);
-	}
+	}*/
 
 	public long getMask1() {
 		return mask1;

@@ -129,6 +129,7 @@ public class GroupNode {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 		sudoku.setSudoku(
@@ -140,5 +141,5 @@ public class GroupNode {
 		for (GroupNode node : groupNodes) {
 			System.out.println("  " + node);
 		}
-	}
+	}*/
 }

@@ -111,6 +111,7 @@ public class SudokuConsoleFrame extends javax.swing.JFrame {
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -118,7 +119,7 @@ public class SudokuConsoleFrame extends javax.swing.JFrame {
 				new SudokuConsoleFrame().setVisible(true);
 			}
 		});
-	}
+	}*/
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton closeButton;

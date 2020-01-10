@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import sudoku.Candidate;
 import sudoku.SolutionStep;
 import sudoku.SolutionType;
-import sudoku.Sudoku2;
 import sudoku.SudokuSet;
 
 /**
@@ -167,6 +166,7 @@ public class TemplateSolver extends AbstractSolver {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		// Sudoku2 sudoku = new Sudoku2(true);
 		Sudoku2 sudoku = new Sudoku2();
@@ -186,5 +186,5 @@ public class TemplateSolver extends AbstractSolver {
 		}
 		millis = System.currentTimeMillis() - millis;
 		System.out.println("Zeit: " + (millis / 100) + "ms");
-	}
+	}*/
 }

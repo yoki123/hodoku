@@ -206,6 +206,7 @@ public class FindAllStepsProgressDialog extends javax.swing.JDialog {
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -213,7 +214,7 @@ public class FindAllStepsProgressDialog extends javax.swing.JDialog {
 				new FindAllStepsProgressDialog(new javax.swing.JFrame(), true, null).setVisible(true);
 			}
 		});
-	}
+	}*/
 
 	public List<SolutionStep> getSteps() {
 		return steps;

@@ -25,10 +25,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -905,6 +901,7 @@ public class ConfigLevelFontPanel extends javax.swing.JPanel {
 	private javax.swing.JLabel valuesLabel;
 	// End of variables declaration//GEN-END:variables
 
+	/*
 	public static void main(String[] args) {
 
 		Locale oldDefault = Locale.getDefault();
@@ -933,5 +930,5 @@ public class ConfigLevelFontPanel extends javax.swing.JPanel {
 			System.out.println("  " + la + " (" + lo + ")");
 		}
 		Locale.setDefault(oldDefault);
-	}
+	}*/
 }

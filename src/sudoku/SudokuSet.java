@@ -186,6 +186,7 @@ public class SudokuSet extends SudokuSetBase implements Cloneable {
 		return tmp.toString();
 	}
 
+	/*
 	public static void main(String[] args) {
 		SudokuSet a = new SudokuSet();
 		a.add(5);
@@ -234,7 +235,7 @@ public class SudokuSet extends SudokuSetBase implements Cloneable {
 		a.clear();
 		a.add(0);
 		System.out.println("a: " + a);
-	}
+	}*/
 
 	public void setValues(int[] values) {
 		this.values = values;

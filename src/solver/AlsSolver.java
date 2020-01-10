@@ -1323,6 +1323,7 @@ public class AlsSolver extends AbstractSolver {
 				+ "us\r\n";
 	}
 
+	/*
 	public static void main(String[] args) {
 		// DEBUG = true;
 		// Sudoku2 sudoku = new Sudoku2(true);
@@ -1390,7 +1391,7 @@ public class AlsSolver extends AbstractSolver {
 		}
 		System.out.println("Total: " + steps.size());
 		System.exit(0);
-	}
+	}*/
 }
 
 /**

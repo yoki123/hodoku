@@ -738,6 +738,7 @@ public class PrintSolutionDialog extends javax.swing.JDialog implements Printabl
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -752,7 +753,7 @@ public class PrintSolutionDialog extends javax.swing.JDialog implements Printabl
 				dialog.setVisible(true);
 			}
 		});
-	}
+	}*/
 
 	@SuppressWarnings("rawtypes")
 	class CheckBoxRenderer extends JCheckBox implements ListCellRenderer {

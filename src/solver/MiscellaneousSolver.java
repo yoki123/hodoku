@@ -19,7 +19,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import sudoku.Candidate;
 import sudoku.SolutionStep;
@@ -529,6 +528,7 @@ public class MiscellaneousSolver extends AbstractSolver {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 		// Sue de Coq: r7c45 - {123689} (r7c128 - {2389}, r9c6 - {16}) => r8c46,r9c4<>1,
@@ -551,5 +551,5 @@ public class MiscellaneousSolver extends AbstractSolver {
 			}
 		}
 		System.exit(0);
-	}
+	}*/
 }

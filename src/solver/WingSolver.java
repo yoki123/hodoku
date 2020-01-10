@@ -22,7 +22,6 @@ package solver;
 import java.util.ArrayList;
 import java.util.List;
 import sudoku.Candidate;
-import sudoku.ClipboardMode;
 import sudoku.SolutionStep;
 import sudoku.SolutionType;
 import sudoku.Sudoku2;
@@ -423,6 +422,7 @@ public class WingSolver extends AbstractSolver {
 		return null;
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 		// W-Wing: 4/1 in r1c9,r8c7 verbunden durch 1 in r18c3 => r123c7,r89c9<>4
@@ -437,5 +437,5 @@ public class WingSolver extends AbstractSolver {
 		System.out.println(step);
 		System.out.println(sudoku.getSudoku(ClipboardMode.LIBRARY, step));
 		System.exit(0);
-	}
+	}*/
 }

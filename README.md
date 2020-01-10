@@ -35,15 +35,17 @@ Version 2.3.0 (WIP)
 Features:
 
   - Reset Candidates under the Puzzle menu
-  - Digit filter/highlight now has a distinguished color with customization in config.
-  - Bottom window status now shows selector location as RyCx notation.
+  - Digit filter/highlight has a distinguished color with customization in config.
+  - Bottom window status shows selector location as RyCx notation.
   
 Minor:
+
   - Added color option to customize the new colors in the color palette.
   - New Puzzle automatically sets mouse back to Default mouse mode.
   - Repurposed F10 to filter/highlight bivalue cells.
 
 Bug Fixes:
+
   - Fixed active cell selection hide on delayed interval.
   - Fixed the JAR entry point, console commands should work again.
   - New game resets cursor color correctly now.

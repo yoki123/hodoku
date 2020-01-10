@@ -707,10 +707,11 @@ public class RegressionTester {
 		anzNotImplementedCases++;
 	}
 
+	/*
 	public static void main(String[] args) {
 		RegressionTester tester = new RegressionTester();
 //        boolean result = tester.test(":0100:3:.....4..9.49....2.172..9..5......8..3...7...6..5......4..5..698.9....7..6..39....::315 317 318:");
 //        System.out.println("Result: " + result);
 		tester.runTest("lib02.txt");
-	}
+	}*/
 }

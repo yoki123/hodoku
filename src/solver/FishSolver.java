@@ -18,9 +18,6 @@
  */
 package solver;
 
-import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1841,6 +1838,7 @@ public class FishSolver extends AbstractSolver {
 		System.out.println(tmpBuffer);
 	}
 
+	/*
 	public static void main(String[] args) {
 //        Sudoku2 sudoku = new Sudoku2();
 //        // X-Wing: 3 r37 c34 => r1c34,r4c34,r5c34,r6c34,r9c4<>3
@@ -1965,5 +1963,5 @@ public class FishSolver extends AbstractSolver {
 			ex.printStackTrace();
 		}
 		System.exit(0);
-	}
+	}*/
 }

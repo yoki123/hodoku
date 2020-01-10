@@ -812,6 +812,7 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 		// 2-String Kite: 3 in r2c1,r8c5 (verbunden durch r2c6,r3c5) => r8c1<>3
@@ -825,5 +826,5 @@ public class SingleDigitPatternSolver extends AbstractSolver {
 		SolutionStep step = solver.getHint(sudoku, false);
 		System.out.println(step);
 		System.exit(0);
-	}
+	}*/
 }

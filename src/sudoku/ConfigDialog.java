@@ -29,7 +29,6 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 
 /**
  *
@@ -268,6 +267,7 @@ public class ConfigDialog extends javax.swing.JDialog {
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -279,7 +279,7 @@ public class ConfigDialog extends javax.swing.JDialog {
 				new ConfigDialog(new javax.swing.JFrame(), true, -1).setVisible(true);
 			}
 		});
-	}
+	}*/
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton cancelButton;

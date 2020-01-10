@@ -310,6 +310,7 @@ public final class SudokuSetShort implements Cloneable, Serializable {
 		this.anz = anz;
 	}
 
+	/*
 	public static void main(String[] args) {
 		SudokuSetShort set = new SudokuSetShort();
 		for (int i = 1; i <= 9; i++) {
@@ -321,5 +322,5 @@ public final class SudokuSetShort implements Cloneable, Serializable {
 		set.add(5);
 		set.add(6);
 		System.out.println(set);
-	}
+	}*/
 }

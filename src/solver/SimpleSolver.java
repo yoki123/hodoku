@@ -1055,6 +1055,7 @@ public class SimpleSolver extends AbstractSolver {
 		return step;
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 //        sudoku.setSudoku(":0110:28:.......+7+3.......464.6....95.2.+7.5+9.1...91.73...73..+5..7.543+9+6......7.3.9..91..+4.+7::214 215 216 224 225 226 236 237 814 815 816 824 825 826 832 836 837::");
@@ -1076,5 +1077,5 @@ public class SimpleSolver extends AbstractSolver {
 		SolutionStep step = solver.getHint(sudoku, false);
 		System.out.println(step);
 		System.exit(0);
-	}
+	}*/
 }

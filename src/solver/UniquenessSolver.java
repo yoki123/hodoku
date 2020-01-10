@@ -20,7 +20,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1204,6 +1203,7 @@ public class UniquenessSolver extends AbstractSolver {
 		return true;
 	}
 
+	/*
 	public static void main(String[] args) {
 		Sudoku2 sudoku = new Sudoku2();
 		// sudoku.setSudoku(":0000:x:2.7.86.5.8169..2.79.572.8.6..4..7.....2.3.56....5..7..6.3.19475.....43924.9.7.6..:141
@@ -1264,5 +1264,5 @@ public class UniquenessSolver extends AbstractSolver {
 			}
 		}
 		System.exit(0);
-	}
+	}*/
 }

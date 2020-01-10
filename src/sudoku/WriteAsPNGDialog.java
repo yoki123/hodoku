@@ -329,6 +329,7 @@ public class WriteAsPNGDialog extends javax.swing.JDialog {
 	/**
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 
@@ -337,9 +338,8 @@ public class WriteAsPNGDialog extends javax.swing.JDialog {
 				new WriteAsPNGDialog(new javax.swing.JFrame(), true, 0, 0, 0).setVisible(true);
 			}
 		});
-	}
+	}*/
 
-	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton abbrechenButton;
 	private javax.swing.JButton bildSpeichernButton;
 	private javax.swing.ButtonGroup einheitButtonGroup;
@@ -352,5 +352,4 @@ public class WriteAsPNGDialog extends javax.swing.JDialog {
 	private javax.swing.JLabel sizeLabel;
 	private javax.swing.JPanel sizePanel;
 	private javax.swing.JTextField sizeTextField;
-	// End of variables declaration//GEN-END:variables
 }

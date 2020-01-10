@@ -426,11 +426,12 @@ public class MyFontChooser extends javax.swing.JDialog implements ListSelectionL
 	 * 
 	 * @param args the command line arguments
 	 */
+	/*
 	public static void main(String args[]) {
 //        Font font = MyFontChooser.showDiaJFontChoosersttitel", null);
 		Font font = MyFontChooser.showDialog(null, "Testtitel", new Font("Arial", Font.ITALIC, 14));
 		System.out.println(font);
-	}
+	}*/
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JButton jbCancel;

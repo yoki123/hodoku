@@ -1132,6 +1132,7 @@ public class ChainSolver extends AbstractSolver {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		// Sudoku2 sudoku = new Sudoku2(true);
 		Sudoku2 sudoku = new Sudoku2();
@@ -1203,5 +1204,5 @@ public class ChainSolver extends AbstractSolver {
 			}
 		}
 		System.exit(0);
-	}
+	}*/
 }

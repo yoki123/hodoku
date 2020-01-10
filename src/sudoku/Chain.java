@@ -740,8 +740,9 @@ public class Chain implements Cloneable {
 		return tmp.toString();
 	}
 
+	/*
 	public static void main(String[] args) {
 		int entry = makeSEntry(0, 1, true);
 		System.out.println("Entry: " + getSCellIndex(entry) + "/" + getSCandidate(entry) + "/" + isSStrong(entry));
-	}
+	}*/
 }
