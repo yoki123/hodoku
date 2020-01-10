@@ -5,7 +5,7 @@ Java Runtime Environment (JRE) version 1.8 or higher must be installed on your c
 before you can run Hodoku. The JRE am be downloaded from 
 http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase_002.jpg)
+![screenshot](https://raw.githubusercontent.com/PseudoFish/Hodoku/master/showcase/showcase.png)
 
 Available languages: English and German
 
@@ -29,26 +29,26 @@ international support.
 Change log
 ==========
 
-Version 2.3.0 (WIP)
--------------------
+Version 2.3.0 (2020-01-10)
+--------------------------
 
 Features:
 
-  - Reset Candidates under the Puzzle menu
+  - Added Reset Candidates under the Puzzle menu
   - Digit filter/highlight has a distinguished color with customization in config.
   - Bottom window status shows selector location as RyCx notation.
   
 Minor:
 
   - Added color option to customize the new colors in the color palette.
-  - New Puzzle automatically sets mouse back to Default mouse mode.
+  - New Puzzle automatically sets the mouse back to Default mouse mode.
   - Repurposed F10 to filter/highlight bivalue cells.
 
 Bug Fixes:
 
   - Fixed active cell selection hide on delayed interval.
   - Fixed the JAR entry point, console commands should work again.
-  - New game resets cursor color correctly now.
+  - New game resets the cursor color preview.
 
 Version 2.2.11 (2020-01-01)
 ---------------------------
