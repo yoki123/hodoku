@@ -46,6 +46,7 @@ Minor:
 Bug Fixes:
   - Fixed active cell selection hide on delayed interval.
   - Fixed the JAR entry point, console commands should work again.
+  - New game resets cursor color correctly now.
 
 Version 2.2.11 (2020-01-01)
 ---------------------------

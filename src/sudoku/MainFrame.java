@@ -2371,7 +2371,9 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			check();
 		}
 		
-		cellZoomPanel.setDefaultMouse(true);		
+		cellZoomPanel.setDefaultMouse(true);
+		sudokuPanel.clearColoring();
+		sudokuPanel.setActiveColor(null);
 		setPlay(true);
 		fixFocus();
 	}
@@ -2705,6 +2707,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		sudokuPanel.setNoClues();
 		cellZoomPanel.setDefaultMouse(true);
 		sudokuPanel.clearColoring();
+		sudokuPanel.setActiveColor(null);
 		hinweisAbbrechenButtonActionPerformed(null);
 		setPlay(false);
 	}

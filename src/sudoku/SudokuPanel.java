@@ -289,11 +289,13 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		Integer intObj = new Integer(index);
 
         if (Options.getInstance().isDeleteCursorDisplay()) {
-            deleteCursorTimer.stop();
-            lastCursorChanged = System.currentTimeMillis();
-            deleteCursorTimer.setDelay(Options.getInstance().getDeleteCursorDisplayLength());
-            deleteCursorTimer.setInitialDelay(Options.getInstance().getDeleteCursorDisplayLength());
-            deleteCursorTimer.start();
+        	if (cellZoomPanel != null && !cellZoomPanel.isColoring()) {
+                deleteCursorTimer.stop();
+                lastCursorChanged = System.currentTimeMillis();
+                deleteCursorTimer.setDelay(Options.getInstance().getDeleteCursorDisplayLength());
+                deleteCursorTimer.setInitialDelay(Options.getInstance().getDeleteCursorDisplayLength());
+                deleteCursorTimer.start();	
+        	}
         }
 
 		if (cellSelection.contains(intObj)) {
@@ -1587,12 +1589,6 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 					setShowHintCellValue(10);
 					checkIsShowInvalidOrPossibleCells();
 				}
-				
-				/*
-				showHintCellValues[10] = !showHintCellValues[10];
-				for (int i = 0; i < 10; i++) {
-					showHintCellValues[i] = false;
-				}*/
 			}
 			break;
 		case KeyEvent.VK_F9:
