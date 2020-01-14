@@ -3453,6 +3453,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		coloringMap.clear();
 		resetShowHintCellValues();
 		
+		clearSelection();
 		clearDragSelection();
 		cellSelection.clear();
 		cellSelection.add(new Integer(Sudoku2.getIndex(4, 4)));

@@ -103,7 +103,7 @@ import sudoku.FileDrop;
 public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private static final long serialVersionUID = 1L;
-	public static final String VERSION = "Hodoku - v2.3.0";
+	public static final String VERSION = "Hodoku - v2.3.1";
 
 	// public static final String BUILD = "Build 16";
 	public static final String BUILD;
@@ -214,6 +214,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 
 	private UIExportLine exportWindow;
 	private UIImportLine importWindow;
+	private UIQuickBrowse quickBrowseWindow;
 
 	private javax.swing.JMenuItem aboutMenuItem;
 	private javax.swing.JRadioButtonMenuItem allStepsMenuItem;
@@ -238,6 +239,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	private javax.swing.JMenu fileMenu;
 	private javax.swing.JMenuItem printMenuItem;
 	private javax.swing.JMenuItem extendedPrintMenuItem;
+	private javax.swing.JMenuItem quickBrowseMenuItem;
 	private javax.swing.JToggleButton f1ToggleButton;
 	private javax.swing.JToggleButton f2ToggleButton;
 	private javax.swing.JToggleButton f3ToggleButton;
@@ -626,6 +628,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		updateCellSelectionStatus();
 		exportWindow = new UIExportLine(sudokuPanel);
 		importWindow = new UIImportLine(this);
+		quickBrowseWindow = new UIQuickBrowse(this);
 	}
 
 	void onDragDropFile(File[] files) {
@@ -729,6 +732,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 		printSetupMenuItem = new javax.swing.JMenuItem();
 		printMenuItem = new javax.swing.JMenuItem();
 		extendedPrintMenuItem = new javax.swing.JMenuItem();
+		quickBrowseMenuItem = new javax.swing.JMenuItem();
 		saveAsPictureMenuItem = new javax.swing.JMenuItem();
 		editGivensMenuItem = new javax.swing.JMenuItem();
 		playGameMenuItem = new javax.swing.JMenuItem();
@@ -1396,7 +1400,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				extendedPrintMenuItemActionPerformed(evt);
 			}
 		});
-		fileMenu.add(extendedPrintMenuItem);
+		fileMenu.add(extendedPrintMenuItem);			
 
 		saveAsPictureMenuItem.setMnemonic(java.util.ResourceBundle.getBundle("intl/MainFrame")
 				.getString("MainFrame.speichernAlsBildMenuItemMnemonic").charAt(0));
@@ -1407,6 +1411,15 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			}
 		});
 		fileMenu.add(saveAsPictureMenuItem);
+		fileMenu.add(new javax.swing.JPopupMenu.Separator());
+		
+		quickBrowseMenuItem.setText("Quick Browse");
+		quickBrowseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				quickBrowseWindow.setVisible(true);
+			}
+		});
+		fileMenu.add(quickBrowseMenuItem);
 		fileMenu.add(new javax.swing.JPopupMenu.Separator());
 
 		exitMenuItem.setAccelerator(
@@ -3873,7 +3886,7 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 	 * @param importString
 	 * @return
 	 */
-	public boolean ValidateImportLine(String line) {
+	public static boolean ValidateImportLine(String line) {
 
 		ResourceBundle bundle = ResourceBundle.getBundle("intl/MainFrame");
 		String title = bundle.getString("MainFrame.ValidateImportLine.title");

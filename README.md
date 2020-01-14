@@ -29,6 +29,18 @@ international support.
 Change log
 ==========
 
+Version 2.3.1 (2020-01-13)
+--------------------------
+
+Features:
+
+  - Added Quick Browse in the File menu
+    - Can manually paste a list of import lines
+    - Can load a file containing a list of import lines
+    - Allows to quickly browse/load puzzles into Hodoku
+    - Each line must start with an import line
+    - Notes to the right of the import lines are ignored
+
 Version 2.3.0 (2020-01-10)
 --------------------------
 

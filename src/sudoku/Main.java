@@ -549,11 +549,13 @@ public class Main {
 //            System.out.println(path);
 			// copyright notice
 			System.out.println(MainFrame.VERSION + " - " + MainFrame.BUILD);
-			System.out.println("Copyright (C) 2008-12  Bernhard Hobiger\r\n" + "\r\n"
-					+ "HoDoKu is free software: you can redistribute it and/or modify\r\n"
-					+ "it under the terms of the GNU General Public License as published by\r\n"
-					+ "the Free Software Foundation, either version 3 of the License, or\r\n"
-					+ "(at your option) any later version.\r\n\r\n");
+			System.out.println(
+					  "Copyright (C) 2019-20 PseudoFish\r\n" + 
+					  "Copyright (C) 2008-12 Bernhard Hobiger\r\n" + "\r\n" +
+					  "HoDoKu is free software: you can redistribute it and/or modify\r\n" +
+					  "it under the terms of the GNU General Public License as published by\r\n" +
+					  "the Free Software Foundation, either version 3 of the License, or\r\n" +
+					  "(at your option) any later version.\r\n\r\n");
 			// all options are stored in a list, if /f is present, the list is
 			// expanded accordingly (/f may be present more than once)
 
@@ -1043,6 +1045,11 @@ public class Main {
 		}
 
 		// ok - no console operation, start GUI
+		startGUI(needToResetPuzzles, launchFile);
+	}
+	
+	private static void startGUI(boolean needToResetPuzzles, String launchFile) {
+		
 		if (needToResetPuzzles) {
 			BackgroundGeneratorThread.getInstance().resetAll();
 		}
@@ -1051,7 +1058,8 @@ public class Main {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new MainFrame(lf).setVisible(true);
+				MainFrame mainFrame = new MainFrame(lf);
+				mainFrame.setVisible(true);
 			}
 		});
 	}
