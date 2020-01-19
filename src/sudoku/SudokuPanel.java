@@ -4008,7 +4008,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			for (int index : cellSelection) {
 				if (sudoku.getValue(index) == 0) {
 					boolean isCandidateOn = sudoku.isCandidate(index, candidate, !showCandidates);
-					sudoku.setCandidate(index, candidate, !isCandidateOn, true);
+					sudoku.setCandidate(index, candidate, !isCandidateOn, !showCandidates);
 				}
 			}
 		}

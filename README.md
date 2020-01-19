@@ -29,6 +29,14 @@ international support.
 Change log
 ==========
 
+Version 2.3.2 (WIP)
+-------------------
+
+Minor:
+  - Replaced Active Cell's Remove Candidate functionality with Toggle Candidate.
+    - This feature now works even if Show all Candidates is off.
+  - Simplified the prompt when Show all Candidates is turned on.
+
 Version 2.3.1 (2020-01-13)
 --------------------------
 

@@ -2516,16 +2516,16 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 			// if no user candidates have been set, the internal flag is just toggled.
 			// if user candidates have been set, further checks have to be made
 			if (sudokuPanel.getSudoku().userCandidatesEmpty()) {
-				// just set the flag and be done!
+				// just set the flag and be done!				
 				sudokuPanel.setShowCandidates(showCandidatesMenuItem.isSelected());
+				
 			} else {
 				// display a dialog, that lets the user choose, what to do
 				boolean doYes = true;
 				if (!sudokuPanel.getSudoku().checkUserCands()) {
 					// necessary candidates are missing!
 					int ret = JOptionPane.showConfirmDialog(null,
-							java.util.ResourceBundle.getBundle("intl/MainFrame")
-									.getString("MainFrame.candidatesMissing"),
+							java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.candidatesMissing"),
 							java.util.ResourceBundle.getBundle("intl/MainFrame").getString("MainFrame.error"),
 							JOptionPane.YES_NO_CANCEL_OPTION);
 					if (ret == JOptionPane.CANCEL_OPTION) {
@@ -2542,16 +2542,19 @@ public class MainFrame extends javax.swing.JFrame implements FlavorListener {
 				
 				if (doYes) {
 					// retain all changes to the user candidates
+					sudokuPanel.getSudoku().resetCandidates();
+					//sudokuPanel.getSudoku().rebuildAllCandidates();
+					sudokuPanel.getSolver().setSudoku(sudokuPanel.getSudoku());
+					sudokuPanel.checkProgress();
+					boolean showCandidates = showCandidatesMenuItem.isSelected();
+					sudokuPanel.setShowCandidates(showCandidates);
+				/*
+				} else {
+					// revert all changes
 					sudokuPanel.getSudoku().switchToAllCandidates();
 					sudokuPanel.getSolver().setSudoku(sudokuPanel.getSudoku());
 					sudokuPanel.checkProgress();
-					sudokuPanel.setShowCandidates(showCandidatesMenuItem.isSelected());
-				} else {
-					// revert all changes
-					sudokuPanel.getSudoku().rebuildAllCandidates();
-					sudokuPanel.getSolver().setSudoku(sudokuPanel.getSudoku());
-					sudokuPanel.checkProgress();
-					sudokuPanel.setShowCandidates(showCandidatesMenuItem.isSelected());
+					sudokuPanel.setShowCandidates(showCandidatesMenuItem.isSelected());*/
 				}
 			}
 		}
