@@ -434,7 +434,7 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 		if (candidate != -1) {
 			
 			sudokuPanel.pushUndo();
-			boolean changed = sudokuPanel.removeCandidateFromActiveCells(candidate);
+			boolean changed = sudokuPanel.removeCandidateFromCellSelection(candidate);
 			
 			if (changed) {
 				sudokuPanel.clearRedoStack();
@@ -633,7 +633,7 @@ public class RightClickMenu extends JPopupMenu implements ActionListener {
 			for (int i = 0; i < input.length(); i++) {
 				char digit = input.charAt(i);
 				if (Character.isDigit(digit)) {
-					if (sudokuPanel.removeCandidateFromActiveCells(Character.getNumericValue(digit))) {
+					if (sudokuPanel.removeCandidateFromCellSelection(Character.getNumericValue(digit))) {
 						changed = true;
 					}
 				}

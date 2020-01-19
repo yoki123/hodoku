@@ -69,31 +69,14 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 	private SudokuPanel sudokuPanel;
 	private int colorImageHeight = -1;
 	private Icon[] colorKuIcons = new Icon[9];
+	private boolean isInitialized = false;
 	
 	private javax.swing.JPanel chooseColorPanel;
 	private javax.swing.JButton jFontButton;
 	private javax.swing.JPanel jPanel1;
-	private javax.swing.JButton setValueButton1;
-	private javax.swing.JButton setValueButton2;
-	private javax.swing.JButton setValueButton3;
-	private javax.swing.JButton setValueButton4;
-	private javax.swing.JButton setValueButton5;
-	private javax.swing.JButton setValueButton6;
-	private javax.swing.JButton setValueButton7;
-	private javax.swing.JButton setValueButton8;
-	private javax.swing.JButton setValueButton9;
 	private javax.swing.JLabel setValueLabel;
 	private javax.swing.JPanel setValuePanel;
 	private javax.swing.JLabel titleLabel;
-	private javax.swing.JButton toggleCandidatesButton1;
-	private javax.swing.JButton toggleCandidatesButton2;
-	private javax.swing.JButton toggleCandidatesButton3;
-	private javax.swing.JButton toggleCandidatesButton4;
-	private javax.swing.JButton toggleCandidatesButton5;
-	private javax.swing.JButton toggleCandidatesButton6;
-	private javax.swing.JButton toggleCandidatesButton7;
-	private javax.swing.JButton toggleCandidatesButton8;
-	private javax.swing.JButton toggleCandidatesButton9;
 	private javax.swing.JLabel toggleCandidatesLabel;
 	private javax.swing.JPanel toggleCandidatesPanel;
 	private JPanel radioButtonPanel;
@@ -114,23 +97,14 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		this.mainFrame = mainFrame;
 		
 		cellPanels = new JPanel[COLOR_BUTTON_COUNT];
+		setValueButtons = new JButton[Sudoku2.UNITS];		
+		toggleCandidatesButtons = new JButton[Sudoku2.UNITS];
 		
 		initComponents();
-
-		setValueButtons = new JButton[] {
-			setValueButton1, setValueButton2, setValueButton3, 
-			setValueButton4, setValueButton5, setValueButton6, 
-			setValueButton7, setValueButton8, setValueButton9 
-		};
 		
-		toggleCandidatesButtons = new JButton[] { 
-			toggleCandidatesButton1, toggleCandidatesButton2, toggleCandidatesButton3, 
-			toggleCandidatesButton4, toggleCandidatesButton5, toggleCandidatesButton6,
-			toggleCandidatesButton7, toggleCandidatesButton8, toggleCandidatesButton9 
-		};
-		
-		normButtonForeground = setValueButton1.getForeground();
-		normButtonBackground = setValueButton1.getBackground();
+		JButton defaultButton = new JButton();
+		normButtonForeground = defaultButton.getForeground();
+		normButtonBackground = defaultButton.getBackground();
 
 		jFontButton.setVisible(false);
 		buttonFont = jFontButton.getFont();
@@ -146,7 +120,8 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		
 		Font font = titleLabel.getFont();
 		titleLabel.setFont(new Font(font.getName(), Font.BOLD, fontSize));
-
+		
+		isInitialized = true;
 		calculateLayout();
 	}
 	
@@ -156,7 +131,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		
 		panel.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mousePressed(java.awt.event.MouseEvent evt) {
-				chooseCellColor0PanelMouseClicked(evt);
+				chooseCellColorPanelMouseClicked(evt);
 			}
 		});
 
@@ -174,26 +149,8 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		titleLabel = new javax.swing.JLabel();
 		setValueLabel = new javax.swing.JLabel();
 		setValuePanel = new javax.swing.JPanel();
-		setValueButton1 = new javax.swing.JButton();
-		setValueButton2 = new javax.swing.JButton();
-		setValueButton3 = new javax.swing.JButton();
-		setValueButton4 = new javax.swing.JButton();
-		setValueButton5 = new javax.swing.JButton();
-		setValueButton6 = new javax.swing.JButton();
-		setValueButton7 = new javax.swing.JButton();
-		setValueButton8 = new javax.swing.JButton();
-		setValueButton9 = new javax.swing.JButton();
 		toggleCandidatesLabel = new javax.swing.JLabel();
 		toggleCandidatesPanel = new javax.swing.JPanel();
-		toggleCandidatesButton1 = new javax.swing.JButton();
-		toggleCandidatesButton2 = new javax.swing.JButton();
-		toggleCandidatesButton3 = new javax.swing.JButton();
-		toggleCandidatesButton4 = new javax.swing.JButton();
-		toggleCandidatesButton5 = new javax.swing.JButton();
-		toggleCandidatesButton6 = new javax.swing.JButton();
-		toggleCandidatesButton7 = new javax.swing.JButton();
-		toggleCandidatesButton8 = new javax.swing.JButton();
-		toggleCandidatesButton9 = new javax.swing.JButton();
 		chooseColorPanel = new javax.swing.JPanel();
 		jFontButton = new javax.swing.JButton();
 		
@@ -246,179 +203,60 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		titleLabel.setOpaque(true);
 		add(titleLabel);
 		titleLabel.setBounds(0, 0, 63, 15);
-
 		setValueLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		setValueLabel.setText(bundle.getString("CellZoomPanel.setValueLabel.text"));
 		add(setValueLabel);
 		setValueLabel.setBounds(0, 0, 49, 14);
-
 		setValuePanel.setLayout(new java.awt.GridLayout(3, 3));
 
-		setValueButton1.setText("1");
-		setValueButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton1);
-
-		setValueButton2.setText("2");
-		setValueButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton2);
-
-		setValueButton3.setText("3");
-		setValueButton3.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton3);
-
-		setValueButton4.setText("4");
-		setValueButton4.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton4);
-
-		setValueButton5.setText("5");
-		setValueButton5.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton5);
-
-		setValueButton6.setText("6");
-		setValueButton6.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton6);
-
-		setValueButton7.setText("7");
-		setValueButton7.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton7);
-
-		setValueButton8.setText("8");
-		setValueButton8.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton8);
-
-		setValueButton9.setText("9");
-		setValueButton9.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				setValueButton1ActionPerformed(evt);
-			}
-		});
-		setValuePanel.add(setValueButton9);
+		// initialize all set value buttons
+		for (int index = 0; index < Sudoku2.UNITS; index++) {
+			
+			setValueButtons[index] = new JButton();
+			setValueButtons[index].setText(NUMBERS[index]);
+			setValueButtons[index].addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					setValueButtonActionPerformed(evt);
+				}
+			});
+			
+			setValuePanel.add(setValueButtons[index]);
+		}
 
 		add(setValuePanel);
 		setValuePanel.setBounds(0, 0, 117, 69);
-
 		toggleCandidatesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		toggleCandidatesLabel.setText(bundle.getString("CellZoomPanel.toggleCandidatesLabel.text"));
 		add(toggleCandidatesLabel);
 		toggleCandidatesLabel.setBounds(0, 0, 93, 14);
-
 		toggleCandidatesPanel.setLayout(new java.awt.GridLayout(3, 3));
 
-		toggleCandidatesButton1.setText("1");
-		toggleCandidatesButton1.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton1);
-
-		toggleCandidatesButton2.setText("2");
-		toggleCandidatesButton2.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton2);
-
-		toggleCandidatesButton3.setText("3");
-		toggleCandidatesButton3.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton3);
-
-		toggleCandidatesButton4.setText("4");
-		toggleCandidatesButton4.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton4);
-
-		toggleCandidatesButton5.setText("5");
-		toggleCandidatesButton5.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton5);
-
-		toggleCandidatesButton6.setText("6");
-		toggleCandidatesButton6.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton6);
-
-		toggleCandidatesButton7.setText("7");
-		toggleCandidatesButton7.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton7);
-
-		toggleCandidatesButton8.setText("8");
-		toggleCandidatesButton8.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton8);
-
-		toggleCandidatesButton9.setText("9");
-		toggleCandidatesButton9.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				toggleCandidatesButton1ActionPerformed(evt);
-			}
-		});
-		toggleCandidatesPanel.add(toggleCandidatesButton9);
+		// initialize all toggle candidate buttons
+		for (int index = 0; index < Sudoku2.UNITS; index++) {
+			
+			toggleCandidatesButtons[index] = new JButton();
+			toggleCandidatesButtons[index].setText(NUMBERS[index]);
+			toggleCandidatesButtons[index].addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent evt) {
+					toggleCandidatesButtonActionPerformed(evt);
+				}
+			});
+			
+			toggleCandidatesPanel.add(toggleCandidatesButtons[index]);
+		}
 
 		add(toggleCandidatesPanel);
 		toggleCandidatesPanel.setBounds(0, 0, 117, 69);
-
 		chooseColorPanel.setLayout(new java.awt.GridLayout(2, 6, 1, 1));
 		
 		for (int i = 0; i < COLOR_BUTTON_COUNT; i++) {
 			cellPanels[i] = createColorButtonPanel(i);
-		}		
+		}
+		
 		for (int i = 0; i < COLOR_BUTTON_COUNT; i += 2) {
 			chooseColorPanel.add(cellPanels[i]);
-		}		
+		}
+		
 		for (int i = 1; i < COLOR_BUTTON_COUNT; i += 2) {
 			chooseColorPanel.add(cellPanels[i]);
 		}
@@ -437,19 +275,19 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		printSize();
 	}
 
-	private void setValueButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+	private void setValueButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		setValue((JButton) evt.getSource());
 	}
 
-	private void toggleCandidatesButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-		handleCandidateChange((JButton) evt.getSource());
+	private void toggleCandidatesButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		onToggleCandidate((JButton) evt.getSource());
 	}
 
-	private void chooseCellColor0PanelMouseClicked(java.awt.event.MouseEvent evt) {
+	private void chooseCellColorPanelMouseClicked(java.awt.event.MouseEvent evt) {
 		handleColorChange((JPanel) evt.getSource(), evt.isControlDown());
 	}
 
-	private void handleCandidateChange(JButton button) {
+	private void onToggleCandidate(JButton button) {
 		
 		int candidate = -1;
 		
@@ -462,7 +300,8 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		
 		if (sudokuPanel != null && candidate != -1) {
 			if (isDefaultMouse()) {
-				sudokuPanel.toggleOrRemoveCandidateFromCellZoomPanel(candidate);
+				sudokuPanel.toggleCandidateFromCellSelection(candidate);
+				mainFrame.repaint();
 			} else {
 				sudokuPanel.handleColoring(candidate);
 			}
@@ -526,7 +365,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 
 	public final void calculateLayout() {
 		
-		if (defaultButtonHeight == -1) {
+		if (!isInitialized) {
 			// not yet initialized!
 			return;
 		}
@@ -685,6 +524,7 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 
 		// now set accordingly
 		if (isDefaultMouse()) {
+			
 			// no coloring -> buttons are available
 			for (int i = 0; i < values.size(); i++) {
 				int cand = values.get(i) - 1;
@@ -714,15 +554,14 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 				}
 			}
 			
+			ResourceBundle bundle = ResourceBundle.getBundle("intl/CellZoomPanel");
 			if (singleCell) {
-				toggleCandidatesLabel.setText(ResourceBundle.getBundle("intl/CellZoomPanel")
-						.getString("CellZoomPanel.toggleCandidatesLabel.text"));
+				toggleCandidatesLabel.setText(bundle.getString("CellZoomPanel.toggleCandidatesLabel.text"));
 				for (int i = 0; i < toggleCandidatesButtons.length; i++) {
 					toggleCandidatesButtons[i].setEnabled(true);
 				}
 			} else {
-				toggleCandidatesLabel.setText(ResourceBundle.getBundle("intl/CellZoomPanel")
-						.getString("CellZoomPanel.toggleCandidatesLabel.text2"));
+				toggleCandidatesLabel.setText(bundle.getString("CellZoomPanel.toggleCandidatesLabel.text2"));
 			}
 			
 		} else {

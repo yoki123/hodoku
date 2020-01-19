@@ -3975,15 +3975,18 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 * @param candidate
 	 * @return true if sudoku is changed, false otherwise
 	 */
-	public boolean removeCandidateFromActiveCells(int candidate) {
+	public boolean removeCandidateFromCellSelection(int candidate) {
 		
 		boolean changed = false;
 		if (cellSelection.isEmpty()) {
+			System.err.println("Unexpected error in removeCandidateFromCellSelection, cellSelection should not be empty.");
+			return false;
+			/*
 			int index = Sudoku2.getIndex(getActiveRow(), getActiveCol());
 			if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
 				sudoku.setCandidate(index, candidate, false, !showCandidates);
 				changed = true;
-			}
+			}*/
 		} else {
 			for (int index : cellSelection) {
 				if (sudoku.getValue(index) == 0 && sudoku.isCandidate(index, candidate, !showCandidates)) {
@@ -3996,13 +3999,28 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 		return changed;
 	}
 
+	public void toggleCandidateFromCellSelection(int candidate) {
+		
+		if (cellSelection.isEmpty()) {
+			System.err.println("Unexpected error in toggleCandidateFromCellSelection, cellSelection should not be empty.");
+			return;
+		} else {
+			for (int index : cellSelection) {
+				if (sudoku.getValue(index) == 0) {
+					boolean isCandidateOn = sudoku.isCandidate(index, candidate, !showCandidates);
+					sudoku.setCandidate(index, candidate, !isCandidateOn, true);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Handles candidate changed done in {@link CellZoomPanel}. Should not be used
 	 * otherwise.
 	 *
 	 * @param candidate
 	 */
-	public void toggleOrRemoveCandidateFromCellZoomPanel(int candidate) {
+	public void toggleCandidateFromCellZoomPanel(int candidate) {
 		
 		if (candidate != -1) {
 			
@@ -4010,18 +4028,11 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			boolean changed = false;
 			
 			if (cellSelection.isEmpty()) {
-				
-				int index = Sudoku2.getIndex(getActiveRow(), getActiveCol());
-				if (sudoku.isCandidate(index, candidate, !showCandidates)) {
-					sudoku.setCandidate(index, candidate, false, !showCandidates);
-				} else {
-					sudoku.setCandidate(index, candidate, true, !showCandidates);
-				}
-				
-				changed = true;
-				
+				System.err.println("Unexpected error in toggleCandidateFromCellZoomPanel, cellSelection should not be empty.");				
+				return;
 			} else {
-				changed = removeCandidateFromActiveCells(candidate);
+				toggleCandidateFromCellSelection(candidate);
+				changed = true;
 			}
 			
 			if (changed) {
@@ -4033,7 +4044,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 			
 			updateCellZoomPanel();
 			mainFrame.check();
-			repaint();
+			mainFrame.repaint();
 		}
 	}
 
