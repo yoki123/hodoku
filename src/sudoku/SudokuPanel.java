@@ -2391,9 +2391,9 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 				// highlight (filter)
 				if (isShowInvalidOrPossibleCells()) {
 					
-					// highlighting
-					if (!isInvalidCells() || isHighlightingBivalue) {
+					if (!isInvalidCells()) {
 						
+						// highlighting
 						if (sudoku.getValue(cellIndex) == 0 && 
 							candidateValid && 
 							!Options.getInstance().isOnlySmallFilters()) {
@@ -2403,13 +2403,15 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 								   showHintCellValues[sudoku.getValue(cellIndex)]) {
 							setColor(g2, allBlack, Options.getInstance().getPossibleFixedCellColor());
 						}
-					}
-					
-					// inverse highlight
-					if (isInvalidCells() && 
-						(sudoku.getValue(cellIndex) != 0 || 
-						(showInvalidOrPossibleCells && !candidateValid))) {
-						setColor(g2, allBlack, Options.getInstance().getInvalidCellColor());
+						
+					} else {
+						
+						// inverse highlight
+						if (isInvalidCells() && 
+							(sudoku.getValue(cellIndex) != 0 || 
+							(showInvalidOrPossibleCells && !candidateValid))) {
+							setColor(g2, allBlack, Options.getInstance().getInvalidCellColor());
+						}
 					}
 				}
 
@@ -2705,7 +2707,7 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 								    isCellBivalue;
 
 							// highlight/filters candidates instead of cells
-							if (candidateValid && (isFilteringCandidates || isFilteringBivalueCandidates)) {
+							if (candidateValid && (isFilteringCandidates || isFilteringBivalueCandidates) && !isInvalidCells()) {
 							
 								if (isFilteringCandidates) {
 									setColor(g2, allBlack, Options.getInstance().getPossibleCellColor());
