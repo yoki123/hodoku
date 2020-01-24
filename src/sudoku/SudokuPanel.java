@@ -2019,12 +2019,20 @@ public class SudokuPanel extends javax.swing.JPanel implements Printable {
 	 */
 	public void setCellFromCellZoomPanel(int number) {
 		
-		undoStack.push(sudoku.clone());
 		if (cellSelection.isEmpty()) {
-			setCell(getActiveRow(), getActiveCol(), number);
-		} else {
-			for (int index : cellSelection) {
-				setCell(Sudoku2.getRow(index), Sudoku2.getCol(index), number);
+			return;
+		}
+		
+		undoStack.push(sudoku.clone());
+		for (int index : cellSelection) {
+			int r = Sudoku2.getRow(index);
+			int c = Sudoku2.getCol(index);
+			int value = sudoku.getValue(index);
+			boolean removeDigit = value == number;
+			if (removeDigit) {
+				setCell(r, c, 0);
+			} else {
+				setCell(r, c, number);
 			}
 		}
 		

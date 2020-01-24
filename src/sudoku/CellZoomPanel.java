@@ -510,6 +510,8 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 		
 		// reset all buttons
 		for (int i = 0; i < setValueButtons.length; i++) {
+			
+			/*
 			setValueButtons[i].setText("");
 			setValueButtons[i].setEnabled(false);
 			setValueButtons[i].setForeground(normButtonForeground);
@@ -517,6 +519,17 @@ public class CellZoomPanel extends JPanel implements ActionListener {
 			setValueButtons[i].setIcon(null);
 			toggleCandidatesButtons[i].setText("");
 			toggleCandidatesButtons[i].setEnabled(false);
+			toggleCandidatesButtons[i].setForeground(normButtonForeground);
+			toggleCandidatesButtons[i].setBackground(normButtonBackground);
+			toggleCandidatesButtons[i].setIcon(null);*/
+			
+			setValueButtons[i].setText(Integer.toString(i+1));
+			setValueButtons[i].setEnabled(true);
+			setValueButtons[i].setForeground(normButtonForeground);
+			setValueButtons[i].setBackground(normButtonBackground);
+			setValueButtons[i].setIcon(null);
+			toggleCandidatesButtons[i].setText(Integer.toString(i+1));
+			toggleCandidatesButtons[i].setEnabled(true);
 			toggleCandidatesButtons[i].setForeground(normButtonForeground);
 			toggleCandidatesButtons[i].setBackground(normButtonBackground);
 			toggleCandidatesButtons[i].setIcon(null);

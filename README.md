@@ -36,6 +36,7 @@ Minor:
   - Replaced Active Cell's Remove Candidate functionality with Toggle Candidate.
     - This feature now works even if Show all Candidates is off.
   - Simplified the prompt when Show all Candidates is turned on.
+  - You can now toggle set digits via the Active Cell Menu's Set Value panel.
   
 Bug Fix:
   - Filter inverse now colors properly on bivalue cells.
