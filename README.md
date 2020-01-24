@@ -36,9 +36,6 @@ Minor:
   - Replaced Active Cell's Remove Candidate functionality with Toggle Candidate.
     - This feature now works even if Show all Candidates is off.
   - Simplified the prompt when Show all Candidates is turned on.
-  
-Bug Fix:
-  - Filter inverse now colors properly on bivalue cells.
 
 Version 2.3.1 (2020-01-13)
 --------------------------
